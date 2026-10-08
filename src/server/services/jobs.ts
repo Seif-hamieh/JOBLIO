@@ -1,0 +1,268 @@
+import "server-only";
+import { db, type Prisma } from "@/server/db";
+import { resolveCountryCode } from "@/lib/geo";
+import type { JobSearchParams } from "@/lib/validation/search";
+import type { MatchResult } from "@/lib/matching/engine";
+import { getCandidateFacts, jobMatchSelect, scoreJobs } from "@/server/services/matching";
+
+export const PAGE_SIZE = 20;
+
+export const jobCardSelect = {
+  id: true,
+  title: true,
+  summary: true,
+  experienceLevel: true,
+  publishedAt: true,
+  featuredUntil: true,
+  sponsoredUntil: true,
+  applicationCount: true,
+  status: true,
+  company: { select: { id: true, slug: true, name: true, logoUrl: true, verified: true, brandColor: true } },
+  ...jobMatchSelect,
+} satisfies Prisma.JobSelect;
+
+export type JobCardData = Prisma.JobGetPayload<{ select: typeof jobCardSelect }>;
+export type JobCardWithMatch = JobCardData & { match?: MatchResult; saved?: boolean; applied?: boolean };
+
+// ── Promotion expiry ────────────────────────────────────────────────────────
+// Promotion windows are denormalised onto rows so ranking is one indexed sort.
+// Expired windows are cleared lazily (at most once a minute per process), so
+// no cron job is needed.
+let lastExpiry = 0;
+export async function expirePromotions() {
+  const now = Date.now();
+  if (now - lastExpiry < 60_000) return;
+  lastExpiry = now;
+  const at = new Date(now);
+  await Promise.all([
+    db.job.updateMany({ where: { featuredUntil: { lt: at } }, data: { featuredUntil: null } }),
+    db.job.updateMany({ where: { sponsoredUntil: { lt: at } }, data: { sponsoredUntil: null } }),
+    db.profile.updateMany({ where: { featuredUntil: { lt: at } }, data: { featuredUntil: null } }),
+    db.company.updateMany({ where: { premiumUntil: { lt: at } }, data: { premiumUntil: null } }),
+  ]);
+}
+
+function containsInsensitive(value: string) {
+  return { contains: value, mode: "insensitive" as const };
+}
+
+export function buildJobWhere(p: JobSearchParams): Prisma.JobWhereInput {
+  const and: Prisma.JobWhereInput[] = [];
+  if (p.q) {
+    for (const term of p.q.split(/\s+/).filter(Boolean).slice(0, 6)) {
+      and.push({
+        OR: [
+          { title: containsInsensitive(term) },
+          { summary: containsInsensitive(term) },
+          { company: { name: containsInsensitive(term) } },
+          { skills: { some: { skill: { name: containsInsensitive(term) } } } },
+        ],
+      });
+    }
+  }
+  if (p.location) {
+    const loc = p.location.trim();
+    if (/^remote$/i.test(loc)) {
+      and.push({ workMode: "REMOTE" });
+    } else {
+      const parts = loc.split(",").map((s) => s.trim()).filter(Boolean);
+      const or: Prisma.JobWhereInput[] = [];
+      for (const part of parts) {
+        const code = resolveCountryCode(part);
+        if (code) or.push({ countryCode: code });
+        or.push({ city: containsInsensitive(part) });
+      }
+      and.push({ OR: or });
+    }
+  }
+  if (p.mode.length) and.push({ workMode: { in: p.mode } });
+  if (p.type.length) and.push({ employmentType: { in: p.type } });
+  if (p.level.length) and.push({ experienceLevel: { in: p.level } });
+  if (p.salary) {
+    // Normalise the yearly minimum to each posting's pay period.
+    and.push({
+      OR: [
+        { salaryPeriod: "YEAR", salaryMax: { gte: p.salary } },
+        { salaryPeriod: "MONTH", salaryMax: { gte: Math.round(p.salary / 12) } },
+        { salaryPeriod: "HOUR", salaryMax: { gte: Math.round(p.salary / 2080) } },
+      ],
+    });
+  }
+  if (p.industry) and.push({ industry: { slug: p.industry } });
+  for (const slug of p.skills) and.push({ skills: { some: { skill: { slug } } } });
+  if (p.company) and.push({ company: { slug: p.company } });
+  if (p.posted) and.push({ publishedAt: { gte: new Date(Date.now() - Number(p.posted) * 86_400_000) } });
+  return { status: "OPEN", AND: and };
+}
+
+const ORDER: Record<Exclude<JobSearchParams["sort"], "match">, Prisma.JobOrderByWithRelationInput[]> = {
+  relevant: [{ featuredUntil: { sort: "desc", nulls: "last" } }, { publishedAt: "desc" }],
+  newest: [{ publishedAt: "desc" }],
+  salary: [{ salaryMax: { sort: "desc", nulls: "last" } }, { publishedAt: "desc" }],
+};
+
+async function annotateForViewer(jobs: JobCardData[], viewerId: string | null, matches?: Map<string, MatchResult>) {
+  if (!viewerId || jobs.length === 0) return jobs as JobCardWithMatch[];
+  const ids = jobs.map((j) => j.id);
+  const [saved, applied, facts] = await Promise.all([
+    db.savedJob.findMany({ where: { userId: viewerId, jobId: { in: ids } }, select: { jobId: true } }),
+    db.application.findMany({ where: { applicantId: viewerId, jobId: { in: ids } }, select: { jobId: true } }),
+    matches ? Promise.resolve(null) : getCandidateFacts(viewerId),
+  ]);
+  const scored = matches ?? scoreJobs(facts, jobs);
+  const savedSet = new Set(saved.map((s) => s.jobId));
+  const appliedSet = new Set(applied.map((a) => a.jobId));
+  return jobs.map((j) => ({ ...j, match: scored.get(j.id), saved: savedSet.has(j.id), applied: appliedSet.has(j.id) }));
+}
+
+export async function searchJobs(p: JobSearchParams, viewerId: string | null) {
+  await expirePromotions();
+  const where = buildJobWhere(p);
+  const now = new Date();
+
+  // Sponsored placements: up to two clearly-labelled slots on page one that
+  // still have to satisfy the user's filters.
+  const sponsored =
+    p.page === 1
+      ? await db.job.findMany({
+          where: { AND: [where, { sponsoredUntil: { gt: now } }] },
+          select: jobCardSelect,
+          orderBy: { sponsoredUntil: "desc" },
+          take: 2,
+        })
+      : [];
+  const sponsoredIds = sponsored.map((j) => j.id);
+  const organicWhere: Prisma.JobWhereInput = sponsoredIds.length ? { AND: [where, { id: { notIn: sponsoredIds } }] } : where;
+
+  let jobs: JobCardData[];
+  let total: number;
+  let matches: Map<string, MatchResult> | undefined;
+
+  if (p.sort === "match" && viewerId) {
+    // Rank a bounded candidate set by score in memory (see docs/ARCHITECTURE.md).
+    const [pool, facts] = await Promise.all([
+      db.job.findMany({ where: organicWhere, select: jobCardSelect, orderBy: { publishedAt: "desc" }, take: 300 }),
+      getCandidateFacts(viewerId),
+    ]);
+    matches = scoreJobs(facts, pool);
+    pool.sort((a, b) => (matches!.get(b.id)?.score ?? 0) - (matches!.get(a.id)?.score ?? 0));
+    total = pool.length;
+    jobs = pool.slice((p.page - 1) * PAGE_SIZE, p.page * PAGE_SIZE);
+  } else {
+    const order = ORDER[p.sort === "match" ? "relevant" : p.sort];
+    [jobs, total] = await Promise.all([
+      db.job.findMany({ where: organicWhere, select: jobCardSelect, orderBy: order, skip: (p.page - 1) * PAGE_SIZE, take: PAGE_SIZE }),
+      db.job.count({ where: organicWhere }),
+    ]);
+  }
+
+  const [annotated, annotatedSponsored] = await Promise.all([
+    annotateForViewer(jobs, viewerId, matches),
+    annotateForViewer(sponsored, viewerId),
+  ]);
+  return { jobs: annotated, sponsored: annotatedSponsored, total, pageCount: Math.max(1, Math.ceil(total / PAGE_SIZE)) };
+}
+
+/**
+ * "Jobs For You": a bounded pre-filter in SQL (shares a skill, or matches the
+ * user's location / remote preference), then transparent scoring in memory.
+ */
+export async function jobsForYou(userId: string, opts: { limit?: number; minScore?: number } = {}) {
+  await expirePromotions();
+  const facts = await getCandidateFacts(userId);
+  if (!facts) return [];
+  const or: Prisma.JobWhereInput[] = [];
+  if (facts.skills.length) or.push({ skills: { some: { skillId: { in: facts.skills.map((s) => s.skillId) } } } });
+  if (facts.preferredWorkModes.includes("REMOTE")) or.push({ workMode: "REMOTE" });
+  if (facts.countryCode) or.push({ countryCode: facts.countryCode });
+  if (facts.preferredIndustryIds.length) or.push({ industryId: { in: facts.preferredIndustryIds } });
+
+  const pool = await db.job.findMany({
+    where: { status: "OPEN", ...(or.length ? { OR: or } : {}), applications: { none: { applicantId: userId } } },
+    select: jobCardSelect,
+    orderBy: { publishedAt: "desc" },
+    take: 400,
+  });
+  const matches = scoreJobs(facts, pool);
+  const ranked = pool
+    .map((j) => ({ job: j, score: matches.get(j.id)?.score ?? 0 }))
+    .filter((r) => r.score >= (opts.minScore ?? 40))
+    .sort((a, b) => b.score - a.score || (b.job.publishedAt?.getTime() ?? 0) - (a.job.publishedAt?.getTime() ?? 0))
+    .slice(0, opts.limit ?? 50)
+    .map((r) => r.job);
+  return annotateForViewer(ranked, userId, matches);
+}
+
+export const jobDetailSelect = {
+  ...jobCardSelect,
+  description: true,
+  responsibilities: true,
+  requirements: true,
+  benefits: true,
+  salaryPeriod: true,
+  closesAt: true,
+  createdAt: true,
+  viewCount: true,
+  postedById: true,
+  postedBy: { select: { id: true, name: true, image: true, username: true, profile: { select: { headline: true } } } },
+  company: {
+    select: {
+      id: true,
+      slug: true,
+      name: true,
+      logoUrl: true,
+      verified: true,
+      brandColor: true,
+      tagline: true,
+      about: true,
+      size: true,
+      city: true,
+      countryCode: true,
+      website: true,
+      followerCount: true,
+      industry: { select: { name: true } },
+      _count: { select: { jobs: { where: { status: "OPEN" } } } },
+    },
+  },
+} satisfies Prisma.JobSelect;
+
+export type JobDetail = Prisma.JobGetPayload<{ select: typeof jobDetailSelect }>;
+
+export async function getJob(id: string) {
+  return db.job.findUnique({ where: { id }, select: jobDetailSelect });
+}
+
+export async function recordJobView(jobId: string) {
+  const today = new Date();
+  today.setUTCHours(0, 0, 0, 0);
+  await db.$transaction([
+    db.job.update({ where: { id: jobId }, data: { viewCount: { increment: 1 } } }),
+    db.jobDailyStat.upsert({
+      where: { jobId_date: { jobId, date: today } },
+      create: { jobId, date: today, views: 1 },
+      update: { views: { increment: 1 } },
+    }),
+  ]);
+}
+
+export async function similarJobs(job: { id: string; skills: { skillId: string }[]; companyId?: string }, viewerId: string | null) {
+  const jobs = await db.job.findMany({
+    where: { status: "OPEN", id: { not: job.id }, skills: { some: { skillId: { in: job.skills.map((s) => s.skillId) } } } },
+    select: jobCardSelect,
+    orderBy: { publishedAt: "desc" },
+    take: 4,
+  });
+  return annotateForViewer(jobs, viewerId);
+}
+
+export async function featuredJobs(viewerId: string | null, take = 24) {
+  await expirePromotions();
+  const now = new Date();
+  const jobs = await db.job.findMany({
+    where: { status: "OPEN", OR: [{ featuredUntil: { gt: now } }, { sponsoredUntil: { gt: now } }] },
+    select: jobCardSelect,
+    orderBy: [{ featuredUntil: { sort: "desc", nulls: "last" } }, { publishedAt: "desc" }],
+    take,
+  });
+  return annotateForViewer(jobs, viewerId);
+}
