@@ -7,7 +7,7 @@ import { fail, parse, withViewer, type ActionState } from "@/server/action";
 import { LIMITS } from "@/server/rate-limit";
 import type { Viewer } from "@/server/session";
 import { refreshProfileDerived } from "@/server/services/profile";
-import { storeUpload, UploadError } from "@/server/storage";
+import { deleteStored, storeUpload, UploadError } from "@/server/storage";
 import {
   basicsSchema,
   certificateSchema,
@@ -50,9 +50,11 @@ export async function uploadProfileImageAction(form: FormData): Promise<ActionSt
     const file = form.get("file");
     if (!(file instanceof File)) return fail("@msg.chooseImage");
     try {
+      const old = await currentProfileImage(viewer, kind);
       const stored = await storeUpload(file, kind, viewer.id);
       if (kind === "avatar") await db.user.update({ where: { id: viewer.id }, data: { image: stored.url } });
       else await db.profile.update({ where: { id: viewer.profileId }, data: { coverUrl: stored.url } });
+      await deleteStored([old]);
       const res = await done(viewer, kind === "avatar" ? "@msg.photoUpdated" : "@msg.coverUpdated");
       return { ...res, data: { url: stored.url } };
     } catch (e) {
@@ -62,10 +64,17 @@ export async function uploadProfileImageAction(form: FormData): Promise<ActionSt
   });
 }
 
+async function currentProfileImage(viewer: Viewer, kind: "avatar" | "cover") {
+  if (kind === "avatar") return (await db.user.findUnique({ where: { id: viewer.id }, select: { image: true } }))?.image;
+  return (await db.profile.findUnique({ where: { id: viewer.profileId }, select: { coverUrl: true } }))?.coverUrl;
+}
+
 export async function removeProfileImageAction(kind: "avatar" | "cover"): Promise<ActionState> {
   return withViewer({ limit: LIMITS.write }, async (viewer) => {
+    const old = await currentProfileImage(viewer, kind);
     if (kind === "avatar") await db.user.update({ where: { id: viewer.id }, data: { image: null } });
     else await db.profile.update({ where: { id: viewer.profileId }, data: { coverUrl: null } });
+    await deleteStored([old]);
     return done(viewer, "@msg.removed");
   });
 }
@@ -263,9 +272,10 @@ export async function upsertProjectAction(input: z.input<typeof projectSchema>):
     const image = imageUrl && (imageUrl.startsWith("/api/v1/files/public/project/") || imageUrl.startsWith("/media/")) ? imageUrl : null;
     const skills = (await db.skill.findMany({ where: { id: { in: skillIds } }, select: { id: true } })).map((s) => ({ id: s.id }));
     if (projectId) {
-      const existing = await db.project.findFirst({ where: { id: projectId, profileId: viewer.profileId }, select: { id: true } });
+      const existing = await db.project.findFirst({ where: { id: projectId, profileId: viewer.profileId }, select: { id: true, imageUrl: true } });
       if (!existing) return fail("@msg.projectNotFound");
       await db.project.update({ where: { id: projectId }, data: { ...data, featured: !!data.featured, imageUrl: image, skills: { set: skills } } });
+      if (existing.imageUrl !== image) await deleteStored([existing.imageUrl]);
     } else {
       const count = await db.project.count({ where: { profileId: viewer.profileId } });
       if (count >= 30) return fail("@msg.maxProjects");
@@ -277,7 +287,11 @@ export async function upsertProjectAction(input: z.input<typeof projectSchema>):
 
 export async function deleteProjectAction(projectId: string): Promise<ActionState> {
   return withViewer({ limit: LIMITS.write }, async (viewer) => {
-    await db.project.deleteMany({ where: { id: id.parse(projectId), profileId: viewer.profileId } });
+    const project = await db.project.findFirst({ where: { id: id.parse(projectId), profileId: viewer.profileId }, select: { id: true, imageUrl: true } });
+    if (project) {
+      await db.project.delete({ where: { id: project.id } });
+      await deleteStored([project.imageUrl]);
+    }
     return done(viewer, "@msg.projectRemoved");
   });
 }

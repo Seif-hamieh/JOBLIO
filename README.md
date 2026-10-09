@@ -41,6 +41,10 @@ Payments use Stripe Checkout. Card details are entered on Stripe's page and neve
 - Set `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET`, and point a webhook at `/api/webhooks/stripe` (events: `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`, `checkout.session.expired`, `invoice.paid`, `customer.subscription.updated`, `customer.subscription.deleted`).
 - In development, `PAYMENTS_DEV_SIMULATE=true` fulfils purchases instantly without Stripe so every premium flow can be tried.
 
+## File uploads
+
+Locally, uploads are saved in `./storage` (`STORAGE_DRIVER=local`). On Vercel, use Supabase Storage: set `STORAGE_DRIVER=supabase`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_BUCKET=uploads` and `UPLOAD_MAX_BYTES=4194304`. Images go to the public bucket; CVs and message attachments go to a private bucket and are opened through links that expire after 5 minutes. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#file-storage).
+
 ## Email
 
 Without `SMTP_HOST`, emails (verification, password reset, important updates) are printed to the server console so you can click the links locally.

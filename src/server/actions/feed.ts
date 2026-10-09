@@ -8,7 +8,7 @@ import { LIMITS } from "@/server/rate-limit";
 import { notify } from "@/server/services/notifications";
 import { k } from "@/i18n/message";
 import { getComments, getFeed, type FeedComment, type FeedPost } from "@/server/services/feed";
-import { storeUpload, UploadError } from "@/server/storage";
+import { deleteStored, storeUpload, UploadError } from "@/server/storage";
 import { isBlockedEitherWay, isConnected } from "@/server/services/profile";
 
 const id = z.string().min(1).max(40);
@@ -155,8 +155,10 @@ export async function sharePostAction(postId: string, content: string): Promise<
 
 export async function deletePostAction(postId: string): Promise<ActionState> {
   return withViewer({ limit: LIMITS.write }, async (viewer) => {
-    const deleted = await db.post.deleteMany({ where: { id: id.parse(postId), authorId: viewer.id } });
-    if (!deleted.count) return fail("@msg.postNotFound");
+    const post = await db.post.findFirst({ where: { id: id.parse(postId), authorId: viewer.id }, select: { id: true, mediaUrls: true } });
+    if (!post) return fail("@msg.postNotFound");
+    await db.post.delete({ where: { id: post.id } });
+    await deleteStored(post.mediaUrls);
     revalidatePath("/feed");
     return { ok: true, message: "@msg.postDeleted" };
   });

@@ -8,7 +8,7 @@ import { LIMITS } from "@/server/rate-limit";
 import { canManageCompany } from "@/server/session";
 import { checkAchievements } from "@/server/services/achievements";
 import { createCompanyForUser } from "@/server/services/companies";
-import { storeUpload, UploadError } from "@/server/storage";
+import { deleteStored, storeUpload, UploadError } from "@/server/storage";
 import { companyCreateSchema, companyProfileSchema } from "@/lib/validation/profile";
 
 const id = z.string().min(1).max(40);
@@ -74,12 +74,17 @@ export async function uploadCompanyImageAction(form: FormData): Promise<ActionSt
     try {
       const stored = await storeUpload(file, "company", viewer.company.id);
       const companyId = viewer.company.id;
-      if (kind === "logo") await db.company.update({ where: { id: companyId }, data: { logoUrl: stored.url } });
-      else if (kind === "cover") await db.company.update({ where: { id: companyId }, data: { coverUrl: stored.url } });
-      else {
+      if (kind === "logo" || kind === "cover") {
+        const old = await db.company.findUniqueOrThrow({ where: { id: companyId }, select: { logoUrl: true, coverUrl: true } });
+        await db.company.update({ where: { id: companyId }, data: kind === "logo" ? { logoUrl: stored.url } : { coverUrl: stored.url } });
+        await deleteStored([kind === "logo" ? old.logoUrl : old.coverUrl]);
+      } else {
         const company = await db.company.findUniqueOrThrow({ where: { id: companyId }, select: { premiumUntil: true, _count: { select: { media: true } } } });
         const limit = company.premiumUntil && company.premiumUntil > new Date() ? 30 : 6;
-        if (company._count.media >= limit) return fail(`@msg.photoLimit?{"n":${limit}}`);
+        if (company._count.media >= limit) {
+          await deleteStored([stored.url]);
+          return fail(`@msg.photoLimit?{"n":${limit}}`);
+        }
         await db.companyMedia.create({ data: { companyId, type: "PHOTO", url: stored.url, caption: String(form.get("caption") ?? "").slice(0, 120) || null, position: company._count.media } });
       }
       revalidatePath("/company/dashboard");
@@ -95,7 +100,11 @@ export async function uploadCompanyImageAction(form: FormData): Promise<ActionSt
 export async function deleteCompanyMediaAction(mediaId: string): Promise<ActionState> {
   return withRecruiter({ limit: LIMITS.write }, async (viewer) => {
     if (!canManageCompany(viewer, viewer.company.id)) return fail("@msg.adminsOnlyImages");
-    await db.companyMedia.deleteMany({ where: { id: id.parse(mediaId), companyId: viewer.company.id } });
+    const media = await db.companyMedia.findFirst({ where: { id: id.parse(mediaId), companyId: viewer.company.id }, select: { id: true, url: true } });
+    if (media) {
+      await db.companyMedia.delete({ where: { id: media.id } });
+      await deleteStored([media.url]);
+    }
     revalidatePath("/company/dashboard");
     revalidatePath(`/companies/${viewer.company.slug}`);
     return { ok: true };

@@ -52,6 +52,28 @@ prisma/             schema, migrations, deterministic seed
 
 - **Realtime**: the SSE hub is in-process. With more than one server instance, replace `publish`/`subscribe` in `src/server/realtime.ts` with Redis pub/sub or a managed service; the event shapes stay the same.
 - **Rate limiting** is in memory; move it to Redis behind the same `rateLimit()` function for multi-instance deployments.
-- **Storage** writes to `./storage` locally. Implement the three functions in `src/server/storage.ts` against S3, R2 or GCS for production.
+- **Storage**: see "File storage" below.
 - **Search** uses indexed Postgres queries. Postgres full-text search or a dedicated engine can sit behind `searchJobs()` / `searchCandidates()` without changing callers.
-- **Adding a language**: add it to `LOCALES` in `src/i18n/config.ts`, create a dictionary typed as `Dictionary`, and run the i18n tests.
+- **Adding a language**: see below.
+
+## File storage
+
+`src/server/storage.ts` has two drivers, chosen with `STORAGE_DRIVER`:
+
+| Driver | Where files live | Use for |
+| --- | --- | --- |
+| `local` | `./storage` on disk | Development. Refuses uploads on Vercel, whose filesystem is read-only and short-lived. |
+| `supabase` | Supabase Storage | Production (Vercel serverless). Needs `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_BUCKET`. |
+
+- **Names**: every file is stored under a random UUID (`public/<scope>/<uuid>.<ext>` or `private/<scope>/<owner>/<uuid>.<ext>`), so names never collide or reveal the original filename. The type is checked from the file's bytes, not the browser's claim.
+- **Two buckets**: images go to the public bucket (`SUPABASE_BUCKET`). CVs and message attachments go to a private bucket (`SUPABASE_PRIVATE_BUCKET`, default `<bucket>-private`). Both are created on the first upload if missing.
+- **URLs**: the database always stores `/api/v1/files/<key>`, whichever driver is used. That route checks access for private files (the candidate, or recruiters at a company they applied to; conversation members for attachments). Then:
+  - `local` streams the file;
+  - `supabase` redirects to the bucket's public URL (public files) or to a signed URL that expires after 5 minutes (private files). File bytes never pass through the serverless function.
+- **Deleting**: replacing or removing an avatar, cover, company logo/cover/photo or project image, and deleting a post or project, also deletes the old file (`deleteStored`). Deletion is best effort: a storage error is logged and never fails the user's action.
+- **Upload size**: Vercel caps request bodies at 4.5 MB, so set `UPLOAD_MAX_BYTES=4194304` there.
+- The service role key is used only on the server; browsers never receive it.
+
+## Adding a language
+
+Add it to `LOCALES` in `src/i18n/config.ts`, create a dictionary typed as `Dictionary`, and run the i18n tests.

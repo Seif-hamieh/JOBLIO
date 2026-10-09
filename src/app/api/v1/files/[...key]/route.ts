@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/server/auth";
 import { db } from "@/server/db";
-import { readStored } from "@/server/storage";
+import { publicFileUrl, readStored, signedFileUrl, storageDriver } from "@/server/storage";
 
 // GET /api/v1/files/<key> — serves uploads. Public files are cacheable;
 // private files (CVs, message attachments) are checked against the viewer.
@@ -34,6 +34,17 @@ export async function GET(req: Request, ctx: RouteContext<"/api/v1/files/[...key
       }));
     }
     if (!allowed) return new NextResponse("Not found", { status: 404 });
+  }
+
+  // Supabase: hand the browser straight to storage — no file bytes pass through
+  // the serverless function. Private files get a signed URL valid for 5 minutes.
+  if (storageDriver() === "supabase") {
+    if (key.startsWith("public/")) {
+      return NextResponse.redirect(publicFileUrl(key), { status: 308, headers: { "Cache-Control": "public, max-age=31536000, immutable" } });
+    }
+    const signed = await signedFileUrl(key);
+    if (!signed) return new NextResponse("Not found", { status: 404 });
+    return NextResponse.redirect(signed, { status: 302, headers: { "Cache-Control": "private, no-store" } });
   }
 
   const file = await readStored(key);

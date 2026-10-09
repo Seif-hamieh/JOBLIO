@@ -1,14 +1,19 @@
 import "server-only";
-import { randomBytes } from "node:crypto";
-import { mkdir, readFile, stat, writeFile } from "node:fs/promises";
+import { randomUUID } from "node:crypto";
+import { mkdir, readFile, stat, unlink, writeFile } from "node:fs/promises";
 import { dirname, join, normalize, sep } from "node:path";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { k } from "@/i18n/message";
 
-// Storage abstraction. The local driver writes under ./storage and is meant
-// for development; implement the same three functions against S3 / R2 /
-// GCS for production (see docs/ARCHITECTURE.md).
+// Storage abstraction with two drivers, chosen by STORAGE_DRIVER:
+//   local    — files under ./storage (development; not for serverless hosts)
+//   supabase — Supabase Storage: a public bucket for images and a private
+//              bucket for CVs and message attachments (short-lived signed URLs)
+// Either way the app stores `/api/v1/files/<key>` URLs, so the access checks
+// in that route keep working and existing data never needs rewriting.
 
 const ROOT = join(process.cwd(), "storage");
+const FILES_PREFIX = "/api/v1/files/";
 const MAX_BYTES = Number(process.env.UPLOAD_MAX_BYTES ?? 10 * 1024 * 1024);
 
 export type UploadScope = "avatar" | "cover" | "company" | "post" | "project" | "resume" | "message";
@@ -60,6 +65,80 @@ export class UploadError extends Error {}
 
 export type StoredFile = { key: string; url: string; name: string; size: number; mime: string };
 
+export type StorageDriver = "local" | "supabase";
+
+export function storageDriver(): StorageDriver {
+  const d = process.env.STORAGE_DRIVER?.trim().toLowerCase();
+  if (d === "supabase" || d === "local") return d;
+  return process.env.SUPABASE_URL ? "supabase" : "local";
+}
+
+const MIME_BY_EXT: Record<string, string> = Object.fromEntries(Object.entries(EXT).map(([mime, ext]) => [ext, mime]));
+export const mimeFromKey = (key: string) => MIME_BY_EXT[key.split(".").pop()?.toLowerCase() ?? ""] ?? "application/octet-stream";
+
+// ── Supabase ────────────────────────────────────────────────────────────────
+
+let supabase: SupabaseClient | null = null;
+let bucketsReady: Promise<void> | null = null;
+
+function supabaseConfig() {
+  const url = process.env.SUPABASE_URL;
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !serviceKey) throw new Error("STORAGE_DRIVER=supabase needs SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.");
+  const publicBucket = process.env.SUPABASE_BUCKET || "uploads";
+  const privateBucket = process.env.SUPABASE_PRIVATE_BUCKET || `${publicBucket}-private`;
+  return { url, serviceKey, publicBucket, privateBucket };
+}
+
+/** Server-only client using the service role key (bypasses RLS; never sent to browsers). */
+function client() {
+  const { url, serviceKey } = supabaseConfig();
+  supabase ??= createClient(url, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } });
+  return supabase;
+}
+
+const bucketFor = (key: string) => (key.startsWith("private/") ? supabaseConfig().privateBucket : supabaseConfig().publicBucket);
+
+/** Creates the two buckets on first use if they don't exist yet (once per server instance). */
+function ensureBuckets() {
+  bucketsReady ??= (async () => {
+    const { publicBucket, privateBucket } = supabaseConfig();
+    for (const [name, isPublic] of [
+      [publicBucket, true],
+      [privateBucket, false],
+    ] as const) {
+      const { data } = await client().storage.getBucket(name);
+      if (data) {
+        if (data.public !== isPublic) console.warn(`[storage] Supabase bucket "${name}" should be ${isPublic ? "public" : "private"}.`);
+        continue;
+      }
+      const { error } = await client().storage.createBucket(name, { public: isPublic, fileSizeLimit: MAX_BYTES });
+      if (error && !/already exists/i.test(error.message)) throw new Error(`Could not create Supabase bucket "${name}": ${error.message}`);
+    }
+  })().catch((e) => {
+    bucketsReady = null;
+    throw e;
+  });
+  return bucketsReady;
+}
+
+/** Supabase: the permanent public URL of a public file. */
+export function publicFileUrl(key: string) {
+  return client().storage.from(supabaseConfig().publicBucket).getPublicUrl(key).data.publicUrl;
+}
+
+/** Supabase: a short-lived signed URL for a private file (null if it doesn't exist). */
+export async function signedFileUrl(key: string, expiresIn = 300) {
+  const mime = mimeFromKey(key);
+  const inline = mime.startsWith("image/") || mime === "application/pdf";
+  const { data, error } = await client()
+    .storage.from(supabaseConfig().privateBucket)
+    .createSignedUrl(key, expiresIn, inline ? undefined : { download: true });
+  return error || !data ? null : data.signedUrl;
+}
+
+// ── Public API ──────────────────────────────────────────────────────────────
+
 /**
  * Validates and stores an uploaded file. `owner` namespaces private files
  * (user id for resumes, conversation id for message attachments).
@@ -73,16 +152,28 @@ export async function storeUpload(file: File, scope: UploadScope, owner: string)
 
   const isPrivate = scope === "resume" || scope === "message";
   const safeOwner = owner.replace(/[^a-zA-Z0-9_-]/g, "");
-  const name = `${randomBytes(12).toString("hex")}.${EXT[mime]}`;
+  const name = `${randomUUID()}.${EXT[mime]}`;
   const key = isPrivate ? `private/${scope}/${safeOwner}/${name}` : `public/${scope}/${name}`;
-  const path = join(ROOT, key);
-  await mkdir(dirname(path), { recursive: true });
-  await writeFile(path, buf);
+
+  if (storageDriver() === "supabase") {
+    await ensureBuckets();
+    const { error } = await client()
+      .storage.from(bucketFor(key))
+      .upload(key, buf, { contentType: mime, cacheControl: isPrivate ? "300" : "31536000", upsert: false });
+    if (error) throw new Error(`Supabase upload failed: ${error.message}`);
+  } else {
+    // Serverless hosts have a read-only, short-lived filesystem: fail loudly instead of losing files.
+    if (process.env.VERCEL) throw new Error("STORAGE_DRIVER=local does not work on Vercel. Set STORAGE_DRIVER=supabase.");
+    const path = join(ROOT, key);
+    await mkdir(dirname(path), { recursive: true });
+    await writeFile(path, buf);
+  }
+
   const displayName = file.name.replace(/[^\w.\- ()]/g, "_").slice(0, 120) || name;
-  return { key, url: `/api/v1/files/${key}`, name: displayName, size: file.size, mime };
+  return { key, url: `${FILES_PREFIX}${key}`, name: displayName, size: file.size, mime };
 }
 
-/** Reads a stored file; returns null for anything outside the storage root. */
+/** Local driver: reads a stored file; returns null for anything outside the storage root. */
 export async function readStored(key: string) {
   const path = normalize(join(ROOT, key));
   if (!path.startsWith(ROOT + sep)) return null;
@@ -93,5 +184,40 @@ export async function readStored(key: string) {
     return { data, mime: sniffMime(data) ?? "application/octet-stream", size: s.size };
   } catch {
     return null;
+  }
+}
+
+/** Turns a stored `/api/v1/files/<key>` URL back into its key (null for seed media and external URLs). */
+export function keyFromUrl(url: string | null | undefined) {
+  if (!url?.startsWith(FILES_PREFIX)) return null;
+  const key = url.slice(FILES_PREFIX.length);
+  return /^(public|private)\/[a-z]+\/[\w./-]+$/.test(key) && !key.includes("..") ? key : null;
+}
+
+/**
+ * Deletes stored files by their URLs. Best effort: a storage hiccup is logged
+ * and never fails the user's action (the database change already happened).
+ */
+export async function deleteStored(urls: (string | null | undefined)[]) {
+  const keys = [...new Set(urls.map(keyFromUrl).filter((x): x is string => !!x))];
+  if (!keys.length) return;
+  try {
+    if (storageDriver() === "supabase") {
+      const groups = new Map<string, string[]>();
+      for (const key of keys) groups.set(bucketFor(key), [...(groups.get(bucketFor(key)) ?? []), key]);
+      for (const [bucket, list] of groups) {
+        const { error } = await client().storage.from(bucket).remove(list);
+        if (error) console.error(`[storage] delete failed in "${bucket}":`, error.message);
+      }
+    } else {
+      await Promise.all(
+        keys.map((key) => {
+          const path = normalize(join(ROOT, key));
+          return path.startsWith(ROOT + sep) ? unlink(path).catch(() => {}) : undefined;
+        }),
+      );
+    }
+  } catch (e) {
+    console.error("[storage] delete failed:", e);
   }
 }
