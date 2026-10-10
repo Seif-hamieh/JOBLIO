@@ -50,6 +50,9 @@ export type ProfileMinAggregateOutputType = {
   countryCode: string | null
   website: string | null
   pronouns: string | null
+  resumeUrl: string | null
+  resumeName: string | null
+  resumeUpdatedAt: Date | null
   openToWork: boolean | null
   availability: $Enums.Availability | null
   yearsExperience: number | null
@@ -82,6 +85,9 @@ export type ProfileMaxAggregateOutputType = {
   countryCode: string | null
   website: string | null
   pronouns: string | null
+  resumeUrl: string | null
+  resumeName: string | null
+  resumeUpdatedAt: Date | null
   openToWork: boolean | null
   availability: $Enums.Availability | null
   yearsExperience: number | null
@@ -114,6 +120,9 @@ export type ProfileCountAggregateOutputType = {
   countryCode: number
   website: number
   pronouns: number
+  resumeUrl: number
+  resumeName: number
+  resumeUpdatedAt: number
   openToWork: number
   availability: number
   yearsExperience: number
@@ -166,6 +175,9 @@ export type ProfileMinAggregateInputType = {
   countryCode?: true
   website?: true
   pronouns?: true
+  resumeUrl?: true
+  resumeName?: true
+  resumeUpdatedAt?: true
   openToWork?: true
   availability?: true
   yearsExperience?: true
@@ -198,6 +210,9 @@ export type ProfileMaxAggregateInputType = {
   countryCode?: true
   website?: true
   pronouns?: true
+  resumeUrl?: true
+  resumeName?: true
+  resumeUpdatedAt?: true
   openToWork?: true
   availability?: true
   yearsExperience?: true
@@ -230,6 +245,9 @@ export type ProfileCountAggregateInputType = {
   countryCode?: true
   website?: true
   pronouns?: true
+  resumeUrl?: true
+  resumeName?: true
+  resumeUpdatedAt?: true
   openToWork?: true
   availability?: true
   yearsExperience?: true
@@ -353,6 +371,9 @@ export type ProfileGroupByOutputType = {
   countryCode: string | null
   website: string | null
   pronouns: string | null
+  resumeUrl: string | null
+  resumeName: string | null
+  resumeUpdatedAt: Date | null
   openToWork: boolean
   availability: $Enums.Availability
   yearsExperience: number
@@ -412,6 +433,9 @@ export type ProfileWhereInput = {
   countryCode?: Prisma.StringNullableFilter<"Profile"> | string | null
   website?: Prisma.StringNullableFilter<"Profile"> | string | null
   pronouns?: Prisma.StringNullableFilter<"Profile"> | string | null
+  resumeUrl?: Prisma.StringNullableFilter<"Profile"> | string | null
+  resumeName?: Prisma.StringNullableFilter<"Profile"> | string | null
+  resumeUpdatedAt?: Prisma.DateTimeNullableFilter<"Profile"> | Date | string | null
   openToWork?: Prisma.BoolFilter<"Profile"> | boolean
   availability?: Prisma.EnumAvailabilityFilter<"Profile"> | $Enums.Availability
   yearsExperience?: Prisma.FloatFilter<"Profile"> | number
@@ -458,6 +482,9 @@ export type ProfileOrderByWithRelationInput = {
   countryCode?: Prisma.SortOrderInput | Prisma.SortOrder
   website?: Prisma.SortOrderInput | Prisma.SortOrder
   pronouns?: Prisma.SortOrderInput | Prisma.SortOrder
+  resumeUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  resumeName?: Prisma.SortOrderInput | Prisma.SortOrder
+  resumeUpdatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   openToWork?: Prisma.SortOrder
   availability?: Prisma.SortOrder
   yearsExperience?: Prisma.SortOrder
@@ -507,6 +534,9 @@ export type ProfileWhereUniqueInput = Prisma.AtLeast<{
   countryCode?: Prisma.StringNullableFilter<"Profile"> | string | null
   website?: Prisma.StringNullableFilter<"Profile"> | string | null
   pronouns?: Prisma.StringNullableFilter<"Profile"> | string | null
+  resumeUrl?: Prisma.StringNullableFilter<"Profile"> | string | null
+  resumeName?: Prisma.StringNullableFilter<"Profile"> | string | null
+  resumeUpdatedAt?: Prisma.DateTimeNullableFilter<"Profile"> | Date | string | null
   openToWork?: Prisma.BoolFilter<"Profile"> | boolean
   availability?: Prisma.EnumAvailabilityFilter<"Profile"> | $Enums.Availability
   yearsExperience?: Prisma.FloatFilter<"Profile"> | number
@@ -553,6 +583,9 @@ export type ProfileOrderByWithAggregationInput = {
   countryCode?: Prisma.SortOrderInput | Prisma.SortOrder
   website?: Prisma.SortOrderInput | Prisma.SortOrder
   pronouns?: Prisma.SortOrderInput | Prisma.SortOrder
+  resumeUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  resumeName?: Prisma.SortOrderInput | Prisma.SortOrder
+  resumeUpdatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   openToWork?: Prisma.SortOrder
   availability?: Prisma.SortOrder
   yearsExperience?: Prisma.SortOrder
@@ -597,6 +630,9 @@ export type ProfileScalarWhereWithAggregatesInput = {
   countryCode?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
   website?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
   pronouns?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
+  resumeUrl?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
+  resumeName?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
+  resumeUpdatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Profile"> | Date | string | null
   openToWork?: Prisma.BoolWithAggregatesFilter<"Profile"> | boolean
   availability?: Prisma.EnumAvailabilityWithAggregatesFilter<"Profile"> | $Enums.Availability
   yearsExperience?: Prisma.FloatWithAggregatesFilter<"Profile"> | number
@@ -632,6 +668,9 @@ export type ProfileCreateInput = {
   countryCode?: string | null
   website?: string | null
   pronouns?: string | null
+  resumeUrl?: string | null
+  resumeName?: string | null
+  resumeUpdatedAt?: Date | string | null
   openToWork?: boolean
   availability?: $Enums.Availability
   yearsExperience?: number
@@ -678,6 +717,9 @@ export type ProfileUncheckedCreateInput = {
   countryCode?: string | null
   website?: string | null
   pronouns?: string | null
+  resumeUrl?: string | null
+  resumeName?: string | null
+  resumeUpdatedAt?: Date | string | null
   openToWork?: boolean
   availability?: $Enums.Availability
   yearsExperience?: number
@@ -722,6 +764,9 @@ export type ProfileUpdateInput = {
   countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pronouns?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   openToWork?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.EnumAvailabilityFieldUpdateOperationsInput | $Enums.Availability
   yearsExperience?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -768,6 +813,9 @@ export type ProfileUncheckedUpdateInput = {
   countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pronouns?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   openToWork?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.EnumAvailabilityFieldUpdateOperationsInput | $Enums.Availability
   yearsExperience?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -813,6 +861,9 @@ export type ProfileCreateManyInput = {
   countryCode?: string | null
   website?: string | null
   pronouns?: string | null
+  resumeUrl?: string | null
+  resumeName?: string | null
+  resumeUpdatedAt?: Date | string | null
   openToWork?: boolean
   availability?: $Enums.Availability
   yearsExperience?: number
@@ -848,6 +899,9 @@ export type ProfileUpdateManyMutationInput = {
   countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pronouns?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   openToWork?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.EnumAvailabilityFieldUpdateOperationsInput | $Enums.Availability
   yearsExperience?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -884,6 +938,9 @@ export type ProfileUncheckedUpdateManyInput = {
   countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pronouns?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   openToWork?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.EnumAvailabilityFieldUpdateOperationsInput | $Enums.Availability
   yearsExperience?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -949,6 +1006,9 @@ export type ProfileCountOrderByAggregateInput = {
   countryCode?: Prisma.SortOrder
   website?: Prisma.SortOrder
   pronouns?: Prisma.SortOrder
+  resumeUrl?: Prisma.SortOrder
+  resumeName?: Prisma.SortOrder
+  resumeUpdatedAt?: Prisma.SortOrder
   openToWork?: Prisma.SortOrder
   availability?: Prisma.SortOrder
   yearsExperience?: Prisma.SortOrder
@@ -992,6 +1052,9 @@ export type ProfileMaxOrderByAggregateInput = {
   countryCode?: Prisma.SortOrder
   website?: Prisma.SortOrder
   pronouns?: Prisma.SortOrder
+  resumeUrl?: Prisma.SortOrder
+  resumeName?: Prisma.SortOrder
+  resumeUpdatedAt?: Prisma.SortOrder
   openToWork?: Prisma.SortOrder
   availability?: Prisma.SortOrder
   yearsExperience?: Prisma.SortOrder
@@ -1024,6 +1087,9 @@ export type ProfileMinOrderByAggregateInput = {
   countryCode?: Prisma.SortOrder
   website?: Prisma.SortOrder
   pronouns?: Prisma.SortOrder
+  resumeUrl?: Prisma.SortOrder
+  resumeName?: Prisma.SortOrder
+  resumeUpdatedAt?: Prisma.SortOrder
   openToWork?: Prisma.SortOrder
   availability?: Prisma.SortOrder
   yearsExperience?: Prisma.SortOrder
@@ -1331,6 +1397,9 @@ export type ProfileCreateWithoutUserInput = {
   countryCode?: string | null
   website?: string | null
   pronouns?: string | null
+  resumeUrl?: string | null
+  resumeName?: string | null
+  resumeUpdatedAt?: Date | string | null
   openToWork?: boolean
   availability?: $Enums.Availability
   yearsExperience?: number
@@ -1375,6 +1444,9 @@ export type ProfileUncheckedCreateWithoutUserInput = {
   countryCode?: string | null
   website?: string | null
   pronouns?: string | null
+  resumeUrl?: string | null
+  resumeName?: string | null
+  resumeUpdatedAt?: Date | string | null
   openToWork?: boolean
   availability?: $Enums.Availability
   yearsExperience?: number
@@ -1435,6 +1507,9 @@ export type ProfileUpdateWithoutUserInput = {
   countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pronouns?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   openToWork?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.EnumAvailabilityFieldUpdateOperationsInput | $Enums.Availability
   yearsExperience?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -1479,6 +1554,9 @@ export type ProfileUncheckedUpdateWithoutUserInput = {
   countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pronouns?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   openToWork?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.EnumAvailabilityFieldUpdateOperationsInput | $Enums.Availability
   yearsExperience?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -1523,6 +1601,9 @@ export type ProfileCreateWithoutSkillsInput = {
   countryCode?: string | null
   website?: string | null
   pronouns?: string | null
+  resumeUrl?: string | null
+  resumeName?: string | null
+  resumeUpdatedAt?: Date | string | null
   openToWork?: boolean
   availability?: $Enums.Availability
   yearsExperience?: number
@@ -1568,6 +1649,9 @@ export type ProfileUncheckedCreateWithoutSkillsInput = {
   countryCode?: string | null
   website?: string | null
   pronouns?: string | null
+  resumeUrl?: string | null
+  resumeName?: string | null
+  resumeUpdatedAt?: Date | string | null
   openToWork?: boolean
   availability?: $Enums.Availability
   yearsExperience?: number
@@ -1627,6 +1711,9 @@ export type ProfileUpdateWithoutSkillsInput = {
   countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pronouns?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   openToWork?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.EnumAvailabilityFieldUpdateOperationsInput | $Enums.Availability
   yearsExperience?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -1672,6 +1759,9 @@ export type ProfileUncheckedUpdateWithoutSkillsInput = {
   countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pronouns?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   openToWork?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.EnumAvailabilityFieldUpdateOperationsInput | $Enums.Availability
   yearsExperience?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -1715,6 +1805,9 @@ export type ProfileCreateWithoutExperiencesInput = {
   countryCode?: string | null
   website?: string | null
   pronouns?: string | null
+  resumeUrl?: string | null
+  resumeName?: string | null
+  resumeUpdatedAt?: Date | string | null
   openToWork?: boolean
   availability?: $Enums.Availability
   yearsExperience?: number
@@ -1760,6 +1853,9 @@ export type ProfileUncheckedCreateWithoutExperiencesInput = {
   countryCode?: string | null
   website?: string | null
   pronouns?: string | null
+  resumeUrl?: string | null
+  resumeName?: string | null
+  resumeUpdatedAt?: Date | string | null
   openToWork?: boolean
   availability?: $Enums.Availability
   yearsExperience?: number
@@ -1819,6 +1915,9 @@ export type ProfileUpdateWithoutExperiencesInput = {
   countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pronouns?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   openToWork?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.EnumAvailabilityFieldUpdateOperationsInput | $Enums.Availability
   yearsExperience?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -1864,6 +1963,9 @@ export type ProfileUncheckedUpdateWithoutExperiencesInput = {
   countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pronouns?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   openToWork?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.EnumAvailabilityFieldUpdateOperationsInput | $Enums.Availability
   yearsExperience?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -1907,6 +2009,9 @@ export type ProfileCreateWithoutEducationsInput = {
   countryCode?: string | null
   website?: string | null
   pronouns?: string | null
+  resumeUrl?: string | null
+  resumeName?: string | null
+  resumeUpdatedAt?: Date | string | null
   openToWork?: boolean
   availability?: $Enums.Availability
   yearsExperience?: number
@@ -1952,6 +2057,9 @@ export type ProfileUncheckedCreateWithoutEducationsInput = {
   countryCode?: string | null
   website?: string | null
   pronouns?: string | null
+  resumeUrl?: string | null
+  resumeName?: string | null
+  resumeUpdatedAt?: Date | string | null
   openToWork?: boolean
   availability?: $Enums.Availability
   yearsExperience?: number
@@ -2011,6 +2119,9 @@ export type ProfileUpdateWithoutEducationsInput = {
   countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pronouns?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   openToWork?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.EnumAvailabilityFieldUpdateOperationsInput | $Enums.Availability
   yearsExperience?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -2056,6 +2167,9 @@ export type ProfileUncheckedUpdateWithoutEducationsInput = {
   countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pronouns?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   openToWork?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.EnumAvailabilityFieldUpdateOperationsInput | $Enums.Availability
   yearsExperience?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -2099,6 +2213,9 @@ export type ProfileCreateWithoutProjectsInput = {
   countryCode?: string | null
   website?: string | null
   pronouns?: string | null
+  resumeUrl?: string | null
+  resumeName?: string | null
+  resumeUpdatedAt?: Date | string | null
   openToWork?: boolean
   availability?: $Enums.Availability
   yearsExperience?: number
@@ -2144,6 +2261,9 @@ export type ProfileUncheckedCreateWithoutProjectsInput = {
   countryCode?: string | null
   website?: string | null
   pronouns?: string | null
+  resumeUrl?: string | null
+  resumeName?: string | null
+  resumeUpdatedAt?: Date | string | null
   openToWork?: boolean
   availability?: $Enums.Availability
   yearsExperience?: number
@@ -2203,6 +2323,9 @@ export type ProfileUpdateWithoutProjectsInput = {
   countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pronouns?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   openToWork?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.EnumAvailabilityFieldUpdateOperationsInput | $Enums.Availability
   yearsExperience?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -2248,6 +2371,9 @@ export type ProfileUncheckedUpdateWithoutProjectsInput = {
   countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pronouns?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   openToWork?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.EnumAvailabilityFieldUpdateOperationsInput | $Enums.Availability
   yearsExperience?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -2291,6 +2417,9 @@ export type ProfileCreateWithoutCertificatesInput = {
   countryCode?: string | null
   website?: string | null
   pronouns?: string | null
+  resumeUrl?: string | null
+  resumeName?: string | null
+  resumeUpdatedAt?: Date | string | null
   openToWork?: boolean
   availability?: $Enums.Availability
   yearsExperience?: number
@@ -2336,6 +2465,9 @@ export type ProfileUncheckedCreateWithoutCertificatesInput = {
   countryCode?: string | null
   website?: string | null
   pronouns?: string | null
+  resumeUrl?: string | null
+  resumeName?: string | null
+  resumeUpdatedAt?: Date | string | null
   openToWork?: boolean
   availability?: $Enums.Availability
   yearsExperience?: number
@@ -2395,6 +2527,9 @@ export type ProfileUpdateWithoutCertificatesInput = {
   countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pronouns?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   openToWork?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.EnumAvailabilityFieldUpdateOperationsInput | $Enums.Availability
   yearsExperience?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -2440,6 +2575,9 @@ export type ProfileUncheckedUpdateWithoutCertificatesInput = {
   countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pronouns?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   openToWork?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.EnumAvailabilityFieldUpdateOperationsInput | $Enums.Availability
   yearsExperience?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -2483,6 +2621,9 @@ export type ProfileCreateWithoutLanguagesInput = {
   countryCode?: string | null
   website?: string | null
   pronouns?: string | null
+  resumeUrl?: string | null
+  resumeName?: string | null
+  resumeUpdatedAt?: Date | string | null
   openToWork?: boolean
   availability?: $Enums.Availability
   yearsExperience?: number
@@ -2528,6 +2669,9 @@ export type ProfileUncheckedCreateWithoutLanguagesInput = {
   countryCode?: string | null
   website?: string | null
   pronouns?: string | null
+  resumeUrl?: string | null
+  resumeName?: string | null
+  resumeUpdatedAt?: Date | string | null
   openToWork?: boolean
   availability?: $Enums.Availability
   yearsExperience?: number
@@ -2587,6 +2731,9 @@ export type ProfileUpdateWithoutLanguagesInput = {
   countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pronouns?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   openToWork?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.EnumAvailabilityFieldUpdateOperationsInput | $Enums.Availability
   yearsExperience?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -2632,6 +2779,9 @@ export type ProfileUncheckedUpdateWithoutLanguagesInput = {
   countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pronouns?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   openToWork?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.EnumAvailabilityFieldUpdateOperationsInput | $Enums.Availability
   yearsExperience?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -2675,6 +2825,9 @@ export type ProfileCreateWithoutPortfolioItemsInput = {
   countryCode?: string | null
   website?: string | null
   pronouns?: string | null
+  resumeUrl?: string | null
+  resumeName?: string | null
+  resumeUpdatedAt?: Date | string | null
   openToWork?: boolean
   availability?: $Enums.Availability
   yearsExperience?: number
@@ -2720,6 +2873,9 @@ export type ProfileUncheckedCreateWithoutPortfolioItemsInput = {
   countryCode?: string | null
   website?: string | null
   pronouns?: string | null
+  resumeUrl?: string | null
+  resumeName?: string | null
+  resumeUpdatedAt?: Date | string | null
   openToWork?: boolean
   availability?: $Enums.Availability
   yearsExperience?: number
@@ -2779,6 +2935,9 @@ export type ProfileUpdateWithoutPortfolioItemsInput = {
   countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pronouns?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   openToWork?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.EnumAvailabilityFieldUpdateOperationsInput | $Enums.Availability
   yearsExperience?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -2824,6 +2983,9 @@ export type ProfileUncheckedUpdateWithoutPortfolioItemsInput = {
   countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pronouns?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   openToWork?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.EnumAvailabilityFieldUpdateOperationsInput | $Enums.Availability
   yearsExperience?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -2867,6 +3029,9 @@ export type ProfileCreateWithoutSocialLinksInput = {
   countryCode?: string | null
   website?: string | null
   pronouns?: string | null
+  resumeUrl?: string | null
+  resumeName?: string | null
+  resumeUpdatedAt?: Date | string | null
   openToWork?: boolean
   availability?: $Enums.Availability
   yearsExperience?: number
@@ -2912,6 +3077,9 @@ export type ProfileUncheckedCreateWithoutSocialLinksInput = {
   countryCode?: string | null
   website?: string | null
   pronouns?: string | null
+  resumeUrl?: string | null
+  resumeName?: string | null
+  resumeUpdatedAt?: Date | string | null
   openToWork?: boolean
   availability?: $Enums.Availability
   yearsExperience?: number
@@ -2971,6 +3139,9 @@ export type ProfileUpdateWithoutSocialLinksInput = {
   countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pronouns?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   openToWork?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.EnumAvailabilityFieldUpdateOperationsInput | $Enums.Availability
   yearsExperience?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -3016,6 +3187,9 @@ export type ProfileUncheckedUpdateWithoutSocialLinksInput = {
   countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pronouns?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   openToWork?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.EnumAvailabilityFieldUpdateOperationsInput | $Enums.Availability
   yearsExperience?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -3059,6 +3233,9 @@ export type ProfileCreateWithoutPreferredIndustriesInput = {
   countryCode?: string | null
   website?: string | null
   pronouns?: string | null
+  resumeUrl?: string | null
+  resumeName?: string | null
+  resumeUpdatedAt?: Date | string | null
   openToWork?: boolean
   availability?: $Enums.Availability
   yearsExperience?: number
@@ -3104,6 +3281,9 @@ export type ProfileUncheckedCreateWithoutPreferredIndustriesInput = {
   countryCode?: string | null
   website?: string | null
   pronouns?: string | null
+  resumeUrl?: string | null
+  resumeName?: string | null
+  resumeUpdatedAt?: Date | string | null
   openToWork?: boolean
   availability?: $Enums.Availability
   yearsExperience?: number
@@ -3172,6 +3352,9 @@ export type ProfileScalarWhereInput = {
   countryCode?: Prisma.StringNullableFilter<"Profile"> | string | null
   website?: Prisma.StringNullableFilter<"Profile"> | string | null
   pronouns?: Prisma.StringNullableFilter<"Profile"> | string | null
+  resumeUrl?: Prisma.StringNullableFilter<"Profile"> | string | null
+  resumeName?: Prisma.StringNullableFilter<"Profile"> | string | null
+  resumeUpdatedAt?: Prisma.DateTimeNullableFilter<"Profile"> | Date | string | null
   openToWork?: Prisma.BoolFilter<"Profile"> | boolean
   availability?: Prisma.EnumAvailabilityFilter<"Profile"> | $Enums.Availability
   yearsExperience?: Prisma.FloatFilter<"Profile"> | number
@@ -3207,6 +3390,9 @@ export type ProfileUpdateWithoutPreferredIndustriesInput = {
   countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pronouns?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   openToWork?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.EnumAvailabilityFieldUpdateOperationsInput | $Enums.Availability
   yearsExperience?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -3252,6 +3438,9 @@ export type ProfileUncheckedUpdateWithoutPreferredIndustriesInput = {
   countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pronouns?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   openToWork?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.EnumAvailabilityFieldUpdateOperationsInput | $Enums.Availability
   yearsExperience?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -3296,6 +3485,9 @@ export type ProfileUncheckedUpdateManyWithoutPreferredIndustriesInput = {
   countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pronouns?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resumeUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   openToWork?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.EnumAvailabilityFieldUpdateOperationsInput | $Enums.Availability
   yearsExperience?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -3435,6 +3627,9 @@ export type ProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   countryCode?: boolean
   website?: boolean
   pronouns?: boolean
+  resumeUrl?: boolean
+  resumeName?: boolean
+  resumeUpdatedAt?: boolean
   openToWork?: boolean
   availability?: boolean
   yearsExperience?: boolean
@@ -3482,6 +3677,9 @@ export type ProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   countryCode?: boolean
   website?: boolean
   pronouns?: boolean
+  resumeUrl?: boolean
+  resumeName?: boolean
+  resumeUpdatedAt?: boolean
   openToWork?: boolean
   availability?: boolean
   yearsExperience?: boolean
@@ -3519,6 +3717,9 @@ export type ProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   countryCode?: boolean
   website?: boolean
   pronouns?: boolean
+  resumeUrl?: boolean
+  resumeName?: boolean
+  resumeUpdatedAt?: boolean
   openToWork?: boolean
   availability?: boolean
   yearsExperience?: boolean
@@ -3556,6 +3757,9 @@ export type ProfileSelectScalar = {
   countryCode?: boolean
   website?: boolean
   pronouns?: boolean
+  resumeUrl?: boolean
+  resumeName?: boolean
+  resumeUpdatedAt?: boolean
   openToWork?: boolean
   availability?: boolean
   yearsExperience?: boolean
@@ -3582,7 +3786,7 @@ export type ProfileSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "headline" | "about" | "coverUrl" | "city" | "countryCode" | "website" | "pronouns" | "openToWork" | "availability" | "yearsExperience" | "educationLevel" | "desiredTitles" | "preferredWorkModes" | "preferredEmploymentTypes" | "preferredCities" | "openToRelocate" | "desiredSalaryMin" | "salaryCurrency" | "salaryPeriod" | "visibility" | "searchableByRecruiters" | "privateBrowsing" | "messagePermission" | "showConnections" | "portfolioEnabled" | "portfolioAccent" | "profileViewCount" | "completeness" | "featuredUntil" | "createdAt" | "updatedAt", ExtArgs["result"]["profile"]>
+export type ProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "headline" | "about" | "coverUrl" | "city" | "countryCode" | "website" | "pronouns" | "resumeUrl" | "resumeName" | "resumeUpdatedAt" | "openToWork" | "availability" | "yearsExperience" | "educationLevel" | "desiredTitles" | "preferredWorkModes" | "preferredEmploymentTypes" | "preferredCities" | "openToRelocate" | "desiredSalaryMin" | "salaryCurrency" | "salaryPeriod" | "visibility" | "searchableByRecruiters" | "privateBrowsing" | "messagePermission" | "showConnections" | "portfolioEnabled" | "portfolioAccent" | "profileViewCount" | "completeness" | "featuredUntil" | "createdAt" | "updatedAt", ExtArgs["result"]["profile"]>
 export type ProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   preferredIndustries?: boolean | Prisma.Profile$preferredIndustriesArgs<ExtArgs>
@@ -3627,6 +3831,9 @@ export type $ProfilePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     countryCode: string | null
     website: string | null
     pronouns: string | null
+    resumeUrl: string | null
+    resumeName: string | null
+    resumeUpdatedAt: Date | null
     openToWork: boolean
     availability: $Enums.Availability
     yearsExperience: number
@@ -4093,6 +4300,9 @@ export interface ProfileFieldRefs {
   readonly countryCode: Prisma.FieldRef<"Profile", 'String'>
   readonly website: Prisma.FieldRef<"Profile", 'String'>
   readonly pronouns: Prisma.FieldRef<"Profile", 'String'>
+  readonly resumeUrl: Prisma.FieldRef<"Profile", 'String'>
+  readonly resumeName: Prisma.FieldRef<"Profile", 'String'>
+  readonly resumeUpdatedAt: Prisma.FieldRef<"Profile", 'DateTime'>
   readonly openToWork: Prisma.FieldRef<"Profile", 'Boolean'>
   readonly availability: Prisma.FieldRef<"Profile", 'Availability'>
   readonly yearsExperience: Prisma.FieldRef<"Profile", 'Float'>

@@ -71,6 +71,8 @@ prisma/             schema, migrations, deterministic seed
   - `local` streams the file;
   - `supabase` redirects to the bucket's public URL (public files) or to a signed URL that expires after 5 minutes (private files). File bytes never pass through the serverless function.
 - **Deleting**: replacing or removing an avatar, cover, company logo/cover/photo or project image, and deleting a post or project, also deletes the old file (`deleteStored`). Deletion is best effort: a storage error is logged and never fails the user's action.
+- **CVs**: a job seeker can keep one CV on their profile (`Profile.resumeUrl`). Applying with it stores a private copy (`copyStored`) on the application, so replacing or deleting the profile CV never removes a CV a company already received. Recruiters can open the profile CV under the same rule as the candidate page: the candidate applied to their company, or allows recruiter search and their profile is visible to them.
+- **Company videos** are YouTube or Vimeo links (`src/lib/video.ts`), stored as `CompanyMedia` rows of type `VIDEO` and played through the privacy-friendly embeds allowed by the CSP. Nothing is uploaded.
 - **Upload size**: Vercel caps request bodies at 4.5 MB, so set `UPLOAD_MAX_BYTES=4194304` there.
 - The service role key is used only on the server; browsers never receive it.
 

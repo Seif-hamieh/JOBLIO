@@ -425,6 +425,11 @@ model Profile {
   website     String?
   pronouns    String?  @db.VarChar(30)
 
+  // Saved CV (private storage; reused when applying, visible to recruiters if searchable)
+  resumeUrl       String?
+  resumeName      String?   @db.VarChar(120)
+  resumeUpdatedAt DateTime?
+
   // Job-seeking signals
   openToWork      Boolean      @default(false)
   availability    Availability @default(NOT_LOOKING)

@@ -1,7 +1,22 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/server/auth";
 import { db } from "@/server/db";
+import { canViewProfile } from "@/server/services/profile";
 import { publicFileUrl, readStored, signedFileUrl, storageDriver } from "@/server/storage";
+
+/**
+ * The CV saved on a profile is visible to recruiters under the same rule as the
+ * recruiter candidate page: the candidate applied to their company, or allows
+ * recruiter search and their profile is visible to the recruiter.
+ */
+async function canSeeProfileCv(candidateId: string, url: string, viewerId: string) {
+  const profile = await db.profile.findFirst({ where: { userId: candidateId, resumeUrl: url }, select: { searchableByRecruiters: true, visibility: true } });
+  if (!profile) return false;
+  const companyIds = (await db.companyMember.findMany({ where: { userId: viewerId }, select: { companyId: true } })).map((m) => m.companyId);
+  if (!companyIds.length) return false;
+  const applied = await db.application.findFirst({ where: { applicantId: candidateId, job: { companyId: { in: companyIds } } }, select: { id: true } });
+  return !!applied || (profile.searchableByRecruiters && (await canViewProfile(candidateId, profile.visibility, viewerId)));
+}
 
 // GET /api/v1/files/<key> — serves uploads. Public files are cacheable;
 // private files (CVs, message attachments) are checked against the viewer.
@@ -26,7 +41,8 @@ export async function GET(req: Request, ctx: RouteContext<"/api/v1/files/[...key
         !!(await db.application.findFirst({
           where: { resumeUrl: url, job: { company: { members: { some: { userId } } } } },
           select: { id: true },
-        }));
+        })) ||
+        (await canSeeProfileCv(owner!, url, userId));
     } else if (scope === "message") {
       allowed = !!(await db.conversationParticipant.findUnique({
         where: { conversationId_userId: { conversationId: owner!, userId } },

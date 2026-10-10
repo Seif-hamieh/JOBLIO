@@ -6,6 +6,7 @@ import { db } from "@/server/db";
 import { listIndustries } from "@/server/services/companies";
 import { BasicsForm, PreferencesForm } from "@/components/profile/editor/basics";
 import { CertificateManager, EducationManager, ExperienceManager, LanguagesForm, LinksForm } from "@/components/profile/editor/entries";
+import { ResumeManager } from "@/components/profile/editor/resume";
 import { Card, PageHeader } from "@/components/ui/misc";
 import { MatchRing } from "@/components/match/match-ring";
 import { buttonClasses } from "@/components/ui/button";
@@ -101,6 +102,9 @@ export default async function EditProfilePage() {
               industryIds: p.preferredIndustries.map((i) => i.id),
             }}
           />
+        </Section>
+        <Section id="cv" title={t("profileEdit.cv")} description={t("profileEdit.cvSub")}>
+          <ResumeManager resume={p.resumeUrl ? { url: p.resumeUrl, name: p.resumeName ?? "CV", updatedAt: (p.resumeUpdatedAt ?? p.updatedAt).toISOString() } : null} />
         </Section>
         <Section id="experience" title={t("profile.experience")} description={t("profileEdit.experienceSub")}>
           <ExperienceManager items={p.experiences} />

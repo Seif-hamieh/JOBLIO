@@ -1,7 +1,7 @@
 import { getI18n, pageTitle } from "@/i18n/server";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Briefcase, ExternalLink, GraduationCap, Lock, MapPin, MessageSquare } from "lucide-react";
+import { ArrowLeft, Briefcase, ExternalLink, FileText, GraduationCap, Lock, MapPin, MessageSquare } from "lucide-react";
 import { requireRecruiter } from "@/server/session";
 import { db } from "@/server/db";
 import { candidateMatchSelect, jobMatchSelect, toCandidateFacts, toJobFacts } from "@/server/services/matching";
@@ -42,6 +42,7 @@ export default async function CandidateProfilePage({ params, searchParams }: Pag
           openToWork: true,
           visibility: true,
           searchableByRecruiters: true,
+          resumeUrl: true,
           skills: { orderBy: { position: "asc" }, select: { id: true, skillId: true, level: true, endorsementCount: true, skill: { select: { name: true, category: true } } } },
           experiences: { orderBy: [{ isCurrent: "desc" }, { startDate: "desc" }], select: { id: true, title: true, companyName: true, isCurrent: true, description: true, startDate: true, endDate: true } },
           educations: { select: { id: true, school: true, degree: true, fieldOfStudy: true, startDate: true, endDate: true } },
@@ -112,6 +113,11 @@ export default async function CandidateProfilePage({ params, searchParams }: Pag
                 <MessageSquare /> {t("recruiter.contact")}
               </Link>
               <SaveCandidateButton candidateId={user.id} saved={!!saved} />
+              {p.resumeUrl && (
+                <a href={p.resumeUrl} target="_blank" rel="noopener noreferrer" className={buttonClasses({ variant: "outline", pill: true })}>
+                  <FileText /> {t("recruiter.profileCv")}
+                </a>
+              )}
               <Link href={`/in/${user.username}`} className={buttonClasses({ variant: "ghost", pill: true })}>
                 <ExternalLink /> {t("recruiter.publicProfile")}
               </Link>

@@ -7,7 +7,7 @@ import { fail, parse, withViewer, type ActionState } from "@/server/action";
 import { LIMITS } from "@/server/rate-limit";
 import { applyToJob, withdrawApplication } from "@/server/services/applications";
 import { checkAchievements } from "@/server/services/achievements";
-import { storeUpload, UploadError } from "@/server/storage";
+import { copyStored, deleteStored, storeUpload, UploadError } from "@/server/storage";
 
 const idSchema = z.string().min(1).max(40);
 
@@ -55,8 +55,18 @@ export async function applyAction(_prev: ActionState<{ score: number }>, form: F
         if (e instanceof UploadError) return fail(e.message);
         throw e;
       }
+    } else if (form.get("useSavedResume") === "1") {
+      // The application gets its own copy, so it keeps the CV even if the profile CV changes later.
+      const saved = (await db.profile.findUnique({ where: { userId: viewer.id }, select: { resumeUrl: true } }))?.resumeUrl;
+      if (saved) resumeUrl = await copyStored(saved);
     }
-    const { match } = await applyToJob(viewer.id, parsed.data.jobId, { coverLetter: parsed.data.coverLetter, resumeUrl });
+    let match: Awaited<ReturnType<typeof applyToJob>>["match"];
+    try {
+      ({ match } = await applyToJob(viewer.id, parsed.data.jobId, { coverLetter: parsed.data.coverLetter, resumeUrl }));
+    } catch (e) {
+      await deleteStored([resumeUrl]);
+      throw e;
+    }
     revalidatePath(`/jobs/${parsed.data.jobId}`);
     revalidatePath("/applications");
     return { ok: true, message: "@msg.applicationSent", data: { score: match.score } };

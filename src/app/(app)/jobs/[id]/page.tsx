@@ -53,12 +53,13 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
   const isTeam = viewer?.company?.id === job.company.id;
   if (job.status !== "OPEN" && !isTeam) notFound();
 
-  const [facts, saved, application, follows, similar] = await Promise.all([
+  const [facts, saved, application, follows, similar, resume] = await Promise.all([
     viewer ? getCandidateFacts(viewer.id) : null,
     viewer ? db.savedJob.findUnique({ where: { userId_jobId: { userId: viewer.id, jobId: id } } }) : null,
     viewer ? db.application.findUnique({ where: { jobId_applicantId: { jobId: id, applicantId: viewer.id } }, select: { status: true } }) : null,
     viewer ? db.companyFollower.findUnique({ where: { userId_companyId: { userId: viewer.id, companyId: job.company.id } } }) : null,
     similarJobs(job, viewer?.id ?? null),
+    viewer ? db.profile.findUnique({ where: { userId: viewer.id }, select: { resumeUrl: true, resumeName: true } }) : null,
   ]);
   if (!isTeam) await recordJobView(id);
 
@@ -74,6 +75,7 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
   const applyProps = {
     job: { id: job.id, title: job.title, companyName: job.company.name },
     applicant: viewer ? { name: viewer.name, image: viewer.image, headline: viewer.headline } : null,
+    savedResume: resume?.resumeUrl ? { name: resume.resumeName ?? "CV" } : null,
     matchScore: match?.score ?? null,
     signedIn: !!viewer,
     applied,

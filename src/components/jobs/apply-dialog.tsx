@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 export function ApplyButton({
   job,
   applicant,
+  savedResume,
   matchScore,
   signedIn,
   applied,
@@ -25,6 +26,8 @@ export function ApplyButton({
 }: {
   job: { id: string; title: string; companyName: string };
   applicant: { name: string; image: string | null; headline: string | null } | null;
+  /** The CV saved on the applicant's profile, offered by default. */
+  savedResume?: { name: string } | null;
   matchScore: number | null;
   signedIn: boolean;
   applied: boolean;
@@ -36,6 +39,7 @@ export function ApplyButton({
   const [open, setOpen] = useState(false);
   const [state, action, pending] = useActionState(applyAction, null);
   const [file, setFile] = useState<File | null>(null);
+  const [useSaved, setUseSaved] = useState(true);
 
   useEffect(() => {
     if (state?.ok) {
@@ -114,6 +118,19 @@ export function ApplyButton({
                 <span className="text-[13px] font-medium">
                   {t("jobs.cv")} <span className="font-normal text-fg-subtle">{t("jobs.cvHint")}</span>
                 </span>
+                {savedResume && !file && (
+                  <label className={cn("mt-1.5 flex cursor-pointer items-center gap-3 rounded-2xl border p-3.5 transition", useSaved ? "border-brand bg-brand-soft/30" : "border-border")}>
+                    <input type="checkbox" name="useSavedResume" value="1" checked={useSaved} onChange={(e) => setUseSaved(e.target.checked)} className="size-4 accent-[var(--brand)]" />
+                    <FileText className="size-5 shrink-0 text-brand" />
+                    <span className="min-w-0 flex-1 text-sm">
+                      <span className="block font-medium">{t("jobs.useSavedCv")}</span>
+                      <span className="block truncate text-xs text-fg-muted" dir="auto">
+                        {savedResume.name}
+                      </span>
+                    </span>
+                  </label>
+                )}
+                {savedResume && !file && <div className="mt-2 text-xs text-fg-subtle">{t("jobs.orAttachOther")}</div>}
                 <label className={cn("mt-1.5 flex cursor-pointer items-center gap-3 rounded-2xl border border-dashed border-border-strong p-4 transition hover:border-brand hover:bg-brand-soft/30", file && "border-solid border-brand bg-brand-soft/30")}>
                   <span className="grid size-10 place-items-center rounded-xl bg-surface-2 text-fg-muted">{file ? <FileText className="size-5" /> : <Paperclip className="size-5" />}</span>
                   <span className="min-w-0 flex-1 text-sm">

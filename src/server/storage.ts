@@ -195,6 +195,33 @@ export function keyFromUrl(url: string | null | undefined) {
 }
 
 /**
+ * Copies a stored private file to a new UUID name under the same scope and
+ * owner, so the copy outlives the original (e.g. an application keeps its CV
+ * after the profile CV is replaced). Returns the new URL, or null if the
+ * source is missing.
+ */
+export async function copyStored(url: string): Promise<string | null> {
+  const key = keyFromUrl(url);
+  if (!key) return null;
+  const ext = key.split(".").pop();
+  const newKey = `${key.slice(0, key.lastIndexOf("/"))}/${randomUUID()}.${ext}`;
+  if (storageDriver() === "supabase") {
+    const { error } = await client().storage.from(bucketFor(key)).copy(key, newKey);
+    if (error) {
+      console.error("[storage] copy failed:", error.message);
+      return null;
+    }
+  } else {
+    const file = await readStored(key);
+    if (!file) return null;
+    const path = join(ROOT, newKey);
+    await mkdir(dirname(path), { recursive: true });
+    await writeFile(path, file.data);
+  }
+  return `${FILES_PREFIX}${newKey}`;
+}
+
+/**
  * Deletes stored files by their URLs. Best effort: a storage hiccup is logged
  * and never fails the user's action (the database change already happened).
  */

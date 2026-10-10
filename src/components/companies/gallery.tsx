@@ -5,8 +5,30 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, m } from "motion/react";
 import { ChevronLeft, ChevronRight, Play, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { parseVideoUrl } from "@/lib/video";
 
 export type MediaItem = { id: string; type: "PHOTO" | "VIDEO"; url: string; caption: string | null };
+
+/** Tile image for a gallery item: the photo, the YouTube still, or a branded tile for Vimeo. */
+export function MediaThumb({ item, className }: { item: Pick<MediaItem, "type" | "url" | "caption">; className?: string }) {
+  const video = item.type === "VIDEO" ? parseVideoUrl(item.url) : null;
+  const src = item.type === "PHOTO" ? item.url : video?.thumbnailUrl;
+  return (
+    <>
+      {src ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={src} alt={item.caption ?? ""} loading="lazy" className={cn("size-full object-cover", className)} />
+      ) : (
+        <span className="block size-full bg-gradient-to-br from-brand to-aurora" />
+      )}
+      {item.type === "VIDEO" && (
+        <span className="absolute inset-0 grid place-items-center bg-black/25">
+          <Play className="size-10 fill-white text-white" />
+        </span>
+      )}
+    </>
+  );
+}
 
 /** "Life at the company" gallery with a keyboard-accessible lightbox. */
 export function CompanyGallery({ items }: { items: MediaItem[] }) {
@@ -38,13 +60,7 @@ export function CompanyGallery({ items }: { items: MediaItem[] }) {
             className={cn("group relative overflow-hidden rounded-2xl bg-surface-2", i === 0 && "col-span-2 row-span-2")}
             aria-label={it.caption ?? t("companies.openPhoto", { n: i + 1 })}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={it.url} alt={it.caption ?? ""} loading="lazy" className="size-full object-cover transition duration-500 group-hover:scale-105" />
-            {it.type === "VIDEO" && (
-              <span className="absolute inset-0 grid place-items-center bg-black/25">
-                <Play className="size-10 fill-white text-white" />
-              </span>
-            )}
+            <MediaThumb item={it} className="transition duration-500 group-hover:scale-105" />
             {it.caption && (
               <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-3 text-start text-xs font-medium text-white opacity-0 transition group-hover:opacity-100">
                 {it.caption}
@@ -94,7 +110,21 @@ export function CompanyGallery({ items }: { items: MediaItem[] }) {
             )}
             <m.figure key={current.id} initial={{ scale: 0.96, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="max-h-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
               {current.type === "VIDEO" ? (
-                <video src={current.url} controls autoPlay className="max-h-[80vh] rounded-2xl" />
+                (() => {
+                  const video = parseVideoUrl(current.url);
+                  return video ? (
+                    <iframe
+                      src={video.embedUrl}
+                      title={current.caption ?? t("companyDash.video")}
+                      allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+                      allowFullScreen
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      className="aspect-video w-[min(90vw,64rem)] rounded-2xl bg-black"
+                    />
+                  ) : (
+                    <video src={current.url} controls autoPlay className="max-h-[80vh] rounded-2xl" />
+                  );
+                })()
               ) : (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={current.url} alt={current.caption ?? ""} className="max-h-[80vh] rounded-2xl object-contain" />

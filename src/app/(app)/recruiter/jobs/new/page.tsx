@@ -2,7 +2,8 @@ import { getI18n, pageTitle } from "@/i18n/server";
 import { requireRecruiter } from "@/server/session";
 import { listIndustries } from "@/server/services/companies";
 import { db } from "@/server/db";
-import { EMPTY_JOB, JobForm } from "@/components/recruiter/job-form";
+import { JobForm } from "@/components/recruiter/job-form";
+import { EMPTY_JOB } from "@/lib/job-form";
 import { PageHeader } from "@/components/ui/misc";
 
 export const generateMetadata = pageTitle("recruiter.postJob");

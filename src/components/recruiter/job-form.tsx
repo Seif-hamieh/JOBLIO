@@ -25,61 +25,12 @@ import {
   type ExperienceLevel,
   type LanguageProficiency,
   type SalaryPeriod,
-  type SkillLevel,
-  type WorkMode,
 } from "@/lib/constants";
+import type { JobFormValue } from "@/lib/job-form";
 import { LANGUAGES } from "@/lib/geo";
 import { useI18n } from "@/i18n/client";
 import { localizedCountries } from "@/i18n/countries";
 import { industryName } from "@/i18n/translate";
-
-export type JobFormValue = {
-  title: string;
-  summary: string;
-  description: string;
-  responsibilities: string[];
-  requirements: string[];
-  benefits: string[];
-  workMode: WorkMode;
-  employmentType: EmploymentType;
-  experienceLevel: ExperienceLevel;
-  minYearsExperience: number;
-  educationLevel: EducationLevel;
-  city: string;
-  countryCode: string;
-  salaryMin: number | null;
-  salaryMax: number | null;
-  salaryCurrency: string;
-  salaryPeriod: SalaryPeriod;
-  industryId: string;
-  closesAt: string;
-  skills: { skillId: string; name: string; required: boolean; minLevel: SkillLevel }[];
-  languages: { languageCode: string; minProficiency: LanguageProficiency }[];
-};
-
-export const EMPTY_JOB: JobFormValue = {
-  title: "",
-  summary: "",
-  description: "",
-  responsibilities: [],
-  requirements: [],
-  benefits: [],
-  workMode: "HYBRID",
-  employmentType: "FULL_TIME",
-  experienceLevel: "MID",
-  minYearsExperience: 2,
-  educationLevel: "NONE",
-  city: "",
-  countryCode: "",
-  salaryMin: null,
-  salaryMax: null,
-  salaryCurrency: "USD",
-  salaryPeriod: "YEAR",
-  industryId: "",
-  closesAt: "",
-  skills: [],
-  languages: [],
-};
 
 function LineList({ value, onChange, placeholder }: { value: string[]; onChange: (v: string[]) => void; placeholder: string }) {
   const { t } = useI18n();

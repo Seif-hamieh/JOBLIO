@@ -79,6 +79,34 @@ export async function removeProfileImageAction(kind: "avatar" | "cover"): Promis
   });
 }
 
+// ── CV ───────────────────────────────────────────────────────────────────
+
+export async function uploadResumeAction(form: FormData): Promise<ActionState> {
+  return withViewer({ limit: LIMITS.upload }, async (viewer) => {
+    const file = form.get("file");
+    if (!(file instanceof File)) return fail("@msg.uploadChoose");
+    try {
+      const old = (await db.profile.findUnique({ where: { id: viewer.profileId }, select: { resumeUrl: true } }))?.resumeUrl;
+      const stored = await storeUpload(file, "resume", viewer.id);
+      await db.profile.update({ where: { id: viewer.profileId }, data: { resumeUrl: stored.url, resumeName: stored.name, resumeUpdatedAt: new Date() } });
+      await deleteStored([old]);
+      return done(viewer, "@msg.cvSaved");
+    } catch (e) {
+      if (e instanceof UploadError) return fail(e.message);
+      throw e;
+    }
+  });
+}
+
+export async function removeResumeAction(): Promise<ActionState> {
+  return withViewer({ limit: LIMITS.write }, async (viewer) => {
+    const old = (await db.profile.findUnique({ where: { id: viewer.profileId }, select: { resumeUrl: true } }))?.resumeUrl;
+    await db.profile.update({ where: { id: viewer.profileId }, data: { resumeUrl: null, resumeName: null, resumeUpdatedAt: null } });
+    await deleteStored([old]);
+    return done(viewer, "@msg.cvRemoved");
+  });
+}
+
 export async function updatePreferencesAction(input: z.input<typeof preferencesSchema>): Promise<ActionState> {
   return withViewer({ limit: LIMITS.write }, async (viewer) => {
     const parsed = parse(preferencesSchema, input);

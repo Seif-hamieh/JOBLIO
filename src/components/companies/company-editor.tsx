@@ -2,13 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import { useRef, useState, useTransition } from "react";
-import { Crown, ImagePlus, Lock, Trash2 } from "lucide-react";
+import { Crown, ImagePlus, Lock, Trash2, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Select, Textarea } from "@/components/ui/field";
 import { TagInput } from "@/components/ui/tag-input";
 import { toast } from "@/components/ui/toast";
 import { CompanyLogo } from "@/components/ui/avatar";
-import { deleteCompanyMediaAction, updateCompanyAction, uploadCompanyImageAction } from "@/server/actions/companies";
+import { MediaThumb, type MediaItem } from "@/components/companies/gallery";
+import { addCompanyVideoAction, deleteCompanyMediaAction, updateCompanyAction, uploadCompanyImageAction } from "@/server/actions/companies";
 import { COMPANY_SIZES, type CompanySize } from "@/lib/constants";
 import { useI18n } from "@/i18n/client";
 import { localizedCountries } from "@/i18n/countries";
@@ -46,7 +47,7 @@ export function CompanyEditor({
   premium: boolean;
   logoUrl: string | null;
   coverUrl: string | null;
-  media: { id: string; url: string; caption: string | null }[];
+  media: MediaItem[];
   canManage: boolean;
 }) {
   const router = useRouter();
@@ -67,6 +68,18 @@ export function CompanyEditor({
       const res = await uploadCompanyImageAction(fd);
       if (res?.ok) {
         toast.success(t("common.saved"));
+        router.refresh();
+      } else toast.error(res && !res.ok ? res.error : t("common.somethingWrong"));
+    });
+  const [videoUrl, setVideoUrl] = useState("");
+  const [addingVideo, startVideo] = useTransition();
+  const addVideo = () =>
+    videoUrl.trim() &&
+    startVideo(async () => {
+      const res = await addCompanyVideoAction({ url: videoUrl });
+      if (res?.ok) {
+        setVideoUrl("");
+        toast.success(res.message ?? t("common.saved"));
         router.refresh();
       } else toast.error(res && !res.ok ? res.error : t("common.somethingWrong"));
     });
@@ -179,8 +192,7 @@ export function CompanyEditor({
           <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
             {media.map((m) => (
               <div key={m.id} className="group relative aspect-[4/3] overflow-hidden rounded-xl bg-surface-3">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={m.url} alt={m.caption ?? ""} className="size-full object-cover" />
+                <MediaThumb item={m} />
                 <button
                   type="button"
                   onClick={() =>
@@ -197,6 +209,26 @@ export function CompanyEditor({
               </div>
             ))}
           </div>
+          <div className="mt-3 flex gap-2">
+            <Input
+              type="url"
+              value={videoUrl}
+              onChange={(e) => setVideoUrl(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  addVideo();
+                }
+              }}
+              placeholder={t("companyDash.videoPh")}
+              aria-label={t("companyDash.addVideo")}
+              dir="ltr"
+            />
+            <Button variant="soft" loading={addingVideo} disabled={!videoUrl.trim()} onClick={addVideo} className="shrink-0">
+              <Video /> {t("companyDash.addVideo")}
+            </Button>
+          </div>
+          <p className="mt-1.5 text-xs text-fg-subtle">{t("companyDash.videoHint")}</p>
           {!premium && (
             <p className="mt-2 inline-flex items-center gap-1 text-xs text-ember-fg">
               <Crown className="size-3" /> {t("companyDash.premiumPhotos")}

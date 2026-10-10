@@ -10,6 +10,7 @@ import { checkAchievements } from "@/server/services/achievements";
 import { createCompanyForUser } from "@/server/services/companies";
 import { deleteStored, storeUpload, UploadError } from "@/server/storage";
 import { companyCreateSchema, companyProfileSchema } from "@/lib/validation/profile";
+import { parseVideoUrl } from "@/lib/video";
 
 const id = z.string().min(1).max(40);
 
@@ -94,6 +95,25 @@ export async function uploadCompanyImageAction(form: FormData): Promise<ActionSt
       if (e instanceof UploadError) return fail(e.message);
       throw e;
     }
+  });
+}
+
+/** Adds a YouTube or Vimeo video to the "Life at" gallery (shares the photo limit). */
+export async function addCompanyVideoAction(input: { url: string; caption?: string }): Promise<ActionState> {
+  return withRecruiter({ limit: LIMITS.write }, async (viewer) => {
+    if (!canManageCompany(viewer, viewer.company.id)) return fail("@msg.adminsOnlyImages");
+    const video = parseVideoUrl(String(input?.url ?? "").slice(0, 500));
+    if (!video) return fail("@msg.videoInvalid");
+    const companyId = viewer.company.id;
+    const company = await db.company.findUniqueOrThrow({ where: { id: companyId }, select: { premiumUntil: true, _count: { select: { media: true } } } });
+    const limit = company.premiumUntil && company.premiumUntil > new Date() ? 30 : 6;
+    if (company._count.media >= limit) return fail(`@msg.photoLimit?{"n":${limit}}`);
+    await db.companyMedia.create({
+      data: { companyId, type: "VIDEO", url: video.url, caption: String(input?.caption ?? "").trim().slice(0, 120) || null, position: company._count.media },
+    });
+    revalidatePath("/company/dashboard");
+    revalidatePath(`/companies/${viewer.company.slug}`);
+    return { ok: true, message: "@msg.videoAdded" };
   });
 }
 
