@@ -31,7 +31,7 @@ import { translateKey } from "../../src/i18n/message";
 import { candidateMatchSelect, jobMatchSelect, toCandidateFacts, toJobFacts } from "../../src/lib/matching/prisma-facts";
 import { computeYearsExperience, highestEducation } from "../../src/lib/profile-derived";
 import { profileCompleteness } from "../../src/lib/profile-completeness";
-import { BENEFITS, COMMENTS, COMPANIES, COMPANY_POSTS, INDUSTRIES, PAST_EMPLOYERS, PEOPLE, POSTS, ROLES, SCHOOLS, SKILLS, VALUES } from "./data";
+import { BENEFITS, COMMENTS, COMPANIES, COMPANY_POSTS, INDUSTRIES, PAST_EMPLOYERS, PEOPLE, POSTS, referenceSlug, ROLES, SCHOOLS, SKILL_ALIASES_AR, SKILLS, VALUES } from "./data";
 
 export const DEMO_PASSWORD = "JoblioDemo!2026";
 
@@ -82,7 +82,7 @@ async function main() {
   const skillIds = new Map<string, string>();
   for (const [category, names] of Object.entries(SKILLS)) {
     for (const name of names) {
-      const s = await db.skill.create({ data: { name, slug: slug(name.replace(/\+\+/g, "pp").replace(/#/g, "sharp").replace(/^\./, "dot")), category, aliases: [] } });
+      const s = await db.skill.create({ data: { name, slug: referenceSlug(name), category, aliases: SKILL_ALIASES_AR[name] ?? [] } });
       skillIds.set(name, s.id);
     }
   }

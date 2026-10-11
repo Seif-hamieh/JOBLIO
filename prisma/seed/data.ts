@@ -1,49 +1,7 @@
 // Seed catalogue: skill taxonomy, industries, companies, role templates, people.
 
-export const SKILLS: Record<string, string[]> = {
-  Engineering: [
-    "JavaScript", "TypeScript", "React", "Next.js", "Vue.js", "Angular", "Svelte", "HTML", "CSS", "Tailwind CSS",
-    "Node.js", "Express", "Python", "Django", "FastAPI", "Java", "Spring Boot", "Kotlin", "Swift", "Go", "Rust",
-    "C#", ".NET", "PHP", "Laravel", "Ruby on Rails", "C++", "GraphQL", "REST APIs", "Microservices", "System Design",
-    "Testing", "Cypress", "Playwright", "React Native", "Flutter", "iOS Development", "Android Development", "Git",
-    "Accessibility", "Web Performance", "WebSockets", "Three.js",
-  ],
-  "Cloud & DevOps": [
-    "Docker", "Kubernetes", "AWS", "Azure", "Google Cloud", "Terraform", "CI/CD", "Linux", "Observability",
-    "Site Reliability", "Networking", "Cybersecurity", "Bash",
-  ],
-  Data: [
-    "SQL", "PostgreSQL", "MySQL", "MongoDB", "Redis", "Data Analysis", "Excel", "Power BI", "Tableau", "Statistics",
-    "R", "Pandas", "Data Engineering", "Apache Spark", "Airflow", "dbt", "Machine Learning", "Data Visualization", "ETL",
-  ],
-  Design: [
-    "Figma", "UI Design", "UX Research", "Prototyping", "Design Systems", "Interaction Design", "Visual Design",
-    "Illustration", "Adobe Photoshop", "Adobe Illustrator", "Motion Design", "Usability Testing", "Information Architecture",
-  ],
-  Product: ["Product Management", "Product Strategy", "Roadmapping", "Agile", "Scrum", "Jira", "User Stories", "A/B Testing", "Product Analytics", "Discovery"],
-  Marketing: [
-    "SEO", "Content Marketing", "Copywriting", "Social Media", "Google Ads", "Email Marketing", "Brand Strategy",
-    "Growth Marketing", "Marketing Analytics", "Performance Marketing", "Public Relations",
-  ],
-  Sales: ["B2B Sales", "Account Management", "CRM", "Salesforce", "HubSpot", "Negotiation", "Lead Generation", "Customer Success"],
-  Business: [
-    "Project Management", "Business Analysis", "Financial Modeling", "Accounting", "Budgeting", "Operations",
-    "Supply Chain", "Procurement", "Strategy", "Consulting", "Risk Management", "Compliance", "Logistics",
-  ],
-  People: ["Recruiting", "Talent Acquisition", "HR Operations", "Employee Relations", "Payroll", "Learning & Development", "Employer Branding"],
-  Healthcare: ["Patient Care", "Clinical Research", "Nursing", "Healthcare Administration", "Medical Coding"],
-  Education: ["Teaching", "Curriculum Design", "E-learning", "Instructional Design"],
-  "Professional skills": [
-    "Communication", "Leadership", "Teamwork", "Problem Solving", "Public Speaking", "Mentoring", "Time Management",
-    "Stakeholder Management", "Customer Service", "Critical Thinking",
-  ],
-};
-
-export const INDUSTRIES = [
-  "Technology", "Finance", "Healthcare", "Education", "E-commerce & Retail", "Media & Entertainment", "Manufacturing",
-  "Consulting", "Logistics", "Energy", "Telecommunications", "Government & Nonprofit", "Hospitality & Travel",
-  "Real Estate", "Marketing & Advertising", "Gaming",
-];
+// The skill taxonomy and industries live in the app (fresh databases get them automatically).
+export { INDUSTRIES, SKILLS, SKILL_ALIASES_AR, referenceSlug } from "../../src/lib/reference-data";
 
 export type CompanySeed = {
   slug: string;

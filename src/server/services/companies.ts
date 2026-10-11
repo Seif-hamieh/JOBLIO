@@ -2,6 +2,7 @@ import "server-only";
 import { db, type Prisma } from "@/server/db";
 import { slugify } from "@/lib/utils";
 import { RESERVED_USERNAMES } from "@/lib/constants";
+import { ensureReferenceData } from "@/server/services/reference-data";
 import type { z } from "zod";
 import type { companyCreateSchema } from "@/lib/validation/profile";
 
@@ -54,5 +55,6 @@ export const companyCardSelect = {
 export type CompanyCard = Prisma.CompanyGetPayload<{ select: typeof companyCardSelect }>;
 
 export async function listIndustries() {
+  await ensureReferenceData();
   return db.industry.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true, slug: true } });
 }
