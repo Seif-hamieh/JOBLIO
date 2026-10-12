@@ -89,7 +89,7 @@ export default async function SettingsPage() {
         {credential ? <ChangePasswordForm /> : <p className="text-sm text-fg-muted">{t("settings.socialOnly")}</p>}
       </Section>
 
-      <Section id="portfolio" title={t("settings.portfolio")} description={t("settings.portfolioSub", { url: `joblio.com/${viewer.username}` })}>
+      <Section id="portfolio" title={t("settings.portfolio")} description={t("settings.portfolioSub", { url: `getjoblio.app/${viewer.username}` })}>
         <PortfolioForm username={viewer.username} enabled={!!profile?.portfolioEnabled} accent={profile?.portfolioAccent ?? null} entitled={!!portfolioSub} />
       </Section>
 

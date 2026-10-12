@@ -139,7 +139,7 @@ export function PortfolioForm({ username, enabled, accent, entitled }: { usernam
       </div>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <a href={`/${username}`} className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-soft-fg hover:underline" dir="ltr">
-          <Globe className="size-4" /> joblio.com/{username}
+          <Globe className="size-4" /> getjoblio.app/{username}
         </a>
         <Button loading={pending} disabled={!entitled} onClick={() => run(() => updatePortfolioAction({ enabled: on, accent: color }))}>
           {t("common.save")}

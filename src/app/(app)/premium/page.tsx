@@ -111,7 +111,7 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
             </div>
             <Price amount={price("PREMIUM_PORTFOLIO")} suffix={t("premium.perMonth")} />
             <p className="mt-1 text-sm text-fg-muted" dir={viewer ? "ltr" : undefined}>
-              {viewer ? `joblio.com/${viewer.username}` : tagline("PREMIUM_PORTFOLIO")}
+              {viewer ? `getjoblio.app/${viewer.username}` : tagline("PREMIUM_PORTFOLIO")}
             </p>
             <Features items={features("PREMIUM_PORTFOLIO")} tone="text-aurora" />
             {has.has("PREMIUM_PORTFOLIO") ? (

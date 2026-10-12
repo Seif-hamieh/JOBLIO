@@ -55,7 +55,7 @@ export const PRODUCTS: Record<ProductCode, Product> = {
     currency: "usd",
     mode: "subscription",
     audience: "member",
-    tagline: "Your own page at joblio.com/username.",
+    tagline: "Your own page at getjoblio.app/username.",
     features: ["Personal portfolio site", "About, skills, experience, projects & certificates", "Custom accent colour", "Contact section"],
   },
   FEATURED_JOB: {

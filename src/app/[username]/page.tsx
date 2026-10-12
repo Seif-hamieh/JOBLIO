@@ -76,7 +76,7 @@ export default async function PortfolioPage({ params }: { params: Promise<{ user
     <div className="min-h-dvh" style={accent ? ({ "--brand": accent, "--brand-soft-fg": accent } as React.CSSProperties) : undefined}>
       <header className="mx-auto flex max-w-5xl items-center justify-between px-5 py-5">
         <span className="font-display text-sm font-semibold text-fg-muted" dir="ltr">
-          joblio.com/{user.username}
+          getjoblio.app/{user.username}
         </span>
         <div className="flex items-center gap-1">
           <LanguageToggle />

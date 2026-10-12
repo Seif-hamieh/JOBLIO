@@ -1268,7 +1268,7 @@ export const en = {
     products: {
       CAREER_BOOST_7: { name: "Career Boost · 7 days", tagline: "A week of extra visibility.", features: "Featured placement in recruiter search|Featured Professionals listing|Premium profile badge|“Looking for Opportunities” badge" },
       CAREER_BOOST_30: { name: "Career Boost · 30 days", tagline: "A month of extra visibility.", features: "Everything in the 7-day boost|Best value per day" },
-      PREMIUM_PORTFOLIO: { name: "Premium Portfolio", tagline: "Your own page at joblio.com/username.", features: "Personal portfolio site|About, skills, experience, projects & certificates|Custom accent colour|Contact section" },
+      PREMIUM_PORTFOLIO: { name: "Premium Portfolio", tagline: "Your own page at getjoblio.app/username.", features: "Personal portfolio site|About, skills, experience, projects & certificates|Custom accent colour|Contact section" },
       FEATURED_JOB: { name: "Featured Job · 30 days", tagline: "Rank higher in relevant search results.", features: "Top of relevant search results|Featured Jobs page|“Featured” label" },
       SPONSORED_JOB: { name: "Sponsored Job · 14 days", tagline: "Prominent placement across JOBLIO.", features: "Sponsored slot above search results|Clearly labelled “Sponsored”|Shown only when it matches the search" },
       COMPANY_PREMIUM: { name: "Premium Company Page", tagline: "Make your employer brand shine.", features: "Brand colours across your page|Up to 30 photos & videos|Priority in company search|Job analytics: saves & conversion" },
