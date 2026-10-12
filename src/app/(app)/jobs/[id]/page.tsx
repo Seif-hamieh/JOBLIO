@@ -167,7 +167,7 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
             <h2 className="font-display text-lg font-semibold">{t("jobs.aboutRole")}</h2>
             <div className="mt-3 space-y-3 text-[15px] leading-relaxed text-fg-muted">
               {job.description.split(/\n{2,}/).map((p, i) => (
-                <p key={i} className="whitespace-pre-line">
+                <p key={i} className="whitespace-pre-line break-words [overflow-wrap:anywhere]">
                   {p}
                 </p>
               ))}
