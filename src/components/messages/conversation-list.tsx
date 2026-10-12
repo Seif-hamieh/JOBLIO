@@ -48,7 +48,7 @@ export function ConversationList({ conversations, activeId, viewerId }: { conver
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center justify-between gap-2">
                     <span className={cn("truncate text-sm", c.unread ? "font-semibold" : "font-medium")}>{c.other.name}</span>
-                    <span className="shrink-0 text-[11px] text-fg-subtle">{f.shortTimeAgo(c.lastMessageAt)}</span>
+                    <span className="shrink-0 text-[11px] text-fg-subtle" suppressHydrationWarning>{f.shortTimeAgo(c.lastMessageAt)}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className={cn("truncate text-xs", c.unread ? "text-fg" : "text-fg-muted")}>

@@ -35,9 +35,12 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  return NextResponse.next();
+  // Let the root layout know the path, for the page's canonical URL.
+  const forward = new Headers(request.headers);
+  forward.set("x-pathname", pathname);
+  return NextResponse.next({ request: { headers: forward } });
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|media|icon.svg|favicon.ico|robots.txt).*)"],
+  matcher: ["/((?!api|_next/static|_next/image|media|icon.svg|favicon.ico|robots.txt|sitemap.xml|opengraph-image|twitter-image).*)"],
 };

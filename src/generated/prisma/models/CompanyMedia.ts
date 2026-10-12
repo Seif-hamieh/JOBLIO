@@ -586,7 +586,7 @@ export type $CompanyMediaPayload<ExtArgs extends runtime.Types.Extensions.Intern
 export type CompanyMediaGetPayload<S extends boolean | null | undefined | CompanyMediaDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$CompanyMediaPayload, S>
 
 export type CompanyMediaCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<CompanyMediaFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<CompanyMediaFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: CompanyMediaCountAggregateInputType | true
   }
 
@@ -1033,6 +1033,7 @@ export type CompanyMediaFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.
    * Filter, which CompanyMedia to fetch.
    */
   where: Prisma.CompanyMediaWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1055,6 +1056,7 @@ export type CompanyMediaFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Exte
    * Filter, which CompanyMedia to fetch.
    */
   where: Prisma.CompanyMediaWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1107,6 +1109,7 @@ export type CompanyMediaFindFirstArgs<ExtArgs extends runtime.Types.Extensions.I
    * Filter by unique combinations of CompanyMedias.
    */
   distinct?: Prisma.CompanyMediaScalarFieldEnum | Prisma.CompanyMediaScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1159,6 +1162,7 @@ export type CompanyMediaFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Exten
    * Filter by unique combinations of CompanyMedias.
    */
   distinct?: Prisma.CompanyMediaScalarFieldEnum | Prisma.CompanyMediaScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1211,6 +1215,7 @@ export type CompanyMediaFindManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Filter by unique combinations of CompanyMedias.
    */
   distinct?: Prisma.CompanyMediaScalarFieldEnum | Prisma.CompanyMediaScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1233,6 +1238,7 @@ export type CompanyMediaCreateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * The data needed to create a CompanyMedia.
    */
   data: Prisma.XOR<Prisma.CompanyMediaCreateInput, Prisma.CompanyMediaUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1293,6 +1299,7 @@ export type CompanyMediaUpdateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Choose, which CompanyMedia to update.
    */
   where: Prisma.CompanyMediaWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1371,6 +1378,7 @@ export type CompanyMediaUpsertArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * In case the CompanyMedia was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.CompanyMediaUpdateInput, Prisma.CompanyMediaUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1393,6 +1401,7 @@ export type CompanyMediaDeleteArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Filter which CompanyMedia to delete.
    */
   where: Prisma.CompanyMediaWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

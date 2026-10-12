@@ -549,7 +549,7 @@ export type $SavedJobPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type SavedJobGetPayload<S extends boolean | null | undefined | SavedJobDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$SavedJobPayload, S>
 
 export type SavedJobCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<SavedJobFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<SavedJobFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: SavedJobCountAggregateInputType | true
   }
 
@@ -994,6 +994,7 @@ export type SavedJobFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Filter, which SavedJob to fetch.
    */
   where: Prisma.SavedJobWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1016,6 +1017,7 @@ export type SavedJobFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensio
    * Filter, which SavedJob to fetch.
    */
   where: Prisma.SavedJobWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1068,6 +1070,7 @@ export type SavedJobFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Filter by unique combinations of SavedJobs.
    */
   distinct?: Prisma.SavedJobScalarFieldEnum | Prisma.SavedJobScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1120,6 +1123,7 @@ export type SavedJobFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extension
    * Filter by unique combinations of SavedJobs.
    */
   distinct?: Prisma.SavedJobScalarFieldEnum | Prisma.SavedJobScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1172,6 +1176,7 @@ export type SavedJobFindManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Filter by unique combinations of SavedJobs.
    */
   distinct?: Prisma.SavedJobScalarFieldEnum | Prisma.SavedJobScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1194,6 +1199,7 @@ export type SavedJobCreateArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * The data needed to create a SavedJob.
    */
   data: Prisma.XOR<Prisma.SavedJobCreateInput, Prisma.SavedJobUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1254,6 +1260,7 @@ export type SavedJobUpdateArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Choose, which SavedJob to update.
    */
   where: Prisma.SavedJobWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1332,6 +1339,7 @@ export type SavedJobUpsertArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * In case the SavedJob was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.SavedJobUpdateInput, Prisma.SavedJobUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1354,6 +1362,7 @@ export type SavedJobDeleteArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Filter which SavedJob to delete.
    */
   where: Prisma.SavedJobWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

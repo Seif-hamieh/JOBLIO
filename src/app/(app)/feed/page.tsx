@@ -11,14 +11,17 @@ import { FeedList } from "@/components/feed/feed-list";
 import { PersonCard } from "@/components/network/person-card";
 import { ProfileSummaryCard } from "@/components/profile/profile-summary-card";
 import { Card, CardHeader } from "@/components/ui/misc";
+import { NavTabs } from "@/components/ui/controls";
 import { CompanyLogo } from "@/components/ui/avatar";
 
 export const generateMetadata = pageTitle("meta.feed");
 
-export default async function FeedPage() {
+export default async function FeedPage({ searchParams }: PageProps<"/feed">) {
+  // "My network" (default): you, your connections and who you follow. "Everyone" adds recent public posts.
+  const everyone = (await searchParams).scope === "all";
   const [viewer, { t }] = await Promise.all([requireViewer(), getI18n()]);
   const [feed, composer, people, companies] = await Promise.all([
-    getFeed(viewer.id),
+    getFeed(viewer.id, { networkOnly: !everyone }),
     composerData(viewer),
     suggestions(viewer.id, 4),
     db.company.findMany({
@@ -39,7 +42,22 @@ export default async function FeedPage() {
       </aside>
       <section className="min-w-0 space-y-4">
         <Composer viewer={{ name: viewer.name, image: viewer.image }} {...composer} />
-        <FeedList initial={feed.posts} nextCursor={feed.nextCursor} viewer={{ id: viewer.id, name: viewer.name, image: viewer.image }} />
+        <NavTabs
+          layoutId="feed-scope"
+          tabs={[
+            { href: "/feed", label: t("feed.tabNetwork"), exact: true },
+            { href: "/feed?scope=all", label: t("feed.tabEveryone"), exact: true },
+          ]}
+        />
+        <FeedList
+          key={everyone ? "all" : "network"}
+          initial={feed.posts}
+          nextCursor={feed.nextCursor}
+          scope={{ networkOnly: !everyone }}
+          viewer={{ id: viewer.id, name: viewer.name, image: viewer.image }}
+          emptyTitle={everyone ? undefined : t("feed.networkEmptyTitle")}
+          emptyDescription={everyone ? undefined : t("feed.networkEmptyBody")}
+        />
       </section>
       <aside className="hidden space-y-4 lg:block">
         {people.length > 0 && (

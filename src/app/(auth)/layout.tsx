@@ -21,7 +21,22 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
         </div>
         <main className="mx-auto flex w-full max-w-[400px] flex-1 flex-col justify-center py-10">{children}</main>
         <p className="text-center text-xs text-fg-subtle">
-          {t("auth.terms")} <Link href="/settings/privacy" className="underline underline-offset-2">{t("auth.privacyLink")}</Link>.
+          {/* Split the sentence around its two links so word order follows the language. */}
+          {t("legal.agree", { terms: "\u0001", privacy: "\u0002" })
+            .split(/([\u0001\u0002])/)
+            .map((part, i) =>
+              part === "\u0001" ? (
+                <Link key={i} href="/terms" className="underline underline-offset-2 hover:text-fg">
+                  {t("legal.terms")}
+                </Link>
+              ) : part === "\u0002" ? (
+                <Link key={i} href="/privacy" className="underline underline-offset-2 hover:text-fg">
+                  {t("legal.privacy")}
+                </Link>
+              ) : (
+                part
+              ),
+            )}
         </p>
       </div>
 

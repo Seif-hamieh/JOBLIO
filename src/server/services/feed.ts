@@ -39,7 +39,7 @@ export const FEED_PAGE = 10;
  * companies you follow — then recent public posts so the feed is never empty.
  * Connection-only posts are only visible to connections. No ranking model.
  */
-export async function getFeed(viewerId: string, opts: { cursor?: string; authorId?: string; companyId?: string } = {}) {
+export async function getFeed(viewerId: string, opts: { cursor?: string; authorId?: string; companyId?: string; networkOnly?: boolean } = {}) {
   const [connections, follows, companyFollows, blocks] = await Promise.all([
     connectionIds(viewerId),
     db.follow.findMany({ where: { followerId: viewerId }, select: { followingId: true } }),
@@ -58,7 +58,8 @@ export async function getFeed(viewerId: string, opts: { cursor?: string; authorI
       OR: [
         { authorId: { in: [...connected, ...follows.map((f) => f.followingId)] } },
         { companyId: { in: companyFollows.map((c) => c.companyId) } },
-        { createdAt: { gte: new Date(Date.now() - 14 * 86_400_000) }, visibility: "PUBLIC" },
+        // "Everyone" also mixes in recent public posts; "My network" doesn't.
+        ...(opts.networkOnly ? [] : [{ createdAt: { gte: new Date(Date.now() - 14 * 86_400_000) }, visibility: "PUBLIC" as const }]),
       ],
     };
   }

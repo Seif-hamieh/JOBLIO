@@ -303,7 +303,7 @@ export type $WebhookEventPayload<ExtArgs extends runtime.Types.Extensions.Intern
 export type WebhookEventGetPayload<S extends boolean | null | undefined | WebhookEventDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$WebhookEventPayload, S>
 
 export type WebhookEventCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<WebhookEventFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<WebhookEventFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: WebhookEventCountAggregateInputType | true
   }
 
@@ -742,6 +742,7 @@ export type WebhookEventFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.
    * Filter, which WebhookEvent to fetch.
    */
   where: Prisma.WebhookEventWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -760,6 +761,7 @@ export type WebhookEventFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Exte
    * Filter, which WebhookEvent to fetch.
    */
   where: Prisma.WebhookEventWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -808,6 +810,7 @@ export type WebhookEventFindFirstArgs<ExtArgs extends runtime.Types.Extensions.I
    * Filter by unique combinations of WebhookEvents.
    */
   distinct?: Prisma.WebhookEventScalarFieldEnum | Prisma.WebhookEventScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -856,6 +859,7 @@ export type WebhookEventFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Exten
    * Filter by unique combinations of WebhookEvents.
    */
   distinct?: Prisma.WebhookEventScalarFieldEnum | Prisma.WebhookEventScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -904,6 +908,7 @@ export type WebhookEventFindManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Filter by unique combinations of WebhookEvents.
    */
   distinct?: Prisma.WebhookEventScalarFieldEnum | Prisma.WebhookEventScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -922,6 +927,7 @@ export type WebhookEventCreateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * The data needed to create a WebhookEvent.
    */
   data: Prisma.XOR<Prisma.WebhookEventCreateInput, Prisma.WebhookEventUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -974,6 +980,7 @@ export type WebhookEventUpdateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Choose, which WebhookEvent to update.
    */
   where: Prisma.WebhookEventWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1044,6 +1051,7 @@ export type WebhookEventUpsertArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * In case the WebhookEvent was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.WebhookEventUpdateInput, Prisma.WebhookEventUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1062,6 +1070,7 @@ export type WebhookEventDeleteArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Filter which WebhookEvent to delete.
    */
   where: Prisma.WebhookEventWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

@@ -623,7 +623,7 @@ export type $RecruiterNotePayload<ExtArgs extends runtime.Types.Extensions.Inter
 export type RecruiterNoteGetPayload<S extends boolean | null | undefined | RecruiterNoteDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$RecruiterNotePayload, S>
 
 export type RecruiterNoteCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<RecruiterNoteFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<RecruiterNoteFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: RecruiterNoteCountAggregateInputType | true
   }
 
@@ -1070,6 +1070,7 @@ export type RecruiterNoteFindUniqueArgs<ExtArgs extends runtime.Types.Extensions
    * Filter, which RecruiterNote to fetch.
    */
   where: Prisma.RecruiterNoteWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1092,6 +1093,7 @@ export type RecruiterNoteFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Ext
    * Filter, which RecruiterNote to fetch.
    */
   where: Prisma.RecruiterNoteWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1144,6 +1146,7 @@ export type RecruiterNoteFindFirstArgs<ExtArgs extends runtime.Types.Extensions.
    * Filter by unique combinations of RecruiterNotes.
    */
   distinct?: Prisma.RecruiterNoteScalarFieldEnum | Prisma.RecruiterNoteScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1196,6 +1199,7 @@ export type RecruiterNoteFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Exte
    * Filter by unique combinations of RecruiterNotes.
    */
   distinct?: Prisma.RecruiterNoteScalarFieldEnum | Prisma.RecruiterNoteScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1248,6 +1252,7 @@ export type RecruiterNoteFindManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Filter by unique combinations of RecruiterNotes.
    */
   distinct?: Prisma.RecruiterNoteScalarFieldEnum | Prisma.RecruiterNoteScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1270,6 +1275,7 @@ export type RecruiterNoteCreateArgs<ExtArgs extends runtime.Types.Extensions.Int
    * The data needed to create a RecruiterNote.
    */
   data: Prisma.XOR<Prisma.RecruiterNoteCreateInput, Prisma.RecruiterNoteUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1330,6 +1336,7 @@ export type RecruiterNoteUpdateArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Choose, which RecruiterNote to update.
    */
   where: Prisma.RecruiterNoteWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1408,6 +1415,7 @@ export type RecruiterNoteUpsertArgs<ExtArgs extends runtime.Types.Extensions.Int
    * In case the RecruiterNote was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.RecruiterNoteUpdateInput, Prisma.RecruiterNoteUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1430,6 +1438,7 @@ export type RecruiterNoteDeleteArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Filter which RecruiterNote to delete.
    */
   where: Prisma.RecruiterNoteWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

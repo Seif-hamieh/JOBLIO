@@ -5,6 +5,15 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { buildNetwork, type NodeKind } from "./network-data";
 
+// three r183+ deprecates THREE.Clock, which @react-three/fiber 9.x still creates
+// internally (fiber v10 moves to THREE.Timer). Our code doesn't use Clock, so drop
+// only that one notice through three's own console hook; everything else passes through.
+THREE.setConsoleFunction((level, message, ...params) => {
+  if (level === "warn" && typeof message === "string" && message.startsWith("THREE.Clock:")) return;
+  const out = level === "error" ? console.error : level === "warn" ? console.warn : console.log;
+  out(message, ...params);
+});
+
 export type ScenePalette = Record<NodeKind, string> & { line: string; pulse: string };
 
 const PULSES = 14;

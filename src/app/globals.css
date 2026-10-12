@@ -173,6 +173,8 @@
   html {
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
+    /* Anchor jumps and focus scrolling stop below the sticky 64px header. */
+    scroll-padding-top: 5.5rem;
   }
   body {
     background: var(--bg);

@@ -2849,7 +2849,7 @@ export type $CompanyPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type CompanyGetPayload<S extends boolean | null | undefined | CompanyDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$CompanyPayload, S>
 
 export type CompanyCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<CompanyFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<CompanyFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: CompanyCountAggregateInputType | true
   }
 
@@ -3321,6 +3321,7 @@ export type CompanyFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Filter, which Company to fetch.
    */
   where: Prisma.CompanyWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -3343,6 +3344,7 @@ export type CompanyFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extension
    * Filter, which Company to fetch.
    */
   where: Prisma.CompanyWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -3395,6 +3397,7 @@ export type CompanyFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Filter by unique combinations of Companies.
    */
   distinct?: Prisma.CompanyScalarFieldEnum | Prisma.CompanyScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -3447,6 +3450,7 @@ export type CompanyFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions
    * Filter by unique combinations of Companies.
    */
   distinct?: Prisma.CompanyScalarFieldEnum | Prisma.CompanyScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -3499,6 +3503,7 @@ export type CompanyFindManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Filter by unique combinations of Companies.
    */
   distinct?: Prisma.CompanyScalarFieldEnum | Prisma.CompanyScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -3521,6 +3526,7 @@ export type CompanyCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * The data needed to create a Company.
    */
   data: Prisma.XOR<Prisma.CompanyCreateInput, Prisma.CompanyUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -3581,6 +3587,7 @@ export type CompanyUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Choose, which Company to update.
    */
   where: Prisma.CompanyWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -3659,6 +3666,7 @@ export type CompanyUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * In case the Company was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.CompanyUpdateInput, Prisma.CompanyUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -3681,6 +3689,7 @@ export type CompanyDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Filter which Company to delete.
    */
   where: Prisma.CompanyWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

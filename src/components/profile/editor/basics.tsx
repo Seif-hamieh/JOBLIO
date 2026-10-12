@@ -11,6 +11,8 @@ import { PreferencesFields, type Preferences } from "@/components/profile/prefer
 import { removeProfileImageAction, updateBasicsAction, updatePreferencesAction, uploadProfileImageAction } from "@/server/actions/profile";
 import { useI18n } from "@/i18n/client";
 import { localizedCountries } from "@/i18n/countries";
+import { acceptFor, checkUpload } from "@/lib/upload-check";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 
 export type BasicsValue = {
   name: string;
@@ -47,26 +49,45 @@ export function ImageUploader({ kind, current, name }: { kind: "avatar" | "cover
   const { t } = useI18n();
   const input = useRef<HTMLInputElement>(null);
   const [pending, start] = useTransition();
-  const upload = (file: File) =>
+  const upload = (file: File) => {
+    if (input.current) input.current.value = "";
+    const problem = checkUpload(file, "image", t);
+    if (problem) return toast.error(problem);
     start(async () => {
       const fd = new FormData();
       fd.set("kind", kind);
       fd.set("file", file);
-      const res = await uploadProfileImageAction(fd);
+      const res = await uploadProfileImageAction(fd).catch(() => null);
+      if (res?.ok) {
+        toast.success(res.message ?? t("common.saved"));
+        router.refresh();
+      } else toast.error(res && !res.ok ? res.error : t("msg.uploadFailed"));
+    });
+  };
+  const [confirming, setConfirming] = useState(false);
+  const remove = () =>
+    start(async () => {
+      const res = await removeProfileImageAction(kind).catch(() => null);
+      setConfirming(false);
       if (res?.ok) {
         toast.success(res.message ?? t("common.saved"));
         router.refresh();
       } else toast.error(res && !res.ok ? res.error : t("common.somethingWrong"));
     });
-  const remove = () =>
-    start(async () => {
-      const res = await removeProfileImageAction(kind);
-      if (res?.ok) router.refresh();
-    });
+  const askRemove = () => setConfirming(true);
 
   return (
     <div className={kind === "cover" ? "relative" : "flex items-center gap-4"}>
-      <input ref={input} type="file" accept="image/png,image/jpeg,image/webp" className="sr-only" onChange={(e) => e.target.files?.[0] && upload(e.target.files[0])} />
+      <ConfirmDialog
+        open={confirming}
+        onOpenChange={setConfirming}
+        title={kind === "avatar" ? t("profileEdit.removePhotoTitle") : t("profileEdit.removeCoverTitle")}
+        description={t("profileEdit.removeImageBody")}
+        confirmLabel={t("common.remove")}
+        onConfirm={remove}
+        loading={pending}
+      />
+      <input ref={input} type="file" accept={acceptFor("image")} className="sr-only" onChange={(e) => e.target.files?.[0] && upload(e.target.files[0])} />
       {kind === "avatar" ? (
         <>
           <button type="button" onClick={() => input.current?.click()} className="group relative rounded-full" aria-label={t("profileEdit.changePhoto")}>
@@ -80,7 +101,7 @@ export function ImageUploader({ kind, current, name }: { kind: "avatar" | "cover
               <Camera /> {current ? t("profileEdit.changePhoto") : t("profileEdit.uploadPhoto")}
             </Button>
             {current && (
-              <Button size="sm" variant="ghost" onClick={remove} disabled={pending}>
+              <Button size="sm" variant="ghost" onClick={askRemove} disabled={pending}>
                 <Trash2 /> {t("common.remove")}
               </Button>
             )}
@@ -96,7 +117,7 @@ export function ImageUploader({ kind, current, name }: { kind: "avatar" | "cover
             <ImagePlus /> {current ? t("profileEdit.changeCover") : t("profileEdit.addCover")}
           </Button>
           {current && (
-            <Button size="sm" variant="outline" onClick={remove} disabled={pending} aria-label={t("common.remove")}>
+            <Button size="sm" variant="outline" onClick={askRemove} disabled={pending} aria-label={t("common.remove")}>
               <Trash2 />
             </Button>
           )}

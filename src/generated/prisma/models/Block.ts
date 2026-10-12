@@ -549,7 +549,7 @@ export type $BlockPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
 export type BlockGetPayload<S extends boolean | null | undefined | BlockDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$BlockPayload, S>
 
 export type BlockCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<BlockFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<BlockFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: BlockCountAggregateInputType | true
   }
 
@@ -994,6 +994,7 @@ export type BlockFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Filter, which Block to fetch.
    */
   where: Prisma.BlockWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1016,6 +1017,7 @@ export type BlockFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.
    * Filter, which Block to fetch.
    */
   where: Prisma.BlockWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1068,6 +1070,7 @@ export type BlockFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Filter by unique combinations of Blocks.
    */
   distinct?: Prisma.BlockScalarFieldEnum | Prisma.BlockScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1120,6 +1123,7 @@ export type BlockFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.I
    * Filter by unique combinations of Blocks.
    */
   distinct?: Prisma.BlockScalarFieldEnum | Prisma.BlockScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1172,6 +1176,7 @@ export type BlockFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Filter by unique combinations of Blocks.
    */
   distinct?: Prisma.BlockScalarFieldEnum | Prisma.BlockScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1194,6 +1199,7 @@ export type BlockCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * The data needed to create a Block.
    */
   data: Prisma.XOR<Prisma.BlockCreateInput, Prisma.BlockUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1254,6 +1260,7 @@ export type BlockUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * Choose, which Block to update.
    */
   where: Prisma.BlockWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1332,6 +1339,7 @@ export type BlockUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * In case the Block was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.BlockUpdateInput, Prisma.BlockUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1354,6 +1362,7 @@ export type BlockDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * Filter which Block to delete.
    */
   where: Prisma.BlockWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

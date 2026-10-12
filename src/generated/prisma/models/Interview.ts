@@ -999,7 +999,7 @@ export type $InterviewPayload<ExtArgs extends runtime.Types.Extensions.InternalA
 export type InterviewGetPayload<S extends boolean | null | undefined | InterviewDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$InterviewPayload, S>
 
 export type InterviewCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<InterviewFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<InterviewFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: InterviewCountAggregateInputType | true
   }
 
@@ -1454,6 +1454,7 @@ export type InterviewFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Filter, which Interview to fetch.
    */
   where: Prisma.InterviewWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1476,6 +1477,7 @@ export type InterviewFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensi
    * Filter, which Interview to fetch.
    */
   where: Prisma.InterviewWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1528,6 +1530,7 @@ export type InterviewFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Filter by unique combinations of Interviews.
    */
   distinct?: Prisma.InterviewScalarFieldEnum | Prisma.InterviewScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1580,6 +1583,7 @@ export type InterviewFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensio
    * Filter by unique combinations of Interviews.
    */
   distinct?: Prisma.InterviewScalarFieldEnum | Prisma.InterviewScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1632,6 +1636,7 @@ export type InterviewFindManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Filter by unique combinations of Interviews.
    */
   distinct?: Prisma.InterviewScalarFieldEnum | Prisma.InterviewScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1654,6 +1659,7 @@ export type InterviewCreateArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * The data needed to create a Interview.
    */
   data: Prisma.XOR<Prisma.InterviewCreateInput, Prisma.InterviewUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1714,6 +1720,7 @@ export type InterviewUpdateArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Choose, which Interview to update.
    */
   where: Prisma.InterviewWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1792,6 +1799,7 @@ export type InterviewUpsertArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * In case the Interview was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.InterviewUpdateInput, Prisma.InterviewUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1814,6 +1822,7 @@ export type InterviewDeleteArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Filter which Interview to delete.
    */
   where: Prisma.InterviewWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

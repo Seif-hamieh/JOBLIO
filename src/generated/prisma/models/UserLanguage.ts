@@ -480,7 +480,7 @@ export type $UserLanguagePayload<ExtArgs extends runtime.Types.Extensions.Intern
 export type UserLanguageGetPayload<S extends boolean | null | undefined | UserLanguageDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$UserLanguagePayload, S>
 
 export type UserLanguageCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<UserLanguageFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<UserLanguageFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: UserLanguageCountAggregateInputType | true
   }
 
@@ -925,6 +925,7 @@ export type UserLanguageFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.
    * Filter, which UserLanguage to fetch.
    */
   where: Prisma.UserLanguageWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -947,6 +948,7 @@ export type UserLanguageFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Exte
    * Filter, which UserLanguage to fetch.
    */
   where: Prisma.UserLanguageWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -999,6 +1001,7 @@ export type UserLanguageFindFirstArgs<ExtArgs extends runtime.Types.Extensions.I
    * Filter by unique combinations of UserLanguages.
    */
   distinct?: Prisma.UserLanguageScalarFieldEnum | Prisma.UserLanguageScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1051,6 +1054,7 @@ export type UserLanguageFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Exten
    * Filter by unique combinations of UserLanguages.
    */
   distinct?: Prisma.UserLanguageScalarFieldEnum | Prisma.UserLanguageScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1103,6 +1107,7 @@ export type UserLanguageFindManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Filter by unique combinations of UserLanguages.
    */
   distinct?: Prisma.UserLanguageScalarFieldEnum | Prisma.UserLanguageScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1125,6 +1130,7 @@ export type UserLanguageCreateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * The data needed to create a UserLanguage.
    */
   data: Prisma.XOR<Prisma.UserLanguageCreateInput, Prisma.UserLanguageUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1185,6 +1191,7 @@ export type UserLanguageUpdateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Choose, which UserLanguage to update.
    */
   where: Prisma.UserLanguageWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1263,6 +1270,7 @@ export type UserLanguageUpsertArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * In case the UserLanguage was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.UserLanguageUpdateInput, Prisma.UserLanguageUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1285,6 +1293,7 @@ export type UserLanguageDeleteArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Filter which UserLanguage to delete.
    */
   where: Prisma.UserLanguageWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

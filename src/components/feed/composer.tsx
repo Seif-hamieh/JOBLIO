@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
+import { acceptFor, checkUpload } from "@/lib/upload-check";
+import type { ActionState } from "@/server/action";
 
 type Option = { id: string; title: string };
 
@@ -42,7 +44,18 @@ export function Composer({
   const [asCompany, setAsCompany] = useState(false);
   const [content, setContent] = useState("");
   const [files, setFiles] = useState<File[]>([]);
-  const [state, action, pending] = useActionState(createPostAction, null);
+  const [state, action, pending] = useActionState<ActionState, FormData>(
+    (prev, form) => createPostAction(prev, form).catch(() => ({ ok: false as const, error: t("msg.uploadFailed") })),
+    null,
+  );
+  const addFiles = (input: HTMLInputElement) => {
+    const next = [...files, ...Array.from(input.files ?? [])].slice(0, 4);
+    input.value = "";
+    // All images go up in one request, so they share the size limit.
+    const problem = checkUpload(next, "image", t);
+    if (problem) return toast.error(problem);
+    setFiles(next);
+  };
   const formRef = useRef<HTMLFormElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -178,10 +191,10 @@ export function Composer({
           <input
             ref={fileRef}
             type="file"
-            accept="image/png,image/jpeg,image/webp,image/gif"
+            accept={acceptFor("image")}
             multiple
             className="sr-only"
-            onChange={(e) => setFiles((f) => [...f, ...Array.from(e.target.files ?? [])].slice(0, 4))}
+            onChange={(e) => addFiles(e.target)}
           />
           {/* Files are appended at submit time so removals are respected. */}
           <FilesBridge files={files} formRef={formRef} />

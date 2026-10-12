@@ -791,7 +791,7 @@ export type $ApplicationEventPayload<ExtArgs extends runtime.Types.Extensions.In
 export type ApplicationEventGetPayload<S extends boolean | null | undefined | ApplicationEventDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$ApplicationEventPayload, S>
 
 export type ApplicationEventCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<ApplicationEventFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<ApplicationEventFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: ApplicationEventCountAggregateInputType | true
   }
 
@@ -1242,6 +1242,7 @@ export type ApplicationEventFindUniqueArgs<ExtArgs extends runtime.Types.Extensi
    * Filter, which ApplicationEvent to fetch.
    */
   where: Prisma.ApplicationEventWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1264,6 +1265,7 @@ export type ApplicationEventFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.
    * Filter, which ApplicationEvent to fetch.
    */
   where: Prisma.ApplicationEventWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1316,6 +1318,7 @@ export type ApplicationEventFindFirstArgs<ExtArgs extends runtime.Types.Extensio
    * Filter by unique combinations of ApplicationEvents.
    */
   distinct?: Prisma.ApplicationEventScalarFieldEnum | Prisma.ApplicationEventScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1368,6 +1371,7 @@ export type ApplicationEventFindFirstOrThrowArgs<ExtArgs extends runtime.Types.E
    * Filter by unique combinations of ApplicationEvents.
    */
   distinct?: Prisma.ApplicationEventScalarFieldEnum | Prisma.ApplicationEventScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1420,6 +1424,7 @@ export type ApplicationEventFindManyArgs<ExtArgs extends runtime.Types.Extension
    * Filter by unique combinations of ApplicationEvents.
    */
   distinct?: Prisma.ApplicationEventScalarFieldEnum | Prisma.ApplicationEventScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1442,6 +1447,7 @@ export type ApplicationEventCreateArgs<ExtArgs extends runtime.Types.Extensions.
    * The data needed to create a ApplicationEvent.
    */
   data: Prisma.XOR<Prisma.ApplicationEventCreateInput, Prisma.ApplicationEventUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1502,6 +1508,7 @@ export type ApplicationEventUpdateArgs<ExtArgs extends runtime.Types.Extensions.
    * Choose, which ApplicationEvent to update.
    */
   where: Prisma.ApplicationEventWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1580,6 +1587,7 @@ export type ApplicationEventUpsertArgs<ExtArgs extends runtime.Types.Extensions.
    * In case the ApplicationEvent was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.ApplicationEventUpdateInput, Prisma.ApplicationEventUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1602,6 +1610,7 @@ export type ApplicationEventDeleteArgs<ExtArgs extends runtime.Types.Extensions.
    * Filter which ApplicationEvent to delete.
    */
   where: Prisma.ApplicationEventWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

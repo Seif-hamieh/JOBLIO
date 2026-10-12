@@ -831,7 +831,7 @@ export type $SubscriptionPayload<ExtArgs extends runtime.Types.Extensions.Intern
 export type SubscriptionGetPayload<S extends boolean | null | undefined | SubscriptionDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$SubscriptionPayload, S>
 
 export type SubscriptionCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<SubscriptionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<SubscriptionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: SubscriptionCountAggregateInputType | true
   }
 
@@ -1283,6 +1283,7 @@ export type SubscriptionFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.
    * Filter, which Subscription to fetch.
    */
   where: Prisma.SubscriptionWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1305,6 +1306,7 @@ export type SubscriptionFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Exte
    * Filter, which Subscription to fetch.
    */
   where: Prisma.SubscriptionWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1357,6 +1359,7 @@ export type SubscriptionFindFirstArgs<ExtArgs extends runtime.Types.Extensions.I
    * Filter by unique combinations of Subscriptions.
    */
   distinct?: Prisma.SubscriptionScalarFieldEnum | Prisma.SubscriptionScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1409,6 +1412,7 @@ export type SubscriptionFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Exten
    * Filter by unique combinations of Subscriptions.
    */
   distinct?: Prisma.SubscriptionScalarFieldEnum | Prisma.SubscriptionScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1461,6 +1465,7 @@ export type SubscriptionFindManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Filter by unique combinations of Subscriptions.
    */
   distinct?: Prisma.SubscriptionScalarFieldEnum | Prisma.SubscriptionScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1483,6 +1488,7 @@ export type SubscriptionCreateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * The data needed to create a Subscription.
    */
   data: Prisma.XOR<Prisma.SubscriptionCreateInput, Prisma.SubscriptionUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1543,6 +1549,7 @@ export type SubscriptionUpdateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Choose, which Subscription to update.
    */
   where: Prisma.SubscriptionWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1621,6 +1628,7 @@ export type SubscriptionUpsertArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * In case the Subscription was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.SubscriptionUpdateInput, Prisma.SubscriptionUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1643,6 +1651,7 @@ export type SubscriptionDeleteArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Filter which Subscription to delete.
    */
   where: Prisma.SubscriptionWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

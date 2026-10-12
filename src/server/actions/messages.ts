@@ -6,7 +6,7 @@ import { fail, withViewer, type ActionState } from "@/server/action";
 import { LIMITS } from "@/server/rate-limit";
 import { publish } from "@/server/realtime";
 import { ensureConversation, getThread, markConversationRead, messageSelect, sendMessage, type ChatMessage } from "@/server/services/messaging";
-import { storeUpload, UploadError } from "@/server/storage";
+import { deleteStored, storeUpload, UploadError } from "@/server/storage";
 
 const id = z.string().min(1).max(64);
 
@@ -45,6 +45,23 @@ export async function sendMessageAction(form: FormData): Promise<ActionState<{ m
     const kind = attachment ? "FILE" : share.sharedJobId ? "JOB" : share.sharedUserId ? "PROFILE" : share.sharedCompanyId ? "COMPANY" : "TEXT";
     const message = await sendMessage({ id: viewer.id, name: viewer.name }, conversationId, { body: body.data, kind, attachment, ...share });
     return { ok: true, data: { message, conversationId } };
+  });
+}
+
+/** Deletes one of your own messages for everyone in the conversation (and its attachment). */
+export async function deleteMessageAction(messageId: string): Promise<ActionState> {
+  return withViewer({ limit: LIMITS.write }, async (viewer) => {
+    const msg = await db.message.findFirst({
+      where: { id: id.parse(messageId), senderId: viewer.id },
+      select: { id: true, conversationId: true, attachmentUrl: true, conversation: { select: { participants: { select: { userId: true } } } } },
+    });
+    if (!msg) return fail("@msg.messageNotFound");
+    await db.message.delete({ where: { id: msg.id } });
+    await deleteStored([msg.attachmentUrl]);
+    for (const p of msg.conversation.participants) {
+      if (p.userId !== viewer.id) publish(p.userId, { type: "message-deleted", conversationId: msg.conversationId, messageId: msg.id });
+    }
+    return { ok: true, message: "@msg.messageDeleted" };
   });
 }
 

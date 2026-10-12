@@ -25,10 +25,11 @@ const COLUMNS: { title: TKey | "JOBLIO"; links: { href: string; label: TKey }[] 
   {
     title: "JOBLIO",
     links: [
+      { href: "/about", label: "legal.about" },
       { href: "/#how-matching-works", label: "footer.howMatching" },
       { href: "/professionals/featured", label: "footer.featuredProfessionals" },
-      { href: "/settings/privacy", label: "nav.privacy" },
       { href: "/premium", label: "nav.pricing" },
+      { href: "/contact", label: "legal.contact" },
     ],
   },
 ];
@@ -62,7 +63,15 @@ export async function SiteFooter() {
       </div>
       <div className="border-t border-border">
         <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-6 text-xs text-fg-subtle sm:flex-row sm:justify-between sm:px-6">
-          <span>{t("footer.rights", { year: new Date().getFullYear() })}</span>
+          <span className="flex flex-wrap items-center gap-x-4 gap-y-1">
+            <span>{t("footer.rights", { year: new Date().getFullYear() })}</span>
+            <Link href="/terms" className="hover:text-fg">
+              {t("legal.terms")}
+            </Link>
+            <Link href="/privacy" className="hover:text-fg">
+              {t("legal.privacy")}
+            </Link>
+          </span>
           <span>{t("footer.freeLine")}</span>
         </div>
       </div>

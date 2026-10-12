@@ -2108,7 +2108,7 @@ export type $PostPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 export type PostGetPayload<S extends boolean | null | undefined | PostDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$PostPayload, S>
 
 export type PostCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<PostFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<PostFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: PostCountAggregateInputType | true
   }
 
@@ -2571,6 +2571,7 @@ export type PostFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Filter, which Post to fetch.
    */
   where: Prisma.PostWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -2593,6 +2594,7 @@ export type PostFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.I
    * Filter, which Post to fetch.
    */
   where: Prisma.PostWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -2645,6 +2647,7 @@ export type PostFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Filter by unique combinations of Posts.
    */
   distinct?: Prisma.PostScalarFieldEnum | Prisma.PostScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -2697,6 +2700,7 @@ export type PostFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.In
    * Filter by unique combinations of Posts.
    */
   distinct?: Prisma.PostScalarFieldEnum | Prisma.PostScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -2749,6 +2753,7 @@ export type PostFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * Filter by unique combinations of Posts.
    */
   distinct?: Prisma.PostScalarFieldEnum | Prisma.PostScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -2771,6 +2776,7 @@ export type PostCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    * The data needed to create a Post.
    */
   data: Prisma.XOR<Prisma.PostCreateInput, Prisma.PostUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -2831,6 +2837,7 @@ export type PostUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    * Choose, which Post to update.
    */
   where: Prisma.PostWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -2909,6 +2916,7 @@ export type PostUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    * In case the Post was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.PostUpdateInput, Prisma.PostUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -2931,6 +2939,7 @@ export type PostDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    * Filter which Post to delete.
    */
   where: Prisma.PostWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

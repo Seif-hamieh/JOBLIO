@@ -105,7 +105,7 @@ export function JobCard({
             ))}
           </div>
         )}
-        <span className="inline-flex items-center gap-2 text-xs text-fg-subtle">
+        <span className="inline-flex items-center gap-2 text-xs text-fg-subtle" suppressHydrationWarning>
           {job.publishedAt && f.shortTimeAgo(job.publishedAt)}
           {job.applicationCount > 0 && (
             <span className="inline-flex items-center gap-1">

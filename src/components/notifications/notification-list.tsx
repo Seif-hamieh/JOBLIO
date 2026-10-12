@@ -148,7 +148,7 @@ export function NotificationList({ items }: { items: NotificationItem[] }) {
                           <div className="min-w-0 flex-1">
                             <p className={cn("text-sm", unread ? "font-semibold" : "text-fg")}>{n.title}</p>
                             {n.body && <p className="mt-0.5 line-clamp-2 text-sm text-fg-muted">{n.body}</p>}
-                            <p className="mt-1 text-xs text-fg-subtle">{f.timeAgo(n.createdAt)}</p>
+                            <p className="mt-1 text-xs text-fg-subtle" suppressHydrationWarning>{f.timeAgo(n.createdAt)}</p>
                           </div>
                           {unread && <span className="mt-2 size-2 shrink-0 rounded-full bg-brand" aria-label={t("messages.unread")} />}
                         </Link>

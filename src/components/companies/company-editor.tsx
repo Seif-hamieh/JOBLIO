@@ -12,6 +12,7 @@ import { MediaThumb, type MediaItem } from "@/components/companies/gallery";
 import { addCompanyVideoAction, deleteCompanyMediaAction, updateCompanyAction, uploadCompanyImageAction } from "@/server/actions/companies";
 import { COMPANY_SIZES, type CompanySize } from "@/lib/constants";
 import { useI18n } from "@/i18n/client";
+import { acceptFor, checkUpload } from "@/lib/upload-check";
 import { localizedCountries } from "@/i18n/countries";
 import { industryName } from "@/i18n/translate";
 
@@ -60,17 +61,21 @@ export function CompanyEditor({
   const kindRef = useRef<"logo" | "cover" | "media">("logo");
   const set = <K extends keyof CompanyEditorValue>(k: K, val: CompanyEditorValue[K]) => setV((x) => ({ ...x, [k]: val }));
 
-  const upload = (file: File) =>
+  const upload = (file: File) => {
+    if (fileRef.current) fileRef.current.value = "";
+    const problem = checkUpload(file, "image", t);
+    if (problem) return toast.error(problem);
     startUpload(async () => {
       const fd = new FormData();
       fd.set("kind", kindRef.current);
       fd.set("file", file);
-      const res = await uploadCompanyImageAction(fd);
+      const res = await uploadCompanyImageAction(fd).catch(() => null);
       if (res?.ok) {
-        toast.success(t("common.saved"));
+        toast.success(res.message ?? t("common.saved"));
         router.refresh();
-      } else toast.error(res && !res.ok ? res.error : t("common.somethingWrong"));
+      } else toast.error(res && !res.ok ? res.error : t("msg.uploadFailed"));
     });
+  };
   const [videoUrl, setVideoUrl] = useState("");
   const [addingVideo, startVideo] = useTransition();
   const addVideo = () =>
@@ -92,7 +97,7 @@ export function CompanyEditor({
 
   return (
     <div className="space-y-6">
-      <input ref={fileRef} type="file" accept="image/png,image/jpeg,image/webp" className="sr-only" onChange={(e) => e.target.files?.[0] && upload(e.target.files[0])} />
+      <input ref={fileRef} type="file" accept={acceptFor("image")} className="sr-only" onChange={(e) => e.target.files?.[0] && upload(e.target.files[0])} />
       <div className="relative h-36 overflow-hidden rounded-2xl bg-gradient-to-r from-brand to-aurora bg-cover bg-center rtl:bg-gradient-to-l" style={coverUrl ? { backgroundImage: `url(${coverUrl})` } : undefined}>
         <Button size="sm" variant="outline" className="absolute bottom-3 end-3" loading={uploading} onClick={() => pick("cover")}>
           <ImagePlus /> {t("companyDash.cover")}

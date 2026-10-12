@@ -991,7 +991,7 @@ export type $ExperiencePayload<ExtArgs extends runtime.Types.Extensions.Internal
 export type ExperienceGetPayload<S extends boolean | null | undefined | ExperienceDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$ExperiencePayload, S>
 
 export type ExperienceCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<ExperienceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<ExperienceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: ExperienceCountAggregateInputType | true
   }
 
@@ -1447,6 +1447,7 @@ export type ExperienceFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.In
    * Filter, which Experience to fetch.
    */
   where: Prisma.ExperienceWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1469,6 +1470,7 @@ export type ExperienceFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extens
    * Filter, which Experience to fetch.
    */
   where: Prisma.ExperienceWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1521,6 +1523,7 @@ export type ExperienceFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Filter by unique combinations of Experiences.
    */
   distinct?: Prisma.ExperienceScalarFieldEnum | Prisma.ExperienceScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1573,6 +1576,7 @@ export type ExperienceFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensi
    * Filter by unique combinations of Experiences.
    */
   distinct?: Prisma.ExperienceScalarFieldEnum | Prisma.ExperienceScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1625,6 +1629,7 @@ export type ExperienceFindManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Filter by unique combinations of Experiences.
    */
   distinct?: Prisma.ExperienceScalarFieldEnum | Prisma.ExperienceScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1647,6 +1652,7 @@ export type ExperienceCreateArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * The data needed to create a Experience.
    */
   data: Prisma.XOR<Prisma.ExperienceCreateInput, Prisma.ExperienceUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1707,6 +1713,7 @@ export type ExperienceUpdateArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Choose, which Experience to update.
    */
   where: Prisma.ExperienceWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1785,6 +1792,7 @@ export type ExperienceUpsertArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * In case the Experience was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.ExperienceUpdateInput, Prisma.ExperienceUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1807,6 +1815,7 @@ export type ExperienceDeleteArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Filter which Experience to delete.
    */
   where: Prisma.ExperienceWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

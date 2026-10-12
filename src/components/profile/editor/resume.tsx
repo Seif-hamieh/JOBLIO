@@ -1,12 +1,14 @@
 "use client";
 
-import { useRef, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { ExternalLink, FileText, Trash2, Upload } from "lucide-react";
 import { Button, buttonClasses } from "@/components/ui/button";
 import { toast } from "@/components/ui/toast";
 import { removeResumeAction, uploadResumeAction } from "@/server/actions/profile";
 import { useI18n } from "@/i18n/client";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { acceptFor, checkUpload } from "@/lib/upload-check";
 
 export type SavedResume = { url: string; name: string; updatedAt: string };
 
@@ -17,20 +19,25 @@ export function ResumeManager({ resume }: { resume: SavedResume | null }) {
   const input = useRef<HTMLInputElement>(null);
   const [pending, start] = useTransition();
 
-  const upload = (file: File) =>
+  const [confirming, setConfirming] = useState(false);
+  const upload = (file: File) => {
+    if (input.current) input.current.value = "";
+    const problem = checkUpload(file, "cv", t);
+    if (problem) return toast.error(problem);
     start(async () => {
       const fd = new FormData();
       fd.set("file", file);
-      const res = await uploadResumeAction(fd);
-      if (input.current) input.current.value = "";
+      const res = await uploadResumeAction(fd).catch(() => null);
       if (res?.ok) {
         toast.success(res.message ?? t("common.saved"));
         router.refresh();
-      } else toast.error(res && !res.ok ? res.error : t("common.somethingWrong"));
+      } else toast.error(res && !res.ok ? res.error : t("msg.uploadFailed"));
     });
+  };
   const remove = () =>
     start(async () => {
-      const res = await removeResumeAction();
+      const res = await removeResumeAction().catch(() => null);
+      setConfirming(false);
       if (res?.ok) {
         toast.success(res.message ?? t("common.saved"));
         router.refresh();
@@ -39,10 +46,19 @@ export function ResumeManager({ resume }: { resume: SavedResume | null }) {
 
   return (
     <div>
+      <ConfirmDialog
+        open={confirming}
+        onOpenChange={setConfirming}
+        title={t("profileEdit.removeCvTitle")}
+        description={t("profileEdit.removeCvBody")}
+        confirmLabel={t("common.remove")}
+        onConfirm={remove}
+        loading={pending}
+      />
       <input
         ref={input}
         type="file"
-        accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        accept={acceptFor("cv")}
         className="sr-only"
         onChange={(e) => e.target.files?.[0] && upload(e.target.files[0])}
       />
@@ -64,7 +80,7 @@ export function ResumeManager({ resume }: { resume: SavedResume | null }) {
             <Button size="sm" variant="outline" loading={pending} onClick={() => input.current?.click()}>
               <Upload /> {t("profileEdit.cvReplace")}
             </Button>
-            <Button size="sm" variant="ghost" onClick={remove} disabled={pending} aria-label={t("common.remove")}>
+            <Button size="sm" variant="ghost" onClick={() => setConfirming(true)} disabled={pending} aria-label={t("common.remove")}>
               <Trash2 />
             </Button>
           </div>

@@ -192,6 +192,13 @@ export type JobPromotion = Prisma.JobPromotionModel
  */
 export type JobDailyStat = Prisma.JobDailyStatModel
 /**
+ * Model JobView
+ * Last time each viewer saw a job, so the view counter counts one view per
+ * viewer per 24 hours. viewerKey is the user id, or for signed-out visitors a
+ * one-way hash of their network address and browser (nothing identifying is stored).
+ */
+export type JobView = Prisma.JobViewModel
+/**
  * Model SavedJob
  * 
  */

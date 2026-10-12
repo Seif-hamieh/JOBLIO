@@ -688,7 +688,7 @@ export type $PortfolioItemPayload<ExtArgs extends runtime.Types.Extensions.Inter
 export type PortfolioItemGetPayload<S extends boolean | null | undefined | PortfolioItemDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$PortfolioItemPayload, S>
 
 export type PortfolioItemCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<PortfolioItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<PortfolioItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: PortfolioItemCountAggregateInputType | true
   }
 
@@ -1138,6 +1138,7 @@ export type PortfolioItemFindUniqueArgs<ExtArgs extends runtime.Types.Extensions
    * Filter, which PortfolioItem to fetch.
    */
   where: Prisma.PortfolioItemWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1160,6 +1161,7 @@ export type PortfolioItemFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Ext
    * Filter, which PortfolioItem to fetch.
    */
   where: Prisma.PortfolioItemWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1212,6 +1214,7 @@ export type PortfolioItemFindFirstArgs<ExtArgs extends runtime.Types.Extensions.
    * Filter by unique combinations of PortfolioItems.
    */
   distinct?: Prisma.PortfolioItemScalarFieldEnum | Prisma.PortfolioItemScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1264,6 +1267,7 @@ export type PortfolioItemFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Exte
    * Filter by unique combinations of PortfolioItems.
    */
   distinct?: Prisma.PortfolioItemScalarFieldEnum | Prisma.PortfolioItemScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1316,6 +1320,7 @@ export type PortfolioItemFindManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Filter by unique combinations of PortfolioItems.
    */
   distinct?: Prisma.PortfolioItemScalarFieldEnum | Prisma.PortfolioItemScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1338,6 +1343,7 @@ export type PortfolioItemCreateArgs<ExtArgs extends runtime.Types.Extensions.Int
    * The data needed to create a PortfolioItem.
    */
   data: Prisma.XOR<Prisma.PortfolioItemCreateInput, Prisma.PortfolioItemUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1398,6 +1404,7 @@ export type PortfolioItemUpdateArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Choose, which PortfolioItem to update.
    */
   where: Prisma.PortfolioItemWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1476,6 +1483,7 @@ export type PortfolioItemUpsertArgs<ExtArgs extends runtime.Types.Extensions.Int
    * In case the PortfolioItem was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.PortfolioItemUpdateInput, Prisma.PortfolioItemUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1498,6 +1506,7 @@ export type PortfolioItemDeleteArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Filter which PortfolioItem to delete.
    */
   where: Prisma.PortfolioItemWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

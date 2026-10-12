@@ -570,7 +570,7 @@ export type $SavedSearchPayload<ExtArgs extends runtime.Types.Extensions.Interna
 export type SavedSearchGetPayload<S extends boolean | null | undefined | SavedSearchDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$SavedSearchPayload, S>
 
 export type SavedSearchCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<SavedSearchFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<SavedSearchFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: SavedSearchCountAggregateInputType | true
   }
 
@@ -1018,6 +1018,7 @@ export type SavedSearchFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.I
    * Filter, which SavedSearch to fetch.
    */
   where: Prisma.SavedSearchWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1040,6 +1041,7 @@ export type SavedSearchFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Exten
    * Filter, which SavedSearch to fetch.
    */
   where: Prisma.SavedSearchWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1092,6 +1094,7 @@ export type SavedSearchFindFirstArgs<ExtArgs extends runtime.Types.Extensions.In
    * Filter by unique combinations of SavedSearches.
    */
   distinct?: Prisma.SavedSearchScalarFieldEnum | Prisma.SavedSearchScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1144,6 +1147,7 @@ export type SavedSearchFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extens
    * Filter by unique combinations of SavedSearches.
    */
   distinct?: Prisma.SavedSearchScalarFieldEnum | Prisma.SavedSearchScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1196,6 +1200,7 @@ export type SavedSearchFindManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Filter by unique combinations of SavedSearches.
    */
   distinct?: Prisma.SavedSearchScalarFieldEnum | Prisma.SavedSearchScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1218,6 +1223,7 @@ export type SavedSearchCreateArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * The data needed to create a SavedSearch.
    */
   data: Prisma.XOR<Prisma.SavedSearchCreateInput, Prisma.SavedSearchUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1278,6 +1284,7 @@ export type SavedSearchUpdateArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Choose, which SavedSearch to update.
    */
   where: Prisma.SavedSearchWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1356,6 +1363,7 @@ export type SavedSearchUpsertArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * In case the SavedSearch was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.SavedSearchUpdateInput, Prisma.SavedSearchUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1378,6 +1386,7 @@ export type SavedSearchDeleteArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Filter which SavedSearch to delete.
    */
   where: Prisma.SavedSearchWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

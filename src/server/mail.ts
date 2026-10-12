@@ -44,7 +44,7 @@ export async function sendEmail(email: Email) {
     }
     return;
   }
-  await t.sendMail({ from: process.env.EMAIL_FROM ?? "JOBLIO <no-reply@joblio.com>", ...email });
+  await t.sendMail({ from: process.env.EMAIL_FROM ?? "JOBLIO <no-reply@getjoblio.app>", ...email });
 }
 
 export const escapeHtml = (s: string) =>

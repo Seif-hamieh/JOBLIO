@@ -130,6 +130,9 @@ export async function transitionApplication(
 ) {
   const app = await getManagedApplication(actor.companyId, applicationId);
   if (app.status === "WITHDRAWN") throw new ActionError("@msg.candidateWithdrew");
+  // A hired candidate must be moved out of Hired before they can be declined,
+  // so "you're hired" is never followed by "not selected" by accident.
+  if (app.status === "HIRED" && change.status === "REJECTED") throw new ActionError("@msg.cannotDeclineHired");
   const stage = change.stage ?? app.stage;
   let status: ApplicationStatus = change.status ?? (change.stage && change.stage !== app.stage ? STATUS_FOR_STAGE[change.stage] : app.status);
   // Moving a rejected candidate back onto the board re-opens them.

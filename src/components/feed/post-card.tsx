@@ -132,7 +132,7 @@ function Comments({ post, viewer, onAdded }: { post: FeedPost; viewer: { id: str
                 <Link href={`/in/${c.author.username}`} className="text-[13px] font-semibold hover:underline">
                   {c.author.name}
                 </Link>
-                <span className="text-[11px] text-fg-subtle">{f.shortTimeAgo(c.createdAt)}</span>
+                <span className="text-[11px] text-fg-subtle" suppressHydrationWarning>{f.shortTimeAgo(c.createdAt)}</span>
                 {(c.author.id === viewer.id || post.authorId === viewer.id) && (
                   <button
                     onClick={async () => {
@@ -192,7 +192,7 @@ export function PostCard({ post, viewer }: { post: FeedPost; viewer: { id: strin
             )}
           </div>
           <div className="truncate text-xs text-fg-muted">{asCompany ? t("feed.postedBy", { name: post.author.name }) : post.author.profile?.headline}</div>
-          <div className="mt-0.5 flex items-center gap-1 text-[11px] text-fg-subtle">
+          <div className="mt-0.5 flex items-center gap-1 text-[11px] text-fg-subtle" suppressHydrationWarning>
             {f.shortTimeAgo(post.createdAt)} · {post.visibility === "PUBLIC" ? <Globe2 className="size-3" aria-label={t("feed.anyone")} /> : <Users className="size-3" aria-label={t("feed.connectionsOnly")} />}
           </div>
         </div>
@@ -267,7 +267,7 @@ export function PostCard({ post, viewer }: { post: FeedPost; viewer: { id: strin
             <Link href={`/in/${post.sharedPost.author.username}`} className="font-semibold hover:underline">
               {post.sharedPost.company?.name ?? post.sharedPost.author.name}
             </Link>
-            <span className="text-xs text-fg-subtle">{f.shortTimeAgo(post.sharedPost.createdAt)}</span>
+            <span className="text-xs text-fg-subtle" suppressHydrationWarning>{f.shortTimeAgo(post.sharedPost.createdAt)}</span>
           </div>
           <RichText text={post.sharedPost.content} clamp={200} className="mt-2 text-sm" />
         </div>

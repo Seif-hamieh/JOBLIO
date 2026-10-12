@@ -636,7 +636,7 @@ export type $IndustryPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type IndustryGetPayload<S extends boolean | null | undefined | IndustryDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$IndustryPayload, S>
 
 export type IndustryCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<IndustryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<IndustryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: IndustryCountAggregateInputType | true
   }
 
@@ -1082,6 +1082,7 @@ export type IndustryFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Filter, which Industry to fetch.
    */
   where: Prisma.IndustryWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1104,6 +1105,7 @@ export type IndustryFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensio
    * Filter, which Industry to fetch.
    */
   where: Prisma.IndustryWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1156,6 +1158,7 @@ export type IndustryFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Filter by unique combinations of Industries.
    */
   distinct?: Prisma.IndustryScalarFieldEnum | Prisma.IndustryScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1208,6 +1211,7 @@ export type IndustryFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extension
    * Filter by unique combinations of Industries.
    */
   distinct?: Prisma.IndustryScalarFieldEnum | Prisma.IndustryScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1260,6 +1264,7 @@ export type IndustryFindManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Filter by unique combinations of Industries.
    */
   distinct?: Prisma.IndustryScalarFieldEnum | Prisma.IndustryScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1282,6 +1287,7 @@ export type IndustryCreateArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * The data needed to create a Industry.
    */
   data: Prisma.XOR<Prisma.IndustryCreateInput, Prisma.IndustryUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1338,6 +1344,7 @@ export type IndustryUpdateArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Choose, which Industry to update.
    */
   where: Prisma.IndustryWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1412,6 +1419,7 @@ export type IndustryUpsertArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * In case the Industry was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.IndustryUpdateInput, Prisma.IndustryUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1434,6 +1442,7 @@ export type IndustryDeleteArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Filter which Industry to delete.
    */
   where: Prisma.IndustryWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

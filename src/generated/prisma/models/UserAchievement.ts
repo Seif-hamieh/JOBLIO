@@ -442,7 +442,7 @@ export type $UserAchievementPayload<ExtArgs extends runtime.Types.Extensions.Int
 export type UserAchievementGetPayload<S extends boolean | null | undefined | UserAchievementDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$UserAchievementPayload, S>
 
 export type UserAchievementCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<UserAchievementFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<UserAchievementFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: UserAchievementCountAggregateInputType | true
   }
 
@@ -886,6 +886,7 @@ export type UserAchievementFindUniqueArgs<ExtArgs extends runtime.Types.Extensio
    * Filter, which UserAchievement to fetch.
    */
   where: Prisma.UserAchievementWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -908,6 +909,7 @@ export type UserAchievementFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.E
    * Filter, which UserAchievement to fetch.
    */
   where: Prisma.UserAchievementWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -960,6 +962,7 @@ export type UserAchievementFindFirstArgs<ExtArgs extends runtime.Types.Extension
    * Filter by unique combinations of UserAchievements.
    */
   distinct?: Prisma.UserAchievementScalarFieldEnum | Prisma.UserAchievementScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1012,6 +1015,7 @@ export type UserAchievementFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Ex
    * Filter by unique combinations of UserAchievements.
    */
   distinct?: Prisma.UserAchievementScalarFieldEnum | Prisma.UserAchievementScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1064,6 +1068,7 @@ export type UserAchievementFindManyArgs<ExtArgs extends runtime.Types.Extensions
    * Filter by unique combinations of UserAchievements.
    */
   distinct?: Prisma.UserAchievementScalarFieldEnum | Prisma.UserAchievementScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1086,6 +1091,7 @@ export type UserAchievementCreateArgs<ExtArgs extends runtime.Types.Extensions.I
    * The data needed to create a UserAchievement.
    */
   data: Prisma.XOR<Prisma.UserAchievementCreateInput, Prisma.UserAchievementUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1146,6 +1152,7 @@ export type UserAchievementUpdateArgs<ExtArgs extends runtime.Types.Extensions.I
    * Choose, which UserAchievement to update.
    */
   where: Prisma.UserAchievementWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1224,6 +1231,7 @@ export type UserAchievementUpsertArgs<ExtArgs extends runtime.Types.Extensions.I
    * In case the UserAchievement was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.UserAchievementUpdateInput, Prisma.UserAchievementUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1246,6 +1254,7 @@ export type UserAchievementDeleteArgs<ExtArgs extends runtime.Types.Extensions.I
    * Filter which UserAchievement to delete.
    */
   where: Prisma.UserAchievementWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

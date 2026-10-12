@@ -4,18 +4,20 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Fragment, useEffect, useLayoutEffect, useRef, useState, useTransition } from "react";
 import { AnimatePresence, m } from "motion/react";
-import { ArrowLeft, Briefcase, Building2, CheckCheck, Check, FileText, Paperclip, Plus, SendHorizontal, UserRound, X } from "lucide-react";
+import { ArrowLeft, Briefcase, Building2, CheckCheck, Check, FileText, MoreHorizontal, Paperclip, Plus, SendHorizontal, Trash2, UserRound, X } from "lucide-react";
 import type { ChatMessage } from "@/server/services/messaging";
-import { fetchMessageAction, loadOlderMessagesAction, markReadAction, sendMessageAction, shareSearchAction, typingAction } from "@/server/actions/messages";
+import { deleteMessageAction, fetchMessageAction, loadOlderMessagesAction, markReadAction, sendMessageAction, shareSearchAction, typingAction } from "@/server/actions/messages";
 import { useRealtime, useRealtimeEvent } from "@/components/realtime/realtime-provider";
 import { Avatar, CompanyLogo } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { Menu, MenuContent, MenuItem, MenuTrigger } from "@/components/ui/menu";
 import { OpenToWorkBadge } from "@/components/ui/badge";
 import { toast } from "@/components/ui/toast";
 import { LocalTime } from "@/components/ui/local-time";
 import { cn } from "@/lib/utils";
+import { acceptFor, checkUpload } from "@/lib/upload-check";
 import { useI18n } from "@/i18n/client";
 import type { Format } from "@/i18n/format";
 import type { T } from "@/i18n/translate";
@@ -36,10 +38,12 @@ function formatBytes(n: number | null) {
   return n > 1024 * 1024 ? `${(n / 1024 / 1024).toFixed(1)} MB` : `${Math.round(n / 1024)} KB`;
 }
 
-function Bubble({ m: msg, mine }: { m: ChatMessage; mine: boolean }) {
+function Bubble({ m: msg, mine, onDelete }: { m: ChatMessage; mine: boolean; onDelete?: () => void }) {
+  const { t } = useI18n();
   const isImage = msg.attachmentMime?.startsWith("image/");
   return (
-    <div className={cn("flex max-w-[78%] flex-col gap-1.5", mine ? "items-end self-end" : "items-start self-start")}>
+    <div className={cn("group/bubble flex max-w-[78%] items-start gap-1", mine ? "flex-row-reverse self-end" : "self-start")}>
+      <div className={cn("flex min-w-0 flex-col gap-1.5", mine ? "items-end" : "items-start")}>
       {msg.attachmentUrl &&
         (isImage ? (
           <a href={msg.attachmentUrl} target="_blank" rel="noopener noreferrer" className="overflow-hidden rounded-2xl border border-border">
@@ -89,6 +93,22 @@ function Bubble({ m: msg, mine }: { m: ChatMessage; mine: boolean }) {
         <div dir="auto" className={cn("whitespace-pre-line break-words rounded-3xl px-4 py-2.5 text-[14.5px] leading-relaxed", mine ? "rounded-ee-lg bg-brand text-brand-fg" : "rounded-es-lg bg-surface-2")}>
           {msg.body}
         </div>
+      )}
+      </div>
+      {onDelete && (
+        <Menu>
+          <MenuTrigger
+            className="mt-1.5 grid size-7 shrink-0 place-items-center rounded-full text-fg-subtle opacity-60 outline-none transition hover:bg-surface-2 hover:text-fg focus-visible:opacity-100 md:opacity-0 md:group-hover/bubble:opacity-100"
+            aria-label={t("messages.messageOptions")}
+          >
+            <MoreHorizontal className="size-4" />
+          </MenuTrigger>
+          <MenuContent align="end">
+            <MenuItem icon={<Trash2 />} danger onSelect={onDelete}>
+              {t("common.delete")}
+            </MenuItem>
+          </MenuContent>
+        </Menu>
       )}
     </div>
   );
@@ -155,6 +175,19 @@ export function Thread({
   const [picker, setPicker] = useState<Share["kind"] | null>(null);
   const [hasOlder, setHasOlder] = useState(initialMessages.length >= 50);
   const [pending, start] = useTransition();
+  const [deleting, setDeleting] = useState<string | null>(null);
+  const [removing, startRemove] = useTransition();
+  const removeMessage = () =>
+    startRemove(async () => {
+      const target = deleting;
+      if (!target) return;
+      const res = await deleteMessageAction(target).catch(() => null);
+      setDeleting(null);
+      if (res?.ok) {
+        setMessages((list) => list.filter((x) => x.id !== target));
+        router.refresh();
+      } else toast.error(res && !res.ok ? res.error : t("common.somethingWrong"));
+    });
   const scroller = useRef<HTMLDivElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const typingTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -183,6 +216,8 @@ export function Thread({
         if (msg) setMessages((list) => (list.some((x) => x.id === msg.id) ? list : [...list, msg]));
         void markReadAction(conversationId).then(() => refreshCounts());
       });
+    } else if (e.type === "message-deleted" && e.conversationId === conversationId) {
+      setMessages((list) => list.filter((x) => x.id !== e.messageId));
     } else if (e.type === "read" && e.userId === other.id) setOtherRead(new Date(e.at));
     else if (e.type === "typing" && e.userId === other.id) {
       setTyping(true);
@@ -190,6 +225,14 @@ export function Thread({
       typingTimer.current = setTimeout(() => setTyping(false), 3500);
     }
   });
+
+  function pickAttachment(input: HTMLInputElement) {
+    const picked = input.files?.[0] ?? null;
+    input.value = "";
+    const problem = picked && checkUpload(picked, "attachment", t);
+    if (problem) return toast.error(problem);
+    setFile(picked);
+  }
 
   function send() {
     if (!body.trim() && !file && !share) return;
@@ -204,7 +247,7 @@ export function Thread({
     const draft = body;
     setBody("");
     start(async () => {
-      const res = await sendMessageAction(fd);
+      const res = await sendMessageAction(fd).catch(() => null);
       if (res?.ok && res.data) {
         setMessages((list) => [...list, res.data!.message]);
         setFile(null);
@@ -226,6 +269,15 @@ export function Thread({
 
   return (
     <div className="flex h-full flex-col">
+      <ConfirmDialog
+        open={!!deleting}
+        onOpenChange={(o) => !o && setDeleting(null)}
+        title={t("messages.deleteTitle")}
+        description={t("messages.deleteBody")}
+        confirmLabel={t("common.delete")}
+        onConfirm={removeMessage}
+        loading={removing}
+      />
       <header className="flex items-center gap-3 border-b border-border px-4 py-3">
         <Link href="/messages" className="rounded-full p-1.5 text-fg-muted hover:bg-surface-2 md:hidden" aria-label={t("messages.back")}>
           <ArrowLeft className="size-5" />
@@ -234,7 +286,7 @@ export function Thread({
           <Avatar name={other.name} src={other.image} size="md" online={online} />
           <div className="min-w-0">
             <div className="truncate font-semibold">{other.name}</div>
-            <div className="truncate text-xs text-fg-muted">
+            <div className="truncate text-xs text-fg-muted" suppressHydrationWarning>
               {typing ? <span className="text-brand-soft-fg">{t("messages.typing")}</span> : online ? t("messages.online") : other.lastSeenAt ? t("messages.activeAgo", { when: f.timeAgo(other.lastSeenAt) }) : other.profile?.headline}
             </div>
           </div>
@@ -273,7 +325,7 @@ export function Thread({
                 </div>
               )}
               <m.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2 }} className="flex flex-col">
-                <Bubble m={msg} mine={msg.senderId === viewerId} />
+                <Bubble m={msg} mine={msg.senderId === viewerId} onDelete={msg.senderId === viewerId ? () => setDeleting(msg.id) : undefined} />
                 <LocalTime date={d} format="time" className={cn("mt-0.5 text-[10px] text-fg-subtle", msg.senderId === viewerId ? "self-end" : "self-start")} />
               </m.div>
             </Fragment>
@@ -337,7 +389,7 @@ export function Thread({
               </MenuItem>
             </MenuContent>
           </Menu>
-          <input ref={fileRef} type="file" className="sr-only" accept="image/*,.pdf,.docx,.txt" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
+          <input ref={fileRef} type="file" className="sr-only" accept={acceptFor("attachment")} onChange={(e) => pickAttachment(e.target)} />
           <textarea
             value={body}
             onChange={(e) => {

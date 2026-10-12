@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { m } from "motion/react";
-import { useState, type ReactNode } from "react";
+import { useState, useSyncExternalStore, type ReactNode } from "react";
 import {
   Bell,
   Briefcase,
@@ -15,18 +15,21 @@ import {
   Languages,
   LogOut,
   MessageSquare,
+  Moon,
   Search,
   Settings,
   ShieldCheck,
+  Sun,
   Trophy,
   User,
   Users,
 } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
 import { Avatar } from "@/components/ui/avatar";
-import { buttonClasses } from "@/components/ui/button";
 import { Menu, MenuContent, MenuItem, MenuLabel, MenuSeparator, MenuTrigger } from "@/components/ui/menu";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
+import { MarketingNav } from "@/components/layout/marketing-nav";
+import { useTheme } from "@/components/theme";
 import { LanguageToggle } from "@/components/layout/language-switcher";
 import { useI18n } from "@/i18n/client";
 import type { TKey } from "@/i18n/translate";
@@ -44,6 +47,8 @@ export type ShellViewer = {
   company: { slug: string; name: string } | null;
   boosted: boolean;
 };
+
+const noopSubscribe = () => () => {};
 
 type NavItem = { href: string; label: TKey; icon: typeof Home; badge?: keyof Counts; match?: string[] };
 
@@ -77,6 +82,9 @@ function CountBadge({ n, className }: { n: number; className?: string }) {
 function UserMenu({ viewer }: { viewer: ShellViewer }) {
   const router = useRouter();
   const { t, locale } = useI18n();
+  const { resolvedTheme, setTheme } = useTheme();
+  const mounted = useSyncExternalStore(noopSubscribe, () => true, () => false);
+  const dark = mounted && resolvedTheme === "dark";
   async function signOut() {
     await authClient.signOut();
     router.push("/");
@@ -134,6 +142,9 @@ function UserMenu({ viewer }: { viewer: ShellViewer }) {
         <MenuItem icon={<Languages />} onSelect={async () => { await setLocaleAction(locale === "en" ? "ar" : "en"); router.refresh(); }}>
           <span lang={locale === "en" ? "ar" : "en"}>{locale === "en" ? "العربية" : "English"}</span>
         </MenuItem>
+        <MenuItem icon={dark ? <Sun /> : <Moon />} onSelect={() => setTheme(dark ? "light" : "dark")}>
+          {dark ? t("common.switchToLight") : t("common.switchToDark")}
+        </MenuItem>
         <MenuItem icon={<Settings />} onSelect={() => router.push("/settings")}>
           {t("nav.settings")}
         </MenuItem>
@@ -156,7 +167,7 @@ function GlobalSearch({ className }: { className?: string }) {
       className={cn("relative", className)}
       onSubmit={(e) => {
         e.preventDefault();
-        router.push(`/jobs${q.trim() ? `?q=${encodeURIComponent(q.trim())}` : ""}`);
+        router.push(`/search${q.trim() ? `?q=${encodeURIComponent(q.trim())}` : ""}`);
       }}
     >
       <Search className="pointer-events-none absolute start-3.5 top-1/2 size-4 -translate-y-1/2 text-fg-subtle" />
@@ -248,7 +259,7 @@ function MobileTopBar() {
   const { t } = useI18n();
   return (
     <div className="flex items-center gap-1 md:hidden">
-      <Link href="/jobs" className="grid size-9 place-items-center rounded-full text-fg-muted hover:bg-surface-2" aria-label={t("common.search")}>
+      <Link href="/search" className="grid size-9 place-items-center rounded-full text-fg-muted hover:bg-surface-2" aria-label={t("common.search")}>
         <Search className="size-5" />
       </Link>
       <Link href="/notifications" className="relative grid size-9 place-items-center rounded-full text-fg-muted hover:bg-surface-2" aria-label={t("nav.notifications")}>
@@ -260,7 +271,6 @@ function MobileTopBar() {
 }
 
 export function AppShell({ viewer, counts, children }: { viewer: ShellViewer | null; counts: Counts | null; children: ReactNode }) {
-  const { t } = useI18n();
   const header = (
     <header className="glass sticky top-0 z-40 border-b border-border">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6">
@@ -277,32 +287,16 @@ export function AppShell({ viewer, counts, children }: { viewer: ShellViewer | n
               <UserMenu viewer={viewer} />
             </div>
           </>
-        ) : (
-          <div className="ms-auto flex items-center gap-1.5">
-            <Link href="/jobs" className="hidden rounded-full px-3 py-2 text-sm text-fg-muted hover:text-fg sm:block">
-              {t("nav.jobs")}
-            </Link>
-            <Link href="/companies" className="hidden rounded-full px-3 py-2 text-sm text-fg-muted hover:text-fg sm:block">
-              {t("nav.companies")}
-            </Link>
-            <LanguageToggle />
-            <ThemeToggle />
-            <Link href="/login" className={buttonClasses({ variant: "ghost", size: "sm" })}>
-              {t("common.signIn")}
-            </Link>
-            <Link href="/register" className={buttonClasses({ size: "sm", pill: true })}>
-              {t("common.joinFree")}
-            </Link>
-          </div>
-        )}
+        ) : null}
       </div>
     </header>
   );
 
   if (!viewer || !counts) {
+    // Signed-out visitors see the same header (and links) as the home page.
     return (
       <div className="min-h-dvh">
-        {header}
+        <MarketingNav />
         <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">{children}</main>
       </div>
     );
@@ -310,7 +304,7 @@ export function AppShell({ viewer, counts, children }: { viewer: ShellViewer | n
 
   return (
     <RealtimeProvider initialCounts={counts}>
-      <div className="min-h-dvh pb-20 md:pb-0">
+      <div className="min-h-dvh pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-0">
         {header}
         <main className="mx-auto max-w-7xl px-4 py-5 sm:px-6 sm:py-8">{children}</main>
         <MobileNav viewer={viewer} />

@@ -92,7 +92,11 @@ export function JobForm({
   const [errors, setErrors] = useState<Record<string, string[] | undefined>>({});
   const [pending, start] = useTransition();
   const [langCode, setLangCode] = useState("");
-  const set = <K extends keyof JobFormValue>(k: K, val: JobFormValue[K]) => setV((x) => ({ ...x, [k]: val }));
+  const set = <K extends keyof JobFormValue>(k: K, val: JobFormValue[K]) => {
+    setV((x) => ({ ...x, [k]: val }));
+    // A field's error disappears as soon as the field is changed (e.g. "Add at least one skill").
+    setErrors((e) => (e[k] ? { ...e, [k]: undefined } : e));
+  };
 
   const submit = (publish: boolean) =>
     start(async () => {

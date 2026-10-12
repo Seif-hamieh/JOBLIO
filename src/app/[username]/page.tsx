@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { cache } from "react";
 import { Award, Briefcase, CodeXml, ExternalLink, FolderGit2, Mail, MapPin, Sparkles } from "lucide-react";
 import { db } from "@/server/db";
@@ -66,7 +66,15 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
 export default async function PortfolioPage({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
   const [user, viewer, { t, f }] = await Promise.all([loadPortfolio(username), getViewer(), getI18n()]);
-  if (!user) notFound();
+  if (!user) {
+    // No published portfolio: send people to the regular profile (which applies its own visibility rules).
+    const member =
+      /^[a-z0-9][a-z0-9._-]{1,38}$/i.test(username) && !RESERVED_USERNAMES.has(username.toLowerCase())
+        ? await db.user.findUnique({ where: { username }, select: { username: true } })
+        : null;
+    if (member?.username) redirect(`/in/${member.username}`);
+    notFound();
+  }
   const p = user.profile!;
   const location = f.location(p.city, p.countryCode);
   const website = safeExternalUrl(p.website);

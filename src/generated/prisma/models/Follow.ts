@@ -549,7 +549,7 @@ export type $FollowPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
 export type FollowGetPayload<S extends boolean | null | undefined | FollowDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$FollowPayload, S>
 
 export type FollowCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<FollowFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<FollowFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: FollowCountAggregateInputType | true
   }
 
@@ -994,6 +994,7 @@ export type FollowFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Filter, which Follow to fetch.
    */
   where: Prisma.FollowWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1016,6 +1017,7 @@ export type FollowFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions
    * Filter, which Follow to fetch.
    */
   where: Prisma.FollowWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1068,6 +1070,7 @@ export type FollowFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Filter by unique combinations of Follows.
    */
   distinct?: Prisma.FollowScalarFieldEnum | Prisma.FollowScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1120,6 +1123,7 @@ export type FollowFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.
    * Filter by unique combinations of Follows.
    */
   distinct?: Prisma.FollowScalarFieldEnum | Prisma.FollowScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1172,6 +1176,7 @@ export type FollowFindManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Filter by unique combinations of Follows.
    */
   distinct?: Prisma.FollowScalarFieldEnum | Prisma.FollowScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1194,6 +1199,7 @@ export type FollowCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * The data needed to create a Follow.
    */
   data: Prisma.XOR<Prisma.FollowCreateInput, Prisma.FollowUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1254,6 +1260,7 @@ export type FollowUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * Choose, which Follow to update.
    */
   where: Prisma.FollowWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1332,6 +1339,7 @@ export type FollowUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * In case the Follow was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.FollowUpdateInput, Prisma.FollowUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1354,6 +1362,7 @@ export type FollowDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * Filter which Follow to delete.
    */
   where: Prisma.FollowWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

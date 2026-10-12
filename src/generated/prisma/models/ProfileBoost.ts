@@ -670,7 +670,7 @@ export type $ProfileBoostPayload<ExtArgs extends runtime.Types.Extensions.Intern
 export type ProfileBoostGetPayload<S extends boolean | null | undefined | ProfileBoostDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$ProfileBoostPayload, S>
 
 export type ProfileBoostCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<ProfileBoostFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<ProfileBoostFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: ProfileBoostCountAggregateInputType | true
   }
 
@@ -1119,6 +1119,7 @@ export type ProfileBoostFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.
    * Filter, which ProfileBoost to fetch.
    */
   where: Prisma.ProfileBoostWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1141,6 +1142,7 @@ export type ProfileBoostFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Exte
    * Filter, which ProfileBoost to fetch.
    */
   where: Prisma.ProfileBoostWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1193,6 +1195,7 @@ export type ProfileBoostFindFirstArgs<ExtArgs extends runtime.Types.Extensions.I
    * Filter by unique combinations of ProfileBoosts.
    */
   distinct?: Prisma.ProfileBoostScalarFieldEnum | Prisma.ProfileBoostScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1245,6 +1248,7 @@ export type ProfileBoostFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Exten
    * Filter by unique combinations of ProfileBoosts.
    */
   distinct?: Prisma.ProfileBoostScalarFieldEnum | Prisma.ProfileBoostScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1297,6 +1301,7 @@ export type ProfileBoostFindManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Filter by unique combinations of ProfileBoosts.
    */
   distinct?: Prisma.ProfileBoostScalarFieldEnum | Prisma.ProfileBoostScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1319,6 +1324,7 @@ export type ProfileBoostCreateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * The data needed to create a ProfileBoost.
    */
   data: Prisma.XOR<Prisma.ProfileBoostCreateInput, Prisma.ProfileBoostUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1379,6 +1385,7 @@ export type ProfileBoostUpdateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Choose, which ProfileBoost to update.
    */
   where: Prisma.ProfileBoostWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1457,6 +1464,7 @@ export type ProfileBoostUpsertArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * In case the ProfileBoost was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.ProfileBoostUpdateInput, Prisma.ProfileBoostUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1479,6 +1487,7 @@ export type ProfileBoostDeleteArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Filter which ProfileBoost to delete.
    */
   where: Prisma.ProfileBoostWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

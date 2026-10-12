@@ -989,7 +989,7 @@ export type $UserSkillPayload<ExtArgs extends runtime.Types.Extensions.InternalA
 export type UserSkillGetPayload<S extends boolean | null | undefined | UserSkillDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$UserSkillPayload, S>
 
 export type UserSkillCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<UserSkillFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<UserSkillFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: UserSkillCountAggregateInputType | true
   }
 
@@ -1441,6 +1441,7 @@ export type UserSkillFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Filter, which UserSkill to fetch.
    */
   where: Prisma.UserSkillWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1463,6 +1464,7 @@ export type UserSkillFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensi
    * Filter, which UserSkill to fetch.
    */
   where: Prisma.UserSkillWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1515,6 +1517,7 @@ export type UserSkillFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Filter by unique combinations of UserSkills.
    */
   distinct?: Prisma.UserSkillScalarFieldEnum | Prisma.UserSkillScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1567,6 +1570,7 @@ export type UserSkillFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensio
    * Filter by unique combinations of UserSkills.
    */
   distinct?: Prisma.UserSkillScalarFieldEnum | Prisma.UserSkillScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1619,6 +1623,7 @@ export type UserSkillFindManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Filter by unique combinations of UserSkills.
    */
   distinct?: Prisma.UserSkillScalarFieldEnum | Prisma.UserSkillScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1641,6 +1646,7 @@ export type UserSkillCreateArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * The data needed to create a UserSkill.
    */
   data: Prisma.XOR<Prisma.UserSkillCreateInput, Prisma.UserSkillUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1701,6 +1707,7 @@ export type UserSkillUpdateArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Choose, which UserSkill to update.
    */
   where: Prisma.UserSkillWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1779,6 +1786,7 @@ export type UserSkillUpsertArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * In case the UserSkill was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.UserSkillUpdateInput, Prisma.UserSkillUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1801,6 +1809,7 @@ export type UserSkillDeleteArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Filter which UserSkill to delete.
    */
   where: Prisma.UserSkillWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

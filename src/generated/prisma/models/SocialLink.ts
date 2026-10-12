@@ -476,7 +476,7 @@ export type $SocialLinkPayload<ExtArgs extends runtime.Types.Extensions.Internal
 export type SocialLinkGetPayload<S extends boolean | null | undefined | SocialLinkDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$SocialLinkPayload, S>
 
 export type SocialLinkCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<SocialLinkFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<SocialLinkFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: SocialLinkCountAggregateInputType | true
   }
 
@@ -921,6 +921,7 @@ export type SocialLinkFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.In
    * Filter, which SocialLink to fetch.
    */
   where: Prisma.SocialLinkWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -943,6 +944,7 @@ export type SocialLinkFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extens
    * Filter, which SocialLink to fetch.
    */
   where: Prisma.SocialLinkWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -995,6 +997,7 @@ export type SocialLinkFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Filter by unique combinations of SocialLinks.
    */
   distinct?: Prisma.SocialLinkScalarFieldEnum | Prisma.SocialLinkScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1047,6 +1050,7 @@ export type SocialLinkFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensi
    * Filter by unique combinations of SocialLinks.
    */
   distinct?: Prisma.SocialLinkScalarFieldEnum | Prisma.SocialLinkScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1099,6 +1103,7 @@ export type SocialLinkFindManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Filter by unique combinations of SocialLinks.
    */
   distinct?: Prisma.SocialLinkScalarFieldEnum | Prisma.SocialLinkScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1121,6 +1126,7 @@ export type SocialLinkCreateArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * The data needed to create a SocialLink.
    */
   data: Prisma.XOR<Prisma.SocialLinkCreateInput, Prisma.SocialLinkUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1181,6 +1187,7 @@ export type SocialLinkUpdateArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Choose, which SocialLink to update.
    */
   where: Prisma.SocialLinkWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1259,6 +1266,7 @@ export type SocialLinkUpsertArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * In case the SocialLink was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.SocialLinkUpdateInput, Prisma.SocialLinkUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1281,6 +1289,7 @@ export type SocialLinkDeleteArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Filter which SocialLink to delete.
    */
   where: Prisma.SocialLinkWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

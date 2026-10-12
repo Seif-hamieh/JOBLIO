@@ -13,6 +13,9 @@ import { Avatar } from "@/components/ui/avatar";
 import { Textarea } from "@/components/ui/field";
 import { MatchRing } from "@/components/match/match-ring";
 import { cn } from "@/lib/utils";
+import { toast } from "@/components/ui/toast";
+import { acceptFor, checkUpload } from "@/lib/upload-check";
+import type { ActionState } from "@/server/action";
 
 export function ApplyButton({
   job,
@@ -37,7 +40,23 @@ export function ApplyButton({
   const router = useRouter();
   const { t } = useI18n();
   const [open, setOpen] = useState(false);
-  const [state, action, pending] = useActionState(applyAction, null);
+  // A rejected request (e.g. a body over Vercel's limit) throws instead of returning a result;
+  // show it as a normal error rather than letting the page crash.
+  const [state, action, pending] = useActionState<ActionState<{ score: number }>, FormData>(
+    (prev, form) => applyAction(prev, form).catch(() => ({ ok: false as const, error: t("msg.uploadFailed") })),
+    null,
+  );
+  const pickFile = (input: HTMLInputElement) => {
+    const picked = input.files?.[0] ?? null;
+    const problem = picked && checkUpload(picked, "cv", t);
+    if (problem) {
+      input.value = "";
+      setFile(null);
+      toast.error(problem);
+      return;
+    }
+    setFile(picked);
+  };
   const [file, setFile] = useState<File | null>(null);
   const [useSaved, setUseSaved] = useState(true);
 
@@ -151,7 +170,7 @@ export function ApplyButton({
                       <X className="size-4" />
                     </button>
                   )}
-                  <input id="resume-input" type="file" name="resume" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" className="sr-only" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
+                  <input id="resume-input" type="file" name="resume" accept={acceptFor("cv")} className="sr-only" onChange={(e) => pickFile(e.target)} />
                 </label>
               </div>
               {state && !state.ok && (

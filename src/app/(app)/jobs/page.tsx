@@ -31,7 +31,8 @@ export default async function JobsPage({ searchParams }: PageProps<"/jobs">) {
         <h1 className="font-display text-2xl font-semibold sm:text-[28px]">{t("jobs.searchTitle")}</h1>
         <p className="mt-1 text-fg-muted">{t("jobs.searchSub")}</p>
       </div>
-      <JobSearchBar params={params} />
+      {/* Keyed on the query so "Clear search" (and back/forward) also resets the text fields. */}
+      <JobSearchBar key={`${params.q ?? ""}|${params.location ?? ""}`} params={params} />
 
       <div className="grid gap-8 lg:grid-cols-[260px_1fr]">
         <JobFilters params={params} industries={industries} skillNames={skillNames} />

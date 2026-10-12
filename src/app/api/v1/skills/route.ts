@@ -1,7 +1,21 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { unstable_cache } from "next/cache";
 import { db } from "@/server/db";
 import { rateLimit } from "@/server/rate-limit";
 import { ensureReferenceData } from "@/server/services/reference-data";
+import { searchSkills } from "@/lib/skill-search";
+
+// The whole taxonomy is a few hundred rows: cache it and match in memory
+// (normalised names + aliases) instead of a database query per keystroke.
+const allSkills = unstable_cache(
+  async () => {
+    const rows = await db.skill.findMany({ select: { id: true, name: true, slug: true, category: true, aliases: true, usageCount: true } });
+    if (!rows.length) throw new Error("no skills yet"); // never cache an empty taxonomy
+    return rows;
+  },
+  ["skills:all:v1"],
+  { revalidate: 600, tags: ["reference-data"] },
+);
 
 // GET /api/v1/skills?q=rea — skill taxonomy autocomplete (public, cacheable).
 export async function GET(req: NextRequest) {
@@ -11,19 +25,9 @@ export async function GET(req: NextRequest) {
   }
   const q = (req.nextUrl.searchParams.get("q") ?? "").trim().slice(0, 50);
   await ensureReferenceData();
-  const skills = await db.skill.findMany({
-    where: q ? { OR: [{ name: { contains: q, mode: "insensitive" } }, { aliases: { has: q.toLowerCase() } }] } : undefined,
-    orderBy: [{ usageCount: "desc" }, { name: "asc" }],
-    take: q ? 10 : 16,
-    select: { id: true, name: true, slug: true, category: true },
-  });
-  // Exact and prefix matches first.
-  const lower = q.toLowerCase();
-  skills.sort((a, b) => {
-    const rank = (n: string) => (n.toLowerCase() === lower ? 0 : n.toLowerCase().startsWith(lower) ? 1 : 2);
-    return rank(a.name) - rank(b.name);
-  });
+  const rows = await allSkills().catch(() => []);
+  const skills = searchSkills(rows, q, q ? 10 : 16);
   // Don't let a CDN keep an empty answer around (e.g. while the database was being filled).
-  const cache = skills.length ? "public, max-age=300, stale-while-revalidate=3600" : "no-store";
+  const cache = rows.length ? "public, max-age=300, stale-while-revalidate=3600" : "no-store";
   return NextResponse.json({ skills }, { headers: { "Cache-Control": cache } });
 }

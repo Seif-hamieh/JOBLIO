@@ -23,6 +23,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "@/components/ui/toast";
 import { MatchPill } from "@/components/match/match-ring";
 import { ApplicationDrawer } from "@/components/recruiter/application-drawer";
+import { FinalDecisionProvider, useFinalDecision } from "@/components/recruiter/final-decision";
 import { moveApplicationAction, setApplicationStatusAction } from "@/server/actions/recruiter";
 import { PIPELINE_STAGES, type ApplicationStatus, type PipelineStage } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -87,7 +88,7 @@ function CardBody({ c, dragging }: { c: BoardCard; dragging?: boolean }) {
             <Star key={n} className={cn("size-3", c.rating && n <= c.rating ? "fill-ember text-ember" : "text-border-strong")} />
           ))}
         </span>
-        <span className="inline-flex items-center gap-1">
+        <span className="inline-flex items-center gap-1" suppressHydrationWarning>
           {c.viewedAt && <Eye className="size-3" />}
           {f.shortTimeAgo(c.createdAt)}
         </span>
@@ -122,7 +123,7 @@ function ColumnView({ id, cards, onOpen }: { id: Column; cards: BoardCard[]; onO
   const { t } = useI18n();
   const { setNodeRef, isOver } = useDroppable({ id: `col:${id}` });
   return (
-    <section className={cn("flex w-[272px] shrink-0 flex-col rounded-3xl bg-surface-2/70 p-2.5 transition-colors", isOver && "bg-brand-soft/60 ring-2 ring-brand/30", id === "REJECTED" && "opacity-80")}>
+    <section className={cn("flex w-[248px] shrink-0 snap-start flex-col rounded-3xl bg-surface-2/70 p-2.5 transition-colors", isOver && "bg-brand-soft/60 ring-2 ring-brand/30", id === "REJECTED" && "opacity-80")}>
       <header className="flex items-center justify-between px-2 pb-2.5 pt-1">
         <h3 className="flex items-center gap-2 text-sm font-semibold">
           <span className={cn("size-2 rounded-full", COLUMN_TONE[id])} />
@@ -152,8 +153,17 @@ function ColumnView({ id, cards, onOpen }: { id: Column; cards: BoardCard[]; onO
   );
 }
 
-export function PipelineBoard({ initial, openId }: { initial: BoardCard[]; openId: string | null }) {
+export function PipelineBoard(props: { initial: BoardCard[]; openId: string | null }) {
+  return (
+    <FinalDecisionProvider>
+      <Board {...props} />
+    </FinalDecisionProvider>
+  );
+}
+
+function Board({ initial, openId }: { initial: BoardCard[]; openId: string | null }) {
   const { t } = useI18n();
+  const decide = useFinalDecision();
   const [cards, setCards] = useState<BoardCard[]>(initial);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [drawer, setDrawer] = useState<string | null>(openId);
@@ -216,6 +226,23 @@ export function PipelineBoard({ initial, openId }: { initial: BoardCard[]; openI
     setCards((list) => list.map((c) => (c.id === id ? { ...c, stagePosition: position } : c)));
     const prevColumn = columnOf(original);
 
+    // Hiring and declining notify the candidate: confirm, then allow an undo window.
+    if (prevColumn !== to && (to === "HIRED" || to === "REJECTED")) {
+      if (to === "REJECTED" && original.status === "HIRED") {
+        toast.error(t("msg.cannotDeclineHired"));
+        return revert();
+      }
+      const before = snapshot.current;
+      decide?.({
+        kind: to === "HIRED" ? "hire" : "decline",
+        candidate: original.applicant.name,
+        apply: () => {},
+        revert: () => setCards(before),
+        commit: () => (to === "REJECTED" ? setApplicationStatusAction(id, "REJECTED") : moveApplicationAction(id, to, position)),
+      });
+      return;
+    }
+
     start(async () => {
       const res =
         to === "REJECTED"
@@ -237,7 +264,8 @@ export function PipelineBoard({ initial, openId }: { initial: BoardCard[]; openI
   return (
     <>
       <DndContext sensors={sensors} collisionDetection={closestCorners} onDragStart={onDragStart} onDragOver={onDragOver} onDragEnd={onDragEnd} onDragCancel={revert}>
-        <div className="scrollbar-none -mx-4 flex gap-3 overflow-x-auto px-4 pb-4 sm:mx-0 sm:px-0">
+        {/* Fixed-width columns scroll sideways; the scrollbar stays visible so "Not selected" is discoverable. */}
+        <div className="-mx-4 flex snap-x gap-3 overflow-x-auto px-4 pb-4 [scrollbar-width:thin] sm:mx-0 sm:px-0">
           {COLUMNS.map((col) => (
             <ColumnView key={col} id={col} cards={byColumn[col]} onOpen={setDrawer} />
           ))}

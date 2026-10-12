@@ -549,7 +549,7 @@ export type $CompanyFollowerPayload<ExtArgs extends runtime.Types.Extensions.Int
 export type CompanyFollowerGetPayload<S extends boolean | null | undefined | CompanyFollowerDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$CompanyFollowerPayload, S>
 
 export type CompanyFollowerCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<CompanyFollowerFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<CompanyFollowerFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: CompanyFollowerCountAggregateInputType | true
   }
 
@@ -994,6 +994,7 @@ export type CompanyFollowerFindUniqueArgs<ExtArgs extends runtime.Types.Extensio
    * Filter, which CompanyFollower to fetch.
    */
   where: Prisma.CompanyFollowerWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1016,6 +1017,7 @@ export type CompanyFollowerFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.E
    * Filter, which CompanyFollower to fetch.
    */
   where: Prisma.CompanyFollowerWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1068,6 +1070,7 @@ export type CompanyFollowerFindFirstArgs<ExtArgs extends runtime.Types.Extension
    * Filter by unique combinations of CompanyFollowers.
    */
   distinct?: Prisma.CompanyFollowerScalarFieldEnum | Prisma.CompanyFollowerScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1120,6 +1123,7 @@ export type CompanyFollowerFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Ex
    * Filter by unique combinations of CompanyFollowers.
    */
   distinct?: Prisma.CompanyFollowerScalarFieldEnum | Prisma.CompanyFollowerScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1172,6 +1176,7 @@ export type CompanyFollowerFindManyArgs<ExtArgs extends runtime.Types.Extensions
    * Filter by unique combinations of CompanyFollowers.
    */
   distinct?: Prisma.CompanyFollowerScalarFieldEnum | Prisma.CompanyFollowerScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1194,6 +1199,7 @@ export type CompanyFollowerCreateArgs<ExtArgs extends runtime.Types.Extensions.I
    * The data needed to create a CompanyFollower.
    */
   data: Prisma.XOR<Prisma.CompanyFollowerCreateInput, Prisma.CompanyFollowerUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1254,6 +1260,7 @@ export type CompanyFollowerUpdateArgs<ExtArgs extends runtime.Types.Extensions.I
    * Choose, which CompanyFollower to update.
    */
   where: Prisma.CompanyFollowerWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1332,6 +1339,7 @@ export type CompanyFollowerUpsertArgs<ExtArgs extends runtime.Types.Extensions.I
    * In case the CompanyFollower was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.CompanyFollowerUpdateInput, Prisma.CompanyFollowerUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1354,6 +1362,7 @@ export type CompanyFollowerDeleteArgs<ExtArgs extends runtime.Types.Extensions.I
    * Filter which CompanyFollower to delete.
    */
   where: Prisma.CompanyFollowerWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

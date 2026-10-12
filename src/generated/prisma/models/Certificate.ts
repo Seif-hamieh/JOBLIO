@@ -640,7 +640,7 @@ export type $CertificatePayload<ExtArgs extends runtime.Types.Extensions.Interna
 export type CertificateGetPayload<S extends boolean | null | undefined | CertificateDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$CertificatePayload, S>
 
 export type CertificateCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<CertificateFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<CertificateFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: CertificateCountAggregateInputType | true
   }
 
@@ -1090,6 +1090,7 @@ export type CertificateFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.I
    * Filter, which Certificate to fetch.
    */
   where: Prisma.CertificateWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1112,6 +1113,7 @@ export type CertificateFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Exten
    * Filter, which Certificate to fetch.
    */
   where: Prisma.CertificateWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1164,6 +1166,7 @@ export type CertificateFindFirstArgs<ExtArgs extends runtime.Types.Extensions.In
    * Filter by unique combinations of Certificates.
    */
   distinct?: Prisma.CertificateScalarFieldEnum | Prisma.CertificateScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1216,6 +1219,7 @@ export type CertificateFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extens
    * Filter by unique combinations of Certificates.
    */
   distinct?: Prisma.CertificateScalarFieldEnum | Prisma.CertificateScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1268,6 +1272,7 @@ export type CertificateFindManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Filter by unique combinations of Certificates.
    */
   distinct?: Prisma.CertificateScalarFieldEnum | Prisma.CertificateScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1290,6 +1295,7 @@ export type CertificateCreateArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * The data needed to create a Certificate.
    */
   data: Prisma.XOR<Prisma.CertificateCreateInput, Prisma.CertificateUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1350,6 +1356,7 @@ export type CertificateUpdateArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Choose, which Certificate to update.
    */
   where: Prisma.CertificateWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1428,6 +1435,7 @@ export type CertificateUpsertArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * In case the Certificate was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.CertificateUpdateInput, Prisma.CertificateUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1450,6 +1458,7 @@ export type CertificateDeleteArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Filter which Certificate to delete.
    */
   where: Prisma.CertificateWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

@@ -22,6 +22,7 @@ import { LevelBars } from "@/components/skills/level-picker";
 import { PIPELINE_STAGES, type ApplicationStatus, type PipelineStage } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/i18n/client";
+import { useFinalDecision } from "@/components/recruiter/final-decision";
 
 const INTERVIEW_STATE_KEY = { PENDING: "interviews.awaiting", ACCEPTED: "interviews.confirmed", DECLINED: "interviews.declined", COMPLETED: "interviews.completed", CANCELLED: "interviews.cancelled" } as const;
 
@@ -58,6 +59,35 @@ export function ApplicationDrawer({ applicationId, onClose, onChanged }: { appli
       } else toast.error(res?.error ?? t("common.somethingWrong"));
     });
 
+  // Hiring and declining notify the candidate: confirm first, then allow an undo window.
+  const decide = useFinalDecision();
+  const decideFinal = (kind: "hire" | "decline") => {
+    if (!detail) return;
+    const before = { stage: detail.stage, status: detail.status };
+    const after: Patch = kind === "hire" ? { stage: "HIRED", status: "HIRED" } : { status: "REJECTED" };
+    const id = detail.id;
+    const commit = () => (kind === "hire" ? moveApplicationAction(id, "HIRED", Date.now()) : setApplicationStatusAction(id, "REJECTED"));
+    const patchDetail = (p: Patch) => setDetail((d) => (d && d.id === id ? { ...d, ...p } : d));
+    const decision = {
+      kind,
+      candidate: detail.applicant.name,
+      apply: () => {
+        patchDetail(after);
+        onChanged(after);
+      },
+      revert: () => {
+        patchDetail(before);
+        onChanged(before);
+      },
+      commit,
+      onCommitted: () => applicationId === id && load(id),
+    };
+    // Outside a pipeline (no provider) fall back to a plain confirm + immediate save.
+    if (decide) decide(decision);
+    else if (window.confirm(kind === "hire" ? t("recruiter.confirmHireTitle", { name: detail.applicant.name }) : t("recruiter.confirmDeclineTitle", { name: detail.applicant.name })))
+      run(commit, after);
+  };
+
   const match = detail?.matchSnapshot as MatchResult | null | undefined;
   const p = detail?.applicant.profile;
 
@@ -69,7 +99,12 @@ export function ApplicationDrawer({ applicationId, onClose, onChanged }: { appli
             <D.Overlay asChild forceMount>
               <m.div className="fixed inset-0 z-50 bg-[oklch(0.15_0.02_278/0.35)]" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />
             </D.Overlay>
-            <D.Content asChild forceMount>
+            <D.Content
+              asChild
+              forceMount
+              // Clicking the "Undo" bar of a pending hire/decline must not close the drawer.
+              onInteractOutside={(e) => (e.target as Element | null)?.closest?.("[data-final-decision-bar]") && e.preventDefault()}
+            >
               <m.aside
                 className="fixed inset-y-0 end-0 z-50 flex w-full max-w-xl flex-col border-s border-border bg-surface shadow-float"
                 initial={{ x: off }}
@@ -105,7 +140,7 @@ export function ApplicationDrawer({ applicationId, onClose, onChanged }: { appli
                                 <MapPin className="size-3" /> {f.location(p.city, p.countryCode)}
                               </span>
                             )}
-                            {p && <span>{t("common.yearsExp", { n: p.yearsExperience })}</span>}
+                            {p && <span>{t("common.yearsExp", { years: f.years(p.yearsExperience) })}</span>}
                             {p && <span>{t(`enums.availability.${p.availability}`)}</span>}
                           </div>
                         </div>
@@ -144,7 +179,11 @@ export function ApplicationDrawer({ applicationId, onClose, onChanged }: { appli
                               key={s}
                               type="button"
                               disabled={pending}
-                              onClick={() => run(() => moveApplicationAction(detail.id, s, Date.now()), { stage: s, status: detail.status === "REJECTED" ? "VIEWED" : detail.status })}
+                              onClick={() =>
+                                s === "HIRED" && detail.stage !== "HIRED"
+                                  ? decideFinal("hire")
+                                  : run(() => moveApplicationAction(detail.id, s, Date.now()), { stage: s, status: detail.status === "REJECTED" ? "VIEWED" : detail.status })
+                              }
                               className={cn(
                                 "rounded-full border px-3 py-1.5 text-xs font-medium transition",
                                 detail.stage === s && detail.status !== "REJECTED" ? "border-brand bg-brand text-brand-fg" : "border-border hover:border-brand/50",
@@ -160,8 +199,8 @@ export function ApplicationDrawer({ applicationId, onClose, onChanged }: { appli
                               <Gift /> {t("recruiter.extendOffer")}
                             </Button>
                           )}
-                          {detail.status !== "REJECTED" && (
-                            <Button size="sm" variant="ghost" disabled={pending} onClick={() => run(() => setApplicationStatusAction(detail.id, "REJECTED"), { status: "REJECTED" })}>
+                          {detail.status !== "REJECTED" && detail.status !== "HIRED" && (
+                            <Button size="sm" variant="ghost" disabled={pending} onClick={() => decideFinal("decline")}>
                               <XCircle /> {t("recruiter.decline")}
                             </Button>
                           )}

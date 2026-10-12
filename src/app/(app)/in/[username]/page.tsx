@@ -8,6 +8,9 @@ import {
   Calendar,
   Crown,
   ExternalLink,
+  FileText,
+  Image as ImageIcon,
+  Play,
   FolderGit2,
   CodeXml,
   GraduationCap,
@@ -20,6 +23,7 @@ import {
   Users,
 } from "lucide-react";
 import { getViewer } from "@/server/session";
+import { parseVideoUrl } from "@/lib/video";
 import { db } from "@/server/db";
 import { getProfilePage, recordProfileView } from "@/server/services/profile-page";
 import { canMessageUser } from "@/server/services/profile";
@@ -131,7 +135,7 @@ export default async function ProfilePage({ params }: PageProps<"/in/[username]"
           </div>
           <div className="px-5 pb-6 sm:px-8">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-              <Avatar name={user.name} src={user.image} size="2xl" ring className="-mt-14 self-start sm:-mt-16 [&>span]:ring-[5px]" />
+              <Avatar name={user.name} src={user.image} size="2xl" ring className="relative z-10 -mt-14 self-start sm:-mt-16 [&>span]:ring-[5px]" />
               <ProfileActions
                 self={self}
                 signedIn={!!viewer}
@@ -179,7 +183,7 @@ export default async function ProfilePage({ params }: PageProps<"/in/[username]"
                     <Crown /> {t("profile.lookingForOpps")}
                   </Badge>
                 )}
-                {p.yearsExperience > 0 && <Badge>{t("common.yearsExp", { n: p.yearsExperience })}</Badge>}
+                {p.yearsExperience > 0 && <Badge>{t("common.yearsExp", { years: f.years(p.yearsExperience) })}</Badge>}
               </div>
             </div>
           </div>
@@ -489,10 +493,7 @@ export default async function ProfilePage({ params }: PageProps<"/in/[username]"
                 return url ? (
                   <li key={it.id}>
                     <a href={url} target="_blank" rel="noopener noreferrer nofollow" className="flex items-center gap-3 rounded-xl p-2 hover:bg-surface-2">
-                      {it.thumbnailUrl && (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={it.thumbnailUrl} alt="" className="size-10 rounded-lg object-cover" />
-                      )}
+                      <PortfolioThumb type={it.type} url={it.url} thumbnailUrl={it.thumbnailUrl} />
                       <span className="min-w-0">
                         <span className="block truncate text-sm font-medium">{it.title}</span>
                         {it.description && <span className="block truncate text-xs text-fg-muted">{it.description}</span>}
@@ -506,5 +507,29 @@ export default async function ProfilePage({ params }: PageProps<"/in/[username]"
         )}
       </aside>
     </div>
+  );
+}
+
+/** Thumbnail chosen by item type, so a video never shows a document's preview (or vice versa). */
+function PortfolioThumb({ type, url, thumbnailUrl }: { type: "IMAGE" | "LINK" | "VIDEO" | "DOCUMENT"; url: string; thumbnailUrl: string | null }) {
+  const image = type === "VIDEO" ? parseVideoUrl(url)?.thumbnailUrl : type === "IMAGE" ? (thumbnailUrl ?? url) : type === "LINK" ? thumbnailUrl : null;
+  if (image) {
+    return (
+      <span className="relative size-10 shrink-0 overflow-hidden rounded-lg bg-surface-2">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={image} alt="" className="size-full object-cover" />
+        {type === "VIDEO" && (
+          <span className="absolute inset-0 grid place-items-center bg-black/25">
+            <Play className="size-4 fill-white text-white" />
+          </span>
+        )}
+      </span>
+    );
+  }
+  const Icon = type === "VIDEO" ? Play : type === "DOCUMENT" ? FileText : type === "IMAGE" ? ImageIcon : Link2;
+  return (
+    <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-brand-soft text-brand-soft-fg">
+      <Icon className="size-[18px]" />
+    </span>
   );
 }

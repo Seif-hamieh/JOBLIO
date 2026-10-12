@@ -566,7 +566,7 @@ export type $JobDailyStatPayload<ExtArgs extends runtime.Types.Extensions.Intern
 export type JobDailyStatGetPayload<S extends boolean | null | undefined | JobDailyStatDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$JobDailyStatPayload, S>
 
 export type JobDailyStatCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<JobDailyStatFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<JobDailyStatFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: JobDailyStatCountAggregateInputType | true
   }
 
@@ -1012,6 +1012,7 @@ export type JobDailyStatFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.
    * Filter, which JobDailyStat to fetch.
    */
   where: Prisma.JobDailyStatWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1034,6 +1035,7 @@ export type JobDailyStatFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Exte
    * Filter, which JobDailyStat to fetch.
    */
   where: Prisma.JobDailyStatWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1086,6 +1088,7 @@ export type JobDailyStatFindFirstArgs<ExtArgs extends runtime.Types.Extensions.I
    * Filter by unique combinations of JobDailyStats.
    */
   distinct?: Prisma.JobDailyStatScalarFieldEnum | Prisma.JobDailyStatScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1138,6 +1141,7 @@ export type JobDailyStatFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Exten
    * Filter by unique combinations of JobDailyStats.
    */
   distinct?: Prisma.JobDailyStatScalarFieldEnum | Prisma.JobDailyStatScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1190,6 +1194,7 @@ export type JobDailyStatFindManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Filter by unique combinations of JobDailyStats.
    */
   distinct?: Prisma.JobDailyStatScalarFieldEnum | Prisma.JobDailyStatScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1212,6 +1217,7 @@ export type JobDailyStatCreateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * The data needed to create a JobDailyStat.
    */
   data: Prisma.XOR<Prisma.JobDailyStatCreateInput, Prisma.JobDailyStatUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1272,6 +1278,7 @@ export type JobDailyStatUpdateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Choose, which JobDailyStat to update.
    */
   where: Prisma.JobDailyStatWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1350,6 +1357,7 @@ export type JobDailyStatUpsertArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * In case the JobDailyStat was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.JobDailyStatUpdateInput, Prisma.JobDailyStatUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1372,6 +1380,7 @@ export type JobDailyStatDeleteArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Filter which JobDailyStat to delete.
    */
   where: Prisma.JobDailyStatWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

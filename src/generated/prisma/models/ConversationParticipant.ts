@@ -629,7 +629,7 @@ export type $ConversationParticipantPayload<ExtArgs extends runtime.Types.Extens
 export type ConversationParticipantGetPayload<S extends boolean | null | undefined | ConversationParticipantDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$ConversationParticipantPayload, S>
 
 export type ConversationParticipantCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<ConversationParticipantFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<ConversationParticipantFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: ConversationParticipantCountAggregateInputType | true
   }
 
@@ -1076,6 +1076,7 @@ export type ConversationParticipantFindUniqueArgs<ExtArgs extends runtime.Types.
    * Filter, which ConversationParticipant to fetch.
    */
   where: Prisma.ConversationParticipantWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1098,6 +1099,7 @@ export type ConversationParticipantFindUniqueOrThrowArgs<ExtArgs extends runtime
    * Filter, which ConversationParticipant to fetch.
    */
   where: Prisma.ConversationParticipantWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1150,6 +1152,7 @@ export type ConversationParticipantFindFirstArgs<ExtArgs extends runtime.Types.E
    * Filter by unique combinations of ConversationParticipants.
    */
   distinct?: Prisma.ConversationParticipantScalarFieldEnum | Prisma.ConversationParticipantScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1202,6 +1205,7 @@ export type ConversationParticipantFindFirstOrThrowArgs<ExtArgs extends runtime.
    * Filter by unique combinations of ConversationParticipants.
    */
   distinct?: Prisma.ConversationParticipantScalarFieldEnum | Prisma.ConversationParticipantScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1254,6 +1258,7 @@ export type ConversationParticipantFindManyArgs<ExtArgs extends runtime.Types.Ex
    * Filter by unique combinations of ConversationParticipants.
    */
   distinct?: Prisma.ConversationParticipantScalarFieldEnum | Prisma.ConversationParticipantScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1276,6 +1281,7 @@ export type ConversationParticipantCreateArgs<ExtArgs extends runtime.Types.Exte
    * The data needed to create a ConversationParticipant.
    */
   data: Prisma.XOR<Prisma.ConversationParticipantCreateInput, Prisma.ConversationParticipantUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1336,6 +1342,7 @@ export type ConversationParticipantUpdateArgs<ExtArgs extends runtime.Types.Exte
    * Choose, which ConversationParticipant to update.
    */
   where: Prisma.ConversationParticipantWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1414,6 +1421,7 @@ export type ConversationParticipantUpsertArgs<ExtArgs extends runtime.Types.Exte
    * In case the ConversationParticipant was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.ConversationParticipantUpdateInput, Prisma.ConversationParticipantUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1436,6 +1444,7 @@ export type ConversationParticipantDeleteArgs<ExtArgs extends runtime.Types.Exte
    * Filter which ConversationParticipant to delete.
    */
   where: Prisma.ConversationParticipantWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

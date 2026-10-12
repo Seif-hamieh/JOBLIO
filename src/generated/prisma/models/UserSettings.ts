@@ -609,7 +609,7 @@ export type $UserSettingsPayload<ExtArgs extends runtime.Types.Extensions.Intern
 export type UserSettingsGetPayload<S extends boolean | null | undefined | UserSettingsDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$UserSettingsPayload, S>
 
 export type UserSettingsCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<UserSettingsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<UserSettingsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: UserSettingsCountAggregateInputType | true
   }
 
@@ -1060,6 +1060,7 @@ export type UserSettingsFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.
    * Filter, which UserSettings to fetch.
    */
   where: Prisma.UserSettingsWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1082,6 +1083,7 @@ export type UserSettingsFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Exte
    * Filter, which UserSettings to fetch.
    */
   where: Prisma.UserSettingsWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1134,6 +1136,7 @@ export type UserSettingsFindFirstArgs<ExtArgs extends runtime.Types.Extensions.I
    * Filter by unique combinations of UserSettings.
    */
   distinct?: Prisma.UserSettingsScalarFieldEnum | Prisma.UserSettingsScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1186,6 +1189,7 @@ export type UserSettingsFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Exten
    * Filter by unique combinations of UserSettings.
    */
   distinct?: Prisma.UserSettingsScalarFieldEnum | Prisma.UserSettingsScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1238,6 +1242,7 @@ export type UserSettingsFindManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Filter by unique combinations of UserSettings.
    */
   distinct?: Prisma.UserSettingsScalarFieldEnum | Prisma.UserSettingsScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1260,6 +1265,7 @@ export type UserSettingsCreateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * The data needed to create a UserSettings.
    */
   data: Prisma.XOR<Prisma.UserSettingsCreateInput, Prisma.UserSettingsUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1320,6 +1326,7 @@ export type UserSettingsUpdateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Choose, which UserSettings to update.
    */
   where: Prisma.UserSettingsWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1398,6 +1405,7 @@ export type UserSettingsUpsertArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * In case the UserSettings was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.UserSettingsUpdateInput, Prisma.UserSettingsUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1420,6 +1428,7 @@ export type UserSettingsDeleteArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Filter which UserSettings to delete.
    */
   where: Prisma.UserSettingsWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

@@ -77,7 +77,7 @@ export default async function CompaniesPage({ searchParams }: PageProps<"/compan
       )}
       <PageHeader title={t("companies.title")} description={t("companies.sub")} />
 
-      <form className="grid gap-2 rounded-2xl border border-border bg-surface p-2 shadow-card sm:grid-cols-[1.4fr_1fr_1fr_1fr_auto]">
+      <form key={[q, industry, size, location, hiring].join("|")} className="grid gap-2 rounded-2xl border border-border bg-surface p-2 shadow-card sm:grid-cols-[1.4fr_1fr_1fr_1fr_auto]">
         <label className="flex items-center gap-2 px-3">
           <Search className="size-4 text-fg-subtle" />
           <input name="q" defaultValue={q} placeholder={t("companies.name")} className="h-10 w-full bg-transparent text-sm outline-none" aria-label={t("companies.name")} />
@@ -123,7 +123,7 @@ export default async function CompaniesPage({ searchParams }: PageProps<"/compan
                   style={c.coverUrl ? { backgroundImage: `url(${c.coverUrl})` } : { backgroundImage: `linear-gradient(120deg, ${c.brandColor ?? "var(--brand)"}, var(--aurora))` }}
                 />
                 <div className="flex flex-1 flex-col px-5 pb-5">
-                  <CompanyLogo name={c.name} src={c.logoUrl} color={c.brandColor} size="lg" className="-mt-7 ring-4 ring-surface" />
+                  <CompanyLogo name={c.name} src={c.logoUrl} color={c.brandColor} size="lg" className="relative z-10 -mt-7 ring-4 ring-surface" />
                   <div className="mt-3 flex items-center gap-1.5">
                     <Link href={`/companies/${c.slug}`} className="font-display font-semibold after:absolute after:inset-0">
                       {c.name}

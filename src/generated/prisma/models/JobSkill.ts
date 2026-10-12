@@ -589,7 +589,7 @@ export type $JobSkillPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type JobSkillGetPayload<S extends boolean | null | undefined | JobSkillDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$JobSkillPayload, S>
 
 export type JobSkillCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<JobSkillFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<JobSkillFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: JobSkillCountAggregateInputType | true
   }
 
@@ -1035,6 +1035,7 @@ export type JobSkillFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Filter, which JobSkill to fetch.
    */
   where: Prisma.JobSkillWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1057,6 +1058,7 @@ export type JobSkillFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensio
    * Filter, which JobSkill to fetch.
    */
   where: Prisma.JobSkillWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1109,6 +1111,7 @@ export type JobSkillFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Filter by unique combinations of JobSkills.
    */
   distinct?: Prisma.JobSkillScalarFieldEnum | Prisma.JobSkillScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1161,6 +1164,7 @@ export type JobSkillFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extension
    * Filter by unique combinations of JobSkills.
    */
   distinct?: Prisma.JobSkillScalarFieldEnum | Prisma.JobSkillScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1213,6 +1217,7 @@ export type JobSkillFindManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Filter by unique combinations of JobSkills.
    */
   distinct?: Prisma.JobSkillScalarFieldEnum | Prisma.JobSkillScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1235,6 +1240,7 @@ export type JobSkillCreateArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * The data needed to create a JobSkill.
    */
   data: Prisma.XOR<Prisma.JobSkillCreateInput, Prisma.JobSkillUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1295,6 +1301,7 @@ export type JobSkillUpdateArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Choose, which JobSkill to update.
    */
   where: Prisma.JobSkillWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1373,6 +1380,7 @@ export type JobSkillUpsertArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * In case the JobSkill was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.JobSkillUpdateInput, Prisma.JobSkillUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1395,6 +1403,7 @@ export type JobSkillDeleteArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Filter which JobSkill to delete.
    */
   where: Prisma.JobSkillWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

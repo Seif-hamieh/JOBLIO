@@ -81,6 +81,7 @@ export const ModelName = {
   JobLanguage: 'JobLanguage',
   JobPromotion: 'JobPromotion',
   JobDailyStat: 'JobDailyStat',
+  JobView: 'JobView',
   SavedJob: 'SavedJob',
   SavedSearch: 'SavedSearch',
   Application: 'Application',
@@ -136,6 +137,14 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const RelationLoadStrategy = {
+  query: 'query',
+  join: 'join'
+} as const
+
+export type RelationLoadStrategy = (typeof RelationLoadStrategy)[keyof typeof RelationLoadStrategy]
 
 
 export const SessionScalarFieldEnum = {
@@ -572,6 +581,15 @@ export const JobDailyStatScalarFieldEnum = {
 } as const
 
 export type JobDailyStatScalarFieldEnum = (typeof JobDailyStatScalarFieldEnum)[keyof typeof JobDailyStatScalarFieldEnum]
+
+
+export const JobViewScalarFieldEnum = {
+  jobId: 'jobId',
+  viewerKey: 'viewerKey',
+  viewedAt: 'viewedAt'
+} as const
+
+export type JobViewScalarFieldEnum = (typeof JobViewScalarFieldEnum)[keyof typeof JobViewScalarFieldEnum]
 
 
 export const SavedJobScalarFieldEnum = {

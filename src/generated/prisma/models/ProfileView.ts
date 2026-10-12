@@ -623,7 +623,7 @@ export type $ProfileViewPayload<ExtArgs extends runtime.Types.Extensions.Interna
 export type ProfileViewGetPayload<S extends boolean | null | undefined | ProfileViewDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$ProfileViewPayload, S>
 
 export type ProfileViewCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<ProfileViewFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<ProfileViewFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: ProfileViewCountAggregateInputType | true
   }
 
@@ -1070,6 +1070,7 @@ export type ProfileViewFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.I
    * Filter, which ProfileView to fetch.
    */
   where: Prisma.ProfileViewWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1092,6 +1093,7 @@ export type ProfileViewFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Exten
    * Filter, which ProfileView to fetch.
    */
   where: Prisma.ProfileViewWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1144,6 +1146,7 @@ export type ProfileViewFindFirstArgs<ExtArgs extends runtime.Types.Extensions.In
    * Filter by unique combinations of ProfileViews.
    */
   distinct?: Prisma.ProfileViewScalarFieldEnum | Prisma.ProfileViewScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1196,6 +1199,7 @@ export type ProfileViewFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extens
    * Filter by unique combinations of ProfileViews.
    */
   distinct?: Prisma.ProfileViewScalarFieldEnum | Prisma.ProfileViewScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1248,6 +1252,7 @@ export type ProfileViewFindManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Filter by unique combinations of ProfileViews.
    */
   distinct?: Prisma.ProfileViewScalarFieldEnum | Prisma.ProfileViewScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1270,6 +1275,7 @@ export type ProfileViewCreateArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * The data needed to create a ProfileView.
    */
   data: Prisma.XOR<Prisma.ProfileViewCreateInput, Prisma.ProfileViewUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1330,6 +1336,7 @@ export type ProfileViewUpdateArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Choose, which ProfileView to update.
    */
   where: Prisma.ProfileViewWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1408,6 +1415,7 @@ export type ProfileViewUpsertArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * In case the ProfileView was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.ProfileViewUpdateInput, Prisma.ProfileViewUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1430,6 +1438,7 @@ export type ProfileViewDeleteArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Filter which ProfileView to delete.
    */
   where: Prisma.ProfileViewWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

@@ -9,6 +9,7 @@ import { Button, buttonClasses } from "@/components/ui/button";
 import { Menu, MenuContent, MenuItem, MenuTrigger } from "@/components/ui/menu";
 import { ConnectButton, type RelationState } from "@/components/network/connect-button";
 import { toast } from "@/components/ui/toast";
+import { copyText } from "@/lib/share";
 import { toggleBlockAction, toggleFollowUserAction } from "@/server/actions/network";
 
 export function ProfileActions({
@@ -34,8 +35,9 @@ export function ProfileActions({
   const [, start] = useTransition();
 
   const copyLink = async () => {
-    await navigator.clipboard.writeText(`${window.location.origin}/in/${user.username}`);
-    toast.success(t("profile.profileCopied"));
+    const url = `${window.location.origin}/in/${user.username}`;
+    if (await copyText(url)) toast.success(t("profile.profileCopied"));
+    else toast.error(t("common.copyFailed"), url);
   };
 
   if (self) {

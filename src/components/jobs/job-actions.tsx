@@ -7,6 +7,7 @@ import { m } from "motion/react";
 import { Bookmark, Share2 } from "lucide-react";
 import { toggleSaveJob } from "@/server/actions/jobs";
 import { toast } from "@/components/ui/toast";
+import { shareLink } from "@/lib/share";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { MatchPill } from "@/components/match/match-ring";
@@ -95,13 +96,9 @@ export function ShareButton({ title, path }: { title: string; path: string }) {
   const { t } = useI18n();
   async function share() {
     const url = `${window.location.origin}${path}`;
-    try {
-      if (navigator.share) await navigator.share({ title, url });
-      else {
-        await navigator.clipboard.writeText(url);
-        toast.success(t("common.linkCopied"));
-      }
-    } catch {}
+    const result = await shareLink(title, url);
+    if (result === "copied") toast.success(t("common.linkCopied"));
+    else if (result === "failed") toast.error(t("common.copyFailed"), url);
   }
   return (
     <Button variant="outline" size="lg" onClick={share}>

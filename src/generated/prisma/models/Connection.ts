@@ -713,7 +713,7 @@ export type $ConnectionPayload<ExtArgs extends runtime.Types.Extensions.Internal
 export type ConnectionGetPayload<S extends boolean | null | undefined | ConnectionDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$ConnectionPayload, S>
 
 export type ConnectionCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<ConnectionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<ConnectionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: ConnectionCountAggregateInputType | true
   }
 
@@ -1162,6 +1162,7 @@ export type ConnectionFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.In
    * Filter, which Connection to fetch.
    */
   where: Prisma.ConnectionWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1184,6 +1185,7 @@ export type ConnectionFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extens
    * Filter, which Connection to fetch.
    */
   where: Prisma.ConnectionWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1236,6 +1238,7 @@ export type ConnectionFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Filter by unique combinations of Connections.
    */
   distinct?: Prisma.ConnectionScalarFieldEnum | Prisma.ConnectionScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1288,6 +1291,7 @@ export type ConnectionFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensi
    * Filter by unique combinations of Connections.
    */
   distinct?: Prisma.ConnectionScalarFieldEnum | Prisma.ConnectionScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1340,6 +1344,7 @@ export type ConnectionFindManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Filter by unique combinations of Connections.
    */
   distinct?: Prisma.ConnectionScalarFieldEnum | Prisma.ConnectionScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1362,6 +1367,7 @@ export type ConnectionCreateArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * The data needed to create a Connection.
    */
   data: Prisma.XOR<Prisma.ConnectionCreateInput, Prisma.ConnectionUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1422,6 +1428,7 @@ export type ConnectionUpdateArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Choose, which Connection to update.
    */
   where: Prisma.ConnectionWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1500,6 +1507,7 @@ export type ConnectionUpsertArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * In case the Connection was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.ConnectionUpdateInput, Prisma.ConnectionUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1522,6 +1530,7 @@ export type ConnectionDeleteArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Filter which Connection to delete.
    */
   where: Prisma.ConnectionWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

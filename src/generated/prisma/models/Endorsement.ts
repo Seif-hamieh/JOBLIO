@@ -589,7 +589,7 @@ export type $EndorsementPayload<ExtArgs extends runtime.Types.Extensions.Interna
 export type EndorsementGetPayload<S extends boolean | null | undefined | EndorsementDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$EndorsementPayload, S>
 
 export type EndorsementCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<EndorsementFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<EndorsementFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: EndorsementCountAggregateInputType | true
   }
 
@@ -1035,6 +1035,7 @@ export type EndorsementFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.I
    * Filter, which Endorsement to fetch.
    */
   where: Prisma.EndorsementWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1057,6 +1058,7 @@ export type EndorsementFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Exten
    * Filter, which Endorsement to fetch.
    */
   where: Prisma.EndorsementWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1109,6 +1111,7 @@ export type EndorsementFindFirstArgs<ExtArgs extends runtime.Types.Extensions.In
    * Filter by unique combinations of Endorsements.
    */
   distinct?: Prisma.EndorsementScalarFieldEnum | Prisma.EndorsementScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1161,6 +1164,7 @@ export type EndorsementFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extens
    * Filter by unique combinations of Endorsements.
    */
   distinct?: Prisma.EndorsementScalarFieldEnum | Prisma.EndorsementScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1213,6 +1217,7 @@ export type EndorsementFindManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Filter by unique combinations of Endorsements.
    */
   distinct?: Prisma.EndorsementScalarFieldEnum | Prisma.EndorsementScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1235,6 +1240,7 @@ export type EndorsementCreateArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * The data needed to create a Endorsement.
    */
   data: Prisma.XOR<Prisma.EndorsementCreateInput, Prisma.EndorsementUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1295,6 +1301,7 @@ export type EndorsementUpdateArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Choose, which Endorsement to update.
    */
   where: Prisma.EndorsementWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1373,6 +1380,7 @@ export type EndorsementUpsertArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * In case the Endorsement was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.EndorsementUpdateInput, Prisma.EndorsementUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1395,6 +1403,7 @@ export type EndorsementDeleteArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Filter which Endorsement to delete.
    */
   where: Prisma.EndorsementWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

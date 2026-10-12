@@ -77,7 +77,7 @@ export default async function CompanyPage({ params }: PageProps<"/companies/[slu
         />
         <div className="px-5 pb-6 sm:px-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <CompanyLogo name={company.name} src={company.logoUrl} color={company.brandColor} size="xl" className="-mt-12 ring-4 ring-surface" />
+            <CompanyLogo name={company.name} src={company.logoUrl} color={company.brandColor} size="xl" className="relative z-10 -mt-12 ring-4 ring-surface" />
             <div className="flex flex-wrap gap-2">
               {isMember ? (
                 <Link href="/company/dashboard" className={buttonClasses({ pill: true })}>

@@ -14,12 +14,14 @@ import { k } from "@/i18n/message";
 
 const ROOT = join(process.cwd(), "storage");
 const FILES_PREFIX = "/api/v1/files/";
-const MAX_BYTES = Number(process.env.UPLOAD_MAX_BYTES ?? 10 * 1024 * 1024);
+// 4 MB by default: Vercel rejects request bodies over 4.5 MB (see src/lib/upload-check.ts).
+const MAX_BYTES = Number(process.env.UPLOAD_MAX_BYTES ?? 4 * 1024 * 1024);
 
 export type UploadScope = "avatar" | "cover" | "company" | "post" | "project" | "resume" | "message";
 
 const IMAGE = ["image/png", "image/jpeg", "image/webp", "image/gif"] as const;
-const DOCS = ["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "text/plain"] as const;
+const WORD = ["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/msword"] as const;
+const DOCS = [...WORD, "text/plain"] as const;
 
 const ALLOWED: Record<UploadScope, readonly string[]> = {
   avatar: IMAGE,
@@ -27,7 +29,7 @@ const ALLOWED: Record<UploadScope, readonly string[]> = {
   company: IMAGE,
   post: IMAGE,
   project: IMAGE,
-  resume: ["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"],
+  resume: WORD,
   message: [...IMAGE, ...DOCS],
 };
 
@@ -38,6 +40,7 @@ const EXT: Record<string, string> = {
   "image/gif": "gif",
   "application/pdf": "pdf",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "docx",
+  "application/msword": "doc",
   "text/plain": "txt",
 };
 
@@ -50,6 +53,8 @@ export function sniffMime(buf: Buffer): string | null {
   if (hex.startsWith("52494646") && buf.subarray(8, 12).toString("ascii") === "WEBP") return "image/webp";
   if (hex.startsWith("25504446")) return "application/pdf";
   if (hex.startsWith("504b0304")) return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+  // Legacy Word (.doc) uses the OLE compound-file header.
+  if (hex.startsWith("d0cf11e0a1b11ae1")) return "application/msword";
   // Plain text: no NUL bytes in the first KB and valid UTF-8.
   const head = buf.subarray(0, 1024);
   if (!head.includes(0)) {

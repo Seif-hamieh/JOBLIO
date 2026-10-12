@@ -9,6 +9,7 @@ import { EventEmitter } from "node:events";
 
 export type RealtimeEvent =
   | { type: "message"; conversationId: string; messageId: string; senderId: string }
+  | { type: "message-deleted"; conversationId: string; messageId: string }
   | { type: "read"; conversationId: string; userId: string; at: string }
   | { type: "typing"; conversationId: string; userId: string }
   | { type: "notification"; id: string; title: string; href: string | null }

@@ -21,7 +21,7 @@ export function FeedList({
   initial: FeedPost[];
   nextCursor: string | null;
   viewer: { id: string; name: string; image: string | null };
-  scope?: { authorId?: string; companyId?: string };
+  scope?: { authorId?: string; companyId?: string; networkOnly?: boolean };
   emptyTitle?: string;
   emptyDescription?: string;
 }) {

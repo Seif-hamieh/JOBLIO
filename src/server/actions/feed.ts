@@ -164,10 +164,10 @@ export async function deletePostAction(postId: string): Promise<ActionState> {
   });
 }
 
-export async function loadMoreFeedAction(cursor: string, scope?: { authorId?: string; companyId?: string }): Promise<{ posts: FeedPost[]; nextCursor: string | null }> {
+export async function loadMoreFeedAction(cursor: string, scope?: { authorId?: string; companyId?: string; networkOnly?: boolean }): Promise<{ posts: FeedPost[]; nextCursor: string | null }> {
   const res = await withViewer<{ posts: FeedPost[]; nextCursor: string | null }>({ limit: LIMITS.search }, async (viewer) => ({
     ok: true,
-    data: await getFeed(viewer.id, { cursor: id.parse(cursor), authorId: scope?.authorId, companyId: scope?.companyId }),
+    data: await getFeed(viewer.id, { cursor: id.parse(cursor), authorId: scope?.authorId, companyId: scope?.companyId, networkOnly: scope?.networkOnly === true }),
   }));
   return res?.ok && res.data ? res.data : { posts: [], nextCursor: null };
 }

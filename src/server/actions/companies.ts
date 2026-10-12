@@ -90,7 +90,8 @@ export async function uploadCompanyImageAction(form: FormData): Promise<ActionSt
       }
       revalidatePath("/company/dashboard");
       revalidatePath(`/companies/${viewer.company.slug}`);
-      return { ok: true, data: { url: stored.url } };
+      const message = kind === "logo" ? "@msg.logoUpdated" : kind === "cover" ? "@msg.companyCoverUpdated" : "@msg.photoAdded";
+      return { ok: true, message, data: { url: stored.url } };
     } catch (e) {
       if (e instanceof UploadError) return fail(e.message);
       throw e;

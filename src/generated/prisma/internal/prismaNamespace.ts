@@ -427,6 +427,7 @@ export const ModelName = {
   JobLanguage: 'JobLanguage',
   JobPromotion: 'JobPromotion',
   JobDailyStat: 'JobDailyStat',
+  JobView: 'JobView',
   SavedJob: 'SavedJob',
   SavedSearch: 'SavedSearch',
   Application: 'Application',
@@ -462,7 +463,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification" | "rateLimit" | "userSettings" | "block" | "profile" | "skill" | "userSkill" | "endorsement" | "experience" | "education" | "project" | "certificate" | "userLanguage" | "portfolioItem" | "socialLink" | "profileView" | "userAchievement" | "industry" | "company" | "companyMember" | "companyFollower" | "companyMedia" | "job" | "jobSkill" | "jobLanguage" | "jobPromotion" | "jobDailyStat" | "savedJob" | "savedSearch" | "application" | "applicationEvent" | "recruiterNote" | "interview" | "savedCandidate" | "connection" | "follow" | "post" | "postLike" | "comment" | "conversation" | "conversationParticipant" | "message" | "notification" | "subscription" | "payment" | "profileBoost" | "webhookEvent"
+    modelProps: "user" | "session" | "account" | "verification" | "rateLimit" | "userSettings" | "block" | "profile" | "skill" | "userSkill" | "endorsement" | "experience" | "education" | "project" | "certificate" | "userLanguage" | "portfolioItem" | "socialLink" | "profileView" | "userAchievement" | "industry" | "company" | "companyMember" | "companyFollower" | "companyMedia" | "job" | "jobSkill" | "jobLanguage" | "jobPromotion" | "jobDailyStat" | "jobView" | "savedJob" | "savedSearch" | "application" | "applicationEvent" | "recruiterNote" | "interview" | "savedCandidate" | "connection" | "follow" | "post" | "postLike" | "comment" | "conversation" | "conversationParticipant" | "message" | "notification" | "subscription" | "payment" | "profileBoost" | "webhookEvent"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2686,6 +2687,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    JobView: {
+      payload: Prisma.$JobViewPayload<ExtArgs>
+      fields: Prisma.JobViewFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.JobViewFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JobViewPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.JobViewFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JobViewPayload>
+        }
+        findFirst: {
+          args: Prisma.JobViewFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JobViewPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.JobViewFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JobViewPayload>
+        }
+        findMany: {
+          args: Prisma.JobViewFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JobViewPayload>[]
+        }
+        create: {
+          args: Prisma.JobViewCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JobViewPayload>
+        }
+        createMany: {
+          args: Prisma.JobViewCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.JobViewCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JobViewPayload>[]
+        }
+        delete: {
+          args: Prisma.JobViewDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JobViewPayload>
+        }
+        update: {
+          args: Prisma.JobViewUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JobViewPayload>
+        }
+        deleteMany: {
+          args: Prisma.JobViewDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.JobViewUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.JobViewUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JobViewPayload>[]
+        }
+        upsert: {
+          args: Prisma.JobViewUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JobViewPayload>
+        }
+        aggregate: {
+          args: Prisma.JobViewAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateJobView>
+        }
+        groupBy: {
+          args: Prisma.JobViewGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.JobViewGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.JobViewCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.JobViewCountAggregateOutputType> | number
+        }
+      }
+    }
     SavedJob: {
       payload: Prisma.$SavedJobPayload<ExtArgs>
       fields: Prisma.SavedJobFieldRefs
@@ -4224,6 +4299,14 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const RelationLoadStrategy = {
+  query: 'query',
+  join: 'join'
+} as const
+
+export type RelationLoadStrategy = (typeof RelationLoadStrategy)[keyof typeof RelationLoadStrategy]
+
+
 export const SessionScalarFieldEnum = {
   id: 'id',
   expiresAt: 'expiresAt',
@@ -4658,6 +4741,15 @@ export const JobDailyStatScalarFieldEnum = {
 } as const
 
 export type JobDailyStatScalarFieldEnum = (typeof JobDailyStatScalarFieldEnum)[keyof typeof JobDailyStatScalarFieldEnum]
+
+
+export const JobViewScalarFieldEnum = {
+  jobId: 'jobId',
+  viewerKey: 'viewerKey',
+  viewedAt: 'viewedAt'
+} as const
+
+export type JobViewScalarFieldEnum = (typeof JobViewScalarFieldEnum)[keyof typeof JobViewScalarFieldEnum]
 
 
 export const SavedJobScalarFieldEnum = {
@@ -5713,6 +5805,7 @@ export type GlobalOmitConfig = {
   jobLanguage?: Prisma.JobLanguageOmit
   jobPromotion?: Prisma.JobPromotionOmit
   jobDailyStat?: Prisma.JobDailyStatOmit
+  jobView?: Prisma.JobViewOmit
   savedJob?: Prisma.SavedJobOmit
   savedSearch?: Prisma.SavedSearchOmit
   application?: Prisma.ApplicationOmit

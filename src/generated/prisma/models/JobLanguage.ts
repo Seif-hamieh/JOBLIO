@@ -442,7 +442,7 @@ export type $JobLanguagePayload<ExtArgs extends runtime.Types.Extensions.Interna
 export type JobLanguageGetPayload<S extends boolean | null | undefined | JobLanguageDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$JobLanguagePayload, S>
 
 export type JobLanguageCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<JobLanguageFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<JobLanguageFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: JobLanguageCountAggregateInputType | true
   }
 
@@ -886,6 +886,7 @@ export type JobLanguageFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.I
    * Filter, which JobLanguage to fetch.
    */
   where: Prisma.JobLanguageWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -908,6 +909,7 @@ export type JobLanguageFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Exten
    * Filter, which JobLanguage to fetch.
    */
   where: Prisma.JobLanguageWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -960,6 +962,7 @@ export type JobLanguageFindFirstArgs<ExtArgs extends runtime.Types.Extensions.In
    * Filter by unique combinations of JobLanguages.
    */
   distinct?: Prisma.JobLanguageScalarFieldEnum | Prisma.JobLanguageScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1012,6 +1015,7 @@ export type JobLanguageFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extens
    * Filter by unique combinations of JobLanguages.
    */
   distinct?: Prisma.JobLanguageScalarFieldEnum | Prisma.JobLanguageScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1064,6 +1068,7 @@ export type JobLanguageFindManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Filter by unique combinations of JobLanguages.
    */
   distinct?: Prisma.JobLanguageScalarFieldEnum | Prisma.JobLanguageScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1086,6 +1091,7 @@ export type JobLanguageCreateArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * The data needed to create a JobLanguage.
    */
   data: Prisma.XOR<Prisma.JobLanguageCreateInput, Prisma.JobLanguageUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1146,6 +1152,7 @@ export type JobLanguageUpdateArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Choose, which JobLanguage to update.
    */
   where: Prisma.JobLanguageWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1224,6 +1231,7 @@ export type JobLanguageUpsertArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * In case the JobLanguage was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.JobLanguageUpdateInput, Prisma.JobLanguageUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1246,6 +1254,7 @@ export type JobLanguageDeleteArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Filter which JobLanguage to delete.
    */
   where: Prisma.JobLanguageWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

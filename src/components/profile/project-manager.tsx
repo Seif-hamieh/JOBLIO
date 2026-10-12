@@ -10,6 +10,7 @@ import { Dialog } from "@/components/ui/dialog";
 import { Field, Input, Textarea } from "@/components/ui/field";
 import { EmptyState } from "@/components/ui/misc";
 import { toast } from "@/components/ui/toast";
+import { acceptFor, checkUpload } from "@/lib/upload-check";
 import { SkillSearch } from "@/components/skills/skill-search";
 import { deleteProjectAction, uploadProjectImageAction, upsertProjectAction } from "@/server/actions/profile";
 
@@ -142,17 +143,20 @@ export function ProjectManager({ items }: { items: ProjectItem[] }) {
             <input
               ref={fileRef}
               type="file"
-              accept="image/png,image/jpeg,image/webp,image/gif"
+              accept={acceptFor("image")}
               className="sr-only"
               onChange={(e) => {
                 const file = e.target.files?.[0];
+                e.target.value = "";
                 if (!file) return;
+                const problem = checkUpload(file, "image", t);
+                if (problem) return toast.error(problem);
                 startUpload(async () => {
                   const fd = new FormData();
                   fd.set("file", file);
-                  const res = await uploadProjectImageAction(fd);
+                  const res = await uploadProjectImageAction(fd).catch(() => null);
                   if (res?.ok && res.data) setV((x) => ({ ...x, imageUrl: res.data!.url }));
-                  else toast.error(res && !res.ok ? res.error : t("common.somethingWrong"));
+                  else toast.error(res && !res.ok ? res.error : t("msg.uploadFailed"));
                 });
               }}
             />

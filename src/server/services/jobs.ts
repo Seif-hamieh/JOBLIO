@@ -1,4 +1,6 @@
 import "server-only";
+import { createHash } from "node:crypto";
+import { headers } from "next/headers";
 import { db, type Prisma } from "@/server/db";
 import { resolveCountryCode } from "@/lib/geo";
 import type { JobSearchParams } from "@/lib/validation/search";
@@ -232,8 +234,28 @@ export async function getJob(id: string) {
   return db.job.findUnique({ where: { id }, select: jobDetailSelect });
 }
 
-export async function recordJobView(jobId: string) {
-  const today = new Date();
+const VIEW_WINDOW_MS = 24 * 3600 * 1000;
+
+/** A stable, non-reversible key for a signed-out visitor (network address + browser). */
+export async function anonymousViewerKey() {
+  const h = await headers();
+  const ip = h.get("x-forwarded-for")?.split(",")[0]?.trim() ?? h.get("x-real-ip") ?? "";
+  return "a:" + createHash("sha256").update(`${ip}|${h.get("user-agent") ?? ""}`).digest("hex").slice(0, 40);
+}
+
+/**
+ * Counts a job view at most once per viewer per 24 hours. `viewerKey` is the
+ * user id, or a hash of the visitor's network address and browser.
+ */
+export async function recordJobView(jobId: string, viewerKey: string) {
+  const now = new Date();
+  // Claim this viewer's slot only if they have no view in the last 24 hours (one atomic statement).
+  const claimed = await db.$executeRaw`
+    INSERT INTO job_views ("jobId", "viewerKey", "viewedAt") VALUES (${jobId}, ${viewerKey}, ${now})
+    ON CONFLICT ("jobId", "viewerKey") DO UPDATE SET "viewedAt" = EXCLUDED."viewedAt"
+    WHERE job_views."viewedAt" < ${new Date(now.getTime() - VIEW_WINDOW_MS)}`;
+  if (!claimed) return;
+  const today = new Date(now);
   today.setUTCHours(0, 0, 0, 0);
   await db.$transaction([
     db.job.update({ where: { id: jobId }, data: { viewCount: { increment: 1 } } }),

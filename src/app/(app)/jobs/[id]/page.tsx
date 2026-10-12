@@ -20,7 +20,7 @@ import {
   X,
 } from "lucide-react";
 import { getViewer } from "@/server/session";
-import { getJob, recordJobView, similarJobs } from "@/server/services/jobs";
+import { anonymousViewerKey, getJob, recordJobView, similarJobs } from "@/server/services/jobs";
 import { getCandidateFacts, toJobFacts } from "@/server/services/matching";
 import { db } from "@/server/db";
 import { computeMatch } from "@/lib/matching/engine";
@@ -50,7 +50,11 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
   const { id } = await params;
   const [job, viewer, { t, f }] = await Promise.all([getJob(id), getViewer(), getI18n()]);
   if (!job) notFound();
-  const isTeam = viewer?.company?.id === job.company.id;
+  // Members of the posting company manage the job instead of applying to it (any of their companies, not just the first).
+  const isTeam =
+    !!viewer &&
+    (viewer.company?.id === job.company.id ||
+      !!(await db.companyMember.findUnique({ where: { companyId_userId: { companyId: job.company.id, userId: viewer.id } }, select: { id: true } })));
   if (job.status !== "OPEN" && !isTeam) notFound();
 
   const [facts, saved, application, follows, similar, resume] = await Promise.all([
@@ -61,7 +65,7 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
     similarJobs(job, viewer?.id ?? null),
     viewer ? db.profile.findUnique({ where: { userId: viewer.id }, select: { resumeUrl: true, resumeName: true } }) : null,
   ]);
-  if (!isTeam) await recordJobView(id);
+  if (!isTeam) await recordJobView(id, viewer?.id ?? (await anonymousViewerKey()));
 
   const match = facts ? computeMatch(facts, toJobFacts(job)) : null;
   const held = new Map(facts?.skills.map((s) => [s.skillId, s.level]) ?? []);
@@ -84,7 +88,7 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
   const facts_ = [
     { icon: MapPin, label: t("jobs.location"), value: location },
     { icon: Briefcase, label: t("jobs.jobType"), value: `${t(`enums.employmentType.${job.employmentType}`)} · ${t(`enums.workMode.${job.workMode}`)}` },
-    { icon: Clock, label: t("jobs.experience"), value: `${t(`enums.experienceLevel.${job.experienceLevel}`)}${job.minYearsExperience ? ` · ${f.years(job.minYearsExperience)}+` : ""}` },
+    { icon: Clock, label: t("jobs.experience"), value: `${t(`enums.experienceLevel.${job.experienceLevel}`)}${job.minYearsExperience ? ` · ${t("jobs.minExperience", { years: f.years(job.minYearsExperience) })}` : ""}` },
     { icon: Wallet, label: t("jobs.salary"), value: salary ?? t("jobs.notDisclosed") },
     { icon: GraduationCap, label: t("jobs.education"), value: t(`enums.educationLevel.${job.educationLevel}`) },
   ];
@@ -113,7 +117,13 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
             <div className="hidden items-center gap-2 md:flex">
               <SaveJobButton jobId={job.id} saved={!!saved} signedIn={!!viewer} variant="button" />
               <ShareButton title={`${job.title} · ${job.company.name}`} path={`/jobs/${job.id}`} />
-              <ApplyButton {...applyProps} />
+              {isTeam ? (
+                <Link href={`/recruiter/jobs/${job.id}/pipeline`} className={buttonClasses({ size: "lg" })}>
+                  {t("jobs.openPipeline")}
+                </Link>
+              ) : (
+                <ApplyButton {...applyProps} />
+              )}
             </div>
           </div>
           <div className="mt-4">
@@ -122,7 +132,7 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
               {job.featuredUntil && job.featuredUntil > new Date() && <Badge tone="ember">{t("common.featured")}</Badge>}
               {job.sponsoredUntil && job.sponsoredUntil > new Date() && <Badge tone="aurora">{t("common.sponsored")}</Badge>}
             </div>
-            <h1 className="mt-1 font-display text-2xl font-semibold tracking-tight sm:text-3xl">{job.title}</h1>
+            <h1 className="mt-1 break-words font-display text-2xl font-semibold tracking-tight [overflow-wrap:anywhere] sm:text-3xl">{job.title}</h1>
             <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-fg-muted">
               <Link href={`/companies/${job.company.slug}`} className="inline-flex items-center gap-1 font-medium text-fg hover:underline">
                 {job.company.name}
@@ -180,7 +190,7 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
                   {job.responsibilities.map((r) => (
                     <li key={r} className="flex gap-3 text-[15px] text-fg-muted">
                       <span className="mt-2 size-1.5 shrink-0 rounded-full bg-brand" />
-                      {r}
+                      <span className="min-w-0 break-words [overflow-wrap:anywhere]">{r}</span>
                     </li>
                   ))}
                 </ul>
@@ -193,7 +203,7 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
                   {job.requirements.map((r) => (
                     <li key={r} className="flex gap-3 text-[15px] text-fg-muted">
                       <Check className="mt-1 size-4 shrink-0 text-mint" strokeWidth={2.5} />
-                      {r}
+                      <span className="min-w-0 break-words [overflow-wrap:anywhere]">{r}</span>
                     </li>
                   ))}
                 </ul>
@@ -374,7 +384,13 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
         className={`glass fixed inset-x-0 z-30 flex items-center gap-2 border-t border-border p-3 md:hidden ${viewer ? "bottom-[calc(64px+env(safe-area-inset-bottom))]" : "bottom-0"}`}
       >
         <SaveJobButton jobId={job.id} saved={!!saved} signedIn={!!viewer} />
-        <ApplyButton {...applyProps} size="md" className="flex-1" />
+        {isTeam ? (
+          <Link href={`/recruiter/jobs/${job.id}/pipeline`} className={buttonClasses({ size: "md", className: "flex-1" })}>
+            {t("jobs.openPipeline")}
+          </Link>
+        ) : (
+          <ApplyButton {...applyProps} size="md" className="flex-1" />
+        )}
       </div>
     </div>
   );

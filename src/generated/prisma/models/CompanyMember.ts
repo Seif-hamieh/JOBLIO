@@ -673,7 +673,7 @@ export type $CompanyMemberPayload<ExtArgs extends runtime.Types.Extensions.Inter
 export type CompanyMemberGetPayload<S extends boolean | null | undefined | CompanyMemberDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$CompanyMemberPayload, S>
 
 export type CompanyMemberCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<CompanyMemberFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<CompanyMemberFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: CompanyMemberCountAggregateInputType | true
   }
 
@@ -1121,6 +1121,7 @@ export type CompanyMemberFindUniqueArgs<ExtArgs extends runtime.Types.Extensions
    * Filter, which CompanyMember to fetch.
    */
   where: Prisma.CompanyMemberWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1143,6 +1144,7 @@ export type CompanyMemberFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Ext
    * Filter, which CompanyMember to fetch.
    */
   where: Prisma.CompanyMemberWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1195,6 +1197,7 @@ export type CompanyMemberFindFirstArgs<ExtArgs extends runtime.Types.Extensions.
    * Filter by unique combinations of CompanyMembers.
    */
   distinct?: Prisma.CompanyMemberScalarFieldEnum | Prisma.CompanyMemberScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1247,6 +1250,7 @@ export type CompanyMemberFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Exte
    * Filter by unique combinations of CompanyMembers.
    */
   distinct?: Prisma.CompanyMemberScalarFieldEnum | Prisma.CompanyMemberScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1299,6 +1303,7 @@ export type CompanyMemberFindManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Filter by unique combinations of CompanyMembers.
    */
   distinct?: Prisma.CompanyMemberScalarFieldEnum | Prisma.CompanyMemberScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1321,6 +1326,7 @@ export type CompanyMemberCreateArgs<ExtArgs extends runtime.Types.Extensions.Int
    * The data needed to create a CompanyMember.
    */
   data: Prisma.XOR<Prisma.CompanyMemberCreateInput, Prisma.CompanyMemberUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1381,6 +1387,7 @@ export type CompanyMemberUpdateArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Choose, which CompanyMember to update.
    */
   where: Prisma.CompanyMemberWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1459,6 +1466,7 @@ export type CompanyMemberUpsertArgs<ExtArgs extends runtime.Types.Extensions.Int
    * In case the CompanyMember was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.CompanyMemberUpdateInput, Prisma.CompanyMemberUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1481,6 +1489,7 @@ export type CompanyMemberDeleteArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Filter which CompanyMember to delete.
    */
   where: Prisma.CompanyMemberWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

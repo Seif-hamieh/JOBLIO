@@ -28,7 +28,7 @@ export default async function CandidateSearchPage({ searchParams }: PageProps<"/
     <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
       <aside>
         <div className="lg:sticky lg:top-24">
-          <CandidateFilters params={params} pro={viewer.recruiterPro} jobs={jobs} skillNames={skillNames} />
+          <CandidateFilters key={toQueryString(params, { page: 1 })} params={params} pro={viewer.recruiterPro} jobs={jobs} skillNames={skillNames} />
         </div>
       </aside>
       <section className="min-w-0 space-y-4">

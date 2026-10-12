@@ -549,7 +549,7 @@ export type $PostLikePayload<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type PostLikeGetPayload<S extends boolean | null | undefined | PostLikeDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$PostLikePayload, S>
 
 export type PostLikeCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<PostLikeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<PostLikeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: PostLikeCountAggregateInputType | true
   }
 
@@ -994,6 +994,7 @@ export type PostLikeFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Filter, which PostLike to fetch.
    */
   where: Prisma.PostLikeWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1016,6 +1017,7 @@ export type PostLikeFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensio
    * Filter, which PostLike to fetch.
    */
   where: Prisma.PostLikeWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1068,6 +1070,7 @@ export type PostLikeFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Filter by unique combinations of PostLikes.
    */
   distinct?: Prisma.PostLikeScalarFieldEnum | Prisma.PostLikeScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1120,6 +1123,7 @@ export type PostLikeFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extension
    * Filter by unique combinations of PostLikes.
    */
   distinct?: Prisma.PostLikeScalarFieldEnum | Prisma.PostLikeScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1172,6 +1176,7 @@ export type PostLikeFindManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Filter by unique combinations of PostLikes.
    */
   distinct?: Prisma.PostLikeScalarFieldEnum | Prisma.PostLikeScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1194,6 +1199,7 @@ export type PostLikeCreateArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * The data needed to create a PostLike.
    */
   data: Prisma.XOR<Prisma.PostLikeCreateInput, Prisma.PostLikeUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1254,6 +1260,7 @@ export type PostLikeUpdateArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Choose, which PostLike to update.
    */
   where: Prisma.PostLikeWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1332,6 +1339,7 @@ export type PostLikeUpsertArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * In case the PostLike was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.PostLikeUpdateInput, Prisma.PostLikeUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1354,6 +1362,7 @@ export type PostLikeDeleteArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Filter which PostLike to delete.
    */
   where: Prisma.PostLikeWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

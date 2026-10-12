@@ -1,4 +1,5 @@
 import "server-only";
+import { unstable_cache } from "next/cache";
 import { db, type Prisma } from "@/server/db";
 import { slugify } from "@/lib/utils";
 import { RESERVED_USERNAMES } from "@/lib/constants";
@@ -54,7 +55,21 @@ export const companyCardSelect = {
 
 export type CompanyCard = Prisma.CompanyGetPayload<{ select: typeof companyCardSelect }>;
 
+const queryIndustries = () => db.industry.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true, slug: true } });
+
+// Industries almost never change and are read by eight pages: keep them in
+// Next's data cache for an hour instead of querying on every request.
+const cachedIndustries = unstable_cache(
+  async () => {
+    const rows = await queryIndustries();
+    if (!rows.length) throw new Error("no industries yet"); // never cache an empty list
+    return rows;
+  },
+  ["industries:v1"],
+  { revalidate: 3600, tags: ["reference-data"] },
+);
+
 export async function listIndustries() {
   await ensureReferenceData();
-  return db.industry.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true, slug: true } });
+  return cachedIndustries().catch(queryIndustries);
 }

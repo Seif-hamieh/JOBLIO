@@ -623,7 +623,7 @@ export type $CommentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type CommentGetPayload<S extends boolean | null | undefined | CommentDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$CommentPayload, S>
 
 export type CommentCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<CommentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<CommentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: CommentCountAggregateInputType | true
   }
 
@@ -1070,6 +1070,7 @@ export type CommentFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Filter, which Comment to fetch.
    */
   where: Prisma.CommentWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1092,6 +1093,7 @@ export type CommentFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extension
    * Filter, which Comment to fetch.
    */
   where: Prisma.CommentWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1144,6 +1146,7 @@ export type CommentFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Filter by unique combinations of Comments.
    */
   distinct?: Prisma.CommentScalarFieldEnum | Prisma.CommentScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1196,6 +1199,7 @@ export type CommentFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions
    * Filter by unique combinations of Comments.
    */
   distinct?: Prisma.CommentScalarFieldEnum | Prisma.CommentScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1248,6 +1252,7 @@ export type CommentFindManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Filter by unique combinations of Comments.
    */
   distinct?: Prisma.CommentScalarFieldEnum | Prisma.CommentScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1270,6 +1275,7 @@ export type CommentCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * The data needed to create a Comment.
    */
   data: Prisma.XOR<Prisma.CommentCreateInput, Prisma.CommentUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1330,6 +1336,7 @@ export type CommentUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Choose, which Comment to update.
    */
   where: Prisma.CommentWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1408,6 +1415,7 @@ export type CommentUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * In case the Comment was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.CommentUpdateInput, Prisma.CommentUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1430,6 +1438,7 @@ export type CommentDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Filter which Comment to delete.
    */
   where: Prisma.CommentWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

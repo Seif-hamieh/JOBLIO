@@ -629,7 +629,7 @@ export type $SavedCandidatePayload<ExtArgs extends runtime.Types.Extensions.Inte
 export type SavedCandidateGetPayload<S extends boolean | null | undefined | SavedCandidateDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$SavedCandidatePayload, S>
 
 export type SavedCandidateCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<SavedCandidateFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<SavedCandidateFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: SavedCandidateCountAggregateInputType | true
   }
 
@@ -1076,6 +1076,7 @@ export type SavedCandidateFindUniqueArgs<ExtArgs extends runtime.Types.Extension
    * Filter, which SavedCandidate to fetch.
    */
   where: Prisma.SavedCandidateWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1098,6 +1099,7 @@ export type SavedCandidateFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Ex
    * Filter, which SavedCandidate to fetch.
    */
   where: Prisma.SavedCandidateWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1150,6 +1152,7 @@ export type SavedCandidateFindFirstArgs<ExtArgs extends runtime.Types.Extensions
    * Filter by unique combinations of SavedCandidates.
    */
   distinct?: Prisma.SavedCandidateScalarFieldEnum | Prisma.SavedCandidateScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1202,6 +1205,7 @@ export type SavedCandidateFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Ext
    * Filter by unique combinations of SavedCandidates.
    */
   distinct?: Prisma.SavedCandidateScalarFieldEnum | Prisma.SavedCandidateScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1254,6 +1258,7 @@ export type SavedCandidateFindManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Filter by unique combinations of SavedCandidates.
    */
   distinct?: Prisma.SavedCandidateScalarFieldEnum | Prisma.SavedCandidateScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1276,6 +1281,7 @@ export type SavedCandidateCreateArgs<ExtArgs extends runtime.Types.Extensions.In
    * The data needed to create a SavedCandidate.
    */
   data: Prisma.XOR<Prisma.SavedCandidateCreateInput, Prisma.SavedCandidateUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1336,6 +1342,7 @@ export type SavedCandidateUpdateArgs<ExtArgs extends runtime.Types.Extensions.In
    * Choose, which SavedCandidate to update.
    */
   where: Prisma.SavedCandidateWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1414,6 +1421,7 @@ export type SavedCandidateUpsertArgs<ExtArgs extends runtime.Types.Extensions.In
    * In case the SavedCandidate was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.SavedCandidateUpdateInput, Prisma.SavedCandidateUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1436,6 +1444,7 @@ export type SavedCandidateDeleteArgs<ExtArgs extends runtime.Types.Extensions.In
    * Filter which SavedCandidate to delete.
    */
   where: Prisma.SavedCandidateWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

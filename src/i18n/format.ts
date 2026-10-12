@@ -11,6 +11,21 @@ const UNITS: [Intl.RelativeTimeFormatUnit, number][] = [
 
 const cache = new Map<Locale, ReturnType<typeof build>>();
 
+/**
+ * Country and language names as computed on the server. Browsers ship
+ * different Intl data than Node (e.g. "Hong Kong" vs "Hong Kong SAR China"),
+ * so the client uses the server's names to render identical text.
+ */
+export type DisplayNames = { regions: Record<string, string>; languages: Record<string, string> };
+const serverNames = new Map<Locale, DisplayNames>();
+
+/** Client only: adopt the server's display names for this locale (see I18nProvider). */
+export function adoptDisplayNames(locale: Locale, names: DisplayNames | undefined) {
+  if (!names || serverNames.has(locale)) return;
+  serverNames.set(locale, names);
+  cache.delete(locale);
+}
+
 function build(locale: Locale) {
   const tag = LOCALE_META[locale].intl;
   const rtf = new Intl.RelativeTimeFormat(tag, { numeric: "auto" });
@@ -20,11 +35,14 @@ function build(locale: Locale) {
   const regions = new Intl.DisplayNames([tag], { type: "region" });
   const languages = new Intl.DisplayNames([tag], { type: "language" });
   const isAr = locale === "ar";
+  const known = serverNames.get(locale);
 
   const country = (code: string | null | undefined) => {
     if (!code) return "";
+    const upper = code.toUpperCase();
+    if (known?.regions[upper]) return known.regions[upper]!;
     try {
-      return regions.of(code.toUpperCase()) ?? code;
+      return regions.of(upper) ?? code;
     } catch {
       return code;
     }
@@ -67,15 +85,18 @@ function build(locale: Locale) {
         if (s < 86400) return rtfShort.format(-Math.floor(s / 3600), "hour");
         if (s < 7 * 86400) return rtfShort.format(-Math.floor(s / 86400), "day");
       }
-      return d.toLocaleDateString(tag, { month: "short", day: "numeric" });
+      return d.toLocaleDateString(tag, { month: "short", day: "numeric", timeZone: "UTC" });
     },
+    // Calendar dates (experience months, issue dates…) are stored as UTC
+    // midnights and formatted in UTC, so the server and every browser agree.
+    // Times of day go through <LocalTime>, which uses the viewer's zone.
     date(date: Date | string | null | undefined, opts: Intl.DateTimeFormatOptions = { month: "short", year: "numeric" }) {
-      return date ? new Date(date).toLocaleDateString(tag, opts) : "";
+      return date ? new Date(date).toLocaleDateString(tag, { timeZone: "UTC", ...opts }) : "";
     },
     duration(start: Date | string, end?: Date | string | null) {
       const s = new Date(start);
       const e = end ? new Date(end) : new Date();
-      const months = Math.max(1, (e.getFullYear() - s.getFullYear()) * 12 + (e.getMonth() - s.getMonth()) + 1);
+      const months = Math.max(1, (e.getUTCFullYear() - s.getUTCFullYear()) * 12 + (e.getUTCMonth() - s.getUTCMonth()) + 1);
       const y = Math.floor(months / 12);
       const m = months % 12;
       if (isAr) return [y ? `${y} ${y === 1 ? "سنة" : y === 2 ? "سنتان" : y <= 10 ? "سنوات" : "سنة"}` : "", m ? `${m} ${m === 1 ? "شهر" : m === 2 ? "شهران" : m <= 10 ? "أشهر" : "شهرًا"}` : ""].filter(Boolean).join(" و");
@@ -88,6 +109,7 @@ function build(locale: Locale) {
     country,
     location: (city: string | null | undefined, code: string | null | undefined) => [city, country(code)].filter(Boolean).join(isAr ? "، " : ", "),
     language(code: string) {
+      if (known?.languages[code]) return known.languages[code]!;
       try {
         return languages.of(code) ?? code;
       } catch {

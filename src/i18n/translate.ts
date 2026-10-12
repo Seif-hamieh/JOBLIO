@@ -32,17 +32,29 @@ export function createT(locale: Locale) {
 
   function t(key: TKey | (string & {}), vars?: TVars): string {
     let s = lookup(dict, key) ?? lookup(en, key) ?? key;
-    if (s.includes("|") && vars && typeof vars.n === "number") {
+    // `n` may arrive already formatted ("1,234", "1.2K"); the plural form is chosen from its numeric value.
+    const count = vars ? (typeof vars.n === "number" ? vars.n : typeof vars.n === "string" ? parseCount(vars.n) : null) : null;
+    if (s.includes("|") && count != null) {
       const forms = s.split("|");
-      if (forms.length === 2) s = vars.n === 1 ? forms[0]! : forms[1]!;
+      if (forms.length === 2) s = count === 1 ? forms[0]! : forms[1]!;
       else {
-        const cat = vars.n === 0 ? "zero" : plural.select(vars.n);
+        const cat = count === 0 ? "zero" : plural.select(count);
         s = forms[ORDER.indexOf(cat as (typeof ORDER)[number])] ?? forms[forms.length - 1]!;
       }
     }
     return vars ? s.replace(/\{(\w+)\}/g, (_, k: string) => (k in vars ? String(vars[k]) : `{${k}}`)) : s;
   }
   return t;
+}
+
+/** Numeric value of an already-formatted count ("1,234", "١٢", "1.2K"), or null if it isn't one. */
+export function parseCount(s: string): number | null {
+  const latin = s.replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x660)).replace(/[۰-۹]/g, (d) => String(d.charCodeAt(0) - 0x6f0));
+  if (!/\d/.test(latin)) return null;
+  // Compact notation ("1K", "2 ألف") is always a large number, whatever the leading digit.
+  if (/[KMB]|ألف|آلاف|مليون|مليار/i.test(latin)) return 1000;
+  const n = Number(latin.replace(/[^\d.]/g, ""));
+  return Number.isFinite(n) ? n : null;
 }
 
 export type T = ReturnType<typeof createT>;

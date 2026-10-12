@@ -4,6 +4,7 @@ import { useI18n } from "@/i18n/client";
 import { useEffect, useId, useRef, useState } from "react";
 import { Plus, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { categoryName } from "@/i18n/translate";
 
 export type SkillOption = { id: string; name: string; slug: string; category: string };
 
@@ -47,9 +48,12 @@ export function SkillSearch({
 
   const visible = results.filter((r) => !exclude.includes(r.id));
 
+  // Close the list after each pick so a second click can't add another skill by accident;
+  // typing or clicking the field opens it again.
   function choose(s: SkillOption) {
     onSelect(s);
     setQ("");
+    setOpen(false);
     inputRef.current?.focus();
   }
 
@@ -65,6 +69,7 @@ export function SkillSearch({
             setOpen(true);
           }}
           onFocus={() => setOpen(true)}
+          onClick={() => setOpen(true)}
           onBlur={() => setTimeout(() => setOpen(false), 150)}
           onKeyDown={(e) => {
             if (e.key === "ArrowDown") {
@@ -104,7 +109,7 @@ export function SkillSearch({
                 <Plus className="size-3.5 text-fg-subtle" />
                 {s.name}
               </span>
-              <span className="text-xs text-fg-subtle">{s.category}</span>
+              <span className="text-xs text-fg-subtle">{categoryName(t, s.category)}</span>
             </li>
           ))}
         </ul>

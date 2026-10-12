@@ -674,7 +674,7 @@ export type $JobPromotionPayload<ExtArgs extends runtime.Types.Extensions.Intern
 export type JobPromotionGetPayload<S extends boolean | null | undefined | JobPromotionDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$JobPromotionPayload, S>
 
 export type JobPromotionCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<JobPromotionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<JobPromotionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: JobPromotionCountAggregateInputType | true
   }
 
@@ -1123,6 +1123,7 @@ export type JobPromotionFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.
    * Filter, which JobPromotion to fetch.
    */
   where: Prisma.JobPromotionWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1145,6 +1146,7 @@ export type JobPromotionFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Exte
    * Filter, which JobPromotion to fetch.
    */
   where: Prisma.JobPromotionWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1197,6 +1199,7 @@ export type JobPromotionFindFirstArgs<ExtArgs extends runtime.Types.Extensions.I
    * Filter by unique combinations of JobPromotions.
    */
   distinct?: Prisma.JobPromotionScalarFieldEnum | Prisma.JobPromotionScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1249,6 +1252,7 @@ export type JobPromotionFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Exten
    * Filter by unique combinations of JobPromotions.
    */
   distinct?: Prisma.JobPromotionScalarFieldEnum | Prisma.JobPromotionScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1301,6 +1305,7 @@ export type JobPromotionFindManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Filter by unique combinations of JobPromotions.
    */
   distinct?: Prisma.JobPromotionScalarFieldEnum | Prisma.JobPromotionScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1323,6 +1328,7 @@ export type JobPromotionCreateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * The data needed to create a JobPromotion.
    */
   data: Prisma.XOR<Prisma.JobPromotionCreateInput, Prisma.JobPromotionUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1383,6 +1389,7 @@ export type JobPromotionUpdateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Choose, which JobPromotion to update.
    */
   where: Prisma.JobPromotionWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1461,6 +1468,7 @@ export type JobPromotionUpsertArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * In case the JobPromotion was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.JobPromotionUpdateInput, Prisma.JobPromotionUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1483,6 +1491,7 @@ export type JobPromotionDeleteArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Filter which JobPromotion to delete.
    */
   where: Prisma.JobPromotionWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

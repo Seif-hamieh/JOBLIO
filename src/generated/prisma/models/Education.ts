@@ -708,7 +708,7 @@ export type $EducationPayload<ExtArgs extends runtime.Types.Extensions.InternalA
 export type EducationGetPayload<S extends boolean | null | undefined | EducationDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$EducationPayload, S>
 
 export type EducationCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<EducationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<EducationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: EducationCountAggregateInputType | true
   }
 
@@ -1160,6 +1160,7 @@ export type EducationFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Filter, which Education to fetch.
    */
   where: Prisma.EducationWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1182,6 +1183,7 @@ export type EducationFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensi
    * Filter, which Education to fetch.
    */
   where: Prisma.EducationWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1234,6 +1236,7 @@ export type EducationFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Filter by unique combinations of Educations.
    */
   distinct?: Prisma.EducationScalarFieldEnum | Prisma.EducationScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1286,6 +1289,7 @@ export type EducationFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensio
    * Filter by unique combinations of Educations.
    */
   distinct?: Prisma.EducationScalarFieldEnum | Prisma.EducationScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1338,6 +1342,7 @@ export type EducationFindManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Filter by unique combinations of Educations.
    */
   distinct?: Prisma.EducationScalarFieldEnum | Prisma.EducationScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1360,6 +1365,7 @@ export type EducationCreateArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * The data needed to create a Education.
    */
   data: Prisma.XOR<Prisma.EducationCreateInput, Prisma.EducationUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1420,6 +1426,7 @@ export type EducationUpdateArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Choose, which Education to update.
    */
   where: Prisma.EducationWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1498,6 +1505,7 @@ export type EducationUpsertArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * In case the Education was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.EducationUpdateInput, Prisma.EducationUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1520,6 +1528,7 @@ export type EducationDeleteArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Filter which Education to delete.
    */
   where: Prisma.EducationWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

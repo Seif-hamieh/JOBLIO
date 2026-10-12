@@ -189,4 +189,5 @@ export const RESERVED_USERNAMES = new Set([
   "job", "in", "p", "profile", "network", "messages", "notifications", "companies", "company", "recruiter", "applications",
   "interviews", "settings", "premium", "billing", "professionals", "about", "help", "terms", "privacy", "forgot-password",
   "reset-password", "verify-email", "joblio", "support", "static", "_next", "favicon.ico", "robots.txt", "sitemap.xml",
+  "contact", "search", "people", "legal", "dev-mailbox",
 ]);
