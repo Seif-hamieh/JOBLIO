@@ -4,6 +4,8 @@ import type { Dictionary } from "./en";
 
 export const ar: Dictionary = {
   meta: {
+    jobAt: "{job} لدى {company}",
+    profileOf: "الملف المهني لـ{name} على JOBLIO",
     title: "JOBLIO — مسيرتك. شبكتك. مستقبلك.",
     description: "اكتشف الفرص، وابنِ هويتك المهنية، وتواصل مع الشركات حول العالم. مطابقة وظيفية شفافة قائمة على قواعد واضحة — دون ذكاء اصطناعي.",
     welcome: "مرحبًا",
@@ -14,6 +16,7 @@ export const ar: Dictionary = {
     notFoundBody: "الصفحة التي تبحث عنها غير موجودة أو لم تعد متاحة.",
   },
   common: {
+    skipToContent: "انتقل إلى المحتوى",
     copyFailed: "تعذّر نسخ الرابط. إليك الرابط:",
     save: "حفظ",
     saved: "تم الحفظ",
@@ -220,6 +223,18 @@ export const ar: Dictionary = {
     heroOpenRoles: "لا وظائف متاحة|وظيفة واحدة متاحة|وظيفتان متاحتان|{n} وظائف متاحة|{n} وظيفة متاحة|{n} وظيفة متاحة",
   },
   auth: {
+    strength: {
+      weak: "ضعيفة",
+      medium: "متوسطة",
+      strong: "قوية",
+    },
+    weak: {
+      tooShort: "استخدم 10 أحرف على الأقل.",
+      common: "كلمة المرور هذه شائعة جدًا.",
+      repeated: "تجنّب تكرار الحروف نفسها.",
+      sequence: "تجنّب التسلسلات البسيطة مثل 1234567890 أو qwerty.",
+      personal: "لا تبنِها من اسمك أو بريدك الإلكتروني.",
+    },
     welcomeBack: "مرحبًا بعودتك",
     signInSub: "سجّل الدخول للمتابعة إلى JOBLIO.",
     email: "البريد الإلكتروني",
@@ -230,7 +245,7 @@ export const ar: Dictionary = {
     newHere: "جديد على JOBLIO؟",
     createFree: "أنشئ حسابًا مجانيًا",
     orEmail: "أو عبر البريد الإلكتروني",
-    googleNotSetUp: "تسجيل الدخول عبر Google غير مُفعّل على هذا الخادم بعد. أضف مفاتيح Google إلى ملف ‎.env لتفعيله.",
+    googleNotSetUp: "تسجيل الدخول عبر Google غير متاح بعد — يرجى المتابعة ببريدك الإلكتروني حاليًا.",
     google: "المتابعة باستخدام Google",
     github: "المتابعة باستخدام GitHub",
     showPassword: "إظهار كلمة المرور",
@@ -586,6 +601,11 @@ export const ar: Dictionary = {
     withdrawn: "تم سحب الطلب",
   },
   interviews: {
+    teamTitle: "مقابلات الفريق",
+    teamSub: "المقابلات التي حدّدها فريق التوظيف لديك — آخر 7 أيام وكل ما هو قادم.",
+    teamNone: "لا توجد مقابلات محدّدة",
+    teamNoneBody: "حدّد مقابلة من بطاقة المرشح في مراحل التوظيف الخاصة بالوظيفة.",
+    teamLink: "لدى فريقك في {company} مقابلات محدّدة ({n})|لدى فريقك في {company} مقابلة واحدة محدّدة|لدى فريقك في {company} مقابلتان محدّدتان|لدى فريقك في {company} {n} مقابلات محدّدة|لدى فريقك في {company} {n} مقابلة محدّدة|لدى فريقك في {company} {n} مقابلة محدّدة",
     title: "المقابلات",
     sub: "مقابلاتك القادمة والدعوات. تُعرض الأوقات بتوقيتك المحلي.",
     none: "لا مقابلات بعد",
@@ -686,6 +706,8 @@ export const ar: Dictionary = {
     member: "عضو في JOBLIO",
   },
   feed: {
+    copyLink: "نسخ الرابط",
+    repost: "إعادة النشر",
     tabNetwork: "شبكتي",
     tabEveryone: "الجميع",
     networkEmptyTitle: "لا شيء من شبكتك بعد",
@@ -831,6 +853,9 @@ export const ar: Dictionary = {
     kindNow: "الآن",
   },
   profileEdit: {
+    strengthPct: "قوة الملف الشخصي {n}%",
+    deleteEntryTitle: "حذف «{name}»؟",
+    deleteEntryBody: "سيُحذف من ملفك الشخصي، ولا يمكن التراجع عن ذلك.",
     removePhotoTitle: "إزالة صورة ملفك الشخصي؟",
     removeCoverTitle: "إزالة صورة الغلاف؟",
     removeImageBody: "يمكنك رفع صورة جديدة في أي وقت.",
@@ -1027,6 +1052,10 @@ export const ar: Dictionary = {
     openPhoto: "فتح الصورة {n}",
   },
   recruiter: {
+    confirmReopenTitle: "نقل {name} خارج «تم التعيين»؟",
+    confirmReopenBody: "أُبلغ {name} بأنه حصل على الوظيفة. نقله سيحدّث طلبه ويرسل له إشعارًا. لديك {s} ثوانٍ للتراجع.",
+    leaveHired: "النقل خارج «تم التعيين»",
+    pendingReopen: "سيُنقل {name} خارج «تم التعيين» خلال {s} ث",
     confirmHireTitle: "تعيين {name}؟",
     confirmHireBody: "سيُبلَّغ بأنه حصل على الوظيفة. لديك {s} ثوانٍ للتراجع.",
     confirmDeclineTitle: "رفض {name}؟",
@@ -1251,7 +1280,7 @@ export const ar: Dictionary = {
     sub: "الأساسيات مجانية للأبد. يضيف بريميوم الظهور والأدوات الاحترافية — دون تغيير نسبة المطابقة، ودون ضمان للتوظيف.",
     canceled: "أُلغيت عملية الدفع — لم يُخصم منك أي مبلغ.",
     simulate: "المدفوعات قريباً. ترقبوا!",
-    disabled: "لم تُفعَّل المدفوعات على هذا الخادم بعد.",
+    disabled: "المدفوعات قريباً. ترقبوا!",
     forPros: "للمهنيين",
     free: "مجاني",
     forever: "للأبد",
@@ -1335,6 +1364,7 @@ export const ar: Dictionary = {
     simulated: "محاكاة (وضع التطوير)",
   },
   settings: {
+    unsaved: "تغييرات غير محفوظة",
     title: "الإعدادات",
     sub: "حسابك وإشعاراتك والمظهر.",
     account: "الحساب",
@@ -1411,7 +1441,7 @@ export const ar: Dictionary = {
   },
   notif: {
     connectionRequest: "يريد {name} التواصل معك",
-    connectionAccepted: "قبل {name} طلب التواصل",
+    connectionAccepted: "وافق {name} على طلب التواصل",
     newMessage: "أرسل لك {name} رسالة",
     appViewed: "شاهدت {company} طلبك لوظيفة {job}",
     appShortlisted: "تم اختيارك ضمن القائمة المختصرة لوظيفة {job}",
@@ -1423,7 +1453,7 @@ export const ar: Dictionary = {
     newApplicant: "قدّم {name} على وظيفة {job}",
     newApplicantBody: "مطابقة {score}%",
     interviewInvite: "دعوة لمقابلة من {company}",
-    interviewResponseAccepted: "قبل {name} المقابلة لوظيفة {job}",
+    interviewResponseAccepted: "وافق {name} على المقابلة لوظيفة {job}",
     interviewResponseDeclined: "اعتذر {name} عن المقابلة لوظيفة {job}",
     interviewCancelled: "ألغت {company} مقابلة لوظيفة {job}",
     newJob: "نشرت {company} وظيفة جديدة: {job}",
@@ -1439,6 +1469,7 @@ export const ar: Dictionary = {
     paymentBody: "{amount} · الفاتورة {invoice}",
   },
   msg: {
+    hiredLocked: "تم تعيين هذا المرشح. أكّد نقله خارج «تم التعيين» أولًا.",
     cannotDeclineHired: "تم تعيين هذا المرشح. انقله خارج مرحلة «تم التعيين» قبل رفضه.",
     logoUpdated: "تم تحديث الشعار.",
     companyCoverUpdated: "تم تحديث صورة الغلاف.",
@@ -1562,7 +1593,7 @@ export const ar: Dictionary = {
     interviewConfirmed: "تم تأكيد المقابلة",
     interviewDeclined: "تم الاعتذار عن المقابلة",
     caughtUp: "تم الاطلاع على كل شيء",
-    paymentsOff: "لم تُفعَّل المدفوعات على هذا الخادم بعد.",
+    paymentsOff: "المدفوعات قريباً. ترقبوا!",
     needWorkspaceProduct: "تحتاج إلى مساحة عمل للشركة لهذا المنتج.",
     adminsOnlyUpgrade: "يمكن لمالكي الشركة ومشرفيها فقط ترقية صفحة الشركة.",
     chooseJob: "اختر وظيفة للترويج لها.",
@@ -1572,7 +1603,7 @@ export const ar: Dictionary = {
     subNotFound: "الاشتراك غير موجود.",
     planEnds: "ستنتهي باقتك في نهاية فترة الفوترة الحالية.",
     planRenews: "ستتجدد باقتك تلقائيًا.",
-    stripeOff: "تُدار طرق الدفع عبر Stripe غير المفعّل على هذا الخادم.",
+    stripeOff: "طرق الدفع ستكون متاحة قريباً.",
     wrongPassword: "كلمة المرور الحالية غير صحيحة.",
     passwordChanged: "تم تغيير كلمة المرور",
     settingsSaved: "تم حفظ الإعدادات",
@@ -1583,6 +1614,7 @@ export const ar: Dictionary = {
     accountDeleted: "تم حذف حسابك.",
   },
   v: {
+    closesPast: "اختر تاريخ اليوم أو تاريخًا لاحقًا.",
     url: "أدخل رابطًا كاملًا يبدأ بـ https://",
     country: "اختر دولة",
     date: "أدخل تاريخًا صالحًا",
@@ -1682,6 +1714,7 @@ export const ar: Dictionary = {
     "Human Resources & Staffing": "الموارد البشرية والتوظيف",
   },
   legal: {
+    footerNav: "روابط قانونية ومساعدة",
     about: "من نحن",
     terms: "شروط الخدمة",
     privacy: "سياسة الخصوصية",

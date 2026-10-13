@@ -49,8 +49,10 @@ import { getI18n } from "@/i18n/server";
 export async function generateMetadata({ params }: PageProps<"/in/[username]">): Promise<Metadata> {
   const { username } = await params;
   const [u, { t }] = await Promise.all([db.user.findUnique({ where: { username }, select: { name: true, profile: { select: { headline: true, visibility: true } } } }), getI18n()]);
-  if (!u) return { title: t("meta.notFound") };
-  return { title: u.name, description: u.profile?.visibility === "PUBLIC" ? (u.profile.headline ?? undefined) : undefined };
+  if (!u) notFound(); // real 404 status for crawlers
+  const headline = u.profile?.visibility === "PUBLIC" ? (u.profile.headline ?? undefined) : undefined;
+  const title = headline ? `${u.name} - ${headline}` : u.name;
+  return { title, description: headline ?? t("meta.profileOf", { name: u.name }), openGraph: { type: "profile", siteName: "JOBLIO", title, description: headline } };
 }
 
 function Section({ id, title, icon: Icon, children, action }: { id: string; title: string; icon: typeof Briefcase; children: React.ReactNode; action?: React.ReactNode }) {
@@ -129,8 +131,13 @@ export default async function ProfilePage({ params }: PageProps<"/in/[username]"
         <section className="surface overflow-hidden">
           <div
             className="relative h-36 bg-gradient-to-br from-brand via-aurora to-mint sm:h-48"
-            style={p.coverUrl ? { backgroundImage: `url(${p.coverUrl})`, backgroundSize: "cover", backgroundPosition: "center" } : undefined}
           >
+            {p.coverUrl && (
+            // A real <img> (not a CSS background) is found by the browser's preload scanner, so the largest
+            // image above the fold starts downloading with the HTML — better LCP.
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={p.coverUrl} alt="" fetchPriority="high" decoding="async" className="absolute inset-0 size-full object-cover" />
+          )}
             {!p.coverUrl && <div className="absolute inset-0 opacity-30 [background-image:radial-gradient(white_1px,transparent_1px)] [background-size:18px_18px]" />}
           </div>
           <div className="px-5 pb-6 sm:px-8">

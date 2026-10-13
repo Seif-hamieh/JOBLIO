@@ -5,6 +5,7 @@ import { z } from "zod";
 import { db } from "@/server/db";
 import { fail, parse, withRecruiter, withViewer, type ActionState } from "@/server/action";
 import { LIMITS } from "@/server/rate-limit";
+import { refreshSitemap } from "@/server/sitemap";
 import { canManageCompany } from "@/server/session";
 import { checkAchievements } from "@/server/services/achievements";
 import { createCompanyForUser } from "@/server/services/companies";
@@ -62,6 +63,7 @@ export async function updateCompanyAction(companyId: string, input: z.input<type
     });
     revalidatePath(`/companies/${company.slug}`);
     revalidatePath("/company/dashboard");
+    refreshSitemap();
     return { ok: true, message: premium || !brandColor ? "@msg.pageUpdated" : "@msg.brandNeedsPremium" };
   });
 }

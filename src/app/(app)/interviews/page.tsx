@@ -1,12 +1,13 @@
 import { getI18n, pageTitle } from "@/i18n/server";
 import Link from "next/link";
-import { CalendarDays, Clock, MapPin, Phone, Video } from "lucide-react";
+import { redirect } from "next/navigation";
+import { ArrowRight, CalendarDays, Clock, MapPin, Phone, Video } from "lucide-react";
 import { requireViewer } from "@/server/session";
 import { db } from "@/server/db";
 import { JobsTabs } from "@/components/jobs/jobs-tabs";
 import { InterviewResponse } from "@/components/applications/application-actions";
-import { InterviewStatusMenu } from "@/components/recruiter/interview-status";
 import { Avatar, CompanyLogo } from "@/components/ui/avatar";
+import { DateBlock, teamInterviews } from "@/components/interviews/team-interviews";
 import { Badge } from "@/components/ui/badge";
 import { EmptyState, PageHeader } from "@/components/ui/misc";
 import { safeExternalUrl } from "@/lib/utils";
@@ -16,15 +17,6 @@ export const generateMetadata = pageTitle("interviews.title");
 
 const ICON = { VIDEO: Video, PHONE: Phone, ONSITE: MapPin } as const;
 
-function DateBlock({ date }: { date: Date }) {
-  return (
-    <div className="flex w-16 shrink-0 flex-col items-center rounded-2xl border border-border bg-surface-2/60 py-2">
-      <LocalTime date={date} format="month" className="text-[11px] font-semibold uppercase text-brand-soft-fg" />
-      <LocalTime date={date} format="day" className="font-display text-2xl font-semibold leading-none" />
-      <LocalTime date={date} format="weekday" className="mt-0.5 text-[11px] text-fg-subtle" />
-    </div>
-  );
-}
 
 export default async function InterviewsPage() {
   const [viewer, { t }] = await Promise.all([requireViewer(), getI18n()]);
@@ -39,18 +31,10 @@ export default async function InterviewsPage() {
         application: { select: { job: { select: { id: true, title: true, company: { select: { name: true, logoUrl: true, brandColor: true } } } } } },
       },
     }),
-    viewer.company
-      ? db.interview.findMany({
-          where: { application: { job: { companyId: viewer.company.id } }, startsAt: { gte: new Date(now.getTime() - 7 * 86_400_000) } },
-          orderBy: { startsAt: "asc" },
-          take: 50,
-          select: {
-            id: true, startsAt: true, durationMinutes: true, type: true, status: true, candidateResponse: true, meetingUrl: true, location: true,
-            application: { select: { id: true, applicant: { select: { name: true, image: true, username: true } }, job: { select: { id: true, title: true } } } },
-          },
-        })
-      : [],
+    viewer.company ? teamInterviews(viewer.company.id) : [],
   ]);
+  // Company members without interviews of their own belong on the workspace's interview page.
+  if (viewer.company && mine.length === 0) redirect("/recruiter/interviews");
   const upcoming = mine.filter((i) => i.startsAt >= now && i.status === "SCHEDULED");
   const past = mine.filter((i) => !(i.startsAt >= now && i.status === "SCHEDULED"));
 
@@ -109,29 +93,10 @@ export default async function InterviewsPage() {
       )}
 
       {team.length > 0 && (
-        <section className="space-y-3">
-          <h2 className="font-display font-semibold">{t("interviews.team", { company: viewer.company!.name })}</h2>
-          <div className="surface divide-y divide-border">
-            {team.map((i) => (
-              <div key={i.id} className="flex flex-wrap items-center gap-4 p-4">
-                <DateBlock date={i.startsAt} />
-                <Avatar name={i.application.applicant.name} src={i.application.applicant.image} />
-                <div className="min-w-0 flex-1">
-                  <Link href={`/recruiter/candidates/${i.application.applicant.username}`} className="text-sm font-semibold hover:underline">
-                    {i.application.applicant.name}
-                  </Link>
-                  <div className="text-xs text-fg-muted">
-                    {i.application.job.title} · <LocalTime date={i.startsAt} format="time" /> · {t(`enums.interviewType.${i.type}`)}
-                  </div>
-                </div>
-                <Badge tone={i.status === "CANCELLED" ? "danger" : i.status === "COMPLETED" ? "neutral" : i.candidateResponse === "ACCEPTED" ? "mint" : i.candidateResponse === "DECLINED" ? "danger" : "ember"}>
-                  {i.status === "SCHEDULED" ? (i.candidateResponse === "PENDING" ? t("interviews.awaiting") : i.candidateResponse === "ACCEPTED" ? t("interviews.confirmed") : t("interviews.declined")) : i.status === "COMPLETED" ? t("interviews.completed") : t("interviews.cancelled")}
-                </Badge>
-                {i.status === "SCHEDULED" && <InterviewStatusMenu interviewId={i.id} />}
-              </div>
-            ))}
-          </div>
-        </section>
+        <Link href="/recruiter/interviews" className="surface surface-hover flex items-center justify-between gap-3 p-4 text-sm">
+          <span>{t("interviews.teamLink", { company: viewer.company!.name, n: team.length })}</span>
+          <ArrowRight className="size-4 shrink-0 text-fg-subtle rtl:rotate-180" />
+        </Link>
       )}
 
       {past.length > 0 && (

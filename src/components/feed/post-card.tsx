@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState, useTransition } from "react";
 import { AnimatePresence, m } from "motion/react";
-import { Award, Briefcase, FolderGit2, Globe2, Heart, MessageCircle, MoreHorizontal, Repeat2, Send, Trash2, Users } from "lucide-react";
+import { Award, Briefcase, FolderGit2, Globe2, Heart, Link2, MessageCircle, MoreHorizontal, Repeat2, Send, Share2, Trash2, Users } from "lucide-react";
 import type { FeedComment, FeedPost } from "@/server/services/feed";
 import { addCommentAction, deleteCommentAction, deletePostAction, loadCommentsAction, sharePostAction, toggleLikeAction } from "@/server/actions/feed";
 import { Avatar, CompanyLogo } from "@/components/ui/avatar";
@@ -13,6 +13,7 @@ import { Dialog } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/field";
 import { Menu, MenuContent, MenuItem, MenuTrigger } from "@/components/ui/menu";
 import { toast } from "@/components/ui/toast";
+import { copyText } from "@/lib/share";
 import { RichText } from "@/components/feed/rich-text";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/i18n/client";
@@ -293,9 +294,27 @@ export function PostCard({ post, viewer }: { post: FeedPost; viewer: { id: strin
         <button type="button" onClick={() => setShowComments((s) => !s)} className="flex flex-1 items-center justify-center gap-2 rounded-xl py-2 text-sm font-medium text-fg-muted transition hover:bg-surface-2" aria-expanded={showComments}>
           <MessageCircle className="size-[18px]" /> {t("feed.comment")}
         </button>
-        <button type="button" onClick={() => setShareOpen(true)} className="flex flex-1 items-center justify-center gap-2 rounded-xl py-2 text-sm font-medium text-fg-muted transition hover:bg-surface-2">
-          <Repeat2 className="size-[18px]" /> {t("feed.share")}
-        </button>
+        {/* Share: copy a link to the post, or repost it to your own feed. */}
+        <Menu>
+          <MenuTrigger className="flex flex-1 items-center justify-center gap-2 rounded-xl py-2 text-sm font-medium text-fg-muted outline-none transition hover:bg-surface-2 focus-visible:ring-2 focus-visible:ring-[var(--ring)]">
+            <Share2 className="size-[18px]" /> {t("feed.share")}
+          </MenuTrigger>
+          <MenuContent align="end">
+            <MenuItem
+              icon={<Link2 />}
+              onSelect={async () => {
+                const url = `${window.location.origin}/feed/${post.id}`;
+                if (await copyText(url)) toast.success(t("common.linkCopied"));
+                else toast.error(t("common.copyFailed"), url);
+              }}
+            >
+              {t("feed.copyLink")}
+            </MenuItem>
+            <MenuItem icon={<Repeat2 />} onSelect={() => setShareOpen(true)}>
+              {t("feed.repost")}
+            </MenuItem>
+          </MenuContent>
+        </Menu>
       </div>
 
       <AnimatePresence initial={false}>

@@ -20,9 +20,12 @@ export function MatchRing({
   size = 56,
   stroke = 5,
   showLabel = true,
+  srLabel,
   className,
 }: {
   score: number;
+  /** What screen readers announce instead of "N% match" (e.g. profile strength). */
+  srLabel?: React.ReactNode;
   size?: number;
   stroke?: number;
   showLabel?: boolean;
@@ -62,7 +65,7 @@ export function MatchRing({
           </span>
         </span>
       )}
-      <span className="sr-only"><Msg k="match.pct" vars={{ n: score }} /></span>
+      <span className="sr-only">{srLabel ?? <Msg k="match.pct" vars={{ n: score }} />}</span>
     </div>
   );
 }

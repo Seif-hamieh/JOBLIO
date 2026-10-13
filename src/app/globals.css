@@ -15,7 +15,8 @@
   --surface-3: oklch(0.948 0.008 275);
   --fg: oklch(0.22 0.028 278);
   --fg-muted: oklch(0.47 0.022 278);
-  --fg-subtle: oklch(0.6 0.016 278);
+  /* 0.55 (not 0.6) keeps small "subtle" text at WCAG AA contrast (4.86:1) on white. */
+  --fg-subtle: oklch(0.55 0.016 278);
   --border: oklch(0.918 0.008 278);
   --border-strong: oklch(0.86 0.012 278);
 
@@ -150,6 +151,14 @@
 @keyframes pulse-ring {
   0% { transform: scale(0.8); opacity: 0.7; }
   80%, 100% { transform: scale(2.2); opacity: 0; }
+}
+/* Hero entrance: pure CSS (no JavaScript needed) and starting visible, so the
+   largest text paints immediately — it only slides up a few pixels. */
+@keyframes rise-in {
+  from {
+    transform: translateY(12px);
+    opacity: 0.01;
+  }
 }
 @keyframes fade-in {
   from { opacity: 0; }

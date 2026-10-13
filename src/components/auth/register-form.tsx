@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { Field, Input } from "@/components/ui/field";
 import { Divider } from "@/components/ui/misc";
 import { SocialButtons } from "@/components/auth/social-buttons";
+import { PasswordStrength } from "@/components/auth/password-strength";
+import { assessPassword } from "@/lib/password";
 import { authClient, authErrorMessage } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import type { UserIntent } from "@/lib/constants";
@@ -23,16 +25,6 @@ const INTENTS: { value: UserIntent; title: TKey; body: TKey; icon: typeof Search
 
 export const INTENT_STORAGE_KEY = "joblio:intent";
 
-function passwordStrength(pw: string) {
-  let s = 0;
-  if (pw.length >= 10) s++;
-  if (pw.length >= 14) s++;
-  if (/[A-Z]/.test(pw) && /[a-z]/.test(pw)) s++;
-  if (/\d/.test(pw)) s++;
-  if (/[^A-Za-z0-9]/.test(pw)) s++;
-  return Math.min(4, s);
-}
-
 export function RegisterForm({ initialIntent, providers, devMailbox = false }: { initialIntent: UserIntent | null; providers: ("google" | "github")[]; devMailbox?: boolean }) {
   const { t, dir } = useI18n();
   const s = dir === "rtl" ? -1 : 1;
@@ -42,7 +34,6 @@ export function RegisterForm({ initialIntent, providers, devMailbox = false }: {
   const [error, setError] = useState<string | null>(null);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const strength = passwordStrength(password);
 
   const rememberIntent = () => {
     try {
@@ -53,6 +44,8 @@ export function RegisterForm({ initialIntent, providers, devMailbox = false }: {
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
+    const weak = assessPassword(password, [email, String(form.get("name") ?? "")]).problem;
+    if (weak) return setError(t(`auth.weak.${weak}`));
     setPending(true);
     setError(null);
     rememberIntent();
@@ -138,19 +131,7 @@ export function RegisterForm({ initialIntent, providers, devMailbox = false }: {
                 <Input {...p} name="password" type="password" autoComplete="new-password" required minLength={10} maxLength={128} value={password} onChange={(e) => setPassword(e.target.value)} />
               )}
             </Field>
-            {password && (
-              <div className="flex gap-1.5" aria-label={`${strength}/4`}>
-                {[0, 1, 2, 3].map((i) => (
-                  <span
-                    key={i}
-                    className={cn(
-                      "h-1.5 flex-1 rounded-full transition-colors duration-300",
-                      i < strength ? (strength <= 1 ? "bg-danger" : strength === 2 ? "bg-ember" : "bg-mint") : "bg-surface-3",
-                    )}
-                  />
-                ))}
-              </div>
-            )}
+            <PasswordStrength password={password} personal={[email]} />
             {error && (
               <p role="alert" className="rounded-xl bg-danger-soft px-3.5 py-2.5 text-sm text-danger-fg">
                 {error}

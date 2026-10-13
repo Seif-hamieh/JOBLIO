@@ -4,6 +4,11 @@ import { getI18n } from "@/i18n/server";
 import { Logo } from "@/components/brand/logo";
 import { buttonClasses } from "@/components/ui/button";
 
+export async function generateMetadata() {
+  const { t } = await getI18n();
+  return { title: t("meta.notFound"), robots: { index: false } };
+}
+
 export default async function NotFound() {
   const { t } = await getI18n();
   return (

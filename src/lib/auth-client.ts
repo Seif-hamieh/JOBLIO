@@ -20,6 +20,14 @@ export function authErrorMessage(error: { code?: string; message?: string; statu
     case "USER_ALREADY_EXISTS":
     case "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL":
       return t("auth.errExists");
+    case "WEAK_PASSWORD_COMMON":
+      return t("auth.weak.common");
+    case "WEAK_PASSWORD_REPEATED":
+      return t("auth.weak.repeated");
+    case "WEAK_PASSWORD_SEQUENCE":
+      return t("auth.weak.sequence");
+    case "WEAK_PASSWORD_PERSONAL":
+      return t("auth.weak.personal");
     case "PASSWORD_TOO_SHORT":
       return t("auth.errShort");
     case "PASSWORD_TOO_LONG":

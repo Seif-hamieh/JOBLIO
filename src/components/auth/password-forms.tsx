@@ -1,6 +1,8 @@
 "use client";
 
 import { DevMailboxHint } from "@/components/auth/dev-mailbox-hint";
+import { PasswordStrength } from "@/components/auth/password-strength";
+import { assessPassword } from "@/lib/password";
 import { useI18n } from "@/i18n/client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -73,11 +75,17 @@ export function ResetPasswordForm({ token, invalid }: { token: string | null; in
   const { t } = useI18n();
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(invalid || !token ? t("auth.resetInvalid") : null);
+  const [pw, setPw] = useState("");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
     const password = String(form.get("password"));
+    const weak = assessPassword(password).problem;
+    if (weak) {
+      setError(t(`auth.weak.${weak}`));
+      return;
+    }
     if (password !== String(form.get("confirm"))) {
       setError(t("auth.passwordsDontMatch"));
       return;
@@ -102,8 +110,9 @@ export function ResetPasswordForm({ token, invalid }: { token: string | null; in
       <p className="mt-2 text-fg-muted">{t("auth.newPasswordSub")}</p>
       <form onSubmit={onSubmit} className="mt-8 space-y-4">
         <Field label={t("auth.newPassword")} hint={t("settings.passwordSub")}>
-          {(p) => <Input {...p} name="password" type="password" autoComplete="new-password" required minLength={10} maxLength={128} disabled={!token} />}
+          {(p) => <Input {...p} name="password" type="password" autoComplete="new-password" required minLength={10} maxLength={128} disabled={!token} value={pw} onChange={(e) => setPw(e.target.value)} />}
         </Field>
+        <PasswordStrength password={pw} />
         <Field label={t("auth.confirmPassword")}>{(p) => <Input {...p} name="confirm" type="password" autoComplete="new-password" required disabled={!token} />}</Field>
         {error && (
           <p role="alert" className="rounded-xl bg-danger-soft px-3.5 py-2.5 text-sm text-danger-fg">

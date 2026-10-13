@@ -20,7 +20,8 @@ import {
   X,
 } from "lucide-react";
 import { getViewer } from "@/server/session";
-import { anonymousViewerKey, getJob, recordJobView, similarJobs } from "@/server/services/jobs";
+import { jobPostingJsonLd, jsonLdScript } from "@/lib/job-posting-ld";
+import { anonymousViewerKey, expirePromotions, getJob, recordJobView, similarJobs } from "@/server/services/jobs";
 import { getCandidateFacts, toJobFacts } from "@/server/services/matching";
 import { db } from "@/server/db";
 import { computeMatch } from "@/lib/matching/engine";
@@ -35,19 +36,34 @@ import { MatchBreakdown } from "@/components/match/match-breakdown";
 import { FollowCompanyButton } from "@/components/companies/follow-button";
 import { Reveal } from "@/components/ui/motion";
 import { SKILL_RANK } from "@/lib/constants";
-import { hostname, safeExternalUrl } from "@/lib/utils";
+import { hostname, safeExternalUrl, APP_URL } from "@/lib/utils";
 import { getI18n } from "@/i18n/server";
 import { industryName } from "@/i18n/translate";
 
+const clip = (s: string | null | undefined, n = 160) => (s ? (s.length > n ? s.slice(0, n - 1).trimEnd() + "…" : s).replace(/s+/g, " ") : undefined);
+
+// Missing (or closed, for outsiders) jobs 404 here too: metadata is resolved before streaming
+// for crawlers, so they get a real 404 status instead of a 200 "not found" page.
 export async function generateMetadata({ params }: PageProps<"/jobs/[id]">): Promise<Metadata> {
   const { id } = await params;
-  const [job, { t }] = await Promise.all([db.job.findUnique({ where: { id }, select: { title: true, summary: true, company: { select: { name: true } } } }), getI18n()]);
-  if (!job) return { title: t("meta.notFound") };
-  return { title: `${job.title} · ${job.company.name}`, description: job.summary ?? undefined };
+  const [job, viewer, { t }] = await Promise.all([
+    db.job.findUnique({ where: { id }, select: { title: true, summary: true, description: true, status: true, companyId: true, company: { select: { name: true } } } }),
+    getViewer(),
+    getI18n(),
+  ]);
+  if (!job) notFound();
+  if (job.status !== "OPEN") {
+    const member = viewer && (await db.companyMember.findUnique({ where: { companyId_userId: { companyId: job.companyId, userId: viewer.id } }, select: { id: true } }));
+    if (!member) notFound();
+  }
+  const title = t("meta.jobAt", { job: job.title, company: job.company.name });
+  const description = clip(job.summary || job.description);
+  return { title, description, openGraph: { type: "website", siteName: "JOBLIO", title, description } };
 }
 
 export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
   const { id } = await params;
+  await expirePromotions(); // also closes jobs past their closing day (throttled)
   const [job, viewer, { t, f }] = await Promise.all([getJob(id), getViewer(), getI18n()]);
   if (!job) notFound();
   // Members of the posting company manage the job instead of applying to it (any of their companies, not just the first).
@@ -95,6 +111,10 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
 
   return (
     <div className="pb-24 md:pb-0">
+      {job.status === "OPEN" && (
+        // Structured data for search engines (Google for Jobs).
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(jobPostingJsonLd(job, APP_URL)) }} />
+      )}
       <Link href="/jobs" className="mb-5 inline-flex items-center gap-1.5 text-sm text-fg-muted hover:text-fg">
         <ArrowLeft className="size-4" /> {t("jobs.allJobs")}
       </Link>
@@ -152,7 +172,7 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
               </span>
               {job.closesAt && (
                 <span className="inline-flex items-center gap-1.5">
-                  <CalendarClock className="size-4" /> {t("jobs.closes", { date: f.date(job.closesAt, { month: "short", day: "numeric" }) })}
+                  <CalendarClock className="size-4" /> {t("jobs.closes", { date: f.date(job.closesAt, { month: "short", day: "numeric", year: "numeric" }) })}
                 </span>
               )}
             </div>

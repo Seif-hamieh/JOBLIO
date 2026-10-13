@@ -19,7 +19,7 @@ import { LocalTime } from "@/components/ui/local-time";
 import { MatchBreakdown } from "@/components/match/match-breakdown";
 import { ScheduleInterviewButton } from "@/components/recruiter/schedule-interview";
 import { LevelBars } from "@/components/skills/level-picker";
-import { PIPELINE_STAGES, type ApplicationStatus, type PipelineStage } from "@/lib/constants";
+import { PIPELINE_STAGES, STATUS_FOR_STAGE, type ApplicationStatus, type PipelineStage } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/i18n/client";
 import { useFinalDecision } from "@/components/recruiter/final-decision";
@@ -61,12 +61,18 @@ export function ApplicationDrawer({ applicationId, onClose, onChanged }: { appli
 
   // Hiring and declining notify the candidate: confirm first, then allow an undo window.
   const decide = useFinalDecision();
-  const decideFinal = (kind: "hire" | "decline") => {
+  const decideFinal = (kind: "hire" | "decline" | "reopen", target?: PipelineStage) => {
     if (!detail) return;
     const before = { stage: detail.stage, status: detail.status };
-    const after: Patch = kind === "hire" ? { stage: "HIRED", status: "HIRED" } : { status: "REJECTED" };
+    const reopenTo = target ?? "FINAL";
+    const after: Patch = kind === "hire" ? { stage: "HIRED", status: "HIRED" } : kind === "reopen" ? { stage: reopenTo, status: STATUS_FOR_STAGE[reopenTo] } : { status: "REJECTED" };
     const id = detail.id;
-    const commit = () => (kind === "hire" ? moveApplicationAction(id, "HIRED", Date.now()) : setApplicationStatusAction(id, "REJECTED"));
+    const commit = () =>
+      kind === "hire"
+        ? moveApplicationAction(id, "HIRED", Date.now())
+        : kind === "reopen"
+          ? moveApplicationAction(id, reopenTo, Date.now(), { leaveHired: true })
+          : setApplicationStatusAction(id, "REJECTED");
     const patchDetail = (p: Patch) => setDetail((d) => (d && d.id === id ? { ...d, ...p } : d));
     const decision = {
       kind,
@@ -84,7 +90,7 @@ export function ApplicationDrawer({ applicationId, onClose, onChanged }: { appli
     };
     // Outside a pipeline (no provider) fall back to a plain confirm + immediate save.
     if (decide) decide(decision);
-    else if (window.confirm(kind === "hire" ? t("recruiter.confirmHireTitle", { name: detail.applicant.name }) : t("recruiter.confirmDeclineTitle", { name: detail.applicant.name })))
+    else if (window.confirm(t(kind === "hire" ? "recruiter.confirmHireTitle" : kind === "reopen" ? "recruiter.confirmReopenTitle" : "recruiter.confirmDeclineTitle", { name: detail.applicant.name })))
       run(commit, after);
   };
 
@@ -182,7 +188,9 @@ export function ApplicationDrawer({ applicationId, onClose, onChanged }: { appli
                               onClick={() =>
                                 s === "HIRED" && detail.stage !== "HIRED"
                                   ? decideFinal("hire")
-                                  : run(() => moveApplicationAction(detail.id, s, Date.now()), { stage: s, status: detail.status === "REJECTED" ? "VIEWED" : detail.status })
+                                  : detail.status === "HIRED" && s !== "HIRED"
+                                    ? decideFinal("reopen", s)
+                                    : run(() => moveApplicationAction(detail.id, s, Date.now()), { stage: s, status: detail.status === "REJECTED" ? "VIEWED" : detail.status })
                               }
                               className={cn(
                                 "rounded-full border px-3 py-1.5 text-xs font-medium transition",

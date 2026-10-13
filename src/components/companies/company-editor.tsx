@@ -13,6 +13,7 @@ import { addCompanyVideoAction, deleteCompanyMediaAction, updateCompanyAction, u
 import { COMPANY_SIZES, type CompanySize } from "@/lib/constants";
 import { useI18n } from "@/i18n/client";
 import { acceptFor, checkUpload } from "@/lib/upload-check";
+import { parseVideoUrl } from "@/lib/video";
 import { localizedCountries } from "@/i18n/countries";
 import { industryName } from "@/i18n/translate";
 
@@ -77,17 +78,22 @@ export function CompanyEditor({
     });
   };
   const [videoUrl, setVideoUrl] = useState("");
+  const [videoError, setVideoError] = useState<string | null>(null);
   const [addingVideo, startVideo] = useTransition();
-  const addVideo = () =>
-    videoUrl.trim() &&
+  const addVideo = () => {
+    if (!videoUrl.trim()) return;
+    // Say what's wrong right under the field (a toast alone is easy to miss).
+    if (!parseVideoUrl(videoUrl)) return setVideoError(t("msg.videoInvalid"));
     startVideo(async () => {
-      const res = await addCompanyVideoAction({ url: videoUrl });
+      const res = await addCompanyVideoAction({ url: videoUrl }).catch(() => null);
       if (res?.ok) {
         setVideoUrl("");
+        setVideoError(null);
         toast.success(res.message ?? t("common.saved"));
         router.refresh();
-      } else toast.error(res && !res.ok ? res.error : t("common.somethingWrong"));
+      } else setVideoError(res && !res.ok ? res.error : t("common.somethingWrong"));
     });
+  };
   const pick = (kind: "logo" | "cover" | "media") => {
     kindRef.current = kind;
     fileRef.current?.click();
@@ -218,7 +224,12 @@ export function CompanyEditor({
             <Input
               type="url"
               value={videoUrl}
-              onChange={(e) => setVideoUrl(e.target.value)}
+              onChange={(e) => {
+                setVideoUrl(e.target.value);
+                setVideoError(null);
+              }}
+              aria-invalid={!!videoError || undefined}
+              aria-describedby="company-video-help"
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   e.preventDefault();
@@ -233,7 +244,15 @@ export function CompanyEditor({
               <Video /> {t("companyDash.addVideo")}
             </Button>
           </div>
-          <p className="mt-1.5 text-xs text-fg-subtle">{t("companyDash.videoHint")}</p>
+          {videoError ? (
+            <p id="company-video-help" role="alert" className="mt-1.5 text-xs font-medium text-danger-fg">
+              {videoError}
+            </p>
+          ) : (
+            <p id="company-video-help" className="mt-1.5 text-xs text-fg-subtle">
+              {t("companyDash.videoHint")}
+            </p>
+          )}
           {!premium && (
             <p className="mt-2 inline-flex items-center gap-1 text-xs text-ember-fg">
               <Crown className="size-3" /> {t("companyDash.premiumPhotos")}

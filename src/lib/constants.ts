@@ -139,6 +139,15 @@ export const APPLICATION_TRACK: ApplicationStatus[] = ["APPLIED", "VIEWED", "SHO
 
 export const PIPELINE_STAGES = ["APPLIED", "SCREENING", "INTERVIEW", "FINAL", "HIRED"] as const;
 export type PipelineStage = (typeof PIPELINE_STAGES)[number];
+
+/** The application status a candidate gets when moved into each pipeline stage. */
+export const STATUS_FOR_STAGE: Record<PipelineStage, ApplicationStatus> = {
+  APPLIED: "VIEWED",
+  SCREENING: "SHORTLISTED",
+  INTERVIEW: "INTERVIEW",
+  FINAL: "INTERVIEW",
+  HIRED: "HIRED",
+};
 export const PIPELINE_STAGE_LABEL: Record<PipelineStage, string> = {
   APPLIED: "Applied",
   SCREENING: "Screening",

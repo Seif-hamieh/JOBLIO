@@ -3,6 +3,8 @@ import Link from "next/link";
 import { CalendarClock, FileText, Send, Video } from "lucide-react";
 import { requireViewer } from "@/server/session";
 import { db } from "@/server/db";
+import { getCandidateFacts, jobMatchSelect, toJobFacts } from "@/server/services/matching";
+import { computeMatch } from "@/lib/matching/engine";
 import { JobsTabs } from "@/components/jobs/jobs-tabs";
 import { StatusTracker } from "@/components/applications/status-tracker";
 import { Expandable, WithdrawButton } from "@/components/applications/application-actions";
@@ -23,7 +25,7 @@ export default async function ApplicationsPage({ searchParams }: PageProps<"/app
   const [viewer, { t, f }] = await Promise.all([requireViewer(), getI18n()]);
   const { view } = await searchParams;
   const archived = view === "archived";
-  const apps = await db.application.findMany({
+  const [apps, facts] = await Promise.all([db.application.findMany({
     where: { applicantId: viewer.id, status: archived ? { in: CLOSED } : { notIn: CLOSED } },
     orderBy: { updatedAt: "desc" },
     select: {
@@ -33,11 +35,14 @@ export default async function ApplicationsPage({ searchParams }: PageProps<"/app
       createdAt: true,
       updatedAt: true,
       resumeUrl: true,
-      job: { select: { id: true, title: true, workMode: true, company: { select: { name: true, logoUrl: true, brandColor: true, slug: true } } } },
+      job: { select: { ...jobMatchSelect, id: true, title: true, workMode: true, company: { select: { name: true, logoUrl: true, brandColor: true, slug: true } } } },
       events: { orderBy: { createdAt: "asc" }, select: { id: true, toStatus: true, createdAt: true } },
       interviews: { where: { status: "SCHEDULED", startsAt: { gte: new Date() } }, orderBy: { startsAt: "asc" }, take: 1, select: { startsAt: true, type: true } },
     },
-  });
+  }), getCandidateFacts(viewer.id)]);
+  // The same live, job-seeker score as the job page and job lists (the stored matchScore is the
+  // recruiter-side snapshot taken when the application was sent).
+  const liveScore = (a: (typeof apps)[number]) => (facts ? computeMatch(facts, toJobFacts(a.job)).score : a.matchScore);
   const counts = await db.application.groupBy({ by: ["status"], where: { applicantId: viewer.id }, _count: true });
   const activeCount = counts.filter((c) => !CLOSED.includes(c.status)).reduce((s, c) => s + c._count, 0);
   const archivedCount = counts.filter((c) => CLOSED.includes(c.status)).reduce((s, c) => s + c._count, 0);
@@ -83,7 +88,7 @@ export default async function ApplicationsPage({ searchParams }: PageProps<"/app
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <MatchPill score={a.matchScore} />
+                  <MatchPill score={liveScore(a)} />
                   <Badge tone={a.status === "REJECTED" ? "danger" : a.status === "OFFER" || a.status === "HIRED" ? "mint" : a.status === "WITHDRAWN" ? "neutral" : "brand"}>
                     {t(`enums.applicationStatus.${a.status}`)}
                   </Badge>

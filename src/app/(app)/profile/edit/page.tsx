@@ -125,7 +125,7 @@ export default async function EditProfilePage() {
       <aside>
         <Card className="sticky top-24 p-5">
           <div className="flex items-center gap-4">
-            <MatchRing score={score} size={64} stroke={6} />
+            <MatchRing score={score} size={64} stroke={6} srLabel={t("profileEdit.strengthPct", { n: score })} />
             <div>
               <div className="font-display font-semibold">{t("profileEdit.strength")}</div>
               <div className="text-xs text-fg-muted">{t("profileEdit.strengthSub")}</div>

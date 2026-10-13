@@ -18,7 +18,7 @@ export function ThemeToggle({ className }: { className?: string }) {
     <button
       type="button"
       onClick={() => setTheme(dark ? "light" : "dark")}
-      className={cn("grid size-9 place-items-center rounded-full text-fg-muted transition hover:bg-surface-2 hover:text-fg", className)}
+      className={cn("grid size-11 place-items-center rounded-full text-fg-muted transition hover:bg-surface-2 hover:text-fg md:size-9", className)}
       aria-label={dark ? t("common.switchToLight") : t("common.switchToDark")}
     >
       {!mounted ? <Monitor className="size-[18px]" /> : dark ? <Sun className="size-[18px]" /> : <Moon className="size-[18px]" />}

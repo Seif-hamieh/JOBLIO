@@ -1,29 +1,25 @@
 import "server-only";
 import { db } from "@/server/db";
 import { ActionError } from "@/server/action";
+import { startOfTodayUtc } from "@/lib/validation/job";
 import { k } from "@/i18n/message";
 import { notify } from "@/server/services/notifications";
 import { checkAchievements } from "@/server/services/achievements";
 import { candidateMatchSelect, jobMatchSelect, toCandidateFacts, toJobFacts } from "@/server/services/matching";
 import { computeMatch } from "@/lib/matching/engine";
-import type { ApplicationStatus, PipelineStage } from "@/lib/constants";
+import { STATUS_FOR_STAGE, type ApplicationStatus, type PipelineStage } from "@/lib/constants";
+export { STATUS_FOR_STAGE };
 
 /** Candidate-facing status implied by moving a card to a pipeline stage. */
-export const STATUS_FOR_STAGE: Record<PipelineStage, ApplicationStatus> = {
-  APPLIED: "VIEWED",
-  SCREENING: "SHORTLISTED",
-  INTERVIEW: "INTERVIEW",
-  FINAL: "INTERVIEW",
-  HIRED: "HIRED",
-};
 
-const CANDIDATE_MESSAGE: Partial<Record<ApplicationStatus, (job: string, company: string) => string>> = {
-  VIEWED: (job, company) => k("notif.appViewed", { job, company }),
+// companyId is stored with the name so the notification shows the company's current name after a rename.
+const CANDIDATE_MESSAGE: Partial<Record<ApplicationStatus, (job: string, company: string, companyId: string) => string>> = {
+  VIEWED: (job, company, companyId) => k("notif.appViewed", { job, company, companyId }),
   SHORTLISTED: (job) => k("notif.appShortlisted", { job }),
-  INTERVIEW: (job, company) => k("notif.appInterview", { job, company }),
-  OFFER: (job, company) => k("notif.appOffer", { job, company }),
-  HIRED: (job, company) => k("notif.appHired", { job, company }),
-  REJECTED: (job, company) => k("notif.appRejected", { job, company }),
+  INTERVIEW: (job, company, companyId) => k("notif.appInterview", { job, company, companyId }),
+  OFFER: (job, company, companyId) => k("notif.appOffer", { job, company, companyId }),
+  HIRED: (job, company, companyId) => k("notif.appHired", { job, company, companyId }),
+  REJECTED: (job, company, companyId) => k("notif.appRejected", { job, company, companyId }),
 };
 
 function dayStart(d = new Date()) {
@@ -36,12 +32,12 @@ export async function applyToJob(userId: string, jobId: string, input: { coverLe
   const [job, profile, existing] = await Promise.all([
     db.job.findUnique({
       where: { id: jobId },
-      select: { ...jobMatchSelect, id: true, title: true, status: true, postedById: true, publishedAt: true, company: { select: { id: true, name: true, members: { select: { userId: true } } } } },
+      select: { ...jobMatchSelect, id: true, title: true, status: true, postedById: true, publishedAt: true, closesAt: true, company: { select: { id: true, name: true, members: { select: { userId: true } } } } },
     }),
     db.profile.findUnique({ where: { userId }, select: candidateMatchSelect }),
     db.application.findUnique({ where: { jobId_applicantId: { jobId, applicantId: userId } }, select: { id: true, status: true } }),
   ]);
-  if (!job || job.status !== "OPEN") throw new ActionError("@msg.jobClosed");
+  if (!job || job.status !== "OPEN" || (job.closesAt && job.closesAt.getTime() < startOfTodayUtc())) throw new ActionError("@msg.jobClosed");
   if (job.company.members.some((m) => m.userId === userId)) throw new ActionError("@msg.ownCompany");
   if (existing && existing.status !== "WITHDRAWN") throw new ActionError("@msg.alreadyApplied");
   if (!profile) throw new ActionError("@msg.completeProfile");
@@ -126,7 +122,7 @@ export async function getManagedApplication(actorCompanyId: string, applicationI
 export async function transitionApplication(
   actor: { id: string; companyId: string },
   applicationId: string,
-  change: { stage?: PipelineStage; status?: ApplicationStatus; position?: number; note?: string | null },
+  change: { stage?: PipelineStage; status?: ApplicationStatus; position?: number; note?: string | null; leaveHired?: boolean },
 ) {
   const app = await getManagedApplication(actor.companyId, applicationId);
   if (app.status === "WITHDRAWN") throw new ActionError("@msg.candidateWithdrew");
@@ -139,6 +135,9 @@ export async function transitionApplication(
   if (!change.status && app.status === "REJECTED" && change.stage) status = STATUS_FOR_STAGE[change.stage];
   // An offer stays an offer while the card sits in Final.
   if (!change.status && app.status === "OFFER" && stage === "FINAL") status = "OFFER";
+
+  // Hired is final: leaving it needs an explicit, confirmed request (it tells the candidate their status changed).
+  if (app.status === "HIRED" && status !== "HIRED" && !change.leaveHired) throw new ActionError("@msg.hiredLocked");
 
   const changed = status !== app.status || stage !== app.stage;
   await db.$transaction(async (tx) => {
@@ -154,7 +153,7 @@ export async function transitionApplication(
   });
 
   if (status !== app.status) {
-    const message = CANDIDATE_MESSAGE[status]?.(app.job.title, app.job.company.name);
+    const message = CANDIDATE_MESSAGE[status]?.(app.job.title, app.job.company.name, actor.companyId);
     if (message) {
       await notify({
         userId: app.applicantId,

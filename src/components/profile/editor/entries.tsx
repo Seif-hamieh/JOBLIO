@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { AnimatePresence, m } from "motion/react";
 import { Award, Briefcase, GraduationCap, Pencil, Plus, Trash2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { Dialog } from "@/components/ui/dialog";
 import { Field, Input, Select, Textarea } from "@/components/ui/field";
 import { toast } from "@/components/ui/toast";
@@ -60,6 +61,8 @@ function useRun() {
 
 function Row({ icon, title, subtitle, meta, onEdit, onDelete }: { icon: React.ReactNode; title: string; subtitle?: string | null; meta?: string; onEdit: () => void; onDelete: () => void }) {
   const { t } = useI18n();
+  // Deleting an entry can't be undone, so it is confirmed first.
+  const [confirming, setConfirming] = useState(false);
   return (
     <m.li layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, height: 0 }} className="group flex items-start gap-3 rounded-2xl border border-border bg-surface p-3.5">
       <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-surface-2 text-fg-muted [&_svg]:size-5">{icon}</span>
@@ -68,11 +71,22 @@ function Row({ icon, title, subtitle, meta, onEdit, onDelete }: { icon: React.Re
         {subtitle && <div className="text-sm text-fg-muted">{subtitle}</div>}
         {meta && <div className="text-xs text-fg-subtle">{meta}</div>}
       </div>
-      <div className="flex gap-1 sm:opacity-0 sm:transition sm:group-hover:opacity-100">
+      <ConfirmDialog
+        open={confirming}
+        onOpenChange={setConfirming}
+        title={t("profileEdit.deleteEntryTitle", { name: title })}
+        description={t("profileEdit.deleteEntryBody")}
+        confirmLabel={t("common.delete")}
+        onConfirm={() => {
+          setConfirming(false);
+          onDelete();
+        }}
+      />
+      <div className="flex gap-1 sm:opacity-0 sm:transition sm:group-focus-within:opacity-100 sm:group-hover:opacity-100">
         <Button size="icon-sm" variant="ghost" onClick={onEdit} aria-label={`${t("common.edit")} ${title}`}>
           <Pencil />
         </Button>
-        <Button size="icon-sm" variant="ghost" onClick={onDelete} aria-label={`${t("common.delete")} ${title}`}>
+        <Button size="icon-sm" variant="ghost" onClick={() => setConfirming(true)} aria-label={`${t("common.delete")} ${title}`}>
           <Trash2 />
         </Button>
       </div>

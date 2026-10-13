@@ -27,7 +27,7 @@ export default async function OnboardingPage({ searchParams }: PageProps<"/onboa
           <ThemeToggle />
         </div>
       </header>
-      <main className="relative px-5 pb-16 pt-6 sm:pt-12">
+      <main id="main" tabIndex={-1} className="relative px-5 pb-16 pt-6 outline-none sm:pt-12">
         <OnboardingWizard name={viewer.name} initialIntent={viewer.intent} hasCompany={!!viewer.company} industries={industries} />
       </main>
     </div>

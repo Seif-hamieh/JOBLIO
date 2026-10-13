@@ -5,6 +5,8 @@ import { z } from "zod";
 import { db } from "@/server/db";
 import { fail, parse, withRecruiter, type ActionState } from "@/server/action";
 import { LIMITS } from "@/server/rate-limit";
+import { refreshSitemap } from "@/server/sitemap";
+import { startOfTodayUtc } from "@/lib/validation/job";
 import { publish } from "@/server/realtime";
 import { getApplicationDetail, type ApplicationDetail } from "@/server/services/recruiter";
 import { getManagedApplication, markViewed, transitionApplication } from "@/server/services/applications";
@@ -22,7 +24,7 @@ async function notifyFollowersOfNewJob(job: { id: string; title: string; company
   const settings = await db.userSettings.findMany({ where: { userId: { in: followers.map((f) => f.userId) }, notifyJobAlerts: false }, select: { userId: true } });
   const optedOut = new Set(settings.map((s) => s.userId));
   const recipients = followers.map((f) => f.userId).filter((u) => !optedOut.has(u) && u !== actorId);
-  const vars = { company: company.name, job: job.title };
+  const vars = { company: company.name, companyId: job.companyId, job: job.title };
   const title = createT("en")("notif.newJob", vars);
   // Bulk insert keeps fan-out cheap even for large follower counts.
   await db.notification.createMany({ data: recipients.map((userId) => ({ userId, actorId, type: "NEW_JOB_FROM_FOLLOWED_COMPANY" as const, title, titleKey: "notif.newJob", vars, href: `/jobs/${job.id}` })) });
@@ -55,6 +57,7 @@ export async function createJobAction(input: JobInput): Promise<ActionState<{ id
     });
     if (parsed.data.publish) await notifyFollowersOfNewJob(job, viewer.id);
     revalidatePath("/recruiter");
+    refreshSitemap();
     return { ok: true, message: parsed.data.publish ? "@msg.jobPublished" : "@msg.draftSaved", data: { id: job.id } };
   });
 }
@@ -84,19 +87,22 @@ export async function updateJobAction(jobId: string, input: JobInput): Promise<A
     if (publishNow && !existing.publishedAt) await notifyFollowersOfNewJob({ id: existing.id, title: parsed.data.title, companyId: viewer.company.id }, viewer.id);
     revalidatePath("/recruiter");
     revalidatePath(`/jobs/${existing.id}`);
+    refreshSitemap();
     return { ok: true, message: "@msg.jobUpdated", data: { id: existing.id } };
   });
 }
 
 export async function setJobStatusAction(jobId: string, status: "OPEN" | "PAUSED" | "CLOSED"): Promise<ActionState> {
   return withRecruiter({ limit: LIMITS.write }, async (viewer) => {
-    const job = await db.job.findFirst({ where: { id: id.parse(jobId), companyId: viewer.company.id }, select: { id: true, title: true, publishedAt: true } });
+    const job = await db.job.findFirst({ where: { id: id.parse(jobId), companyId: viewer.company.id }, select: { id: true, title: true, publishedAt: true, closesAt: true } });
     if (!job) return fail("@msg.jobNotFound");
     const s = z.enum(["OPEN", "PAUSED", "CLOSED"]).parse(status);
+    if (s === "OPEN" && job.closesAt && job.closesAt.getTime() < startOfTodayUtc()) return fail("@v.closesPast");
     await db.job.update({ where: { id: job.id }, data: { status: s, ...(s === "OPEN" && !job.publishedAt && { publishedAt: new Date() }) } });
     if (s === "OPEN" && !job.publishedAt) await notifyFollowersOfNewJob({ id: job.id, title: job.title, companyId: viewer.company.id }, viewer.id);
     revalidatePath("/recruiter");
     revalidatePath(`/jobs/${job.id}`);
+    refreshSitemap();
     return { ok: true, message: s === "OPEN" ? "@msg.jobLive" : s === "PAUSED" ? "@msg.jobPaused" : "@msg.jobClosedMsg" };
   });
 }
@@ -109,18 +115,24 @@ export async function deleteJobAction(jobId: string): Promise<ActionState> {
     if (job._count.applications > 0) {
       await db.job.update({ where: { id: job.id }, data: { status: "CLOSED" } });
       revalidatePath("/recruiter");
+      refreshSitemap();
       return { ok: true, message: "@msg.jobClosedInstead" };
     }
     await db.job.delete({ where: { id: job.id } });
     revalidatePath("/recruiter");
+    refreshSitemap();
     return { ok: true, message: "@msg.jobDeleted" };
   });
 }
 
-export async function moveApplicationAction(applicationId: string, stage: string, position: number): Promise<ActionState> {
+export async function moveApplicationAction(applicationId: string, stage: string, position: number, opts?: { leaveHired?: boolean }): Promise<ActionState> {
   return withRecruiter({ limit: { key: "pipeline", max: 120, windowMs: 60_000 } }, async (viewer) => {
     const s = z.enum(PIPELINE_STAGES).parse(stage);
-    await transitionApplication({ id: viewer.id, companyId: viewer.company.id }, id.parse(applicationId), { stage: s, position: z.number().finite().parse(position) });
+    await transitionApplication({ id: viewer.id, companyId: viewer.company.id }, id.parse(applicationId), {
+      stage: s,
+      position: z.number().finite().parse(position),
+      leaveHired: opts?.leaveHired === true,
+    });
     return { ok: true };
   });
 }

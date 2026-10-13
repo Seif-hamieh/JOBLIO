@@ -30,7 +30,7 @@ export function LanguageToggle({ className }: { className?: string }) {
       onClick={() => go(other)}
       disabled={pending}
       lang={other}
-      className={cn("inline-flex h-9 items-center gap-1.5 rounded-full px-2.5 text-sm font-medium text-fg-muted transition hover:bg-surface-2 hover:text-fg disabled:opacity-60", className)}
+      className={cn("inline-flex h-11 items-center gap-1.5 rounded-full px-2.5 text-sm font-medium md:h-9 text-fg-muted transition hover:bg-surface-2 hover:text-fg disabled:opacity-60", className)}
       aria-label={`${t("common.language")}: ${LOCALE_META[other].label}`}
     >
       <Languages className="size-[18px]" />

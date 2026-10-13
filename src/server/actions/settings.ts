@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { assessPassword } from "@/lib/password";
 import { APIError } from "better-auth/api";
 import { auth } from "@/server/auth";
 import { db } from "@/server/db";
@@ -35,9 +36,12 @@ const passwordSchema = z
 
 /** Changes the password through Better Auth and signs out every other session. */
 export async function changePasswordAction(input: z.input<typeof passwordSchema>): Promise<ActionState> {
-  return withViewer({ limit: LIMITS.sensitive }, async () => {
+  return withViewer({ limit: LIMITS.sensitive }, async (viewer) => {
     const parsed = parse(passwordSchema, input);
     if (!parsed.success) return parsed.state;
+    // Same rule as sign-up and reset (also enforced by the auth hook).
+    const weak = assessPassword(parsed.data.newPassword, [viewer.email, viewer.name]).problem;
+    if (weak) return fail(`@auth.weak.${weak}`, { newPassword: [`@auth.weak.${weak}`] });
     try {
       await auth.api.changePassword({ body: { ...parsed.data, revokeOtherSessions: true }, headers: await headers() });
     } catch (e) {

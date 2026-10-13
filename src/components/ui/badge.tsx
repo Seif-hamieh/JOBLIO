@@ -25,7 +25,7 @@ export function Badge({
     <span
       className={cn(
         "inline-flex items-center gap-1 whitespace-nowrap rounded-full border font-medium [&_svg]:size-3",
-        size === "xs" && "h-5 px-1.5 text-[10.5px]",
+        size === "xs" && "h-5 px-1.5 text-xs",
         size === "sm" && "h-6 px-2.5 text-xs",
         size === "md" && "h-7 px-3 text-[13px]",
         TONES[tone],

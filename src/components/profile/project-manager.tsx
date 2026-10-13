@@ -11,6 +11,7 @@ import { Field, Input, Textarea } from "@/components/ui/field";
 import { EmptyState } from "@/components/ui/misc";
 import { toast } from "@/components/ui/toast";
 import { acceptFor, checkUpload } from "@/lib/upload-check";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { SkillSearch } from "@/components/skills/skill-search";
 import { deleteProjectAction, uploadProjectImageAction, upsertProjectAction } from "@/server/actions/profile";
 
@@ -53,6 +54,20 @@ export function ProjectManager({ items }: { items: ProjectItem[] }) {
     setOpen(true);
   };
 
+  // Deleting a project can't be undone, so it is confirmed first.
+  const [deleting, setDeleting] = useState<ProjectItem | null>(null);
+  const remove = () =>
+    start(async () => {
+      const target = deleting;
+      setDeleting(null);
+      if (!target) return;
+      const res = await deleteProjectAction(target.id).catch(() => null);
+      if (res?.ok) {
+        toast.success(t("msg.projectRemoved"));
+        router.refresh();
+      } else toast.error(res && !res.ok ? res.error : t("common.somethingWrong"));
+    });
+
   const save = () =>
     start(async () => {
       const res = await upsertProjectAction({ ...v, id: editId, skillIds: v.skills.map((s) => s.id) });
@@ -68,6 +83,15 @@ export function ProjectManager({ items }: { items: ProjectItem[] }) {
 
   return (
     <div>
+      <ConfirmDialog
+        open={!!deleting}
+        onOpenChange={(o) => !o && setDeleting(null)}
+        title={t("profileEdit.deleteEntryTitle", { name: deleting?.title ?? "" })}
+        description={t("profileEdit.deleteEntryBody")}
+        confirmLabel={t("common.delete")}
+        onConfirm={remove}
+        loading={pending}
+      />
       <div className="mb-4 flex justify-end">
         <Button onClick={() => edit()}>
           <Plus /> {t("profileEdit.addProject")}
@@ -90,7 +114,7 @@ export function ProjectManager({ items }: { items: ProjectItem[] }) {
                       <Star className="size-3 fill-current" /> {t("common.featured")}
                     </span>
                   )}
-                  <div className="absolute end-2 top-2 flex gap-1 opacity-0 transition group-hover:opacity-100">
+                  <div className="absolute end-2 top-2 flex gap-1 opacity-0 transition group-focus-within:opacity-100 group-hover:opacity-100">
                     <Button size="icon-sm" variant="outline" onClick={() => edit(p)} aria-label={t("profileEdit.editProject")}>
                       <Pencil />
                     </Button>
@@ -98,15 +122,7 @@ export function ProjectManager({ items }: { items: ProjectItem[] }) {
                       size="icon-sm"
                       variant="outline"
                       aria-label={t("common.delete")}
-                      onClick={() =>
-                        start(async () => {
-                          const res = await deleteProjectAction(p.id);
-                          if (res?.ok) {
-                            toast.success(t("msg.projectRemoved"));
-                            router.refresh();
-                          }
-                        })
-                      }
+                      onClick={() => setDeleting(p)}
                     >
                       <Trash2 />
                     </Button>

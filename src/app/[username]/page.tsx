@@ -60,7 +60,9 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
   const { username } = await params;
   const u = await loadPortfolio(username);
   if (!u) return {};
-  return { title: { absolute: `${u.name} — ${u.profile!.headline ?? "JOBLIO"}` }, description: u.profile!.about?.slice(0, 160) };
+  const title = `${u.name} - ${u.profile!.headline ?? "JOBLIO"}`;
+  const description = u.profile!.about?.slice(0, 160);
+  return { title: { absolute: `${title} · JOBLIO` }, description, openGraph: { type: "profile", siteName: "JOBLIO", title, description } };
 }
 
 export default async function PortfolioPage({ params }: { params: Promise<{ username: string }> }) {
@@ -92,7 +94,7 @@ export default async function PortfolioPage({ params }: { params: Promise<{ user
         </div>
       </header>
 
-      <main className="mx-auto max-w-5xl space-y-14 px-5 pb-16">
+      <main id="main" tabIndex={-1} className="mx-auto max-w-5xl space-y-14 px-5 pb-16 outline-none">
         {/* Intro */}
         <section className="relative overflow-hidden rounded-[2rem] border border-border bg-surface p-8 sm:p-12">
           <div

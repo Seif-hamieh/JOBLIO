@@ -20,6 +20,9 @@ const sora = localFont({
   variable: "--font-sora",
   weight: "100 800",
   display: "swap",
+  // Headings only: not preloaded, which removed the "preloaded but not used" warning on pages
+  // that show it late; it still loads as soon as a heading needs it (swap shows text meanwhile).
+  preload: false,
 });
 
 const notoArabic = localFont({
@@ -41,16 +44,16 @@ export async function generateMetadata(): Promise<Metadata> {
     description: t("meta.description"),
     applicationName: "JOBLIO",
     alternates: { canonical: path },
+    // No fixed og:title / og:description here: pages set their own, and link previews otherwise use the
+    // page's <title> and description — so shared links no longer all say the same thing.
     openGraph: {
       type: "website",
       siteName: "JOBLIO",
       url: path,
-      title: t("meta.title"),
-      description: t("meta.description"),
       locale: locale === "ar" ? "ar_AR" : "en_US",
       alternateLocale: locale === "ar" ? ["en_US"] : ["ar_AR"],
     },
-    twitter: { card: "summary_large_image", title: t("meta.title"), description: t("meta.description") },
+    twitter: { card: "summary_large_image" },
   };
 }
 
@@ -62,13 +65,19 @@ export const viewport: Viewport = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const { locale, dir } = await getI18n();
+  const [{ locale, dir, t }, nonce] = await Promise.all([getI18n(), headers().then((h) => h.get("x-nonce") ?? undefined)]);
   return (
     <html lang={locale} dir={dir} suppressHydrationWarning className={`${inter.variable} ${sora.variable} ${notoArabic.variable}`}>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+        <script nonce={nonce} dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
       </head>
       <body className="min-h-dvh">
+        <a
+          href="#main"
+          className="sr-only z-[100] rounded-full bg-brand px-4 py-2 text-sm font-semibold text-brand-fg focus:not-sr-only focus:fixed focus:start-4 focus:top-4"
+        >
+          {t("common.skipToContent")}
+        </a>
         <I18nProvider locale={locale} names={displayNames(locale)}>
           <Providers>{children}</Providers>
         </I18nProvider>

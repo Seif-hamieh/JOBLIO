@@ -19,7 +19,7 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
             <ThemeToggle />
           </div>
         </div>
-        <main className="mx-auto flex w-full max-w-[400px] flex-1 flex-col justify-center py-10">{children}</main>
+        <main id="main" tabIndex={-1} className="mx-auto flex w-full max-w-[400px] flex-1 flex-col justify-center py-10 outline-none">{children}</main>
         <p className="text-center text-xs text-fg-subtle">
           {/* Split the sentence around its two links so word order follows the language. */}
           {t("legal.agree", { terms: "\u0001", privacy: "\u0002" })

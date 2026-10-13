@@ -2,6 +2,8 @@ import "server-only";
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
+import { APIError, createAuthMiddleware } from "better-auth/api";
+import { assessPassword } from "@/lib/password";
 import { db } from "@/server/db";
 import { emails, localeFromRequest, sendEmail } from "@/server/mail";
 import { provisionNewUser } from "@/server/services/users";
@@ -88,6 +90,18 @@ export const auth = betterAuth({
         },
       },
     },
+  },
+
+  hooks: {
+    // Refuse common / repeated / sequential / personal passwords wherever a password is set.
+    before: createAuthMiddleware(async (ctx) => {
+      if (!["/sign-up/email", "/reset-password", "/change-password"].includes(ctx.path)) return;
+      const body = (ctx.body ?? {}) as { password?: string; newPassword?: string; email?: string; name?: string };
+      const pw = body.newPassword ?? body.password;
+      if (typeof pw !== "string") return;
+      const problem = assessPassword(pw, [body.email, body.name]).problem;
+      if (problem && problem !== "tooShort") throw new APIError("BAD_REQUEST", { message: "Password is too easy to guess", code: `WEAK_PASSWORD_${problem.toUpperCase()}` });
+    }),
   },
 
   plugins: [nextCookies()],

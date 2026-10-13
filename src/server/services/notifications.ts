@@ -63,6 +63,34 @@ export function renderNotification(
   };
 }
 
+/**
+ * Company names inside stored notifications are a snapshot from when they were
+ * sent. Replace them with each company's current name (companies can be
+ * renamed): by the stored companyId, or — for older notifications — the
+ * company of the recruiter who triggered them.
+ */
+export async function withCurrentCompanyNames<N extends { actorId?: string | null; vars: Prisma.JsonValue }>(rows: N[]): Promise<N[]> {
+  const varsOf = (n: N) => (n.vars && typeof n.vars === "object" && !Array.isArray(n.vars) ? (n.vars as Record<string, unknown>) : null);
+  const withCompany = rows.filter((n) => typeof varsOf(n)?.company === "string");
+  if (!withCompany.length) return rows;
+  const companyIds = [...new Set(withCompany.map((n) => varsOf(n)!.companyId).filter((x): x is string => typeof x === "string"))];
+  const actorIds = [...new Set(withCompany.filter((n) => !varsOf(n)!.companyId && n.actorId).map((n) => n.actorId!))];
+  const [companies, memberships] = await Promise.all([
+    companyIds.length ? db.company.findMany({ where: { id: { in: companyIds } }, select: { id: true, name: true } }) : [],
+    actorIds.length ? db.companyMember.findMany({ where: { userId: { in: actorIds } }, select: { userId: true, company: { select: { name: true } } } }) : [],
+  ]);
+  const byId = new Map(companies.map((c) => [c.id, c.name]));
+  // Only trust the actor's company when they belong to exactly one.
+  const byActor = new Map<string, string | null>();
+  for (const m of memberships) byActor.set(m.userId, byActor.has(m.userId) ? null : m.company.name);
+  return rows.map((n) => {
+    const v = varsOf(n);
+    if (typeof v?.company !== "string") return n;
+    const current = typeof v.companyId === "string" ? byId.get(v.companyId) : n.actorId ? byActor.get(n.actorId) : undefined;
+    return current && current !== v.company ? { ...n, vars: { ...v, company: current } as Prisma.JsonValue } : n;
+  });
+}
+
 export async function notify(input: NotifyInput) {
   if (input.actorId && input.actorId === input.userId) return null;
   const settings = await db.userSettings.findUnique({ where: { userId: input.userId } });

@@ -1,5 +1,5 @@
 import { getI18n, pageTitle } from "@/i18n/server";
-import { renderNotification } from "@/server/services/notifications";
+import { renderNotification, withCurrentCompanyNames } from "@/server/services/notifications";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ArrowRight, Bell, Bookmark, Briefcase, CalendarClock, Eye, KanbanSquare, Sparkles, Users } from "lucide-react";
@@ -39,7 +39,9 @@ export default async function HomePage() {
     }),
     db.savedJob.count({ where: { userId: viewer.id } }),
     db.profileView.findMany({ where: { viewedId: viewer.id, createdAt: { gte: since14 } }, select: { createdAt: true } }),
-    db.notification.findMany({ where: { userId: viewer.id }, orderBy: { createdAt: "desc" }, take: 5, select: { id: true, title: true, body: true, titleKey: true, bodyKey: true, vars: true, href: true, createdAt: true, readAt: true } }),
+    db.notification
+      .findMany({ where: { userId: viewer.id }, orderBy: { createdAt: "desc" }, take: 5, select: { id: true, title: true, body: true, titleKey: true, bodyKey: true, vars: true, href: true, createdAt: true, readAt: true, actorId: true } })
+      .then(withCurrentCompanyNames),
     suggestions(viewer.id, 3),
     db.userAchievement.findMany({ where: { userId: viewer.id }, select: { code: true } }),
     db.profile.findUnique({

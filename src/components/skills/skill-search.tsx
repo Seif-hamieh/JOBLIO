@@ -84,6 +84,7 @@ export function SkillSearch({
             } else if (e.key === "Escape") setOpen(false);
           }}
           placeholder={placeholder ?? t("skills.searchPlaceholder")}
+          maxLength={50}
           className="h-full flex-1 bg-transparent text-sm outline-none"
           role="combobox"
           aria-expanded={open}

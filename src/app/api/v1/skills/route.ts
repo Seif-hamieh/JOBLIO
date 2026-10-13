@@ -20,10 +20,13 @@ const allSkills = unstable_cache(
 // GET /api/v1/skills?q=rea — skill taxonomy autocomplete (public, cacheable).
 export async function GET(req: NextRequest) {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
-  if (!rateLimit(`skills:${ip}`, 120, 60_000).ok) {
-    return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+  // 30 lookups per minute per address (the search box debounces typing).
+  if (!rateLimit(`skills:${ip}`, 30, 60_000).ok) {
+    return NextResponse.json({ error: "Too many requests" }, { status: 429, headers: { "Retry-After": "60" } });
   }
-  const q = (req.nextUrl.searchParams.get("q") ?? "").trim().slice(0, 50);
+  const raw = req.nextUrl.searchParams.get("q") ?? "";
+  if (raw.length > 100) return NextResponse.json({ error: "Query too long (max 100 characters)" }, { status: 400 });
+  const q = raw.trim().slice(0, 50);
   await ensureReferenceData();
   const rows = await allSkills().catch(() => []);
   const skills = searchSkills(rows, q, q ? 10 : 16);

@@ -70,6 +70,12 @@ export const jobSchema = z
     publish: z.boolean().default(true),
   })
   .refine((v) => v.salaryMin == null || v.salaryMax == null || v.salaryMax >= v.salaryMin, { message: "@v.salaryRange", path: ["salaryMax"] })
-  .refine((v) => v.workMode === "REMOTE" || !!v.city || !!v.countryCode, { message: "@v.location", path: ["city"] });
+  .refine((v) => v.workMode === "REMOTE" || !!v.city || !!v.countryCode, { message: "@v.location", path: ["city"] })
+  // A closing date is a calendar day (stored as UTC midnight); today is the earliest allowed.
+  .refine((v) => !v.closesAt || v.closesAt.getTime() >= startOfTodayUtc(), { message: "@v.closesPast", path: ["closesAt"] });
+
+export function startOfTodayUtc(now = new Date()) {
+  return Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+}
 
 export type JobInput = z.input<typeof jobSchema>;

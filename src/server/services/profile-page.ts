@@ -67,7 +67,7 @@ export async function getProfilePage(username: string, viewerId: string | null) 
  * Records a profile view at most once per viewer per day and coalesces the
  * owner's notification. Members browsing privately are recorded anonymously.
  */
-export async function recordProfileView(viewedId: string, viewer: { id: string; name: string; company: { name: string } | null } | null) {
+export async function recordProfileView(viewedId: string, viewer: { id: string; name: string; company: { id: string; name: string } | null } | null) {
   if (!viewer || viewer.id === viewedId) return;
   const since = new Date(Date.now() - 86_400_000);
   const recent = await db.profileView.findFirst({ where: { viewerId: viewer.id, viewedId, createdAt: { gte: since } }, select: { id: true } });
@@ -84,7 +84,7 @@ export async function recordProfileView(viewedId: string, viewer: { id: string; 
       userId: viewedId,
       actorId: anonymous ? null : viewer.id,
       type: "PROFILE_VIEW",
-      title: anonymous ? k("notif.profileViewAnon") : viewer.company ? k("notif.profileViewRecruiter", { company: viewer.company.name }) : k("notif.profileView", { name: viewer.name }),
+      title: anonymous ? k("notif.profileViewAnon") : viewer.company ? k("notif.profileViewRecruiter", { company: viewer.company.name, companyId: viewer.company.id }) : k("notif.profileView", { name: viewer.name }),
       href: "/profile/views",
     });
   }

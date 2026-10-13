@@ -22,10 +22,14 @@ import { hostname, safeExternalUrl } from "@/lib/utils";
 import { getI18n } from "@/i18n/server";
 import { industryName } from "@/i18n/translate";
 
+const clip = (s: string | null | undefined, n = 160) => (s ? (s.length > n ? s.slice(0, n - 1).trimEnd() + "…" : s).replace(/s+/g, " ") : undefined);
+
 export async function generateMetadata({ params }: PageProps<"/companies/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const [c, { t }] = await Promise.all([db.company.findUnique({ where: { slug }, select: { name: true, tagline: true } }), getI18n()]);
-  return c ? { title: c.name, description: c.tagline ?? undefined } : { title: t("meta.notFound") };
+  const c = await db.company.findUnique({ where: { slug }, select: { name: true, tagline: true, about: true } });
+  if (!c) notFound(); // real 404 status for crawlers
+  const description = clip(c.tagline || c.about);
+  return { title: c.name, description, openGraph: { type: "website", siteName: "JOBLIO", title: c.name, description } };
 }
 
 export default async function CompanyPage({ params }: PageProps<"/companies/[slug]">) {
@@ -72,9 +76,16 @@ export default async function CompanyPage({ params }: PageProps<"/companies/[slu
     <div className="space-y-6" style={accent ? ({ "--brand": accent } as React.CSSProperties) : undefined}>
       <section className="surface overflow-hidden">
         <div
-          className="relative h-40 bg-cover bg-center sm:h-56"
-          style={company.coverUrl ? { backgroundImage: `url(${company.coverUrl})` } : { backgroundImage: `linear-gradient(120deg, ${company.brandColor ?? "var(--brand)"}, var(--aurora))` }}
-        />
+          className="relative h-40 overflow-hidden sm:h-56"
+          style={{ backgroundImage: `linear-gradient(120deg, ${company.brandColor ?? "var(--brand)"}, var(--aurora))` }}
+        >
+          {company.coverUrl && (
+            // A real <img> (not a CSS background) is found by the browser's preload scanner, so the largest
+            // image above the fold starts downloading with the HTML — better LCP.
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={company.coverUrl} alt="" fetchPriority="high" decoding="async" className="absolute inset-0 size-full object-cover" />
+          )}
+        </div>
         <div className="px-5 pb-6 sm:px-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <CompanyLogo name={company.name} src={company.logoUrl} color={company.brandColor} size="xl" className="relative z-10 -mt-12 ring-4 ring-surface" />

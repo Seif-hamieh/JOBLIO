@@ -43,7 +43,7 @@ export default async function RecruiterLayout({ children }: { children: React.Re
           { href: "/recruiter", label: t("recruiter.tabDashboard"), exact: true },
           { href: "/recruiter/candidates", label: t("recruiter.tabCandidates") },
           { href: "/recruiter/saved", label: t("recruiter.tabSaved") },
-          { href: "/interviews", label: t("recruiter.tabInterviews") },
+          { href: "/recruiter/interviews", label: t("recruiter.tabInterviews") },
           { href: "/company/dashboard", label: t("recruiter.tabCompany") },
         ]}
       />

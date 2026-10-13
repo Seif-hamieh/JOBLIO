@@ -147,7 +147,7 @@ export function HeroVisual() {
           </div>
           <div className="mt-3 flex flex-wrap gap-1">
             {(ar ? ["Figma", "أبحاث المستخدم", "أنظمة التصميم"] : ["Figma", "UX Research", "Design Systems"]).map((s) => (
-              <span key={s} className="rounded-full bg-surface-2 px-2 py-0.5 text-[10.5px] font-medium text-fg-muted">
+              <span key={s} className="rounded-full bg-surface-2 px-2 py-0.5 text-xs font-medium text-fg-muted">
                 {s}
               </span>
             ))}
@@ -169,7 +169,7 @@ export function HeroVisual() {
             </div>
             <MatchRing score={94} size={46} stroke={4} />
           </div>
-          <ul className="mt-3 space-y-1 text-[11.5px] text-fg-muted">
+          <ul className="mt-3 space-y-1 text-[13px] text-fg-muted">
             {[t("match.r.hlSkills", { n: 8 }), t("match.r.hlExperience"), t("match.r.hlRemote")].map((h) => (
               <li key={h} className="flex items-center gap-1.5">
                 <Check className="size-3 text-mint" strokeWidth={3} /> {h}

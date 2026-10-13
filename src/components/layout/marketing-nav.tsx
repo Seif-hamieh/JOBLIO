@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { AnimatePresence, m } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
@@ -24,6 +25,24 @@ export function MarketingNav() {
   const { t } = useI18n();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const pathname = usePathname();
+  // Close the mobile menu on Escape (focus back on its button) and after navigating.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setOpen(false);
+      toggleRef.current?.focus();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+  const [openedAt, setOpenedAt] = useState(pathname);
+  if (open && openedAt !== pathname) {
+    setOpen(false);
+    setOpenedAt(pathname);
+  }
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
@@ -51,7 +70,17 @@ export function MarketingNav() {
           <Link href="/register" className={buttonClasses({ variant: "primary", size: "sm", pill: true })}>
             {t("common.joinFree")}
           </Link>
-          <button className="grid size-9 place-items-center rounded-full hover:bg-surface-2 lg:hidden" onClick={() => setOpen((o) => !o)} aria-label={t("nav.menu")} aria-expanded={open}>
+          <button
+            ref={toggleRef}
+            className="grid size-11 place-items-center rounded-full hover:bg-surface-2 lg:hidden"
+            onClick={() => {
+              setOpenedAt(pathname);
+              setOpen((o) => !o);
+            }}
+            aria-label={t("nav.menu")}
+            aria-expanded={open}
+            aria-controls="marketing-mobile-menu"
+          >
             {open ? <X className="size-5" /> : <Menu className="size-5" />}
           </button>
         </div>
@@ -59,6 +88,8 @@ export function MarketingNav() {
       <AnimatePresence>
         {open && (
           <m.nav
+            id="marketing-mobile-menu"
+            aria-label={t("nav.menu")}
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}

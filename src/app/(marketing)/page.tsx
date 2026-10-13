@@ -89,12 +89,12 @@ export default async function LandingPage() {
         <div className="pointer-events-none absolute -top-40 left-1/2 h-[520px] w-[900px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,color-mix(in_oklch,var(--brand)_14%,transparent),transparent)]" />
         <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-4 pb-16 pt-10 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:pb-24 lg:pt-16">
           <div>
-            <Reveal>
+            <div className="motion-safe:animate-[rise-in_0.6s_cubic-bezier(0.16,1,0.3,1)_both]">
               <Badge tone="brand" size="md" className="mb-6">
                 <Sparkles /> {t("landing.badge")}
               </Badge>
-            </Reveal>
-            <Reveal delay={0.05}>
+            </div>
+            <div className="motion-safe:animate-[rise-in_0.6s_cubic-bezier(0.16,1,0.3,1)_both]" style={{ animationDelay: "50ms" }}>
               <h1 className="font-display text-[44px] font-semibold leading-[1.02] tracking-[-0.035em] sm:text-6xl lg:text-[68px]">
                 {t("landing.h1a")}
                 <br />
@@ -102,13 +102,13 @@ export default async function LandingPage() {
                 <br />
                 <span className="text-gradient">{t("landing.h1c")}</span>
               </h1>
-            </Reveal>
-            <Reveal delay={0.12}>
+            </div>
+            <div className="motion-safe:animate-[rise-in_0.6s_cubic-bezier(0.16,1,0.3,1)_both]" style={{ animationDelay: "120ms" }}>
               <p className="mt-6 max-w-xl text-lg leading-relaxed text-fg-muted">
                 {t("landing.sub")}
               </p>
-            </Reveal>
-            <Reveal delay={0.18}>
+            </div>
+            <div className="motion-safe:animate-[rise-in_0.6s_cubic-bezier(0.16,1,0.3,1)_both]" style={{ animationDelay: "180ms" }}>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link href="/register?intent=SEEKER" className={buttonClasses({ size: "lg", pill: true, className: "group" })}>
                   {t("landing.ctaJob")}
@@ -118,8 +118,8 @@ export default async function LandingPage() {
                   {t("landing.ctaTalent")}
                 </Link>
               </div>
-            </Reveal>
-            <Reveal delay={0.24}>
+            </div>
+            <div className="motion-safe:animate-[rise-in_0.6s_cubic-bezier(0.16,1,0.3,1)_both]" style={{ animationDelay: "240ms" }}>
               <form action="/jobs" className="mt-8 flex max-w-xl items-center gap-1 rounded-2xl border border-border bg-surface p-1.5 shadow-card">
                 <label className="flex flex-1 items-center gap-2 px-3">
                   <Search className="size-4 shrink-0 text-fg-subtle" />
@@ -131,8 +131,8 @@ export default async function LandingPage() {
                 </label>
                 <button className={buttonClasses({ size: "md", variant: "secondary" })}>{t("common.search")}</button>
               </form>
-            </Reveal>
-            <Reveal delay={0.3}>
+            </div>
+            <div className="motion-safe:animate-[rise-in_0.6s_cubic-bezier(0.16,1,0.3,1)_both]" style={{ animationDelay: "300ms" }}>
               <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-fg-muted">
                 {[t("landing.trust1"), t("landing.trust2"), t("landing.trust3")].map((item) => (
                   <li key={item} className="inline-flex items-center gap-1.5">
@@ -140,7 +140,7 @@ export default async function LandingPage() {
                   </li>
                 ))}
               </ul>
-            </Reveal>
+            </div>
           </div>
           <HeroVisual />
         </div>

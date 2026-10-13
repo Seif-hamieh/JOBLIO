@@ -2,6 +2,8 @@
 
 export const en = {
   meta: {
+    jobAt: "{job} at {company}",
+    profileOf: "{name}'s professional profile on JOBLIO",
     title: "JOBLIO — Your Career. Your Network. Your Future.",
     description: "Discover opportunities, build your professional identity, and connect with companies around the world. Transparent, rule-based job matching — no AI.",
     welcome: "Welcome",
@@ -12,6 +14,7 @@ export const en = {
     notFoundBody: "The page you're looking for doesn't exist or is no longer available.",
   },
   common: {
+    skipToContent: "Skip to content",
     copyFailed: "Couldn't copy the link. Here it is:",
     save: "Save",
     saved: "Saved",
@@ -218,6 +221,18 @@ export const en = {
     heroOpenRoles: "{n} open role|{n} open roles",
   },
   auth: {
+    strength: {
+      weak: "Weak",
+      medium: "Medium",
+      strong: "Strong",
+    },
+    weak: {
+      tooShort: "Use at least 10 characters.",
+      common: "This password is too common.",
+      repeated: "Avoid repeating the same characters.",
+      sequence: "Avoid simple sequences like 1234567890 or qwerty.",
+      personal: "Don't build it from your name or email.",
+    },
     welcomeBack: "Welcome back",
     signInSub: "Sign in to continue to JOBLIO.",
     email: "Email",
@@ -230,7 +245,7 @@ export const en = {
     orEmail: "or with email",
     google: "Continue with Google",
     github: "Continue with GitHub",
-    googleNotSetUp: "Google sign-in isn't set up on this server yet. Add the Google keys to .env to turn it on.",
+    googleNotSetUp: "Google sign-in isn't available yet — please continue with your email for now.",
     showPassword: "Show password",
     hidePassword: "Hide password",
     howUse: "How do you want to use JOBLIO?",
@@ -584,6 +599,11 @@ export const en = {
     withdrawn: "Application withdrawn",
   },
   interviews: {
+    teamTitle: "Team interviews",
+    teamSub: "Interviews scheduled by your hiring team — the last 7 days and everything coming up.",
+    teamNone: "No interviews scheduled",
+    teamNoneBody: "Schedule an interview from a candidate's card in a job's hiring pipeline.",
+    teamLink: "Your team at {company} has {n} interview scheduled|Your team at {company} has {n} interviews scheduled",
     title: "Interviews",
     sub: "Your upcoming interviews and invitations. Times are shown in your local time zone.",
     none: "No interviews yet",
@@ -684,6 +704,8 @@ export const en = {
     member: "JOBLIO member",
   },
   feed: {
+    copyLink: "Copy link",
+    repost: "Repost",
     tabNetwork: "My network",
     tabEveryone: "Everyone",
     networkEmptyTitle: "Nothing from your network yet",
@@ -829,6 +851,9 @@ export const en = {
     kindNow: "Now",
   },
   profileEdit: {
+    strengthPct: "{n}% profile strength",
+    deleteEntryTitle: "Delete “{name}”?",
+    deleteEntryBody: "This removes it from your profile. It can't be undone.",
     removePhotoTitle: "Remove your profile photo?",
     removeCoverTitle: "Remove your cover image?",
     removeImageBody: "You can upload a new one at any time.",
@@ -1025,6 +1050,10 @@ export const en = {
     openPhoto: "Open photo {n}",
   },
   recruiter: {
+    confirmReopenTitle: "Move {name} out of Hired?",
+    confirmReopenBody: "{name} was told they got the job. Moving them back updates their application and notifies them. You'll have {s} seconds to undo.",
+    leaveHired: "Move out of Hired",
+    pendingReopen: "{name} will be moved out of Hired in {s}s",
     confirmHireTitle: "Mark {name} as hired?",
     confirmHireBody: "They'll be notified that they got the job. You'll have {s} seconds to undo.",
     confirmDeclineTitle: "Decline {name}?",
@@ -1249,7 +1278,7 @@ export const en = {
     sub: "The essentials are free forever. Premium adds visibility and professional tools — never a different match score, and never a guarantee of employment.",
     canceled: "Checkout was canceled — you haven't been charged.",
     simulate: "Payments are coming soon. Stay tuned!",
-    disabled: "Payments aren't configured on this server yet.",
+    disabled: "Payments are coming soon. Stay tuned!",
     forPros: "For professionals",
     free: "Free",
     forever: "forever",
@@ -1333,6 +1362,7 @@ export const en = {
     simulated: "Simulated (development)",
   },
   settings: {
+    unsaved: "Unsaved changes",
     title: "Settings",
     sub: "Your account, notifications and appearance.",
     account: "Account",
@@ -1437,6 +1467,7 @@ export const en = {
     paymentBody: "{amount} · Invoice {invoice}",
   },
   msg: {
+    hiredLocked: "This candidate has been hired. Confirm moving them out of Hired first.",
     cannotDeclineHired: "This candidate has been hired. Move them out of Hired before declining.",
     logoUpdated: "Logo updated.",
     companyCoverUpdated: "Cover image updated.",
@@ -1560,7 +1591,7 @@ export const en = {
     interviewConfirmed: "Interview confirmed",
     interviewDeclined: "Interview declined",
     caughtUp: "All caught up",
-    paymentsOff: "Payments aren't configured on this server yet.",
+    paymentsOff: "Payments are coming soon. Stay tuned!",
     needWorkspaceProduct: "You need a company workspace for this product.",
     adminsOnlyUpgrade: "Only company owners and admins can upgrade the company page.",
     chooseJob: "Choose a job to promote.",
@@ -1570,7 +1601,7 @@ export const en = {
     subNotFound: "Subscription not found.",
     planEnds: "Your plan will end at the close of this billing period.",
     planRenews: "Your plan will renew automatically.",
-    stripeOff: "Payment methods are managed through Stripe, which isn't configured on this server.",
+    stripeOff: "Payment methods will be available soon.",
     wrongPassword: "Your current password is incorrect.",
     passwordChanged: "Password changed",
     settingsSaved: "Settings saved",
@@ -1581,6 +1612,7 @@ export const en = {
     accountDeleted: "Your account has been deleted."
   },
   v: {
+    closesPast: "Choose today or a later date.",
     url: "Enter a full URL starting with https://",
     country: "Choose a country",
     date: "Enter a valid date",
@@ -1682,6 +1714,7 @@ export const en = {
     "Human Resources & Staffing": "Human Resources & Staffing",
   },
   legal: {
+    footerNav: "Legal and help",
     about: "About",
     terms: "Terms",
     privacy: "Privacy",

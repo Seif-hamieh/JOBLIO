@@ -54,7 +54,7 @@ export async function scheduleInterviewAction(input: z.input<typeof scheduleSche
       userId: app.applicantId,
       actorId: viewer.id,
       type: "INTERVIEW_INVITATION",
-      title: k("notif.interviewInvite", { company: app.job.company.name }),
+      title: k("notif.interviewInvite", { company: app.job.company.name, companyId: viewer.company.id }),
       body: app.job.title,
       href: "/interviews",
     });

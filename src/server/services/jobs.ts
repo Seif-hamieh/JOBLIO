@@ -1,4 +1,5 @@
 import "server-only";
+import { startOfTodayUtc } from "@/lib/validation/job";
 import { createHash } from "node:crypto";
 import { headers } from "next/headers";
 import { db, type Prisma } from "@/server/db";
@@ -37,6 +38,8 @@ export async function expirePromotions() {
   lastExpiry = now;
   const at = new Date(now);
   await Promise.all([
+    // Jobs past their closing day close themselves.
+    db.job.updateMany({ where: { status: "OPEN", closesAt: { lt: new Date(startOfTodayUtc(at)) } }, data: { status: "CLOSED" } }),
     db.job.updateMany({ where: { featuredUntil: { lt: at } }, data: { featuredUntil: null } }),
     db.job.updateMany({ where: { sponsoredUntil: { lt: at } }, data: { sponsoredUntil: null } }),
     db.profile.updateMany({ where: { featuredUntil: { lt: at } }, data: { featuredUntil: null } }),

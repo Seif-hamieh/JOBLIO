@@ -1,5 +1,7 @@
 "use client";
 
+import { PasswordStrength } from "@/components/auth/password-strength";
+import { assessPassword } from "@/lib/password";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { CreditCard, Globe, KeyRound, LogOut, Printer, Trash2 } from "lucide-react";
@@ -32,12 +34,30 @@ function useAction() {
     start(async () => {
       const res = await fn();
       if (res?.ok) {
-        if (res.message) toast.success(res.message);
+        // Every successful save says so, even when the server sends no message.
+        toast.success(res.message ?? t("common.saved"));
         onOk?.();
         router.refresh();
       } else toast.error(res && !res.ok ? res.error : t("common.somethingWrong"));
     });
   return { pending, run };
+}
+
+/** Save button that also tells you when there are changes you haven't saved yet. */
+function SaveBar({ dirty, pending, onSave, label }: { dirty: boolean; pending: boolean; onSave: () => void; label: string }) {
+  const { t } = useI18n();
+  return (
+    <div className="flex items-center justify-end gap-3">
+      {dirty && (
+        <span role="status" className="text-xs font-medium text-ember-fg">
+          {t("settings.unsaved")}
+        </span>
+      )}
+      <Button loading={pending} onClick={onSave}>
+        {label}
+      </Button>
+    </div>
+  );
 }
 
 // ── Notifications ────────────────────────────────────────────────────────
@@ -64,6 +84,8 @@ const NOTIFY_ROWS = [
 export function NotificationSettingsForm({ initial }: { initial: NotificationPrefs }) {
   const { t } = useI18n();
   const [v, setV] = useState(initial);
+  const [saved, setSaved] = useState(initial);
+  const dirty = JSON.stringify(v) !== JSON.stringify(saved);
   const { pending, run } = useAction();
   const set = (k: keyof NotificationPrefs, val: boolean) => setV((x) => ({ ...x, [k]: val }));
   return (
@@ -74,11 +96,7 @@ export function NotificationSettingsForm({ initial }: { initial: NotificationPre
           <Switch key={key} checked={v[key]} onCheckedChange={(x) => set(key, x)} label={t(label)} />
         ))}
       </div>
-      <div className="flex justify-end">
-        <Button loading={pending} onClick={() => run(() => updateNotificationSettingsAction(v))}>
-          {t("common.save")}
-        </Button>
-      </div>
+      <SaveBar dirty={dirty} pending={pending} label={t("common.save")} onSave={() => run(() => updateNotificationSettingsAction(v), () => setSaved(v))} />
     </div>
   );
 }
@@ -97,10 +115,13 @@ export function ChangePasswordForm() {
       <Field label={t("settings.newPassword")} hint={t("settings.passwordSub")}>
         {(p) => <Input {...p} type="password" autoComplete="new-password" minLength={10} value={v.newPassword} onChange={(e) => setV({ ...v, newPassword: e.target.value })} />}
       </Field>
+      <div className="sm:col-span-2">
+        <PasswordStrength password={v.newPassword} />
+      </div>
       <div className="flex justify-end sm:col-span-2">
         <Button
           loading={pending}
-          disabled={!v.currentPassword || v.newPassword.length < 10}
+          disabled={!v.currentPassword || !!assessPassword(v.newPassword).problem}
           onClick={() => run(() => changePasswordAction(v), () => setV({ currentPassword: "", newPassword: "" }))}
         >
           <KeyRound /> {t("settings.changePassword")}
@@ -208,6 +229,8 @@ export type PrivacyValue = {
 export function PrivacyForm({ initial }: { initial: PrivacyValue }) {
   const { t } = useI18n();
   const [v, setV] = useState(initial);
+  const [saved, setSaved] = useState(initial);
+  const dirty = JSON.stringify(v) !== JSON.stringify(saved);
   const { pending, run } = useAction();
   return (
     <div className="space-y-5">
@@ -240,11 +263,7 @@ export function PrivacyForm({ initial }: { initial: PrivacyValue }) {
         <Switch checked={v.privateBrowsing} onCheckedChange={(x) => setV({ ...v, privateBrowsing: x })} label={t("privacy.privateBrowsing")} description={t("privacy.privateBrowsingDesc")} />
         <Switch checked={v.showConnections} onCheckedChange={(x) => setV({ ...v, showConnections: x })} label={t("privacy.showConnections")} />
       </div>
-      <div className="flex justify-end">
-        <Button loading={pending} onClick={() => run(() => updatePrivacyAction(v))}>
-          {t("privacy.save")}
-        </Button>
-      </div>
+      <SaveBar dirty={dirty} pending={pending} label={t("privacy.save")} onSave={() => run(() => updatePrivacyAction(v), () => setSaved(v))} />
     </div>
   );
 }

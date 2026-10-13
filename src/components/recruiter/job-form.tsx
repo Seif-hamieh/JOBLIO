@@ -73,6 +73,12 @@ function LineList({ value, onChange, placeholder }: { value: string[]; onChange:
   );
 }
 
+/** Today as YYYY-MM-DD in the browser's own calendar (the earliest closing date). */
+const todayLocal = () => {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+};
+
 export function JobForm({
   jobId,
   initial,
@@ -328,8 +334,8 @@ export function JobForm({
                 </Select>
               )}
             </Field>
-            <Field label={t("jobForm.closes")} optional>
-              {(p) => <Input {...p} type="date" value={v.closesAt} onChange={(e) => set("closesAt", e.target.value)} />}
+            <Field label={t("jobForm.closes")} optional error={errors.closesAt}>
+              {(p) => <Input {...p} type="date" min={todayLocal()} value={v.closesAt} onChange={(e) => set("closesAt", e.target.value)} />}
             </Field>
           </div>
         </Card>

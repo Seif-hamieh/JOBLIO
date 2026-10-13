@@ -259,10 +259,10 @@ function MobileTopBar() {
   const { t } = useI18n();
   return (
     <div className="flex items-center gap-1 md:hidden">
-      <Link href="/search" className="grid size-9 place-items-center rounded-full text-fg-muted hover:bg-surface-2" aria-label={t("common.search")}>
+      <Link href="/search" className="grid size-11 place-items-center rounded-full text-fg-muted hover:bg-surface-2" aria-label={t("common.search")}>
         <Search className="size-5" />
       </Link>
-      <Link href="/notifications" className="relative grid size-9 place-items-center rounded-full text-fg-muted hover:bg-surface-2" aria-label={t("nav.notifications")}>
+      <Link href="/notifications" className="relative grid size-11 place-items-center rounded-full text-fg-muted hover:bg-surface-2" aria-label={t("nav.notifications")}>
         <Bell className="size-5" />
         <CountBadge n={counts.notifications} className="end-0.5 top-0.5" />
       </Link>
@@ -270,7 +270,10 @@ function MobileTopBar() {
   );
 }
 
-export function AppShell({ viewer, counts, children }: { viewer: ShellViewer | null; counts: Counts | null; children: ReactNode }) {
+export function AppShell({ viewer, counts, children, footer }: { viewer: ShellViewer | null; counts: Counts | null; children: ReactNode; footer?: ReactNode }) {
+  // Messages is a full-height app screen; every other page ends with the footer.
+  const pathname = usePathname();
+  const showFooter = !pathname.startsWith("/messages");
   const header = (
     <header className="glass sticky top-0 z-40 border-b border-border">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6">
@@ -297,7 +300,10 @@ export function AppShell({ viewer, counts, children }: { viewer: ShellViewer | n
     return (
       <div className="min-h-dvh">
         <MarketingNav />
-        <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">{children}</main>
+        <main id="main" tabIndex={-1} className="mx-auto max-w-7xl px-4 py-6 outline-none sm:px-6 sm:py-8">
+          {children}
+        </main>
+        {showFooter && footer}
       </div>
     );
   }
@@ -306,7 +312,10 @@ export function AppShell({ viewer, counts, children }: { viewer: ShellViewer | n
     <RealtimeProvider initialCounts={counts}>
       <div className="min-h-dvh pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-0">
         {header}
-        <main className="mx-auto max-w-7xl px-4 py-5 sm:px-6 sm:py-8">{children}</main>
+        <main id="main" tabIndex={-1} className="mx-auto max-w-7xl px-4 py-5 outline-none sm:px-6 sm:py-8">
+          {children}
+        </main>
+        {showFooter && footer}
         <MobileNav viewer={viewer} />
       </div>
     </RealtimeProvider>

@@ -226,13 +226,24 @@ function Board({ initial, openId }: { initial: BoardCard[]; openId: string | nul
     setCards((list) => list.map((c) => (c.id === id ? { ...c, stagePosition: position } : c)));
     const prevColumn = columnOf(original);
 
-    // Hiring and declining notify the candidate: confirm, then allow an undo window.
-    if (prevColumn !== to && (to === "HIRED" || to === "REJECTED")) {
+    // Hiring, declining and leaving Hired notify the candidate: confirm, then allow an undo window.
+    const leavingHired = original.status === "HIRED" && to !== "HIRED";
+    if (prevColumn !== to && (to === "HIRED" || to === "REJECTED" || leavingHired)) {
       if (to === "REJECTED" && original.status === "HIRED") {
         toast.error(t("msg.cannotDeclineHired"));
         return revert();
       }
       const before = snapshot.current;
+      if (leavingHired) {
+        decide?.({
+          kind: "reopen",
+          candidate: original.applicant.name,
+          apply: () => {},
+          revert: () => setCards(before),
+          commit: () => moveApplicationAction(id, to, position, { leaveHired: true }),
+        });
+        return;
+      }
       decide?.({
         kind: to === "HIRED" ? "hire" : "decline",
         candidate: original.applicant.name,

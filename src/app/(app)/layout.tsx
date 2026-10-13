@@ -1,6 +1,7 @@
 import { getViewer } from "@/server/session";
 import { getCounts } from "@/server/services/counts";
 import { AppShell } from "@/components/layout/app-shell";
+import { CompactFooter, SiteFooter } from "@/components/layout/site-footer";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const viewer = await getViewer();
@@ -19,6 +20,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         }
       }
       counts={counts}
+      footer={viewer ? <CompactFooter /> : <SiteFooter />}
     >
       {children}
     </AppShell>

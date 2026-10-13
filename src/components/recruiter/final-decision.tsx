@@ -9,18 +9,19 @@ import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { toast } from "@/components/ui/toast";
 import { useI18n } from "@/i18n/client";
 
-// Hiring or declining a candidate sends them a final notification, so it is
-// confirmed first and then held for UNDO_SECONDS in the browser before the
-// server is told. Undo within that window leaves no trace and sends nothing.
-// (Vercel functions can't run a delayed job, so the wait lives client-side;
-// leaving the page commits immediately so a decision is never lost.)
+// Hiring, declining and moving someone out of Hired all send the candidate a
+// notification, so they are confirmed first and then held for UNDO_SECONDS in
+// the browser before the server is told. Undo within that window leaves no
+// trace and sends nothing. (Vercel functions can't run a delayed job, so the
+// wait lives client-side; leaving the page commits immediately.)
 
 export const UNDO_SECONDS = 10;
 
 type Result = { ok: boolean; message?: string; error?: string } | null;
 
 export type FinalDecision = {
-  kind: "hire" | "decline";
+  /** hire → Hired, decline → Not selected, reopen → out of Hired into another stage. */
+  kind: "hire" | "decline" | "reopen";
   candidate: string;
   /** Show the new state optimistically (called once the recruiter confirms). */
   apply: () => void;
@@ -38,12 +39,21 @@ const noopSubscribe = () => () => {};
 /** Ask for a final decision; null outside a FinalDecisionProvider. */
 export const useFinalDecision = () => useContext(Ctx);
 
+const COPY = {
+  hire: { title: "recruiter.confirmHireTitle", body: "recruiter.confirmHireBody", action: "recruiter.markHired", pending: "recruiter.pendingHire", danger: false },
+  decline: { title: "recruiter.confirmDeclineTitle", body: "recruiter.confirmDeclineBody", action: "recruiter.decline", pending: "recruiter.pendingDecline", danger: true },
+  reopen: { title: "recruiter.confirmReopenTitle", body: "recruiter.confirmReopenBody", action: "recruiter.leaveHired", pending: "recruiter.pendingReopen", danger: true },
+} as const;
+
 export function FinalDecisionProvider({ children }: { children: ReactNode }) {
   const { t } = useI18n();
   const [asking, setAsking] = useState<FinalDecision | null>(null);
   const [pending, setPending] = useState<FinalDecision | null>(null);
   const [left, setLeft] = useState(UNDO_SECONDS);
   const pendingRef = useRef<FinalDecision | null>(null);
+  // An absolute deadline, not a countdown: background tabs throttle timers, so
+  // elapsed time is always measured against the clock.
+  const deadline = useRef(0);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const commit = useCallback(
@@ -73,6 +83,7 @@ export function FinalDecisionProvider({ children }: { children: ReactNode }) {
     flush(); // only one decision waits at a time
     d.apply();
     pendingRef.current = d;
+    deadline.current = Date.now() + UNDO_SECONDS * 1000;
     setPending(d);
     setLeft(UNDO_SECONDS);
     timer.current = setTimeout(flush, UNDO_SECONDS * 1000);
@@ -81,6 +92,8 @@ export function FinalDecisionProvider({ children }: { children: ReactNode }) {
   const undo = () => {
     const d = pendingRef.current;
     if (!d) return;
+    // A throttled timer may not have fired yet although the window is over: then it's too late to undo.
+    if (Date.now() >= deadline.current) return flush();
     if (timer.current) clearTimeout(timer.current);
     pendingRef.current = null;
     setPending(null);
@@ -88,12 +101,24 @@ export function FinalDecisionProvider({ children }: { children: ReactNode }) {
     toast.info(t("recruiter.decisionUndone"));
   };
 
-  // Countdown shown in the bar.
+  // Countdown shown in the bar, derived from the deadline.
   useEffect(() => {
     if (!pending) return;
-    const tick = setInterval(() => setLeft((s) => Math.max(0, s - 1)), 1000);
+    const tick = setInterval(() => {
+      const ms = deadline.current - Date.now();
+      setLeft(Math.max(0, Math.ceil(ms / 1000)));
+      if (ms <= 0) flush();
+    }, 250);
     return () => clearInterval(tick);
-  }, [pending]);
+  }, [pending, flush]);
+
+  // Coming back to a background tab: commit at once if the window already ended.
+  useEffect(() => {
+    if (!pending) return;
+    const onVisible = () => document.visibilityState === "visible" && Date.now() >= deadline.current && flush();
+    document.addEventListener("visibilitychange", onVisible);
+    return () => document.removeEventListener("visibilitychange", onVisible);
+  }, [pending, flush]);
 
   // Warn before closing the tab with a decision still waiting.
   useEffect(() => {
@@ -106,12 +131,8 @@ export function FinalDecisionProvider({ children }: { children: ReactNode }) {
   // Navigating away inside the app: save right away rather than drop it.
   useEffect(() => () => flush(), [flush]);
 
-  const hire = asking?.kind === "hire";
-  const mounted = useSyncExternalStore(
-    noopSubscribe,
-    () => true,
-    () => false,
-  );
+  const copy = COPY[asking?.kind ?? "decline"];
+  const mounted = useSyncExternalStore(noopSubscribe, () => true, () => false);
   return (
     <Ctx.Provider value={setAsking}>
       {children}
@@ -123,16 +144,10 @@ export function FinalDecisionProvider({ children }: { children: ReactNode }) {
             setAsking(null);
           }
         }}
-        title={
-          hire
-            ? t("recruiter.confirmHireTitle", { name: asking?.candidate ?? "" })
-            : t("recruiter.confirmDeclineTitle", {
-                name: asking?.candidate ?? "",
-              })
-        }
-        description={hire ? t("recruiter.confirmHireBody", { s: UNDO_SECONDS }) : t("recruiter.confirmDeclineBody", { s: UNDO_SECONDS })}
-        confirmLabel={hire ? t("recruiter.markHired") : t("recruiter.decline")}
-        danger={!hire}
+        title={t(copy.title, { name: asking?.candidate ?? "" })}
+        description={t(copy.body, { name: asking?.candidate ?? "", s: UNDO_SECONDS })}
+        confirmLabel={t(copy.action)}
+        danger={copy.danger}
         onConfirm={() => {
           const d = asking;
           setAsking(null);
@@ -155,17 +170,7 @@ export function FinalDecisionProvider({ children }: { children: ReactNode }) {
                 exit={{ opacity: 0, y: 16 }}
                 className="fixed inset-x-4 bottom-[calc(5rem+env(safe-area-inset-bottom))] z-[90] mx-auto flex max-w-md items-center gap-3 rounded-2xl bg-fg px-4 py-3 text-sm text-bg shadow-float lg:bottom-6"
               >
-                <span className="min-w-0 flex-1">
-                  {pending.kind === "hire"
-                    ? t("recruiter.pendingHire", {
-                        name: pending.candidate,
-                        s: left,
-                      })
-                    : t("recruiter.pendingDecline", {
-                        name: pending.candidate,
-                        s: left,
-                      })}
-                </span>
+                <span className="min-w-0 flex-1">{t(COPY[pending.kind].pending, { name: pending.candidate, s: left })}</span>
                 <Button size="sm" variant="outline" onClick={undo} className="shrink-0 border-bg/30 bg-transparent text-bg hover:bg-bg/10">
                   <Undo2 /> {t("recruiter.undo")}
                 </Button>
