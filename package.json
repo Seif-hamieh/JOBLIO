@@ -29,6 +29,7 @@
     "@react-three/drei": "^10.7.9",
     "@react-three/fiber": "^9.8.1",
     "@supabase/supabase-js": "^2.117.3",
+    "@vercel/analytics": "^2.0.1",
     "better-auth": "^1.7.7",
     "clsx": "^2.1.1",
     "lucide-react": "^1.52.0",

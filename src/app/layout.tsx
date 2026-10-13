@@ -7,6 +7,7 @@ import { displayNames, getI18n } from "@/i18n/server";
 import { APP_URL } from "@/lib/utils";
 import { THEME_SCRIPT } from "@/lib/theme-script";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = localFont({
   src: "../fonts/inter-latin.woff2",
@@ -81,6 +82,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <I18nProvider locale={locale} names={displayNames(locale)}>
           <Providers>{children}</Providers>
         </I18nProvider>
+        <Analytics />
       </body>
     </html>
   );
