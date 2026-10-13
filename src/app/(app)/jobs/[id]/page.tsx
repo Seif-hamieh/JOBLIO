@@ -20,9 +20,8 @@ import {
   X,
 } from "lucide-react";
 import { getViewer } from "@/server/session";
-import { canFeatureJob, paddleClientConfig } from "@/server/paddle";
+import { canFeatureJob, featuredJobPlanOptions, paddleClientConfig } from "@/server/paddle";
 import { FeatureJobButton } from "@/components/jobs/feature-job-button";
-import { PRODUCTS } from "@/lib/billing/products";
 import { jobPostingJsonLd, jsonLdScript } from "@/lib/job-posting-ld";
 import { anonymousViewerKey, expirePromotions, getJob, recordJobView, similarJobs } from "@/server/services/jobs";
 import { getCandidateFacts, toJobFacts } from "@/server/services/matching";
@@ -39,7 +38,7 @@ import { MatchBreakdown } from "@/components/match/match-breakdown";
 import { FollowCompanyButton } from "@/components/companies/follow-button";
 import { Reveal } from "@/components/ui/motion";
 import { SKILL_RANK } from "@/lib/constants";
-import { formatMoney, hostname, safeExternalUrl, APP_URL } from "@/lib/utils";
+import { hostname, safeExternalUrl, APP_URL } from "@/lib/utils";
 import { getI18n } from "@/i18n/server";
 import { industryName } from "@/i18n/translate";
 
@@ -153,9 +152,12 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
             </div>
           </div>
           {showFeature && paddleConfig && (
-            <div className="mt-4 flex flex-col gap-3 rounded-2xl border border-ember/30 bg-ember-soft p-4 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-sm text-fg-muted">{t("jobs.featureHint")}</p>
-              <FeatureJobButton jobId={job.id} config={paddleConfig} label={t("jobs.featureFor", { price: formatMoney(PRODUCTS.FEATURED_JOB.amount, PRODUCTS.FEATURED_JOB.currency) })} className="shrink-0" />
+            <div className="mt-4 space-y-3 rounded-2xl border border-ember/30 bg-ember-soft p-4">
+              <div>
+                <h2 className="text-sm font-semibold">{t("jobs.featureTitle")}</h2>
+                <p className="mt-0.5 text-sm text-fg-muted">{t("jobs.featureHint")}</p>
+              </div>
+              <FeatureJobButton jobId={job.id} config={paddleConfig} plans={featuredJobPlanOptions()} />
             </div>
           )}
           <div className="mt-4">

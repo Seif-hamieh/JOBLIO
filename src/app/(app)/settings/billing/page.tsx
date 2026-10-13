@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, EmptyState, PageHeader } from "@/components/ui/misc";
 import { buttonClasses } from "@/components/ui/button";
 import { PaymentMethodsButton, SubscriptionToggle } from "@/components/settings/settings-forms";
+import { featuredJobDays } from "@/lib/billing/products";
 
 export const generateMetadata = pageTitle("nav.billing");
 
@@ -27,7 +28,7 @@ export default async function BillingPage({ searchParams }: { searchParams: Prom
       where: { OR: [{ userId: viewer.id }, ...companyScope] },
       orderBy: { createdAt: "desc" },
       take: 50,
-      select: { id: true, product: true, amount: true, currency: true, status: true, invoiceNumber: true, createdAt: true, receiptUrl: true },
+      select: { id: true, product: true, description: true, amount: true, currency: true, status: true, invoiceNumber: true, createdAt: true, receiptUrl: true },
     }),
     db.profile.findUnique({ where: { id: viewer.profileId }, select: { featuredUntil: true } }),
   ]);
@@ -114,7 +115,10 @@ export default async function BillingPage({ searchParams }: { searchParams: Prom
                 {payments.map((p) => (
                   <tr key={p.id}>
                     <td className="px-6 py-3 text-fg-muted">{f.date(p.createdAt, { month: "short", day: "numeric", year: "numeric" })}</td>
-                    <td className="px-3 py-3 font-medium">{t(`premium.products.${p.product}.name`)}</td>
+                    <td className="px-3 py-3 font-medium">
+                      {t(`premium.products.${p.product}.name`)}
+                      {featuredJobDays(p) && <span className="font-normal text-fg-muted"> · {t("jobs.planDays", { n: featuredJobDays(p)! })}</span>}
+                    </td>
                     <td className="px-3 py-3 text-end tabular-nums">{f.money(p.amount, p.currency)}</td>
                     <td className="px-3 py-3">
                       <Badge tone={PAYMENT_TONE[p.status]} size="xs">

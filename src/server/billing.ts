@@ -136,7 +136,15 @@ export async function startCheckout(viewer: Viewer, code: ProductCode, targetId:
  */
 export async function fulfillPayment(
   paymentId: string,
-  stripeData: { paymentIntentId?: string | null; subscriptionId?: string | null; periodEnd?: Date | null; invoiceId?: string | null; receiptUrl?: string | null },
+  stripeData: {
+    paymentIntentId?: string | null;
+    subscriptionId?: string | null;
+    periodEnd?: Date | null;
+    invoiceId?: string | null;
+    receiptUrl?: string | null;
+    /** Featured Job plan length (Paddle plans: 7/14/30). Defaults to the product duration. */
+    days?: number | null;
+  },
 ) {
   const payment = await db.payment.findUnique({ where: { id: paymentId } });
   if (!payment || payment.status === "SUCCEEDED") return;
@@ -172,7 +180,7 @@ export async function fulfillPayment(
         const featured = payment.product === "FEATURED_JOB";
         const current = featured ? job.featuredUntil : job.sponsoredUntil;
         const start = current && current > now ? current : now;
-        const endsAt = addDays(start, product.days!);
+        const endsAt = addDays(start, (featured && stripeData.days) || product.days!);
         await tx.jobPromotion.create({ data: { jobId: payment.targetId!, kind: featured ? "FEATURED" : "SPONSORED", startsAt: start, endsAt, paymentId: payment.id } });
         await tx.job.update({ where: { id: payment.targetId! }, data: featured ? { featuredUntil: endsAt } : { sponsoredUntil: endsAt } });
         break;

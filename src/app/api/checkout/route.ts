@@ -6,15 +6,20 @@ import { LIMITS, rateLimit } from "@/server/rate-limit";
 import { startFeaturedJobCheckout } from "@/server/paddle";
 import { getI18n } from "@/i18n/server";
 import { k } from "@/i18n/message";
+import { FEATURED_JOB_PLAN_CODES } from "@/lib/billing/products";
 
 export const dynamic = "force-dynamic";
 
-const body = z.object({
-  jobId: z.string().min(1).max(40),
-  productCode: z.literal("FEATURED_JOB"),
-});
+const body = z
+  .object({
+    jobId: z.string().min(1).max(40),
+    planCode: z.enum(FEATURED_JOB_PLAN_CODES).optional(),
+    // Pages still open from before the plans existed send only productCode: treat it as the 30-day plan.
+    productCode: z.literal("FEATURED_JOB").optional(),
+  })
+  .refine((b) => b.planCode || b.productCode);
 
-// POST /api/checkout { jobId, productCode } → { transactionId, checkoutUrl }
+// POST /api/checkout { jobId, planCode } → { transactionId, checkoutUrl }
 // Signed-in members only; the job must be theirs (poster or company admin). The Paddle
 // API key stays on the server — the browser opens the checkout with the transaction id.
 export async function POST(req: Request) {
@@ -35,7 +40,7 @@ export async function POST(req: Request) {
   if (!parsed.success) return error(k("msg.error"), 400);
 
   try {
-    const { transactionId, checkoutUrl } = await startFeaturedJobCheckout(viewer, parsed.data.jobId);
+    const { transactionId, checkoutUrl } = await startFeaturedJobCheckout(viewer, parsed.data.jobId, parsed.data.planCode ?? "FEATURED_JOB_30D");
     return NextResponse.json({ transactionId, checkoutUrl });
   } catch (err) {
     if (err instanceof ActionError) return error(err.message, 400);

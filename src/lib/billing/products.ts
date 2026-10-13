@@ -106,3 +106,34 @@ export const PRODUCTS: Record<ProductCode, Product> = {
 
 export const MEMBER_PRODUCTS: ProductCode[] = ["CAREER_BOOST_7", "CAREER_BOOST_30", "PREMIUM_PORTFOLIO"];
 export const BUSINESS_PRODUCTS: ProductCode[] = ["RECRUITER_PRO", "COMPANY_PREMIUM", "FEATURED_JOB", "SPONSORED_JOB"];
+
+// ── Featured Job plans (Paddle) ─────────────────────────────────────────────
+// One purchase = one plan. All are recorded as FEATURED_JOB payments; the plan
+// decides how many days the job is featured. Price IDs come from the environment
+// and are only read on the server (they are undefined in the browser bundle).
+
+export type FeaturedJobPlanCode = "FEATURED_JOB_7D" | "FEATURED_JOB_14D" | "FEATURED_JOB_30D";
+
+export type FeaturedJobPlan = {
+  code: FeaturedJobPlanCode;
+  priceId: string | undefined;
+  durationDays: number;
+  /** Minor units (cents), USD — what Paddle charges for this price. */
+  amount: number;
+};
+
+/** Ascending by price. */
+export const FEATURED_JOB_PLANS: FeaturedJobPlan[] = [
+  { code: "FEATURED_JOB_7D", priceId: process.env.PADDLE_PRICE_FEATURED_JOB_7D, durationDays: 7, amount: 300 },
+  { code: "FEATURED_JOB_14D", priceId: process.env.PADDLE_PRICE_FEATURED_JOB_14D, durationDays: 14, amount: 500 },
+  { code: "FEATURED_JOB_30D", priceId: process.env.PADDLE_PRICE_FEATURED_JOB_30D, durationDays: 30, amount: 800 },
+];
+
+export const FEATURED_JOB_PLAN_CODES = FEATURED_JOB_PLANS.map((p) => p.code) as [FeaturedJobPlanCode, ...FeaturedJobPlanCode[]];
+
+/** Days of a Featured Job payment, from its description ("Featured Job · 14 days"). */
+export function featuredJobDays(payment: { product: string; description: string }) {
+  if (payment.product !== "FEATURED_JOB") return null;
+  const days = Number(/(\d+)\s*days?/i.exec(payment.description)?.[1]);
+  return Number.isFinite(days) && days > 0 ? days : null;
+}

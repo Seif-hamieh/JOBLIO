@@ -4,7 +4,7 @@ import { Building2, Check, Crown, Globe, Info, Megaphone, Rocket, ShieldCheck, S
 import { getViewer } from "@/server/session";
 import { db } from "@/server/db";
 import { paymentsMode } from "@/server/billing";
-import { canFeatureJob, paddleClientConfig } from "@/server/paddle";
+import { canFeatureJob, featuredJobPlanOptions, paddleClientConfig } from "@/server/paddle";
 import { FeatureJobPicker, PaddlePaymentLink } from "@/components/jobs/feature-job-button";
 import { BuyButton, PromoteJobBuy } from "@/components/billing/buy-button";
 import { Badge } from "@/components/ui/badge";
@@ -50,6 +50,7 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
   const has = new Set(subs.map((s) => s.product));
   // Featured Job goes through Paddle when it is configured: only jobs this member may feature right now.
   const paddleConfig = paddleClientConfig();
+  const featuredPlans = paddleConfig ? featuredJobPlanOptions() : [];
   const featurable = jobs.filter((j) => canFeatureJob(viewer, j)).map(({ id, title }) => ({ id, title }));
   const target = typeof sp.target === "string" ? sp.target : null;
   const isAdmin = viewer?.company && (viewer.company.role === "OWNER" || viewer.company.role === "ADMIN");
@@ -190,12 +191,16 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
                   <div className="flex items-center gap-1.5 text-sm font-semibold text-fg-muted">
                     <Icon className="size-4" /> {name(code)}
                   </div>
-                  <Price amount={price(code)} suffix={t("premium.perJob")} />
+                  {code === "FEATURED_JOB" && featuredPlans.length ? (
+                    <Price amount={t("premium.fromPrice", { price: f.money(Math.min(...featuredPlans.map((p) => p.amount)), "usd") })} suffix={t("premium.perJob")} />
+                  ) : (
+                    <Price amount={price(code)} suffix={t("premium.perJob")} />
+                  )}
                   <p className="mt-1 text-sm text-fg-muted">{tagline(code)}</p>
                   <Features items={features(code)} />
                   <div className="mt-6">
                     {viewer?.company && code === "FEATURED_JOB" && paddleConfig ? (
-                      <FeatureJobPicker jobs={featurable} initialJob={sp.product === code ? target : null} config={paddleConfig} label={t("premium.featureJob")} />
+                      <FeatureJobPicker jobs={featurable} initialJob={sp.product === code ? target : null} config={paddleConfig} plans={featuredPlans} />
                     ) : viewer?.company ? (
                       <PromoteJobBuy
                         product={code}

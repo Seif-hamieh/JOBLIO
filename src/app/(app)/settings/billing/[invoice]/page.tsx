@@ -8,6 +8,7 @@ import { Logo } from "@/components/brand/logo";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/misc";
 import { PrintButton } from "@/components/settings/settings-forms";
+import { featuredJobDays } from "@/lib/billing/products";
 
 export const generateMetadata = pageTitle("billing.invoice");
 
@@ -20,6 +21,7 @@ export default async function InvoicePage({ params }: { params: Promise<{ invoic
       userId: true,
       companyId: true,
       product: true,
+      description: true,
       amount: true,
       currency: true,
       status: true,
@@ -78,7 +80,10 @@ export default async function InvoicePage({ params }: { params: Promise<{ invoic
           <tbody>
             <tr className="border-b border-border">
               <td className="py-4">
-                <div className="font-medium">{t(`premium.products.${payment.product}.name`)}</div>
+                <div className="font-medium">
+                  {t(`premium.products.${payment.product}.name`)}
+                  {featuredJobDays(payment) && <span className="font-normal text-fg-muted"> · {t("jobs.planDays", { n: featuredJobDays(payment)! })}</span>}
+                </div>
                 <div className="text-xs text-fg-muted">{t(`premium.products.${payment.product}.tagline`)}</div>
               </td>
               <td className="py-4 text-end tabular-nums">{f.money(payment.amount, payment.currency)}</td>

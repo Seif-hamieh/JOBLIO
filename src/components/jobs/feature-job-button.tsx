@@ -1,14 +1,17 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { CheckCircle2, Star } from "lucide-react";
 import { initializePaddle, type Paddle, type PaddleEventData } from "@paddle/paddle-js";
-import { Button, type ButtonProps } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/field";
 import { toast } from "@/components/ui/toast";
 import { useTheme } from "@/components/theme";
 import { useI18n } from "@/i18n/client";
+import type { TKey } from "@/i18n/translate";
+import type { FeaturedJobPlanCode } from "@/lib/billing/products";
+import { cn } from "@/lib/utils";
 
 export type PaddleClientConfig = { token: string; environment: "sandbox" | "production" };
 
@@ -23,18 +26,32 @@ function loadPaddle(config: PaddleClientConfig) {
   return paddlePromise;
 }
 
-/** "Feature this job for $20": creates a Paddle transaction on our server, then opens Paddle's checkout overlay. */
-export function FeatureJobButton({ jobId, config, label, ...props }: { jobId: string; config: PaddleClientConfig; label: string } & Omit<ButtonProps, "onClick" | "children">) {
+export type FeaturedJobPlanOption = { code: FeaturedJobPlanCode; durationDays: number; amount: number };
+
+const PLAN_COPY: Record<number, { title: TKey; blurb: TKey; popular?: boolean }> = {
+  7: { title: "jobs.planQuick", blurb: "jobs.planQuickSub" },
+  14: { title: "jobs.planStandard", blurb: "jobs.planStandardSub", popular: true },
+  30: { title: "jobs.planMax", blurb: "jobs.planMaxSub" },
+};
+
+/**
+ * "Feature this job": choose a plan (7/14/30 days), then "Continue to payment" creates a
+ * Paddle transaction on our server and opens Paddle's checkout overlay.
+ */
+export function FeatureJobButton({ jobId, config, plans, className }: { jobId: string; config: PaddleClientConfig; plans: FeaturedJobPlanOption[]; className?: string }) {
   const router = useRouter();
-  const { t, locale } = useI18n();
+  const { t, f, locale } = useI18n();
   const { resolvedTheme } = useTheme();
+  const name = useId();
+  const [planCode, setPlanCode] = useState<FeaturedJobPlanCode | undefined>(() => (plans.find((p) => PLAN_COPY[p.durationDays]?.popular) ?? plans[0])?.code);
   const [state, setState] = useState<"idle" | "loading" | "open" | "paid">("idle");
   const refreshes = useRef<number[]>([]);
 
   async function start() {
+    if (!planCode) return;
     setState("loading");
     try {
-      const res = await fetch("/api/checkout", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ jobId, productCode: "FEATURED_JOB" }) });
+      const res = await fetch("/api/checkout", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ jobId, planCode }) });
       const data = (await res.json().catch(() => ({}))) as { transactionId?: string; error?: string };
       if (!res.ok || !data.transactionId) throw new Error(data.error || t("premium.checkoutError"));
 
@@ -73,10 +90,33 @@ export function FeatureJobButton({ jobId, config, label, ...props }: { jobId: st
     );
   }
   return (
-    <Button {...props} loading={state === "loading"} disabled={state === "open"} onClick={start}>
-      <Star aria-hidden />
-      {label}
-    </Button>
+    <div className={cn("space-y-3", className)}>
+      <fieldset className="grid gap-2 sm:grid-cols-3" disabled={state !== "idle"}>
+        <legend className="sr-only">{t("jobs.choosePlan")}</legend>
+        {plans.map((plan) => {
+          const copy = PLAN_COPY[plan.durationDays];
+          return (
+            <label
+              key={plan.code}
+              className="relative flex cursor-pointer flex-col gap-0.5 rounded-xl border border-border bg-surface p-3 text-start transition hover:border-brand/50 has-[:checked]:border-brand has-[:checked]:ring-2 has-[:checked]:ring-brand/30 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-[var(--ring)] has-[:disabled]:cursor-default"
+            >
+              <input type="radio" name={name} value={plan.code} checked={planCode === plan.code} onChange={() => setPlanCode(plan.code)} className="sr-only" />
+              {copy?.popular && (
+                <span className="absolute -top-2 end-3 rounded-full bg-brand px-2 py-0.5 text-[10px] font-semibold text-brand-fg">{t("jobs.planPopular")}</span>
+              )}
+              <span className="text-sm font-semibold">{copy ? t(copy.title) : t("jobs.planDays", { n: plan.durationDays })}</span>
+              <span className="font-display text-xl font-semibold">{f.money(plan.amount)}</span>
+              <span className="text-xs text-fg-muted">{t("jobs.planDays", { n: plan.durationDays })}</span>
+              {copy && <span className="mt-1 text-xs text-fg-subtle">{t(copy.blurb)}</span>}
+            </label>
+          );
+        })}
+      </fieldset>
+      <Button className="w-full sm:w-auto" loading={state === "loading"} disabled={!planCode || state === "open"} onClick={start}>
+        <Star aria-hidden />
+        {t("jobs.continueToPayment")}
+      </Button>
+    </div>
   );
 }
 
@@ -100,7 +140,7 @@ export function PaddlePaymentLink({ config }: { config: PaddleClientConfig }) {
 }
 
 /** /premium: pick one of your featurable jobs, then pay with Paddle. */
-export function FeatureJobPicker({ jobs, initialJob, config, label }: { jobs: { id: string; title: string }[]; initialJob: string | null; config: PaddleClientConfig; label: string }) {
+export function FeatureJobPicker({ jobs, initialJob, config, plans }: { jobs: { id: string; title: string }[]; initialJob: string | null; config: PaddleClientConfig; plans: FeaturedJobPlanOption[] }) {
   const { t } = useI18n();
   const [jobId, setJobId] = useState(initialJob && jobs.some((j) => j.id === initialJob) ? initialJob : (jobs[0]?.id ?? ""));
   if (!jobs.length) return <p className="text-xs text-fg-subtle">{t("premium.noFeaturableJobs")}</p>;
@@ -113,7 +153,7 @@ export function FeatureJobPicker({ jobs, initialJob, config, label }: { jobs: { 
           </option>
         ))}
       </Select>
-      <FeatureJobButton key={jobId} jobId={jobId} config={config} label={label} className="w-full" variant="outline" />
+      <FeatureJobButton key={jobId} jobId={jobId} config={config} plans={plans} className="[&_fieldset]:grid-cols-1" />
     </div>
   );
 }

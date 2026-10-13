@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { EventName, type EventEntity } from "@paddle/paddle-node-sdk";
 import { db } from "@/server/db";
 import { fulfillPayment, markPaymentFailed } from "@/server/billing";
-import { paddle } from "@/server/paddle";
+import { featuredDays, paddle } from "@/server/paddle";
 
 export const dynamic = "force-dynamic";
 
@@ -33,7 +33,7 @@ async function handle(event: EventEntity) {
         await db.payment.update({ where: { id: payment.id }, data: { amount, currency: txn.currencyCode.toLowerCase() } });
       }
       // Idempotent: does nothing if this payment was already fulfilled.
-      await fulfillPayment(payment.id, {});
+      await fulfillPayment(payment.id, { days: featuredDays(txn.items, txn.customData) });
       return;
     }
     case EventName.TransactionPaymentFailed: {
