@@ -440,6 +440,9 @@ export const en = {
     },
   },
   jobs: {
+    featureFor: "Feature this job for {price}",
+    featureHint: "Put this job at the top of relevant searches and on Featured Jobs for 30 days.",
+    featurePaid: "Payment received — your job will be featured in a moment.",
     tabSearch: "Search",
     tabForYou: "For you",
     tabSaved: "Saved",
@@ -1273,6 +1276,7 @@ export const en = {
     savePage: "Save company page",
   },
   premium: {
+    noFeaturableJobs: "No jobs to feature right now — only open jobs you posted (or manage as an admin) that aren’t already featured.",
     badge: "JOBLIO Premium",
     title: "Stand out. Hire faster.",
     sub: "The essentials are free forever. Premium adds visibility and professional tools — never a different match score, and never a guarantee of employment.",
@@ -1467,6 +1471,8 @@ export const en = {
     paymentBody: "{amount} · Invoice {invoice}",
   },
   msg: {
+    featureNotAllowed: "Only the person who posted this job or a company admin can feature it.",
+    alreadyFeatured: "This job is already featured.",
     hiredLocked: "This candidate has been hired. Confirm moving them out of Hired first.",
     cannotDeclineHired: "This candidate has been hired. Move them out of Hired before declining.",
     logoUpdated: "Logo updated.",

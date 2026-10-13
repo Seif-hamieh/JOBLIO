@@ -30,7 +30,7 @@ export function paymentsMode(): "stripe" | "simulate" | "disabled" {
   return "disabled";
 }
 
-async function nextInvoiceNumber() {
+export async function nextInvoiceNumber() {
   const year = new Date().getFullYear();
   const count = await db.payment.count({ where: { createdAt: { gte: new Date(year, 0, 1) } } });
   return `JBL-${year}-${String(count + 1).padStart(5, "0")}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;

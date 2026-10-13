@@ -12,7 +12,8 @@ export function buildCsp(nonce: string, isDev = process.env.NODE_ENV !== "produc
     "font-src 'self' data:",
     `connect-src 'self'${isDev ? " ws: wss:" : ""}`,
     "media-src 'self' blob: https:",
-    "frame-src 'self' https://www.youtube-nocookie.com https://player.vimeo.com",
+    // Video embeds, and Paddle's checkout overlay (Featured Job payments).
+    "frame-src 'self' https://www.youtube-nocookie.com https://player.vimeo.com https://buy.paddle.com https://sandbox-buy.paddle.com",
     "worker-src 'self' blob:",
     "object-src 'none'",
     "base-uri 'self'",

@@ -20,6 +20,9 @@ import {
   X,
 } from "lucide-react";
 import { getViewer } from "@/server/session";
+import { canFeatureJob, paddleClientConfig } from "@/server/paddle";
+import { FeatureJobButton } from "@/components/jobs/feature-job-button";
+import { PRODUCTS } from "@/lib/billing/products";
 import { jobPostingJsonLd, jsonLdScript } from "@/lib/job-posting-ld";
 import { anonymousViewerKey, expirePromotions, getJob, recordJobView, similarJobs } from "@/server/services/jobs";
 import { getCandidateFacts, toJobFacts } from "@/server/services/matching";
@@ -36,7 +39,7 @@ import { MatchBreakdown } from "@/components/match/match-breakdown";
 import { FollowCompanyButton } from "@/components/companies/follow-button";
 import { Reveal } from "@/components/ui/motion";
 import { SKILL_RANK } from "@/lib/constants";
-import { hostname, safeExternalUrl, APP_URL } from "@/lib/utils";
+import { formatMoney, hostname, safeExternalUrl, APP_URL } from "@/lib/utils";
 import { getI18n } from "@/i18n/server";
 import { industryName } from "@/i18n/translate";
 
@@ -72,6 +75,9 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
     (viewer.company?.id === job.company.id ||
       !!(await db.companyMember.findUnique({ where: { companyId_userId: { companyId: job.company.id, userId: viewer.id } }, select: { id: true } })));
   if (job.status !== "OPEN" && !isTeam) notFound();
+  // "Feature this job" (Paddle): the poster or a company admin, open jobs that are not featured yet.
+  const paddleConfig = paddleClientConfig();
+  const showFeature = !!paddleConfig && canFeatureJob(viewer, { companyId: job.company.id, postedById: job.postedBy.id, status: job.status, featuredUntil: job.featuredUntil });
 
   const [facts, saved, application, follows, similar, resume] = await Promise.all([
     viewer ? getCandidateFacts(viewer.id) : null,
@@ -146,6 +152,12 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
               )}
             </div>
           </div>
+          {showFeature && paddleConfig && (
+            <div className="mt-4 flex flex-col gap-3 rounded-2xl border border-ember/30 bg-ember-soft p-4 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-sm text-fg-muted">{t("jobs.featureHint")}</p>
+              <FeatureJobButton jobId={job.id} config={paddleConfig} label={t("jobs.featureFor", { price: formatMoney(PRODUCTS.FEATURED_JOB.amount, PRODUCTS.FEATURED_JOB.currency) })} className="shrink-0" />
+            </div>
+          )}
           <div className="mt-4">
             <div className="flex flex-wrap gap-1.5">
               {job.status !== "OPEN" && <Badge tone="danger">{t(`enums.jobStatus.${job.status}`)}</Badge>}

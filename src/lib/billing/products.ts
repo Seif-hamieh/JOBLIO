@@ -61,7 +61,7 @@ export const PRODUCTS: Record<ProductCode, Product> = {
   FEATURED_JOB: {
     code: "FEATURED_JOB",
     name: "Featured Job · 30 days",
-    amount: 4900,
+    amount: 2000,
     currency: "usd",
     mode: "payment",
     days: 30,

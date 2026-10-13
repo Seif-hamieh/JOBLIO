@@ -4,6 +4,8 @@ import { Building2, Check, Crown, Globe, Info, Megaphone, Rocket, ShieldCheck, S
 import { getViewer } from "@/server/session";
 import { db } from "@/server/db";
 import { paymentsMode } from "@/server/billing";
+import { canFeatureJob, paddleClientConfig } from "@/server/paddle";
+import { FeatureJobPicker, PaddlePaymentLink } from "@/components/jobs/feature-job-button";
 import { BuyButton, PromoteJobBuy } from "@/components/billing/buy-button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/misc";
@@ -43,9 +45,12 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
     viewer
       ? db.subscription.findMany({ where: { OR: [{ userId: viewer.id }, ...(viewer.company ? [{ companyId: viewer.company.id }] : [])], status: { in: ["ACTIVE", "TRIALING", "PAST_DUE"] }, currentPeriodEnd: { gt: new Date() } }, select: { product: true } })
       : [],
-    viewer?.company ? db.job.findMany({ where: { companyId: viewer.company.id, status: "OPEN" }, select: { id: true, title: true }, orderBy: { publishedAt: "desc" } }) : [],
+    viewer?.company ? db.job.findMany({ where: { companyId: viewer.company.id, status: "OPEN" }, select: { id: true, title: true, companyId: true, postedById: true, status: true, featuredUntil: true }, orderBy: { publishedAt: "desc" } }) : [],
   ]);
   const has = new Set(subs.map((s) => s.product));
+  // Featured Job goes through Paddle when it is configured: only jobs this member may feature right now.
+  const paddleConfig = paddleClientConfig();
+  const featurable = jobs.filter((j) => canFeatureJob(viewer, j)).map(({ id, title }) => ({ id, title }));
   const target = typeof sp.target === "string" ? sp.target : null;
   const isAdmin = viewer?.company && (viewer.company.role === "OWNER" || viewer.company.role === "ADMIN");
 
@@ -56,6 +61,7 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
 
   return (
     <div className="space-y-16 pb-10">
+      {paddleConfig && typeof sp._ptxn === "string" && <PaddlePaymentLink config={paddleConfig} />}
       <Reveal className="mx-auto max-w-2xl pt-4 text-center">
         <Badge tone="ember" size="md">
           <Crown /> {t("premium.badge")}
@@ -68,7 +74,7 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
             <Info className="mt-0.5 size-4 shrink-0" /> {t("premium.simulate")}
           </p>
         )}
-        {mode === "disabled" && <p className="mx-auto mt-4 max-w-md rounded-xl bg-surface-2 px-4 py-2 text-sm text-fg-muted">{t("premium.disabled")}</p>}
+        {mode === "disabled" && !paddleConfig && <p className="mx-auto mt-4 max-w-md rounded-xl bg-surface-2 px-4 py-2 text-sm text-fg-muted">{t("premium.disabled")}</p>}
       </Reveal>
 
       {/* Members */}
@@ -188,10 +194,12 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
                   <p className="mt-1 text-sm text-fg-muted">{tagline(code)}</p>
                   <Features items={features(code)} />
                   <div className="mt-6">
-                    {viewer?.company ? (
+                    {viewer?.company && code === "FEATURED_JOB" && paddleConfig ? (
+                      <FeatureJobPicker jobs={featurable} initialJob={sp.product === code ? target : null} config={paddleConfig} label={t("premium.featureJob")} />
+                    ) : viewer?.company ? (
                       <PromoteJobBuy
                         product={code}
-                        jobs={jobs}
+                        jobs={jobs.map(({ id, title }) => ({ id, title }))}
                         initialJob={sp.product === code ? target : null}
                         signedIn={signedIn}
                         label={code === "FEATURED_JOB" ? t("premium.featureJob") : t("premium.sponsorJob")}
