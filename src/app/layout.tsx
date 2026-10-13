@@ -55,10 +55,17 @@ export async function generateMetadata(): Promise<Metadata> {
       alternateLocale: locale === "ar" ? ["en_US"] : ["ar_AR"],
     },
     twitter: { card: "summary_large_image" },
+    // Installed on iOS (Add to Home Screen): full-screen with the status bar drawn over the page;
+    // the sticky headers pad themselves with env(safe-area-inset-top).
+    appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: "JOBLIO" },
+    // Next emits the standard mobile-web-app-capable; older iOS versions only read Apple’s name.
+    other: { "apple-mobile-web-app-capable": "yes" },
   };
 }
 
 export const viewport: Viewport = {
+  // Lets the installed app use the whole screen (notch / home indicator handled with safe-area insets).
+  viewportFit: "cover",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#f7f7fc" },
     { media: "(prefers-color-scheme: dark)", color: "#14131f" },

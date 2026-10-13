@@ -1751,6 +1751,15 @@ export const en = {
     note: "Email isn't set up on this test server.",
     open: "Open the test inbox",
   },
+  pwa: {
+    install_app: "Install app",
+    install_app_description: "Add JOBLIO to your home screen or desktop for a full-screen app that opens instantly — recently viewed pages stay available offline.",
+    install_now: "Install now",
+    install_dismissed: "No problem — you can install JOBLIO any time from Settings.",
+    installed: "JOBLIO is installed on this device.",
+    ios_hint: "On iPhone or iPad: tap the Share button in Safari, then choose “Add to Home Screen”.",
+    browser_hint: "To install, open JOBLIO in Chrome, Edge or Safari and use the browser menu’s “Install app” or “Add to Home Screen” option.",
+  },
   portfolio: {
     contact: "Contact",
     sendMessage: "Message on JOBLIO",

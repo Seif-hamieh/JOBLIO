@@ -1,20 +1,33 @@
 import type { MetadataRoute } from "next";
 
-// Web app manifest (install to home screen, theme colour on Android).
+// Web app manifest: lets Android, desktop Chrome/Edge (and iOS "Add to Home Screen")
+// install JOBLIO as an app. A manifest has a single `lang`; the app name is the same
+// in both languages and the UI itself still follows the reader's language.
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "JOBLIO — Your Career. Your Network. Your Future.",
+    id: "/",
+    name: "JOBLIO",
     short_name: "JOBLIO",
-    description: "Jobs, people and companies with transparent, rule-based matching. No AI.",
+    description: "Your Career. Your Network. Your Future. Jobs, people and companies with transparent, rule-based matching — no AI.",
     start_url: "/",
     scope: "/",
     display: "standalone",
-    background_color: "#f7f7fc",
+    orientation: "portrait-primary",
+    background_color: "#ffffff",
     theme_color: "#5b46e5",
+    lang: "en",
+    dir: "auto",
+    categories: ["business", "productivity", "social"],
     icons: [
-      { src: "/icon.svg", sizes: "any", type: "image/svg+xml" },
-      { src: "/apple-icon.png", sizes: "180x180", type: "image/png" },
-      { src: "/favicon.ico", sizes: "48x48", type: "image/x-icon" },
+      { src: "/icon-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
+      { src: "/icon-512.png", sizes: "512x512", type: "image/png", purpose: "any" },
+      { src: "/icon-maskable-192.png", sizes: "192x192", type: "image/png", purpose: "maskable" },
+      { src: "/icon-maskable-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
+    ],
+    shortcuts: [
+      { name: "Jobs", short_name: "Jobs", url: "/jobs", icons: [{ src: "/icon-192.png", sizes: "192x192" }] },
+      { name: "Messages", short_name: "Messages", url: "/messages", icons: [{ src: "/icon-192.png", sizes: "192x192" }] },
+      { name: "Profile", short_name: "Profile", url: "/profile", icons: [{ src: "/icon-192.png", sizes: "192x192" }] },
     ],
   };
 }

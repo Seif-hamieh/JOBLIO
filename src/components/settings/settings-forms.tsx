@@ -12,6 +12,7 @@ import { Switch } from "@/components/ui/controls";
 import { toast } from "@/components/ui/toast";
 import { useI18n } from "@/i18n/client";
 import { authClient } from "@/lib/auth-client";
+import { clearCachedPages } from "@/components/pwa/pwa";
 import { MESSAGE_PERMISSIONS, PROFILE_VISIBILITIES, type MessagePermission, type ProfileVisibility } from "@/lib/constants";
 import { updatePortfolioAction, updatePrivacyAction } from "@/server/actions/profile";
 import { toggleBlockAction } from "@/server/actions/network";
@@ -200,6 +201,7 @@ export function DeleteAccount() {
                 if (res?.ok) {
                   toast.success(res.message ?? t("settings.deleted"));
                   await authClient.signOut().catch(() => {});
+                  clearCachedPages();
                   router.push("/");
                   router.refresh();
                 } else toast.error(res && !res.ok ? res.error : t("common.somethingWrong"));

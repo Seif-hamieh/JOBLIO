@@ -10,6 +10,7 @@ import {
   Building2,
   CreditCard,
   Crown,
+  Download,
   Home,
   KanbanSquare,
   Languages,
@@ -35,6 +36,8 @@ import { useI18n } from "@/i18n/client";
 import type { TKey } from "@/i18n/translate";
 import { RealtimeProvider, useRealtime, type Counts } from "@/components/realtime/realtime-provider";
 import { authClient } from "@/lib/auth-client";
+import { clearCachedPages, useInstallPrompt } from "@/components/pwa/pwa";
+import { toast } from "@/components/ui/toast";
 import { setLocaleAction } from "@/server/actions/locale";
 import { cn } from "@/lib/utils";
 
@@ -85,8 +88,10 @@ function UserMenu({ viewer }: { viewer: ShellViewer }) {
   const { resolvedTheme, setTheme } = useTheme();
   const mounted = useSyncExternalStore(noopSubscribe, () => true, () => false);
   const dark = mounted && resolvedTheme === "dark";
+  const pwa = useInstallPrompt();
   async function signOut() {
     await authClient.signOut();
+    clearCachedPages();
     router.push("/");
     router.refresh();
   }
@@ -145,6 +150,11 @@ function UserMenu({ viewer }: { viewer: ShellViewer }) {
         <MenuItem icon={dark ? <Sun /> : <Moon />} onSelect={() => setTheme(dark ? "light" : "dark")}>
           {dark ? t("common.switchToLight") : t("common.switchToDark")}
         </MenuItem>
+        {pwa.state === "available" ? (
+          <MenuItem icon={<Download />} onSelect={async () => { if ((await pwa.install()) === "dismissed") toast.info(t("pwa.install_dismissed")); }}>
+            {t("pwa.install_app")}
+          </MenuItem>
+        ) : null}
         <MenuItem icon={<Settings />} onSelect={() => router.push("/settings")}>
           {t("nav.settings")}
         </MenuItem>
@@ -275,7 +285,7 @@ export function AppShell({ viewer, counts, children, footer }: { viewer: ShellVi
   const pathname = usePathname();
   const showFooter = !pathname.startsWith("/messages");
   const header = (
-    <header className="glass sticky top-0 z-40 border-b border-border">
+    <header className="glass sticky top-0 z-40 border-b border-border pt-[env(safe-area-inset-top)]">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6">
         <Logo href={viewer ? "/home" : "/"} compact={!!viewer} className="shrink-0" />
         {viewer ? (

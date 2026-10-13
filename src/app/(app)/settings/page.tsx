@@ -4,6 +4,7 @@ import { db } from "@/server/db";
 import { Card, PageHeader } from "@/components/ui/misc";
 import { ThemeSelect } from "@/components/layout/theme-toggle";
 import { LanguageSelect } from "@/components/layout/language-switcher";
+import { InstallApp } from "@/components/pwa/install-app";
 import { ChangePasswordForm, DeleteAccount, NotificationSettingsForm, PortfolioForm } from "@/components/settings/settings-forms";
 
 export const generateMetadata = pageTitle("nav.settings");
@@ -69,6 +70,10 @@ export default async function SettingsPage() {
             <ThemeSelect />
           </div>
         </div>
+      </Section>
+
+      <Section id="install" title={t("pwa.install_app")} description={t("pwa.install_app_description")}>
+        <InstallApp />
       </Section>
 
       <Section id="notifications" title={t("settings.notifications")} description={t("settings.notificationsSub")}>
