@@ -24,6 +24,26 @@ export default function manifest(): MetadataRoute.Manifest {
       { src: "/icon-maskable-192.png", sizes: "192x192", type: "image/png", purpose: "maskable" },
       { src: "/icon-maskable-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
     ],
+screenshots: [
+  {
+    src: "/screenshots/home-desktop.png",
+    sizes: "1920x1080",
+    type: "image/png",
+    form_factor: "wide",
+  },
+  {
+    src: "/screenshots/home-mobile.png",
+    sizes: "390x844",
+    type: "image/png",
+    form_factor: "narrow",
+  },
+  {
+    src: "/screenshots/jobs-mobile.png",
+    sizes: "390x844",
+    type: "image/png",
+    form_factor: "narrow",
+  },
+],
     shortcuts: [
       { name: "Jobs", short_name: "Jobs", url: "/jobs", icons: [{ src: "/icon-192.png", sizes: "192x192" }] },
       { name: "Messages", short_name: "Messages", url: "/messages", icons: [{ src: "/icon-192.png", sizes: "192x192" }] },
