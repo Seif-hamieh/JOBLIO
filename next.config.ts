@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { withSentryConfig } from "@sentry/nextjs/config";
 
 const isDev = process.env.NODE_ENV !== "production";
 
@@ -47,4 +48,16 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withSentryConfig(nextConfig, {
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+  // Source maps upload only when SENTRY_AUTH_TOKEN is set (e.g. on Vercel); keep it out of git.
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+  // Upload a larger set of source maps for readable stack traces.
+  widenClientFileUpload: true,
+  // Browser events go through our own domain: no CSP change (connect-src stays 'self'),
+  // and ad blockers don't drop them. Excluded from the matcher in src/proxy.ts.
+  tunnelRoute: "/monitoring",
+  // Only print logs for uploading source maps in CI.
+  silent: !process.env.CI,
+});
