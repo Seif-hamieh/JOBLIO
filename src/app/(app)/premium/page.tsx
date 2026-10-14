@@ -59,6 +59,7 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
   const tagline = (code: ProductCode) => t(`premium.products.${code}.tagline`);
   const features = (code: ProductCode) => t(`premium.products.${code}.features`).split("|");
   const price = (code: ProductCode) => f.money(PRODUCTS[code].amount, PRODUCTS[code].currency);
+  const SHOW_LEGACY_PLANS = false;
 
   return (
     <div className="space-y-16 pb-10">
@@ -80,10 +81,10 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
 
       {/* Members */}
       <section>
-        <h2 className="mb-6 flex items-center gap-2 font-display text-xl font-semibold">
+        <h2 className={`mb-6 flex items-center gap-2 font-display text-xl font-semibold ${SHOW_LEGACY_PLANS ? "" : "text-center justify-center"}`}>
           <Rocket className="size-5 text-ember" /> {t("premium.forPros")}
         </h2>
-        <div className="grid gap-5 lg:grid-cols-4">
+        <div className={`grid gap-5 ${SHOW_LEGACY_PLANS ? "lg:grid-cols-4" : "lg:grid-cols-1 max-w-md mx-auto"}`}>
           <Card className="flex flex-col p-6">
             <div className="text-sm font-semibold text-fg-muted">{t("premium.free")}</div>
             <Price amount={f.money(0)} suffix={t("premium.forever")} />
@@ -94,7 +95,7 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
               </Link>
             )}
           </Card>
-          {(["CAREER_BOOST_7", "CAREER_BOOST_30"] as const).map((code, i) => (
+          {SHOW_LEGACY_PLANS && (["CAREER_BOOST_7", "CAREER_BOOST_30"] as const).map((code, i) => (
             <Card key={code} className={`relative flex flex-col overflow-hidden p-6 ${i === 1 ? "ring-2 ring-ember/50" : ""}`}>
               {i === 1 && (
                 <span className="absolute end-4 top-4">
@@ -112,6 +113,7 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
               </BuyButton>
             </Card>
           ))}
+          {SHOW_LEGACY_PLANS && (
           <Card className="flex flex-col p-6">
             <div className="flex items-center gap-1.5 text-sm font-semibold text-aurora-fg">
               <Globe className="size-4" /> {name("PREMIUM_PORTFOLIO")}
@@ -131,18 +133,22 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
               </BuyButton>
             )}
           </Card>
+          )}
         </div>
+        {SHOW_LEGACY_PLANS && (
         <p className="mt-4 flex items-center gap-1.5 text-xs text-fg-subtle">
           <ShieldCheck className="size-3.5" /> {t("premium.boostNote")}
         </p>
+        )}
       </section>
 
       {/* Business */}
       <section id="business" className="scroll-mt-24">
-        <h2 className="mb-6 flex items-center gap-2 font-display text-xl font-semibold">
+        <h2 className={`mb-6 flex items-center gap-2 font-display text-xl font-semibold ${SHOW_LEGACY_PLANS ? "" : "text-center justify-center"}`}>
           <Building2 className="size-5 text-brand" /> {t("premium.forBusiness")}
         </h2>
-        <div className="grid gap-5 lg:grid-cols-4">
+        <div className={`grid gap-5 ${SHOW_LEGACY_PLANS ? "lg:grid-cols-4" : "lg:grid-cols-1 max-w-md mx-auto"}`}>
+          {SHOW_LEGACY_PLANS && (
           <Card className="flex flex-col p-6 ring-2 ring-brand/40">
             <div className="flex items-center gap-1.5 text-sm font-semibold text-brand-soft-fg">
               <Users className="size-4" /> {name("RECRUITER_PRO")}
@@ -164,6 +170,8 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
               </Link>
             )}
           </Card>
+          )}
+          {SHOW_LEGACY_PLANS && (
           <Card className="flex flex-col p-6">
             <div className="flex items-center gap-1.5 text-sm font-semibold text-ember-fg">
               <Crown className="size-4" /> {name("COMPANY_PREMIUM")}
@@ -183,7 +191,8 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
               <p className="mt-6 text-xs text-fg-subtle">{t("premium.adminsOnly")}</p>
             )}
           </Card>
-          {(["FEATURED_JOB", "SPONSORED_JOB"] as const).map((code) => {
+          )}
+          {(["FEATURED_JOB"] as const).map((code) => {
             const Icon = code === "FEATURED_JOB" ? Star : Megaphone;
             return (
               <div key={code} id={code} className="scroll-mt-24">
