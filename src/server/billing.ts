@@ -1,5 +1,4 @@
 import "server-only";
-import Stripe from "stripe";
 import { db } from "@/server/db";
 import { ActionError } from "@/server/action";
 import type { Viewer } from "@/server/session";
@@ -9,25 +8,18 @@ import { PRODUCTS, priorityApplicationCredits, type ProductCode } from "@/lib/bi
 import { absoluteUrl, formatMoney } from "@/lib/utils";
 import { createPaddlePortalSession, paddle } from "@/server/paddle";
 
-// Payments go through Stripe Checkout: card details are entered on Stripe's
-// hosted page and never reach JOBLIO. We store only Stripe object IDs.
+// Payments go through Paddle (src/server/paddle.ts): card details are entered in Paddle's
+// checkout and never reach JOBLIO. This module grants purchases and manages subscriptions.
 //
 // Modes:
-//   stripe    STRIPE_SECRET_KEY is set
-//   simulate  development only, PAYMENTS_DEV_SIMULATE=true — purchases are
-//             fulfilled instantly so premium flows can be demoed end-to-end
+//   paddle    PADDLE_API_KEY is set
+//   simulate  development only — legacy purchases (startCheckout) are fulfilled
+//             instantly so premium flows can be demoed end-to-end
 //   disabled  otherwise
 
-let stripeClient: Stripe | null = null;
-export function stripe() {
-  if (!process.env.STRIPE_SECRET_KEY) return null;
-  stripeClient ??= new Stripe(process.env.STRIPE_SECRET_KEY, { appInfo: { name: "JOBLIO" } });
-  return stripeClient;
-}
-
-export function paymentsMode(): "stripe" | "simulate" | "disabled" {
-  if (process.env.STRIPE_SECRET_KEY) return "stripe";
-  if (process.env.NODE_ENV !== "production" && process.env.PAYMENTS_DEV_SIMULATE === "true") return "simulate";
+export function paymentsMode(): "paddle" | "simulate" | "disabled" {
+  if (process.env.PADDLE_API_KEY) return "paddle";
+  if (process.env.NODE_ENV !== "production") return "simulate";
   return "disabled";
 }
 
@@ -69,19 +61,14 @@ async function authorize(viewer: Viewer, code: ProductCode, targetId: string | n
   }
 }
 
-async function ensureCustomer(viewer: Viewer) {
-  const s = stripe()!;
-  const user = await db.user.findUniqueOrThrow({ where: { id: viewer.id }, select: { stripeCustomerId: true, email: true, name: true } });
-  if (user.stripeCustomerId) return user.stripeCustomerId;
-  const customer = await s.customers.create({ email: user.email, name: user.name, metadata: { userId: viewer.id } });
-  await db.user.update({ where: { id: viewer.id }, data: { stripeCustomerId: customer.id } });
-  return customer.id;
-}
-
-/** Starts a purchase. Returns the URL to send the browser to. */
+/**
+ * Legacy purchase path (BuyButton → checkoutAction) for products not sold through Paddle.
+ * Only the development simulator fulfils them; with Paddle configured they're unavailable.
+ * Returns the URL to send the browser to.
+ */
 export async function startCheckout(viewer: Viewer, code: ProductCode, targetId: string | null) {
   const mode = paymentsMode();
-  if (mode === "disabled") throw new ActionError("@msg.paymentsOff");
+  if (mode !== "simulate") throw new ActionError("@msg.paymentsOff");
   await authorize(viewer, code, targetId);
   const product = PRODUCTS[code];
 
@@ -98,42 +85,13 @@ export async function startCheckout(viewer: Viewer, code: ProductCode, targetId:
     },
   });
 
-  if (mode === "simulate") {
-    await fulfillPayment(payment.id, {});
-    return absoluteUrl(`/settings/billing?success=${payment.id}`);
-  }
-
-  const s = stripe()!;
-  const customer = await ensureCustomer(viewer);
-  const metadata = { paymentId: payment.id, userId: viewer.id, product: code, targetId: targetId ?? "" };
-  const session = await s.checkout.sessions.create({
-    mode: product.mode,
-    customer,
-    client_reference_id: viewer.id,
-    line_items: [
-      {
-        quantity: 1,
-        price_data: {
-          currency: product.currency,
-          unit_amount: product.amount,
-          product_data: { name: product.name, description: product.tagline },
-          ...(product.mode === "subscription" && { recurring: { interval: "month" as const } }),
-        },
-      },
-    ],
-    metadata,
-    ...(product.mode === "subscription" ? { subscription_data: { metadata } } : { payment_intent_data: { metadata }, invoice_creation: { enabled: true } }),
-    success_url: absoluteUrl(`/settings/billing?success=${payment.id}`),
-    cancel_url: absoluteUrl(`/premium?canceled=1`),
-  });
-  await db.payment.update({ where: { id: payment.id }, data: { stripeCheckoutSessionId: session.id } });
-  if (!session.url) throw new ActionError("@msg.checkoutFailed");
-  return session.url;
+  await fulfillPayment(payment.id, {});
+  return absoluteUrl(`/settings/billing?success=${payment.id}`);
 }
 
 /**
  * Grants what was purchased. Idempotent: safe to call from both the webhook
- * and any retry. Never trusts the browser — only the server or Stripe call it.
+ * and any retry. Never trusts the browser — only the server or the Paddle webhook call it.
  */
 export async function fulfillPayment(
   paymentId: string,
@@ -243,8 +201,8 @@ export async function markPaymentFailed(paymentId: string) {
   await db.payment.updateMany({ where: { id: paymentId, status: "PENDING" }, data: { status: "FAILED" } });
 }
 
-// Paddle subscription IDs are "sub_" + a 26-character lowercase ULID; anything else in this
-// (formerly Stripe) column is a legacy Stripe subscription.
+// Paddle subscription IDs are "sub_" + a 26-character lowercase ULID. Older rows in this column
+// (it is still named stripeSubscriptionId in the database) may hold IDs Paddle doesn't know.
 const isPaddleSubscriptionId = (id: string) => /^sub_01[0-9a-z]{24}$/.test(id);
 
 /** Cancels at period end (keeps access until then), or undoes a scheduled cancel. */
@@ -257,10 +215,7 @@ export async function setCancelAtPeriodEnd(viewer: Viewer, subscriptionId: strin
     // PATCH scheduled_change: null removes a scheduled cancel. The webhook confirms the new state.
     if (cancel) await p.subscriptions.cancel(sub.paddleSubscriptionId, { effectiveFrom: "next_billing_period" });
     else await p.subscriptions.update(sub.paddleSubscriptionId, { scheduledChange: null });
-  } else if (sub.paddleSubscriptionId && stripe()) {
-    // Legacy Stripe subscription (Stripe API).
-    await stripe()!.subscriptions.update(sub.paddleSubscriptionId, { cancel_at_period_end: cancel });
-  } else if (paymentsMode() === "disabled" && !p) {
+  } else if (paymentsMode() === "disabled") {
     throw new ActionError("@msg.paymentsOff");
   }
   await db.subscription.update({ where: { id: sub.id }, data: { cancelAtPeriodEnd: cancel } });
@@ -282,27 +237,4 @@ export async function billingPortalUrl(viewer: Viewer): Promise<string | null> {
   const customerId = await paddleCustomerIdFor(viewer.id);
   if (!customerId) return null;
   return createPaddlePortalSession(customerId);
-}
-
-/** Applies subscription lifecycle changes reported by Stripe. */
-export async function syncStripeSubscription(sub: Stripe.Subscription) {
-  const local = await db.subscription.findUnique({ where: { paddleSubscriptionId: sub.id } });
-  if (!local) return;
-  const periodEndUnix = sub.items.data[0]?.current_period_end;
-  const STATUS: Record<string, "ACTIVE" | "TRIALING" | "PAST_DUE" | "CANCELED" | "INCOMPLETE"> = {
-    active: "ACTIVE",
-    trialing: "TRIALING",
-    past_due: "PAST_DUE",
-    canceled: "CANCELED",
-    unpaid: "PAST_DUE",
-    incomplete: "INCOMPLETE",
-    incomplete_expired: "CANCELED",
-    paused: "PAST_DUE",
-  };
-  const status = STATUS[sub.status] ?? "PAST_DUE";
-  const periodEnd = periodEndUnix ? new Date(periodEndUnix * 1000) : local.currentPeriodEnd;
-  await db.subscription.update({ where: { id: local.id }, data: { status, cancelAtPeriodEnd: sub.cancel_at_period_end, currentPeriodEnd: periodEnd } });
-  if (local.product === "COMPANY_PREMIUM" && local.companyId) {
-    await db.company.update({ where: { id: local.companyId }, data: { premiumUntil: status === "CANCELED" ? new Date() : periodEnd } });
-  }
 }

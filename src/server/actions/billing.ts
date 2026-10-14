@@ -29,6 +29,6 @@ export async function cancelSubscriptionAction(subscriptionId: string, cancel: b
 export async function billingPortalAction(): Promise<ActionState<{ url: string }>> {
   return withViewer<{ url: string }>({ limit: LIMITS.checkout }, async (viewer) => {
     const url = await billingPortalUrl(viewer);
-    return url ? { ok: true, data: { url } } : fail("@msg.stripeOff");
+    return url ? { ok: true, data: { url } } : fail("@msg.paymentsOff");
   });
 }

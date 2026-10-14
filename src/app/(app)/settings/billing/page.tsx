@@ -3,7 +3,7 @@ import { CheckCircle2, Crown, ExternalLink, Rocket } from "lucide-react";
 import { getI18n, pageTitle } from "@/i18n/server";
 import { requireViewer } from "@/server/session";
 import { db } from "@/server/db";
-import { paddleCustomerIdFor, paymentsMode } from "@/server/billing";
+import { paddleCustomerIdFor } from "@/server/billing";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, EmptyState, PageHeader } from "@/components/ui/misc";
 import { buttonClasses } from "@/components/ui/button";
@@ -34,7 +34,6 @@ export default async function BillingPage({ searchParams }: { searchParams: Prom
     paddleCustomerIdFor(viewer.id),
   ]);
   const boostEnds = profile?.featuredUntil && profile.featuredUntil > new Date() ? profile.featuredUntil : null;
-  const mode = paymentsMode();
   // Paddle's customer portal (manage subscriptions, payment methods, invoices) exists once the member has a Paddle customer.
   const hasPortal = !!paddleCustomerId;
 
@@ -93,7 +92,7 @@ export default async function BillingPage({ searchParams }: { searchParams: Prom
       <Card className="p-6 sm:p-7">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <CardHeader title={t("billing.payMethods")} description={t("billing.payMethodsSub")} />
-          {mode === "stripe" || hasPortal ? <PaymentMethodsButton /> : <p className="max-w-xs text-xs text-fg-subtle">{t("billing.noStripe")}</p>}
+          {hasPortal ? <PaymentMethodsButton /> : <p className="max-w-xs text-xs text-fg-subtle">{t("billing.noStripe")}</p>}
         </div>
       </Card>
 
