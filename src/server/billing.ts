@@ -7,6 +7,7 @@ import { notify } from "@/server/services/notifications";
 import { k } from "@/i18n/message";
 import { PRODUCTS, priorityApplicationCredits, type ProductCode } from "@/lib/billing/products";
 import { absoluteUrl, formatMoney } from "@/lib/utils";
+import { paddle } from "@/server/paddle";
 
 // Payments go through Stripe Checkout: card details are entered on Stripe's
 // hosted page and never reach JOBLIO. We store only Stripe object IDs.
@@ -208,7 +209,7 @@ export async function fulfillPayment(
       case "RECRUITER_PRO":
       case "COMPANY_PREMIUM": {
         const periodEnd = stripeData.periodEnd ?? addMonth(now);
-        const existing = stripeData.subscriptionId ? await tx.subscription.findUnique({ where: { stripeSubscriptionId: stripeData.subscriptionId } }) : null;
+        const existing = stripeData.subscriptionId ? await tx.subscription.findUnique({ where: { paddleSubscriptionId: stripeData.subscriptionId } }) : null;
         if (existing) {
           await tx.subscription.update({ where: { id: existing.id }, data: { status: "ACTIVE", currentPeriodEnd: periodEnd } });
         } else {
@@ -219,7 +220,7 @@ export async function fulfillPayment(
               product: payment.product,
               status: "ACTIVE",
               currentPeriodEnd: periodEnd,
-              stripeSubscriptionId: stripeData.subscriptionId ?? null,
+              paddleSubscriptionId: stripeData.subscriptionId ?? null,
             },
           });
         }
@@ -242,13 +243,24 @@ export async function markPaymentFailed(paymentId: string) {
   await db.payment.updateMany({ where: { id: paymentId, status: "PENDING" }, data: { status: "FAILED" } });
 }
 
-/** Cancels at period end (keeps access until then). */
+// Paddle subscription IDs are "sub_" + a 26-character lowercase ULID; anything else in this
+// (formerly Stripe) column is a legacy Stripe subscription.
+const isPaddleSubscriptionId = (id: string) => /^sub_01[0-9a-z]{24}$/.test(id);
+
+/** Cancels at period end (keeps access until then), or undoes a scheduled cancel. */
 export async function setCancelAtPeriodEnd(viewer: Viewer, subscriptionId: string, cancel: boolean) {
   const sub = await db.subscription.findFirst({ where: { id: subscriptionId, userId: viewer.id } });
   if (!sub) throw new ActionError("@msg.subNotFound");
-  if (sub.stripeSubscriptionId && stripe()) {
-    await stripe()!.subscriptions.update(sub.stripeSubscriptionId, { cancel_at_period_end: cancel });
-  } else if (paymentsMode() === "disabled") {
+  const p = paddle();
+  if (sub.paddleSubscriptionId && isPaddleSubscriptionId(sub.paddleSubscriptionId) && p) {
+    // Paddle: POST /subscriptions/{id}/cancel schedules the cancel for the end of the billing period;
+    // PATCH scheduled_change: null removes a scheduled cancel. The webhook confirms the new state.
+    if (cancel) await p.subscriptions.cancel(sub.paddleSubscriptionId, { effectiveFrom: "next_billing_period" });
+    else await p.subscriptions.update(sub.paddleSubscriptionId, { scheduledChange: null });
+  } else if (sub.paddleSubscriptionId && stripe()) {
+    // Legacy Stripe subscription (Stripe API).
+    await stripe()!.subscriptions.update(sub.paddleSubscriptionId, { cancel_at_period_end: cancel });
+  } else if (paymentsMode() === "disabled" && !p) {
     throw new ActionError("@msg.paymentsOff");
   }
   await db.subscription.update({ where: { id: sub.id }, data: { cancelAtPeriodEnd: cancel } });
@@ -265,7 +277,7 @@ export async function billingPortalUrl(viewer: Viewer) {
 
 /** Applies subscription lifecycle changes reported by Stripe. */
 export async function syncStripeSubscription(sub: Stripe.Subscription) {
-  const local = await db.subscription.findUnique({ where: { stripeSubscriptionId: sub.id } });
+  const local = await db.subscription.findUnique({ where: { paddleSubscriptionId: sub.id } });
   if (!local) return;
   const periodEndUnix = sub.items.data[0]?.current_period_end;
   const STATUS: Record<string, "ACTIVE" | "TRIALING" | "PAST_DUE" | "CANCELED" | "INCOMPLETE"> = {

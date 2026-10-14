@@ -28,9 +28,10 @@ export type SubscriptionMinAggregateOutputType = {
   id: string | null
   userId: string | null
   companyId: string | null
+  paddleCustomerId: string | null
   product: $Enums.ProductCode | null
   status: $Enums.SubscriptionStatus | null
-  stripeSubscriptionId: string | null
+  paddleSubscriptionId: string | null
   currentPeriodEnd: Date | null
   cancelAtPeriodEnd: boolean | null
   createdAt: Date | null
@@ -41,9 +42,10 @@ export type SubscriptionMaxAggregateOutputType = {
   id: string | null
   userId: string | null
   companyId: string | null
+  paddleCustomerId: string | null
   product: $Enums.ProductCode | null
   status: $Enums.SubscriptionStatus | null
-  stripeSubscriptionId: string | null
+  paddleSubscriptionId: string | null
   currentPeriodEnd: Date | null
   cancelAtPeriodEnd: boolean | null
   createdAt: Date | null
@@ -54,9 +56,10 @@ export type SubscriptionCountAggregateOutputType = {
   id: number
   userId: number
   companyId: number
+  paddleCustomerId: number
   product: number
   status: number
-  stripeSubscriptionId: number
+  paddleSubscriptionId: number
   currentPeriodEnd: number
   cancelAtPeriodEnd: number
   createdAt: number
@@ -69,9 +72,10 @@ export type SubscriptionMinAggregateInputType = {
   id?: true
   userId?: true
   companyId?: true
+  paddleCustomerId?: true
   product?: true
   status?: true
-  stripeSubscriptionId?: true
+  paddleSubscriptionId?: true
   currentPeriodEnd?: true
   cancelAtPeriodEnd?: true
   createdAt?: true
@@ -82,9 +86,10 @@ export type SubscriptionMaxAggregateInputType = {
   id?: true
   userId?: true
   companyId?: true
+  paddleCustomerId?: true
   product?: true
   status?: true
-  stripeSubscriptionId?: true
+  paddleSubscriptionId?: true
   currentPeriodEnd?: true
   cancelAtPeriodEnd?: true
   createdAt?: true
@@ -95,9 +100,10 @@ export type SubscriptionCountAggregateInputType = {
   id?: true
   userId?: true
   companyId?: true
+  paddleCustomerId?: true
   product?: true
   status?: true
-  stripeSubscriptionId?: true
+  paddleSubscriptionId?: true
   currentPeriodEnd?: true
   cancelAtPeriodEnd?: true
   createdAt?: true
@@ -181,9 +187,10 @@ export type SubscriptionGroupByOutputType = {
   id: string
   userId: string
   companyId: string | null
+  paddleCustomerId: string | null
   product: $Enums.ProductCode
   status: $Enums.SubscriptionStatus
-  stripeSubscriptionId: string | null
+  paddleSubscriptionId: string | null
   currentPeriodEnd: Date
   cancelAtPeriodEnd: boolean
   createdAt: Date
@@ -215,9 +222,10 @@ export type SubscriptionWhereInput = {
   id?: Prisma.StringFilter<"Subscription"> | string
   userId?: Prisma.StringFilter<"Subscription"> | string
   companyId?: Prisma.StringNullableFilter<"Subscription"> | string | null
+  paddleCustomerId?: Prisma.StringNullableFilter<"Subscription"> | string | null
   product?: Prisma.EnumProductCodeFilter<"Subscription"> | $Enums.ProductCode
   status?: Prisma.EnumSubscriptionStatusFilter<"Subscription"> | $Enums.SubscriptionStatus
-  stripeSubscriptionId?: Prisma.StringNullableFilter<"Subscription"> | string | null
+  paddleSubscriptionId?: Prisma.StringNullableFilter<"Subscription"> | string | null
   currentPeriodEnd?: Prisma.DateTimeFilter<"Subscription"> | Date | string
   cancelAtPeriodEnd?: Prisma.BoolFilter<"Subscription"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Subscription"> | Date | string
@@ -230,9 +238,10 @@ export type SubscriptionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   companyId?: Prisma.SortOrderInput | Prisma.SortOrder
+  paddleCustomerId?: Prisma.SortOrderInput | Prisma.SortOrder
   product?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  stripeSubscriptionId?: Prisma.SortOrderInput | Prisma.SortOrder
+  paddleSubscriptionId?: Prisma.SortOrderInput | Prisma.SortOrder
   currentPeriodEnd?: Prisma.SortOrder
   cancelAtPeriodEnd?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -243,12 +252,13 @@ export type SubscriptionOrderByWithRelationInput = {
 
 export type SubscriptionWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  stripeSubscriptionId?: string
+  paddleSubscriptionId?: string
   AND?: Prisma.SubscriptionWhereInput | Prisma.SubscriptionWhereInput[]
   OR?: Prisma.SubscriptionWhereInput[]
   NOT?: Prisma.SubscriptionWhereInput | Prisma.SubscriptionWhereInput[]
   userId?: Prisma.StringFilter<"Subscription"> | string
   companyId?: Prisma.StringNullableFilter<"Subscription"> | string | null
+  paddleCustomerId?: Prisma.StringNullableFilter<"Subscription"> | string | null
   product?: Prisma.EnumProductCodeFilter<"Subscription"> | $Enums.ProductCode
   status?: Prisma.EnumSubscriptionStatusFilter<"Subscription"> | $Enums.SubscriptionStatus
   currentPeriodEnd?: Prisma.DateTimeFilter<"Subscription"> | Date | string
@@ -257,15 +267,16 @@ export type SubscriptionWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Subscription"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   company?: Prisma.XOR<Prisma.CompanyNullableScalarRelationFilter, Prisma.CompanyWhereInput> | null
-}, "id" | "stripeSubscriptionId">
+}, "id" | "paddleSubscriptionId">
 
 export type SubscriptionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   companyId?: Prisma.SortOrderInput | Prisma.SortOrder
+  paddleCustomerId?: Prisma.SortOrderInput | Prisma.SortOrder
   product?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  stripeSubscriptionId?: Prisma.SortOrderInput | Prisma.SortOrder
+  paddleSubscriptionId?: Prisma.SortOrderInput | Prisma.SortOrder
   currentPeriodEnd?: Prisma.SortOrder
   cancelAtPeriodEnd?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -282,9 +293,10 @@ export type SubscriptionScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Subscription"> | string
   userId?: Prisma.StringWithAggregatesFilter<"Subscription"> | string
   companyId?: Prisma.StringNullableWithAggregatesFilter<"Subscription"> | string | null
+  paddleCustomerId?: Prisma.StringNullableWithAggregatesFilter<"Subscription"> | string | null
   product?: Prisma.EnumProductCodeWithAggregatesFilter<"Subscription"> | $Enums.ProductCode
   status?: Prisma.EnumSubscriptionStatusWithAggregatesFilter<"Subscription"> | $Enums.SubscriptionStatus
-  stripeSubscriptionId?: Prisma.StringNullableWithAggregatesFilter<"Subscription"> | string | null
+  paddleSubscriptionId?: Prisma.StringNullableWithAggregatesFilter<"Subscription"> | string | null
   currentPeriodEnd?: Prisma.DateTimeWithAggregatesFilter<"Subscription"> | Date | string
   cancelAtPeriodEnd?: Prisma.BoolWithAggregatesFilter<"Subscription"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Subscription"> | Date | string
@@ -293,9 +305,10 @@ export type SubscriptionScalarWhereWithAggregatesInput = {
 
 export type SubscriptionCreateInput = {
   id?: string
+  paddleCustomerId?: string | null
   product: $Enums.ProductCode
   status: $Enums.SubscriptionStatus
-  stripeSubscriptionId?: string | null
+  paddleSubscriptionId?: string | null
   currentPeriodEnd: Date | string
   cancelAtPeriodEnd?: boolean
   createdAt?: Date | string
@@ -308,9 +321,10 @@ export type SubscriptionUncheckedCreateInput = {
   id?: string
   userId: string
   companyId?: string | null
+  paddleCustomerId?: string | null
   product: $Enums.ProductCode
   status: $Enums.SubscriptionStatus
-  stripeSubscriptionId?: string | null
+  paddleSubscriptionId?: string | null
   currentPeriodEnd: Date | string
   cancelAtPeriodEnd?: boolean
   createdAt?: Date | string
@@ -319,9 +333,10 @@ export type SubscriptionUncheckedCreateInput = {
 
 export type SubscriptionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   product?: Prisma.EnumProductCodeFieldUpdateOperationsInput | $Enums.ProductCode
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
-  stripeSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paddleSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentPeriodEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cancelAtPeriodEnd?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -334,9 +349,10 @@ export type SubscriptionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   companyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   product?: Prisma.EnumProductCodeFieldUpdateOperationsInput | $Enums.ProductCode
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
-  stripeSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paddleSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentPeriodEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cancelAtPeriodEnd?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -347,9 +363,10 @@ export type SubscriptionCreateManyInput = {
   id?: string
   userId: string
   companyId?: string | null
+  paddleCustomerId?: string | null
   product: $Enums.ProductCode
   status: $Enums.SubscriptionStatus
-  stripeSubscriptionId?: string | null
+  paddleSubscriptionId?: string | null
   currentPeriodEnd: Date | string
   cancelAtPeriodEnd?: boolean
   createdAt?: Date | string
@@ -358,9 +375,10 @@ export type SubscriptionCreateManyInput = {
 
 export type SubscriptionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   product?: Prisma.EnumProductCodeFieldUpdateOperationsInput | $Enums.ProductCode
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
-  stripeSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paddleSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentPeriodEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cancelAtPeriodEnd?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -371,9 +389,10 @@ export type SubscriptionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   companyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   product?: Prisma.EnumProductCodeFieldUpdateOperationsInput | $Enums.ProductCode
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
-  stripeSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paddleSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentPeriodEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cancelAtPeriodEnd?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -394,9 +413,10 @@ export type SubscriptionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   companyId?: Prisma.SortOrder
+  paddleCustomerId?: Prisma.SortOrder
   product?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  stripeSubscriptionId?: Prisma.SortOrder
+  paddleSubscriptionId?: Prisma.SortOrder
   currentPeriodEnd?: Prisma.SortOrder
   cancelAtPeriodEnd?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -407,9 +427,10 @@ export type SubscriptionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   companyId?: Prisma.SortOrder
+  paddleCustomerId?: Prisma.SortOrder
   product?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  stripeSubscriptionId?: Prisma.SortOrder
+  paddleSubscriptionId?: Prisma.SortOrder
   currentPeriodEnd?: Prisma.SortOrder
   cancelAtPeriodEnd?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -420,9 +441,10 @@ export type SubscriptionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   companyId?: Prisma.SortOrder
+  paddleCustomerId?: Prisma.SortOrder
   product?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  stripeSubscriptionId?: Prisma.SortOrder
+  paddleSubscriptionId?: Prisma.SortOrder
   currentPeriodEnd?: Prisma.SortOrder
   cancelAtPeriodEnd?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -523,9 +545,10 @@ export type EnumSubscriptionStatusFieldUpdateOperationsInput = {
 
 export type SubscriptionCreateWithoutUserInput = {
   id?: string
+  paddleCustomerId?: string | null
   product: $Enums.ProductCode
   status: $Enums.SubscriptionStatus
-  stripeSubscriptionId?: string | null
+  paddleSubscriptionId?: string | null
   currentPeriodEnd: Date | string
   cancelAtPeriodEnd?: boolean
   createdAt?: Date | string
@@ -536,9 +559,10 @@ export type SubscriptionCreateWithoutUserInput = {
 export type SubscriptionUncheckedCreateWithoutUserInput = {
   id?: string
   companyId?: string | null
+  paddleCustomerId?: string | null
   product: $Enums.ProductCode
   status: $Enums.SubscriptionStatus
-  stripeSubscriptionId?: string | null
+  paddleSubscriptionId?: string | null
   currentPeriodEnd: Date | string
   cancelAtPeriodEnd?: boolean
   createdAt?: Date | string
@@ -578,9 +602,10 @@ export type SubscriptionScalarWhereInput = {
   id?: Prisma.StringFilter<"Subscription"> | string
   userId?: Prisma.StringFilter<"Subscription"> | string
   companyId?: Prisma.StringNullableFilter<"Subscription"> | string | null
+  paddleCustomerId?: Prisma.StringNullableFilter<"Subscription"> | string | null
   product?: Prisma.EnumProductCodeFilter<"Subscription"> | $Enums.ProductCode
   status?: Prisma.EnumSubscriptionStatusFilter<"Subscription"> | $Enums.SubscriptionStatus
-  stripeSubscriptionId?: Prisma.StringNullableFilter<"Subscription"> | string | null
+  paddleSubscriptionId?: Prisma.StringNullableFilter<"Subscription"> | string | null
   currentPeriodEnd?: Prisma.DateTimeFilter<"Subscription"> | Date | string
   cancelAtPeriodEnd?: Prisma.BoolFilter<"Subscription"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Subscription"> | Date | string
@@ -589,9 +614,10 @@ export type SubscriptionScalarWhereInput = {
 
 export type SubscriptionCreateWithoutCompanyInput = {
   id?: string
+  paddleCustomerId?: string | null
   product: $Enums.ProductCode
   status: $Enums.SubscriptionStatus
-  stripeSubscriptionId?: string | null
+  paddleSubscriptionId?: string | null
   currentPeriodEnd: Date | string
   cancelAtPeriodEnd?: boolean
   createdAt?: Date | string
@@ -602,9 +628,10 @@ export type SubscriptionCreateWithoutCompanyInput = {
 export type SubscriptionUncheckedCreateWithoutCompanyInput = {
   id?: string
   userId: string
+  paddleCustomerId?: string | null
   product: $Enums.ProductCode
   status: $Enums.SubscriptionStatus
-  stripeSubscriptionId?: string | null
+  paddleSubscriptionId?: string | null
   currentPeriodEnd: Date | string
   cancelAtPeriodEnd?: boolean
   createdAt?: Date | string
@@ -640,9 +667,10 @@ export type SubscriptionUpdateManyWithWhereWithoutCompanyInput = {
 export type SubscriptionCreateManyUserInput = {
   id?: string
   companyId?: string | null
+  paddleCustomerId?: string | null
   product: $Enums.ProductCode
   status: $Enums.SubscriptionStatus
-  stripeSubscriptionId?: string | null
+  paddleSubscriptionId?: string | null
   currentPeriodEnd: Date | string
   cancelAtPeriodEnd?: boolean
   createdAt?: Date | string
@@ -651,9 +679,10 @@ export type SubscriptionCreateManyUserInput = {
 
 export type SubscriptionUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   product?: Prisma.EnumProductCodeFieldUpdateOperationsInput | $Enums.ProductCode
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
-  stripeSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paddleSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentPeriodEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cancelAtPeriodEnd?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -664,9 +693,10 @@ export type SubscriptionUpdateWithoutUserInput = {
 export type SubscriptionUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   companyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   product?: Prisma.EnumProductCodeFieldUpdateOperationsInput | $Enums.ProductCode
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
-  stripeSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paddleSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentPeriodEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cancelAtPeriodEnd?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -676,9 +706,10 @@ export type SubscriptionUncheckedUpdateWithoutUserInput = {
 export type SubscriptionUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   companyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   product?: Prisma.EnumProductCodeFieldUpdateOperationsInput | $Enums.ProductCode
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
-  stripeSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paddleSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentPeriodEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cancelAtPeriodEnd?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -688,9 +719,10 @@ export type SubscriptionUncheckedUpdateManyWithoutUserInput = {
 export type SubscriptionCreateManyCompanyInput = {
   id?: string
   userId: string
+  paddleCustomerId?: string | null
   product: $Enums.ProductCode
   status: $Enums.SubscriptionStatus
-  stripeSubscriptionId?: string | null
+  paddleSubscriptionId?: string | null
   currentPeriodEnd: Date | string
   cancelAtPeriodEnd?: boolean
   createdAt?: Date | string
@@ -699,9 +731,10 @@ export type SubscriptionCreateManyCompanyInput = {
 
 export type SubscriptionUpdateWithoutCompanyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   product?: Prisma.EnumProductCodeFieldUpdateOperationsInput | $Enums.ProductCode
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
-  stripeSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paddleSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentPeriodEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cancelAtPeriodEnd?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -712,9 +745,10 @@ export type SubscriptionUpdateWithoutCompanyInput = {
 export type SubscriptionUncheckedUpdateWithoutCompanyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   product?: Prisma.EnumProductCodeFieldUpdateOperationsInput | $Enums.ProductCode
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
-  stripeSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paddleSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentPeriodEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cancelAtPeriodEnd?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -724,9 +758,10 @@ export type SubscriptionUncheckedUpdateWithoutCompanyInput = {
 export type SubscriptionUncheckedUpdateManyWithoutCompanyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   product?: Prisma.EnumProductCodeFieldUpdateOperationsInput | $Enums.ProductCode
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
-  stripeSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paddleSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentPeriodEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cancelAtPeriodEnd?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -739,9 +774,10 @@ export type SubscriptionSelect<ExtArgs extends runtime.Types.Extensions.Internal
   id?: boolean
   userId?: boolean
   companyId?: boolean
+  paddleCustomerId?: boolean
   product?: boolean
   status?: boolean
-  stripeSubscriptionId?: boolean
+  paddleSubscriptionId?: boolean
   currentPeriodEnd?: boolean
   cancelAtPeriodEnd?: boolean
   createdAt?: boolean
@@ -754,9 +790,10 @@ export type SubscriptionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   id?: boolean
   userId?: boolean
   companyId?: boolean
+  paddleCustomerId?: boolean
   product?: boolean
   status?: boolean
-  stripeSubscriptionId?: boolean
+  paddleSubscriptionId?: boolean
   currentPeriodEnd?: boolean
   cancelAtPeriodEnd?: boolean
   createdAt?: boolean
@@ -769,9 +806,10 @@ export type SubscriptionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   id?: boolean
   userId?: boolean
   companyId?: boolean
+  paddleCustomerId?: boolean
   product?: boolean
   status?: boolean
-  stripeSubscriptionId?: boolean
+  paddleSubscriptionId?: boolean
   currentPeriodEnd?: boolean
   cancelAtPeriodEnd?: boolean
   createdAt?: boolean
@@ -784,16 +822,17 @@ export type SubscriptionSelectScalar = {
   id?: boolean
   userId?: boolean
   companyId?: boolean
+  paddleCustomerId?: boolean
   product?: boolean
   status?: boolean
-  stripeSubscriptionId?: boolean
+  paddleSubscriptionId?: boolean
   currentPeriodEnd?: boolean
   cancelAtPeriodEnd?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type SubscriptionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "companyId" | "product" | "status" | "stripeSubscriptionId" | "currentPeriodEnd" | "cancelAtPeriodEnd" | "createdAt" | "updatedAt", ExtArgs["result"]["subscription"]>
+export type SubscriptionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "companyId" | "paddleCustomerId" | "product" | "status" | "paddleSubscriptionId" | "currentPeriodEnd" | "cancelAtPeriodEnd" | "createdAt" | "updatedAt", ExtArgs["result"]["subscription"]>
 export type SubscriptionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   company?: boolean | Prisma.Subscription$companyArgs<ExtArgs>
@@ -817,9 +856,10 @@ export type $SubscriptionPayload<ExtArgs extends runtime.Types.Extensions.Intern
     id: string
     userId: string
     companyId: string | null
+    paddleCustomerId: string | null
     product: $Enums.ProductCode
     status: $Enums.SubscriptionStatus
-    stripeSubscriptionId: string | null
+    paddleSubscriptionId: string | null
     currentPeriodEnd: Date
     cancelAtPeriodEnd: boolean
     createdAt: Date
@@ -1252,9 +1292,10 @@ export interface SubscriptionFieldRefs {
   readonly id: Prisma.FieldRef<"Subscription", 'String'>
   readonly userId: Prisma.FieldRef<"Subscription", 'String'>
   readonly companyId: Prisma.FieldRef<"Subscription", 'String'>
+  readonly paddleCustomerId: Prisma.FieldRef<"Subscription", 'String'>
   readonly product: Prisma.FieldRef<"Subscription", 'ProductCode'>
   readonly status: Prisma.FieldRef<"Subscription", 'SubscriptionStatus'>
-  readonly stripeSubscriptionId: Prisma.FieldRef<"Subscription", 'String'>
+  readonly paddleSubscriptionId: Prisma.FieldRef<"Subscription", 'String'>
   readonly currentPeriodEnd: Prisma.FieldRef<"Subscription", 'DateTime'>
   readonly cancelAtPeriodEnd: Prisma.FieldRef<"Subscription", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Subscription", 'DateTime'>

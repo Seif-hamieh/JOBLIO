@@ -11,12 +11,14 @@ import {
   paddleClientConfig,
   priorityApplicationPlanOptions,
   profileBoostPlanOptions,
+  subscriptionPlanOptions,
   urgentHirePlanOptions,
 } from "@/server/paddle";
 import { FeatureJobPicker, PaddlePaymentLink } from "@/components/jobs/feature-job-button";
 import { ProfileBoostPicker } from "@/components/billing/profile-boost-button";
 import { PriorityApplicationPicker } from "@/components/billing/priority-application-button";
 import { UrgentHirePicker } from "@/components/billing/urgent-hire-button";
+import { SubscriptionPicker } from "@/components/billing/subscription-picker";
 import { BuyButton, PromoteJobBuy } from "@/components/billing/buy-button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/misc";
@@ -68,6 +70,9 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
   // Urgent Hire is independent of Featured: open jobs this member may flag that aren't urgent yet.
   const urgentPlans = paddleConfig ? urgentHirePlanOptions() : [];
   const urgentable = jobs.filter((j) => canMarkJobUrgent(viewer, j)).map(({ id, title }) => ({ id, title }));
+  // Subscriptions (Paddle): monthly + yearly per product.
+  const seekerProPlans = paddleConfig ? subscriptionPlanOptions("JOB_SEEKER_PRO") : [];
+  const companyPremiumPlans = paddleConfig ? subscriptionPlanOptions("COMPANY_PREMIUM") : [];
   const target = typeof sp.target === "string" ? sp.target : null;
   const isAdmin = viewer?.company && (viewer.company.role === "OWNER" || viewer.company.role === "ADMIN");
 
@@ -144,6 +149,32 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
             <div className="mt-6">
               {paddleConfig && priorityPlans.length ? (
                 <PriorityApplicationPicker plans={priorityPlans} signedIn={signedIn} config={paddleConfig} />
+              ) : (
+                <p className="text-xs text-fg-subtle">{t("premium.disabled")}</p>
+              )}
+            </div>
+          </Card>
+          <Card className="flex flex-col p-6">
+            <div className="flex items-center gap-1.5 text-sm font-semibold text-aurora-fg">
+              <Crown className="size-4" /> {name("JOB_SEEKER_PRO")}
+            </div>
+            {seekerProPlans.length ? (
+              <Price amount={t("premium.fromPrice", { price: f.money(Math.min(...seekerProPlans.map((p) => p.amount)), "usd") })} suffix="" />
+            ) : (
+              <Price amount={price("JOB_SEEKER_PRO")} suffix={t("premium.perMonth")} />
+            )}
+            <p className="mt-1 text-sm text-fg-muted">{tagline("JOB_SEEKER_PRO")}</p>
+            <Features items={features("JOB_SEEKER_PRO")} tone="text-aurora" />
+            <div className="mt-6">
+              {paddleConfig && seekerProPlans.length ? (
+                <SubscriptionPicker
+                  product="JOB_SEEKER_PRO"
+                  plans={seekerProPlans}
+                  config={paddleConfig}
+                  signedIn={signedIn}
+                  isSubscribed={has.has("JOB_SEEKER_PRO")}
+                  manageHref="/settings/billing"
+                />
               ) : (
                 <p className="text-xs text-fg-subtle">{t("premium.disabled")}</p>
               )}
@@ -299,6 +330,43 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
                   <p className="text-xs text-fg-subtle">{t("premium.disabled")}</p>
                 ) : (
                   <p className="text-xs text-fg-subtle">{t("premium.workspacesOnly")}</p>
+                )}
+              </div>
+            </Card>
+          </div>
+          <div id="COMPANY_PREMIUM" className="scroll-mt-24">
+            <Card className="flex h-full flex-col p-6">
+              <div className="flex items-center gap-1.5 text-sm font-semibold text-ember-fg">
+                <Crown className="size-4" /> {name("COMPANY_PREMIUM")}
+              </div>
+              {companyPremiumPlans.length ? (
+                <Price
+                  amount={t("premium.fromPrice", { price: f.money(Math.min(...companyPremiumPlans.map((p) => p.amount)), "usd") })}
+                  suffix=""
+                />
+              ) : (
+                <Price amount={price("COMPANY_PREMIUM")} suffix={t("premium.perMonth")} />
+              )}
+              <p className="mt-1 text-sm text-fg-muted">{tagline("COMPANY_PREMIUM")}</p>
+              <Features items={features("COMPANY_PREMIUM")} tone="text-ember" />
+              <div className="mt-6">
+                {!viewer?.company ? (
+                  <Link href={viewer ? "/recruiter/setup" : "/register?intent=RECRUITER"} className={buttonClasses({ variant: "outline", className: "w-full" })}>
+                    {t("premium.createWorkspace")}
+                  </Link>
+                ) : !isAdmin && !has.has("COMPANY_PREMIUM") ? (
+                  <p className="text-xs text-fg-subtle">{t("premium.adminsOnly")}</p>
+                ) : paddleConfig && companyPremiumPlans.length ? (
+                  <SubscriptionPicker
+                    product="COMPANY_PREMIUM"
+                    plans={companyPremiumPlans}
+                    config={paddleConfig}
+                    signedIn={signedIn}
+                    isSubscribed={has.has("COMPANY_PREMIUM")}
+                    manageHref="/settings/billing"
+                  />
+                ) : (
+                  <p className="text-xs text-fg-subtle">{t("premium.disabled")}</p>
                 )}
               </div>
             </Card>

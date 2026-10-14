@@ -3,16 +3,24 @@ import { z } from "zod";
 import { getViewer } from "@/server/session";
 import { ActionError, fail, localizeState } from "@/server/action";
 import { LIMITS, rateLimit } from "@/server/rate-limit";
-import { startFeaturedJobCheckout, startPriorityApplicationCheckout, startProfileBoostCheckout, startUrgentHireCheckout } from "@/server/paddle";
+import {
+  startFeaturedJobCheckout,
+  startPriorityApplicationCheckout,
+  startProfileBoostCheckout,
+  startSubscriptionCheckout,
+  startUrgentHireCheckout,
+} from "@/server/paddle";
 import { getI18n } from "@/i18n/server";
 import { k } from "@/i18n/message";
 import {
   FEATURED_JOB_PLAN_CODES,
   PRIORITY_APPLICATION_PLAN_CODES,
   PROFILE_BOOST_PLAN_CODES,
+  SUBSCRIPTION_PLAN_CODES,
   URGENT_HIRE_PLAN_CODES,
   type PriorityApplicationPlanCode,
   type ProfileBoostPlanCode,
+  type SubscriptionPlanCode,
   type UrgentHirePlanCode,
 } from "@/lib/billing/products";
 
@@ -22,7 +30,9 @@ const body = z
   .object({
     // Featured Job needs the job; Profile Boost is for the member's own profile.
     jobId: z.string().min(1).max(40).optional(),
-    planCode: z.enum([...FEATURED_JOB_PLAN_CODES, ...PROFILE_BOOST_PLAN_CODES, ...URGENT_HIRE_PLAN_CODES, ...PRIORITY_APPLICATION_PLAN_CODES]).optional(),
+    planCode: z
+      .enum([...FEATURED_JOB_PLAN_CODES, ...PROFILE_BOOST_PLAN_CODES, ...URGENT_HIRE_PLAN_CODES, ...PRIORITY_APPLICATION_PLAN_CODES, ...SUBSCRIPTION_PLAN_CODES])
+      .optional(),
     // Pages still open from before the plans existed send only productCode: treat it as the 30-day plan.
     productCode: z.literal("FEATURED_JOB").optional(),
   })
@@ -31,8 +41,10 @@ const body = z
 const isProfileBoost = (code: string | undefined): code is ProfileBoostPlanCode => !!code && (PROFILE_BOOST_PLAN_CODES as string[]).includes(code);
 const isUrgentHire = (code: string | undefined): code is UrgentHirePlanCode => !!code && (URGENT_HIRE_PLAN_CODES as string[]).includes(code);
 const isPriorityApplication = (code: string | undefined): code is PriorityApplicationPlanCode => !!code && (PRIORITY_APPLICATION_PLAN_CODES as string[]).includes(code);
+const isSubscription = (code: string | undefined): code is SubscriptionPlanCode => !!code && (SUBSCRIPTION_PLAN_CODES as string[]).includes(code);
 
-// POST /api/checkout { jobId, planCode } (Featured Job, Urgent Hire) or { planCode } (Profile Boost, Priority Application) → { transactionId, checkoutUrl }
+// POST /api/checkout { jobId, planCode } (Featured Job, Urgent Hire) or { planCode } (Profile Boost, Priority Application,
+// subscriptions — Company Premium takes the company from the viewer) → { transactionId, checkoutUrl }
 // Signed-in members only; the job must be theirs (poster or company admin). The Paddle
 // API key stays on the server — the browser opens the checkout with the transaction id.
 export async function POST(req: Request) {
@@ -53,16 +65,18 @@ export async function POST(req: Request) {
   if (!parsed.success) return error(k("msg.error"), 400);
 
   const { jobId, planCode } = parsed.data;
-  if (!isProfileBoost(planCode) && !isPriorityApplication(planCode) && !jobId) return error(k("msg.error"), 400);
+  if (!isProfileBoost(planCode) && !isPriorityApplication(planCode) && !isSubscription(planCode) && !jobId) return error(k("msg.error"), 400);
 
   try {
-    const { transactionId, checkoutUrl } = isProfileBoost(planCode)
-      ? await startProfileBoostCheckout(viewer, planCode)
-      : isPriorityApplication(planCode)
-        ? await startPriorityApplicationCheckout({ userId: viewer.id, planCode })
-        : isUrgentHire(planCode)
-          ? await startUrgentHireCheckout(viewer, jobId!, planCode)
-          : await startFeaturedJobCheckout(viewer, jobId!, planCode ?? "FEATURED_JOB_30D");
+    const { transactionId, checkoutUrl } = isSubscription(planCode)
+      ? await startSubscriptionCheckout({ viewer, planCode })
+      : isProfileBoost(planCode)
+        ? await startProfileBoostCheckout(viewer, planCode)
+        : isPriorityApplication(planCode)
+          ? await startPriorityApplicationCheckout({ userId: viewer.id, planCode })
+          : isUrgentHire(planCode)
+            ? await startUrgentHireCheckout(viewer, jobId!, planCode)
+            : await startFeaturedJobCheckout(viewer, jobId!, planCode ?? "FEATURED_JOB_30D");
     return NextResponse.json({ transactionId, checkoutUrl });
   } catch (err) {
     if (err instanceof ActionError) return error(err.message, 400);

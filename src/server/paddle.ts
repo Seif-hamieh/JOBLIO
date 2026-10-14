@@ -10,11 +10,15 @@ import {
   PRIORITY_APPLICATION_PLANS,
   PROFILE_BOOST_PLANS,
   PRODUCTS,
+  SUBSCRIPTION_PLANS,
   URGENT_HIRE_PLANS,
+  findSubscriptionPlan,
   type FeaturedJobPlan,
   type FeaturedJobPlanCode,
   type PriorityApplicationPlanCode,
   type ProfileBoostPlanCode,
+  type SubscriptionPlanCode,
+  type SubscriptionProductCode,
   type UrgentHirePlanCode,
 } from "@/lib/billing/products";
 
@@ -310,4 +314,150 @@ export async function startUrgentHireCheckout(viewer: Viewer, jobId: string, pla
     await db.payment.update({ where: { id: payment.id }, data: { status: "FAILED" } });
     throw new ActionError("@msg.checkoutFailed");
   }
+}
+
+// ── Subscriptions (Paddle, recurring) ───────────────────────────────────────
+// Job Seeker Pro (member) and Company Premium (company owners/admins). Paddle owns the
+// subscription: checkout only creates the first transaction; the webhook mirrors the
+// subscription (subscription.*) and records each charge as a Payment (transaction.completed).
+
+/** A product's plans (monthly + yearly) whose Paddle price is configured — no price IDs. */
+export function subscriptionPlanOptions(product: SubscriptionProductCode) {
+  return SUBSCRIPTION_PLANS.filter((p) => p.product === product && p.priceId).map(({ code, interval, amount }) => ({ code, interval, amount }));
+}
+
+const LIVE_SUBSCRIPTION = ["ACTIVE", "TRIALING", "PAST_DUE"] as const;
+
+/** Creates the first Paddle transaction for a subscription plan. No Payment row yet — the webhook records each charge. */
+export async function startSubscriptionCheckout({ viewer, planCode }: { viewer: Viewer; planCode: SubscriptionPlanCode }) {
+  const p = paddle();
+  if (!p || !process.env.PADDLE_CLIENT_TOKEN) throw new ActionError("@msg.paymentsOff");
+  const plan = findSubscriptionPlan(planCode);
+  if (!plan?.priceId) throw new ActionError("@msg.planUnavailable");
+
+  // Company Premium belongs to the company: owners/admins only.
+  let companyId: string | null = null;
+  if (plan.product === "COMPANY_PREMIUM") {
+    if (!viewer.company) throw new ActionError("@msg.needWorkspaceProduct");
+    if (!canManageCompany(viewer, viewer.company.id)) throw new ActionError("@msg.adminsOnlyUpgrade");
+    companyId = viewer.company.id;
+  }
+  const active = await db.subscription.findFirst({
+    where: { product: plan.product, status: { in: [...LIVE_SUBSCRIPTION] }, currentPeriodEnd: { gt: new Date() }, ...(companyId ? { companyId } : { userId: viewer.id }) },
+    select: { id: true },
+  });
+  if (active) throw new ActionError("@msg.alreadyHavePlan");
+
+  try {
+    const transaction = await p.transactions.create({
+      items: [{ priceId: plan.priceId, quantity: 1 }],
+      customData: { userId: viewer.id, product: plan.product, planCode: plan.code, interval: plan.interval, ...(companyId && { companyId }) },
+    });
+    return { transactionId: transaction.id, checkoutUrl: transaction.checkout?.url ?? null };
+  } catch (err) {
+    console.error("[paddle] subscription transaction create failed", err);
+    throw new ActionError("@msg.checkoutFailed");
+  }
+}
+
+/** e.g. "Job Seeker Pro · Monthly" */
+export function subscriptionDescription(product: SubscriptionProductCode, interval: "month" | "year") {
+  return `${PRODUCTS[product].name} · ${interval === "month" ? "Monthly" : "Yearly"}`;
+}
+
+type SubscriptionCustomData = { userId: string; product: SubscriptionProductCode; companyId: string | null };
+
+/** The checkout's custom_data (Paddle copies it onto the subscription), validated. */
+function subscriptionCustomData(customData: unknown): SubscriptionCustomData | null {
+  const d = (customData ?? {}) as { userId?: unknown; product?: unknown; companyId?: unknown };
+  if (typeof d.userId !== "string" || (d.product !== "JOB_SEEKER_PRO" && d.product !== "COMPANY_PREMIUM")) return null;
+  return { userId: d.userId, product: d.product, companyId: typeof d.companyId === "string" ? d.companyId : null };
+}
+
+const SUBSCRIPTION_STATUS = { active: "ACTIVE", trialing: "TRIALING", past_due: "PAST_DUE", paused: "PAST_DUE", canceled: "CANCELED" } as const;
+
+type PaddleSubscriptionEvent = {
+  id: string;
+  status: string;
+  customerId: string;
+  customData: unknown;
+  currentBillingPeriod: { endsAt: string } | null;
+  scheduledChange: { action: string } | null;
+};
+
+/**
+ * Mirrors a Paddle subscription (subscription.created/activated/updated/past_due/canceled) into our
+ * Subscription table, keyed by paddleSubscriptionId — idempotent and safe for out-of-order events.
+ * Company Premium also keeps company.premiumUntil in sync.
+ */
+export async function syncPaddleSubscription(sub: PaddleSubscriptionEvent) {
+  const status = SUBSCRIPTION_STATUS[sub.status as keyof typeof SUBSCRIPTION_STATUS] ?? "PAST_DUE";
+  const currentPeriodEnd = sub.currentBillingPeriod ? new Date(sub.currentBillingPeriod.endsAt) : new Date();
+  const fields = { status, currentPeriodEnd, cancelAtPeriodEnd: sub.scheduledChange?.action === "cancel", paddleCustomerId: sub.customerId };
+
+  const data = subscriptionCustomData(sub.customData);
+  let row: { product: string; companyId: string | null } | null = null;
+  if (data && (await db.user.findUnique({ where: { id: data.userId }, select: { id: true } }))) {
+    row = await db.subscription.upsert({
+      where: { paddleSubscriptionId: sub.id },
+      update: fields,
+      create: { ...fields, userId: data.userId, companyId: data.companyId, product: data.product, paddleSubscriptionId: sub.id },
+      select: { product: true, companyId: true },
+    });
+  } else {
+    // No usable custom_data: only update a subscription we already know.
+    const updated = await db.subscription.updateMany({ where: { paddleSubscriptionId: sub.id }, data: fields });
+    if (!updated.count) {
+      console.warn("[paddle webhook] unknown subscription without custom_data", sub.id);
+      return;
+    }
+    row = await db.subscription.findUnique({ where: { paddleSubscriptionId: sub.id }, select: { product: true, companyId: true } });
+  }
+
+  if (row?.product === "COMPANY_PREMIUM" && row.companyId) {
+    await db.company.update({ where: { id: row.companyId }, data: { premiumUntil: status === "CANCELED" ? new Date() : currentPeriodEnd } });
+  }
+}
+
+type PaddleSubscriptionTransaction = {
+  id: string;
+  subscriptionId: string | null;
+  invoiceNumber: string | null;
+  currencyCode: string;
+  customData: unknown;
+  items: { price?: { id?: string | null } | null }[];
+  details: { totals: { grandTotal?: string | null; total?: string | null } | null } | null;
+};
+
+/** Records a completed subscription charge (first payment and every renewal) as a SUCCEEDED Payment. Idempotent. */
+export async function recordSubscriptionPayment(txn: PaddleSubscriptionTransaction) {
+  if (!txn.subscriptionId) return false;
+  const plan = SUBSCRIPTION_PLANS.find((p) => p.priceId && txn.items.some((i) => i.price?.id === p.priceId));
+  const local = await db.subscription.findUnique({ where: { paddleSubscriptionId: txn.subscriptionId }, select: { userId: true, companyId: true, product: true } });
+  const data = subscriptionCustomData(txn.customData);
+  const userId = local?.userId ?? data?.userId;
+  const product = (plan?.product ?? local?.product ?? data?.product) as SubscriptionProductCode | undefined;
+  if (!userId || !product || !(await db.user.findUnique({ where: { id: userId }, select: { id: true } }))) {
+    console.warn("[paddle webhook] subscription charge without a known member", txn.id);
+    return true;
+  }
+  const totals = txn.details?.totals;
+  const amount = Number(totals?.grandTotal ?? totals?.total);
+  const invoiceNumber = txn.invoiceNumber ?? txn.id;
+  await db.payment.upsert({
+    where: { invoiceNumber },
+    update: {},
+    create: {
+      userId,
+      companyId: local?.companyId ?? data?.companyId ?? null,
+      product,
+      description: subscriptionDescription(product, plan?.interval ?? "month"),
+      amount: Number.isFinite(amount) ? amount : (plan?.amount ?? PRODUCTS[product].amount),
+      currency: txn.currencyCode.toLowerCase(),
+      status: "SUCCEEDED",
+      invoiceNumber,
+      paidAt: new Date(),
+    },
+  });
+  return true;
 }

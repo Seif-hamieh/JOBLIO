@@ -1,3 +1,4 @@
+// DEPRECATED: Stripe integration removed. Kept for historical reference. Safe to delete after Paddle migration is verified.
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { db } from "@/server/db";
@@ -45,7 +46,7 @@ async function handle(event: Stripe.Event) {
       if (invoice.billing_reason !== "subscription_cycle") return;
       const subscriptionId = idOf(invoice.parent?.subscription_details?.subscription);
       if (!subscriptionId) return;
-      const local = await db.subscription.findUnique({ where: { stripeSubscriptionId: subscriptionId } });
+      const local = await db.subscription.findUnique({ where: { paddleSubscriptionId: subscriptionId } });
       if (!local) return;
       const product = PRODUCTS[local.product];
       await db.payment.upsert({
