@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useI18n } from "@/i18n/client";
-import { BadgeCheck, CheckCircle2, MapPin, Megaphone, Star, Users } from "lucide-react";
+import { BadgeCheck, CheckCircle2, MapPin, Megaphone, Star, Users, Zap } from "lucide-react";
 import type { JobCardWithMatch } from "@/server/services/jobs";
 import { CompanyLogo } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -24,6 +24,7 @@ export function JobCard({
   const { t, f } = useI18n();
   const now = Date.now();
   const featured = !!job.featuredUntil && job.featuredUntil.getTime() > now;
+  const urgent = !!job.urgentUntil && job.urgentUntil.getTime() > now;
   const salary = f.salary(job.salaryMin, job.salaryMax, job.salaryCurrency, job.salaryPeriod);
   const location = job.workMode === "REMOTE" ? t("common.remote") : f.location(job.city, job.countryCode);
   return (
@@ -32,6 +33,7 @@ export function JobCard({
         "surface surface-hover group relative p-5",
         placement === "sponsored" && "ring-1 ring-aurora/30",
         featured && placement !== "sponsored" && "ring-1 ring-ember/35",
+        urgent && "ring-1 ring-red-500/40",
         className,
       )}
     >
@@ -47,6 +49,11 @@ export function JobCard({
             {featured && placement !== "sponsored" && (
               <Badge tone="ember" size="xs">
                 <Star /> {t("common.featured")}
+              </Badge>
+            )}
+            {urgent && (
+              <Badge tone="ember" size="xs">
+                <Zap /> {t("common.urgent")}
               </Badge>
             )}
             {job.applied && (

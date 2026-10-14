@@ -18,6 +18,7 @@ export const jobCardSelect = {
   publishedAt: true,
   featuredUntil: true,
   sponsoredUntil: true,
+  urgentUntil: true,
   applicationCount: true,
   status: true,
   company: { select: { id: true, slug: true, name: true, logoUrl: true, verified: true, brandColor: true } },
