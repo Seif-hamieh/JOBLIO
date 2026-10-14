@@ -66,6 +66,7 @@ export const ar: Dictionary = {
     showResults: "عرض النتائج",
     applied: "تم التقديم",
     featured: "مميّزة",
+    urgent: "عاجل",
     sponsored: "مموّلة",
     premium: "بريميوم",
     verified: "موثّق",

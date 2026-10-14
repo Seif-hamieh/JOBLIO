@@ -64,6 +64,7 @@ export const en = {
     showResults: "Show results",
     applied: "Applied",
     featured: "Featured",
+    urgent: "Urgent",
     sponsored: "Sponsored",
     premium: "Premium",
     verified: "Verified",
