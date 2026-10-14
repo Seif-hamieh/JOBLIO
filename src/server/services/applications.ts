@@ -59,11 +59,20 @@ export async function applyToJob(userId: string, jobId: string, input: { coverLe
       matchSnapshot: JSON.parse(JSON.stringify(match)),
       viewedAt: null,
       rating: null,
+      priorityAt: null,
       createdAt: new Date(),
     };
-    const app = existing
+    let app = existing
       ? await tx.application.update({ where: { id: existing.id }, data })
       : await tx.application.create({ data: { ...data, jobId, applicantId: userId } });
+    // Priority Application: spend one credit if the member has any (a single conditional
+    // UPDATE, so two simultaneous applications can't spend the same credit) and put this
+    // application at the top of the recruiter's "Applied" column.
+    const spent = await tx.user.updateMany({ where: { id: userId, priorityCredits: { gt: 0 } }, data: { priorityCredits: { decrement: 1 } } });
+    if (spent.count) {
+      const top = await tx.application.findFirst({ where: { jobId, stage: "APPLIED", id: { not: app.id } }, orderBy: { stagePosition: "asc" }, select: { stagePosition: true } });
+      app = await tx.application.update({ where: { id: app.id }, data: { priorityAt: new Date(), stagePosition: Math.min(top?.stagePosition ?? data.stagePosition, data.stagePosition) - 1024 } });
+    }
     await tx.applicationEvent.create({ data: { applicationId: app.id, actorId: userId, toStatus: "APPLIED", toStage: "APPLIED" } });
     await tx.job.update({ where: { id: jobId }, data: { applicationCount: { increment: existing ? 0 : 1 } } });
     await tx.jobDailyStat.upsert({

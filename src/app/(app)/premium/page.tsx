@@ -4,9 +4,18 @@ import { Building2, Check, Crown, Globe, Info, Megaphone, Rocket, ShieldCheck, S
 import { getViewer } from "@/server/session";
 import { db } from "@/server/db";
 import { paymentsMode } from "@/server/billing";
-import { canFeatureJob, canMarkJobUrgent, featuredJobPlanOptions, paddleClientConfig, profileBoostPlanOptions, urgentHirePlanOptions } from "@/server/paddle";
+import {
+  canFeatureJob,
+  canMarkJobUrgent,
+  featuredJobPlanOptions,
+  paddleClientConfig,
+  priorityApplicationPlanOptions,
+  profileBoostPlanOptions,
+  urgentHirePlanOptions,
+} from "@/server/paddle";
 import { FeatureJobPicker, PaddlePaymentLink } from "@/components/jobs/feature-job-button";
 import { ProfileBoostPicker } from "@/components/billing/profile-boost-button";
+import { PriorityApplicationPicker } from "@/components/billing/priority-application-button";
 import { UrgentHirePicker } from "@/components/billing/urgent-hire-button";
 import { BuyButton, PromoteJobBuy } from "@/components/billing/buy-button";
 import { Badge } from "@/components/ui/badge";
@@ -54,6 +63,7 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
   const paddleConfig = paddleClientConfig();
   const featuredPlans = paddleConfig ? featuredJobPlanOptions() : [];
   const boostPlans = paddleConfig ? profileBoostPlanOptions() : [];
+  const priorityPlans = paddleConfig ? priorityApplicationPlanOptions() : [];
   const featurable = jobs.filter((j) => canFeatureJob(viewer, j)).map(({ id, title }) => ({ id, title }));
   // Urgent Hire is independent of Featured: open jobs this member may flag that aren't urgent yet.
   const urgentPlans = paddleConfig ? urgentHirePlanOptions() : [];
@@ -115,6 +125,25 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
             <div className="mt-6">
               {paddleConfig && boostPlans.length ? (
                 <ProfileBoostPicker plans={boostPlans} signedIn={signedIn} config={paddleConfig} />
+              ) : (
+                <p className="text-xs text-fg-subtle">{t("premium.disabled")}</p>
+              )}
+            </div>
+          </Card>
+          <Card className="flex flex-col p-6">
+            <div className="flex items-center gap-1.5 text-sm font-semibold text-brand-soft-fg">
+              <Zap className="size-4" /> {name("PRIORITY_APPLICATION")}
+            </div>
+            {priorityPlans.length ? (
+              <Price amount={t("premium.fromPrice", { price: f.money(Math.min(...priorityPlans.map((p) => p.amount)), "usd") })} suffix="" />
+            ) : (
+              <Price amount={price("PRIORITY_APPLICATION")} suffix="" />
+            )}
+            <p className="mt-1 text-sm text-fg-muted">{tagline("PRIORITY_APPLICATION")}</p>
+            <Features items={features("PRIORITY_APPLICATION")} />
+            <div className="mt-6">
+              {paddleConfig && priorityPlans.length ? (
+                <PriorityApplicationPicker plans={priorityPlans} signedIn={signedIn} config={paddleConfig} />
               ) : (
                 <p className="text-xs text-fg-subtle">{t("premium.disabled")}</p>
               )}

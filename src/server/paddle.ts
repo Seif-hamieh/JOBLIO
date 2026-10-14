@@ -7,11 +7,13 @@ import { canManageCompany } from "@/server/session";
 import { nextInvoiceNumber } from "@/server/billing";
 import {
   FEATURED_JOB_PLANS,
+  PRIORITY_APPLICATION_PLANS,
   PROFILE_BOOST_PLANS,
   PRODUCTS,
   URGENT_HIRE_PLANS,
   type FeaturedJobPlan,
   type FeaturedJobPlanCode,
+  type PriorityApplicationPlanCode,
   type ProfileBoostPlanCode,
   type UrgentHirePlanCode,
 } from "@/lib/billing/products";
@@ -177,6 +179,64 @@ export async function startProfileBoostCheckout(viewer: Viewer, planCode: Profil
     const transaction = await p.transactions.create({
       items: [{ priceId: plan.priceId!, quantity: 1 }],
       customData: { paymentId: payment.id, userId: viewer.id, product: "PROFILE_BOOST", planCode: plan.code, durationDays: plan.durationDays },
+    });
+    return { transactionId: transaction.id, checkoutUrl: transaction.checkout?.url ?? null, paymentId: payment.id };
+  } catch (err) {
+    console.error("[paddle] transaction create failed", err);
+    await db.payment.update({ where: { id: payment.id }, data: { status: "FAILED" } });
+    throw new ActionError("@msg.checkoutFailed");
+  }
+}
+
+// ── Priority Application (Paddle) ───────────────────────────────────────────
+// Same flow as Profile Boost (no target): a PENDING PRIORITY_APPLICATION payment +
+// a Paddle transaction; the webhook adds the pack's credits to the member.
+
+/** Priority Application packs whose Paddle price is configured. */
+export function priorityApplicationPlans() {
+  return PRIORITY_APPLICATION_PLANS.filter((p) => p.priceId);
+}
+
+/** Packs as shown in the browser — no price IDs. */
+export function priorityApplicationPlanOptions() {
+  return priorityApplicationPlans().map(({ code, credits, amount }) => ({ code, credits, amount }));
+}
+
+const PACK_CREDITS = new Set([1, 5, 10]);
+
+/** Credits bought: the price that was actually paid, else custom_data.credits, else null (description parser). */
+export function priorityApplicationPaidCredits(items: { price?: { id?: string | null } | null }[] | null | undefined, customData: unknown): number | null {
+  for (const item of items ?? []) {
+    const plan = priorityApplicationPlans().find((p) => p.priceId === item.price?.id);
+    if (plan) return plan.credits;
+  }
+  const credits = Number((customData as { credits?: unknown } | null)?.credits);
+  return PACK_CREDITS.has(credits) ? credits : null;
+}
+
+/** Creates a PENDING Priority Application payment and a Paddle transaction for the chosen pack. */
+export async function startPriorityApplicationCheckout({ userId, planCode }: { userId: string; planCode: PriorityApplicationPlanCode }) {
+  const p = paddle();
+  if (!p || !process.env.PADDLE_CLIENT_TOKEN) throw new ActionError("@msg.paymentsOff");
+  const plan = priorityApplicationPlans().find((x) => x.code === planCode);
+  if (!plan) throw new ActionError("@msg.planUnavailable");
+
+  const payment = await db.payment.create({
+    data: {
+      userId,
+      product: "PRIORITY_APPLICATION",
+      description: `Priority Application · ${plan.credits} pack`,
+      amount: plan.amount,
+      currency: PRODUCTS.PRIORITY_APPLICATION.currency,
+      invoiceNumber: await nextInvoiceNumber(),
+      targetId: null,
+    },
+  });
+
+  try {
+    const transaction = await p.transactions.create({
+      items: [{ priceId: plan.priceId!, quantity: 1 }],
+      customData: { paymentId: payment.id, userId, product: "PRIORITY_APPLICATION", planCode: plan.code, credits: plan.credits },
     });
     return { transactionId: transaction.id, checkoutUrl: transaction.checkout?.url ?? null, paymentId: payment.id };
   } catch (err) {

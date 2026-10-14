@@ -5,7 +5,7 @@ import { ActionError } from "@/server/action";
 import type { Viewer } from "@/server/session";
 import { notify } from "@/server/services/notifications";
 import { k } from "@/i18n/message";
-import { PRODUCTS, type ProductCode } from "@/lib/billing/products";
+import { PRODUCTS, priorityApplicationCredits, type ProductCode } from "@/lib/billing/products";
 import { absoluteUrl, formatMoney } from "@/lib/utils";
 
 // Payments go through Stripe Checkout: card details are entered on Stripe's
@@ -144,6 +144,8 @@ export async function fulfillPayment(
     receiptUrl?: string | null;
     /** Featured Job plan length (Paddle plans: 7/14/30). Defaults to the product duration. */
     days?: number | null;
+    /** Priority Application credit count (1/5/10). Overrides the description parser. */
+    credits?: number | null;
   },
 ) {
   const payment = await db.payment.findUnique({ where: { id: paymentId } });
@@ -192,6 +194,14 @@ export async function fulfillPayment(
         const endsAt = addDays(start, stripeData.days ?? product.days!);
         await tx.jobPromotion.create({ data: { jobId: payment.targetId!, kind: "URGENT", startsAt: start, endsAt, paymentId: payment.id } });
         await tx.job.update({ where: { id: payment.targetId! }, data: { urgentUntil: endsAt } });
+        break;
+      }
+      case "PRIORITY_APPLICATION": {
+        const credits = stripeData.credits ?? priorityApplicationCredits(payment) ?? 1;
+        await tx.user.update({
+          where: { id: payment.userId },
+          data: { priorityCredits: { increment: credits } },
+        });
         break;
       }
       case "PREMIUM_PORTFOLIO":
