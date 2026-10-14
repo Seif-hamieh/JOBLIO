@@ -71,6 +71,7 @@ export type JobMinAggregateOutputType = {
   closesAt: Date | null
   featuredUntil: Date | null
   sponsoredUntil: Date | null
+  urgentUntil: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -102,6 +103,7 @@ export type JobMaxAggregateOutputType = {
   closesAt: Date | null
   featuredUntil: Date | null
   sponsoredUntil: Date | null
+  urgentUntil: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -136,6 +138,7 @@ export type JobCountAggregateOutputType = {
   closesAt: number
   featuredUntil: number
   sponsoredUntil: number
+  urgentUntil: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -187,6 +190,7 @@ export type JobMinAggregateInputType = {
   closesAt?: true
   featuredUntil?: true
   sponsoredUntil?: true
+  urgentUntil?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -218,6 +222,7 @@ export type JobMaxAggregateInputType = {
   closesAt?: true
   featuredUntil?: true
   sponsoredUntil?: true
+  urgentUntil?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -252,6 +257,7 @@ export type JobCountAggregateInputType = {
   closesAt?: true
   featuredUntil?: true
   sponsoredUntil?: true
+  urgentUntil?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -373,6 +379,7 @@ export type JobGroupByOutputType = {
   closesAt: Date | null
   featuredUntil: Date | null
   sponsoredUntil: Date | null
+  urgentUntil: Date | null
   createdAt: Date
   updatedAt: Date
   _count: JobCountAggregateOutputType | null
@@ -430,6 +437,7 @@ export type JobWhereInput = {
   closesAt?: Prisma.DateTimeNullableFilter<"Job"> | Date | string | null
   featuredUntil?: Prisma.DateTimeNullableFilter<"Job"> | Date | string | null
   sponsoredUntil?: Prisma.DateTimeNullableFilter<"Job"> | Date | string | null
+  urgentUntil?: Prisma.DateTimeNullableFilter<"Job"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Job"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Job"> | Date | string
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
@@ -476,6 +484,7 @@ export type JobOrderByWithRelationInput = {
   closesAt?: Prisma.SortOrderInput | Prisma.SortOrder
   featuredUntil?: Prisma.SortOrderInput | Prisma.SortOrder
   sponsoredUntil?: Prisma.SortOrderInput | Prisma.SortOrder
+  urgentUntil?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   company?: Prisma.CompanyOrderByWithRelationInput
@@ -525,6 +534,7 @@ export type JobWhereUniqueInput = Prisma.AtLeast<{
   closesAt?: Prisma.DateTimeNullableFilter<"Job"> | Date | string | null
   featuredUntil?: Prisma.DateTimeNullableFilter<"Job"> | Date | string | null
   sponsoredUntil?: Prisma.DateTimeNullableFilter<"Job"> | Date | string | null
+  urgentUntil?: Prisma.DateTimeNullableFilter<"Job"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Job"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Job"> | Date | string
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
@@ -571,6 +581,7 @@ export type JobOrderByWithAggregationInput = {
   closesAt?: Prisma.SortOrderInput | Prisma.SortOrder
   featuredUntil?: Prisma.SortOrderInput | Prisma.SortOrder
   sponsoredUntil?: Prisma.SortOrderInput | Prisma.SortOrder
+  urgentUntil?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.JobCountOrderByAggregateInput
@@ -613,6 +624,7 @@ export type JobScalarWhereWithAggregatesInput = {
   closesAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Job"> | Date | string | null
   featuredUntil?: Prisma.DateTimeNullableWithAggregatesFilter<"Job"> | Date | string | null
   sponsoredUntil?: Prisma.DateTimeNullableWithAggregatesFilter<"Job"> | Date | string | null
+  urgentUntil?: Prisma.DateTimeNullableWithAggregatesFilter<"Job"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Job"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Job"> | Date | string
 }
@@ -644,6 +656,7 @@ export type JobCreateInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutJobsInput
@@ -690,6 +703,7 @@ export type JobUncheckedCreateInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   skills?: Prisma.JobSkillUncheckedCreateNestedManyWithoutJobInput
@@ -730,6 +744,7 @@ export type JobUpdateInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutJobsNestedInput
@@ -776,6 +791,7 @@ export type JobUncheckedUpdateInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobSkillUncheckedUpdateManyWithoutJobNestedInput
@@ -819,6 +835,7 @@ export type JobCreateManyInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -850,6 +867,7 @@ export type JobUpdateManyMutationInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -884,6 +902,7 @@ export type JobUncheckedUpdateManyInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -928,6 +947,7 @@ export type JobCountOrderByAggregateInput = {
   closesAt?: Prisma.SortOrder
   featuredUntil?: Prisma.SortOrder
   sponsoredUntil?: Prisma.SortOrder
+  urgentUntil?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -968,6 +988,7 @@ export type JobMaxOrderByAggregateInput = {
   closesAt?: Prisma.SortOrder
   featuredUntil?: Prisma.SortOrder
   sponsoredUntil?: Prisma.SortOrder
+  urgentUntil?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -999,6 +1020,7 @@ export type JobMinOrderByAggregateInput = {
   closesAt?: Prisma.SortOrder
   featuredUntil?: Prisma.SortOrder
   sponsoredUntil?: Prisma.SortOrder
+  urgentUntil?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -1344,6 +1366,7 @@ export type JobCreateWithoutPostedByInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutJobsInput
@@ -1388,6 +1411,7 @@ export type JobUncheckedCreateWithoutPostedByInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   skills?: Prisma.JobSkillUncheckedCreateNestedManyWithoutJobInput
@@ -1460,6 +1484,7 @@ export type JobScalarWhereInput = {
   closesAt?: Prisma.DateTimeNullableFilter<"Job"> | Date | string | null
   featuredUntil?: Prisma.DateTimeNullableFilter<"Job"> | Date | string | null
   sponsoredUntil?: Prisma.DateTimeNullableFilter<"Job"> | Date | string | null
+  urgentUntil?: Prisma.DateTimeNullableFilter<"Job"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Job"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Job"> | Date | string
 }
@@ -1491,6 +1516,7 @@ export type JobCreateWithoutIndustryInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutJobsInput
@@ -1535,6 +1561,7 @@ export type JobUncheckedCreateWithoutIndustryInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   skills?: Prisma.JobSkillUncheckedCreateNestedManyWithoutJobInput
@@ -1601,6 +1628,7 @@ export type JobCreateWithoutCompanyInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   postedBy: Prisma.UserCreateNestedOneWithoutPostedJobsInput
@@ -1645,6 +1673,7 @@ export type JobUncheckedCreateWithoutCompanyInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   skills?: Prisma.JobSkillUncheckedCreateNestedManyWithoutJobInput
@@ -1711,6 +1740,7 @@ export type JobCreateWithoutSkillsInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutJobsInput
@@ -1756,6 +1786,7 @@ export type JobUncheckedCreateWithoutSkillsInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   languages?: Prisma.JobLanguageUncheckedCreateNestedManyWithoutJobInput
@@ -1811,6 +1842,7 @@ export type JobUpdateWithoutSkillsInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutJobsNestedInput
@@ -1856,6 +1888,7 @@ export type JobUncheckedUpdateWithoutSkillsInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   languages?: Prisma.JobLanguageUncheckedUpdateManyWithoutJobNestedInput
@@ -1895,6 +1928,7 @@ export type JobCreateWithoutLanguagesInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutJobsInput
@@ -1940,6 +1974,7 @@ export type JobUncheckedCreateWithoutLanguagesInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   skills?: Prisma.JobSkillUncheckedCreateNestedManyWithoutJobInput
@@ -1995,6 +2030,7 @@ export type JobUpdateWithoutLanguagesInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutJobsNestedInput
@@ -2040,6 +2076,7 @@ export type JobUncheckedUpdateWithoutLanguagesInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobSkillUncheckedUpdateManyWithoutJobNestedInput
@@ -2079,6 +2116,7 @@ export type JobCreateWithoutPromotionsInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutJobsInput
@@ -2124,6 +2162,7 @@ export type JobUncheckedCreateWithoutPromotionsInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   skills?: Prisma.JobSkillUncheckedCreateNestedManyWithoutJobInput
@@ -2179,6 +2218,7 @@ export type JobUpdateWithoutPromotionsInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutJobsNestedInput
@@ -2224,6 +2264,7 @@ export type JobUncheckedUpdateWithoutPromotionsInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobSkillUncheckedUpdateManyWithoutJobNestedInput
@@ -2263,6 +2304,7 @@ export type JobCreateWithoutDailyStatsInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutJobsInput
@@ -2308,6 +2350,7 @@ export type JobUncheckedCreateWithoutDailyStatsInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   skills?: Prisma.JobSkillUncheckedCreateNestedManyWithoutJobInput
@@ -2363,6 +2406,7 @@ export type JobUpdateWithoutDailyStatsInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutJobsNestedInput
@@ -2408,6 +2452,7 @@ export type JobUncheckedUpdateWithoutDailyStatsInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobSkillUncheckedUpdateManyWithoutJobNestedInput
@@ -2447,6 +2492,7 @@ export type JobCreateWithoutViewsInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutJobsInput
@@ -2492,6 +2538,7 @@ export type JobUncheckedCreateWithoutViewsInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   skills?: Prisma.JobSkillUncheckedCreateNestedManyWithoutJobInput
@@ -2547,6 +2594,7 @@ export type JobUpdateWithoutViewsInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutJobsNestedInput
@@ -2592,6 +2640,7 @@ export type JobUncheckedUpdateWithoutViewsInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobSkillUncheckedUpdateManyWithoutJobNestedInput
@@ -2631,6 +2680,7 @@ export type JobCreateWithoutSavedByInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutJobsInput
@@ -2676,6 +2726,7 @@ export type JobUncheckedCreateWithoutSavedByInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   skills?: Prisma.JobSkillUncheckedCreateNestedManyWithoutJobInput
@@ -2731,6 +2782,7 @@ export type JobUpdateWithoutSavedByInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutJobsNestedInput
@@ -2776,6 +2828,7 @@ export type JobUncheckedUpdateWithoutSavedByInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobSkillUncheckedUpdateManyWithoutJobNestedInput
@@ -2815,6 +2868,7 @@ export type JobCreateWithoutApplicationsInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutJobsInput
@@ -2860,6 +2914,7 @@ export type JobUncheckedCreateWithoutApplicationsInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   skills?: Prisma.JobSkillUncheckedCreateNestedManyWithoutJobInput
@@ -2915,6 +2970,7 @@ export type JobUpdateWithoutApplicationsInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutJobsNestedInput
@@ -2960,6 +3016,7 @@ export type JobUncheckedUpdateWithoutApplicationsInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobSkillUncheckedUpdateManyWithoutJobNestedInput
@@ -2999,6 +3056,7 @@ export type JobCreateWithoutPostsInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutJobsInput
@@ -3044,6 +3102,7 @@ export type JobUncheckedCreateWithoutPostsInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   skills?: Prisma.JobSkillUncheckedCreateNestedManyWithoutJobInput
@@ -3099,6 +3158,7 @@ export type JobUpdateWithoutPostsInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutJobsNestedInput
@@ -3144,6 +3204,7 @@ export type JobUncheckedUpdateWithoutPostsInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobSkillUncheckedUpdateManyWithoutJobNestedInput
@@ -3183,6 +3244,7 @@ export type JobCreateWithoutSharedInInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutJobsInput
@@ -3228,6 +3290,7 @@ export type JobUncheckedCreateWithoutSharedInInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   skills?: Prisma.JobSkillUncheckedCreateNestedManyWithoutJobInput
@@ -3283,6 +3346,7 @@ export type JobUpdateWithoutSharedInInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutJobsNestedInput
@@ -3328,6 +3392,7 @@ export type JobUncheckedUpdateWithoutSharedInInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobSkillUncheckedUpdateManyWithoutJobNestedInput
@@ -3369,6 +3434,7 @@ export type JobCreateManyPostedByInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -3400,6 +3466,7 @@ export type JobUpdateWithoutPostedByInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutJobsNestedInput
@@ -3444,6 +3511,7 @@ export type JobUncheckedUpdateWithoutPostedByInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobSkillUncheckedUpdateManyWithoutJobNestedInput
@@ -3486,6 +3554,7 @@ export type JobUncheckedUpdateManyWithoutPostedByInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -3519,6 +3588,7 @@ export type JobCreateManyIndustryInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -3550,6 +3620,7 @@ export type JobUpdateWithoutIndustryInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutJobsNestedInput
@@ -3594,6 +3665,7 @@ export type JobUncheckedUpdateWithoutIndustryInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobSkillUncheckedUpdateManyWithoutJobNestedInput
@@ -3636,6 +3708,7 @@ export type JobUncheckedUpdateManyWithoutIndustryInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -3669,6 +3742,7 @@ export type JobCreateManyCompanyInput = {
   closesAt?: Date | string | null
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -3700,6 +3774,7 @@ export type JobUpdateWithoutCompanyInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   postedBy?: Prisma.UserUpdateOneRequiredWithoutPostedJobsNestedInput
@@ -3744,6 +3819,7 @@ export type JobUncheckedUpdateWithoutCompanyInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobSkillUncheckedUpdateManyWithoutJobNestedInput
@@ -3786,6 +3862,7 @@ export type JobUncheckedUpdateManyWithoutCompanyInput = {
   closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -3923,6 +4000,7 @@ export type JobSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
   closesAt?: boolean
   featuredUntil?: boolean
   sponsoredUntil?: boolean
+  urgentUntil?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
@@ -3970,6 +4048,7 @@ export type JobSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extension
   closesAt?: boolean
   featuredUntil?: boolean
   sponsoredUntil?: boolean
+  urgentUntil?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
@@ -4007,6 +4086,7 @@ export type JobSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extension
   closesAt?: boolean
   featuredUntil?: boolean
   sponsoredUntil?: boolean
+  urgentUntil?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
@@ -4044,11 +4124,12 @@ export type JobSelectScalar = {
   closesAt?: boolean
   featuredUntil?: boolean
   sponsoredUntil?: boolean
+  urgentUntil?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type JobOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "companyId" | "postedById" | "title" | "summary" | "description" | "responsibilities" | "requirements" | "benefits" | "workMode" | "employmentType" | "experienceLevel" | "minYearsExperience" | "educationLevel" | "city" | "countryCode" | "salaryMin" | "salaryMax" | "salaryCurrency" | "salaryPeriod" | "industryId" | "status" | "applicationCount" | "viewCount" | "saveCount" | "publishedAt" | "closesAt" | "featuredUntil" | "sponsoredUntil" | "createdAt" | "updatedAt", ExtArgs["result"]["job"]>
+export type JobOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "companyId" | "postedById" | "title" | "summary" | "description" | "responsibilities" | "requirements" | "benefits" | "workMode" | "employmentType" | "experienceLevel" | "minYearsExperience" | "educationLevel" | "city" | "countryCode" | "salaryMin" | "salaryMax" | "salaryCurrency" | "salaryPeriod" | "industryId" | "status" | "applicationCount" | "viewCount" | "saveCount" | "publishedAt" | "closesAt" | "featuredUntil" | "sponsoredUntil" | "urgentUntil" | "createdAt" | "updatedAt", ExtArgs["result"]["job"]>
 export type JobInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   postedBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -4121,6 +4202,7 @@ export type $JobPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     closesAt: Date | null
     featuredUntil: Date | null
     sponsoredUntil: Date | null
+    urgentUntil: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["job"]>
@@ -4587,6 +4669,7 @@ export interface JobFieldRefs {
   readonly closesAt: Prisma.FieldRef<"Job", 'DateTime'>
   readonly featuredUntil: Prisma.FieldRef<"Job", 'DateTime'>
   readonly sponsoredUntil: Prisma.FieldRef<"Job", 'DateTime'>
+  readonly urgentUntil: Prisma.FieldRef<"Job", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Job", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Job", 'DateTime'>
 }

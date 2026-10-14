@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { EventName, type EventEntity } from "@paddle/paddle-node-sdk";
 import { db } from "@/server/db";
 import { fulfillPayment, markPaymentFailed } from "@/server/billing";
-import { featuredDays, paddle, profileBoostPaidDays } from "@/server/paddle";
+import { featuredDays, paddle, profileBoostPaidDays, urgentHirePaidDays } from "@/server/paddle";
 
 export const dynamic = "force-dynamic";
 
@@ -16,6 +16,7 @@ async function paymentFor(customData: unknown) {
   if (!payment) return null;
   if (payment.product === "FEATURED_JOB" && payment.targetId === data.jobId) return payment;
   if (payment.product === "PROFILE_BOOST" && payment.userId === data.userId) return payment;
+  if (payment.product === "URGENT_HIRE" && payment.targetId === data.jobId && payment.userId === data.userId) return payment;
   return null;
 }
 
@@ -35,7 +36,12 @@ async function handle(event: EventEntity) {
         await db.payment.update({ where: { id: payment.id }, data: { amount, currency: txn.currencyCode.toLowerCase() } });
       }
       // Idempotent: does nothing if this payment was already fulfilled.
-      const days = payment.product === "PROFILE_BOOST" ? profileBoostPaidDays(txn.items, txn.customData) : featuredDays(txn.items, txn.customData);
+      const days =
+        payment.product === "PROFILE_BOOST"
+          ? profileBoostPaidDays(txn.items, txn.customData)
+          : payment.product === "URGENT_HIRE"
+            ? urgentHirePaidDays(txn.items, txn.customData)
+            : featuredDays(txn.items, txn.customData);
       await fulfillPayment(payment.id, { days });
       return;
     }

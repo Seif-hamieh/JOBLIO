@@ -9,7 +9,8 @@ export type ProductCode =
   | "SPONSORED_JOB"
   | "COMPANY_PREMIUM"
   | "RECRUITER_PRO"
-  | "PROFILE_BOOST";
+  | "PROFILE_BOOST"
+  | "URGENT_HIRE";
 
 export type Product = {
   code: ProductCode;
@@ -114,10 +115,22 @@ export const PRODUCTS: Record<ProductCode, Product> = {
     tagline: "Stand out to recruiters for a month.",
     features: ["Priority in recruiter search", "Boosted profile badge", "Higher placement in search results"],
   },
+  URGENT_HIRE: {
+    code: "URGENT_HIRE",
+    name: "Urgent Hire",
+    amount: 1200,
+    currency: "usd",
+    mode: "payment",
+    days: 30,
+    audience: "recruiter",
+    needsTarget: "job",
+    tagline: "Fill this role fast — flag it as urgent.",
+    features: ["“Urgent” badge on the job card", "Priority in recruiter search", "Highlighted in job listings"],
+  },
 };
 
 export const MEMBER_PRODUCTS: ProductCode[] = ["CAREER_BOOST_7", "CAREER_BOOST_30", "PREMIUM_PORTFOLIO", "PROFILE_BOOST"];
-export const BUSINESS_PRODUCTS: ProductCode[] = ["RECRUITER_PRO", "COMPANY_PREMIUM", "FEATURED_JOB", "SPONSORED_JOB"];
+export const BUSINESS_PRODUCTS: ProductCode[] = ["RECRUITER_PRO", "COMPANY_PREMIUM", "FEATURED_JOB", "SPONSORED_JOB", "URGENT_HIRE"];
 
 // ── Featured Job plans (Paddle) ─────────────────────────────────────────────
 // One purchase = one plan. All are recorded as FEATURED_JOB payments; the plan
@@ -163,6 +176,26 @@ export const PROFILE_BOOST_PLANS: ProfileBoostPlan[] = [
 
 export const PROFILE_BOOST_PLAN_CODES = PROFILE_BOOST_PLANS.map((p) => p.code) as [ProfileBoostPlanCode, ...ProfileBoostPlanCode[]];
 
+// ── Urgent Hire plans (Paddle) ──────────────────────────────
+export type UrgentHirePlanCode = "URGENT_HIRE_7D" | "URGENT_HIRE_14D" | "URGENT_HIRE_30D";
+
+export type UrgentHirePlan = {
+  code: UrgentHirePlanCode;
+  priceId: string | undefined;
+  durationDays: number;
+  /** Minor units (cents), USD — what Paddle charges for this price. */
+  amount: number;
+};
+
+/** Ascending by price. */
+export const URGENT_HIRE_PLANS: UrgentHirePlan[] = [
+  { code: "URGENT_HIRE_7D", priceId: process.env.PADDLE_PRICE_URGENT_HIRE_7D, durationDays: 7, amount: 500 },
+  { code: "URGENT_HIRE_14D", priceId: process.env.PADDLE_PRICE_URGENT_HIRE_14D, durationDays: 14, amount: 800 },
+  { code: "URGENT_HIRE_30D", priceId: process.env.PADDLE_PRICE_URGENT_HIRE_30D, durationDays: 30, amount: 1200 },
+];
+
+export const URGENT_HIRE_PLAN_CODES = URGENT_HIRE_PLANS.map((p) => p.code) as [UrgentHirePlanCode, ...UrgentHirePlanCode[]];
+
 /** Days of a Featured Job payment, from its description ("Featured Job · 14 days"). */
 export function featuredJobDays(payment: { product: string; description: string }) {
   if (payment.product !== "FEATURED_JOB") return null;
@@ -173,6 +206,13 @@ export function featuredJobDays(payment: { product: string; description: string 
 /** Days of a Profile Boost payment, from its description ("Profile Boost · 14 days"). */
 export function profileBoostDays(payment: { product: string; description: string }) {
   if (payment.product !== "PROFILE_BOOST") return null;
+  const days = Number(/(\d+)\s*days?/i.exec(payment.description)?.[1]);
+  return Number.isFinite(days) && days > 0 ? days : null;
+}
+
+/** Days of an Urgent Hire payment, from its description ("Urgent Hire · 14 days"). */
+export function urgentHireDays(payment: { product: string; description: string }) {
+  if (payment.product !== "URGENT_HIRE") return null;
   const days = Number(/(\d+)\s*days?/i.exec(payment.description)?.[1]);
   return Number.isFinite(days) && days > 0 ? days : null;
 }

@@ -4693,6 +4693,7 @@ export const JobScalarFieldEnum = {
   closesAt: 'closesAt',
   featuredUntil: 'featuredUntil',
   sponsoredUntil: 'sponsoredUntil',
+  urgentUntil: 'urgentUntil',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
