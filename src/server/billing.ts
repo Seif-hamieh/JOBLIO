@@ -7,7 +7,7 @@ import { notify } from "@/server/services/notifications";
 import { k } from "@/i18n/message";
 import { PRODUCTS, priorityApplicationCredits, type ProductCode } from "@/lib/billing/products";
 import { absoluteUrl, formatMoney } from "@/lib/utils";
-import { paddle } from "@/server/paddle";
+import { createPaddlePortalSession, paddle } from "@/server/paddle";
 
 // Payments go through Stripe Checkout: card details are entered on Stripe's
 // hosted page and never reach JOBLIO. We store only Stripe object IDs.
@@ -266,13 +266,22 @@ export async function setCancelAtPeriodEnd(viewer: Viewer, subscriptionId: strin
   await db.subscription.update({ where: { id: sub.id }, data: { cancelAtPeriodEnd: cancel } });
 }
 
-/** Stripe-hosted page to update cards and download invoices. */
-export async function billingPortalUrl(viewer: Viewer) {
-  const s = stripe();
-  if (!s) throw new ActionError("@msg.stripeOff");
-  const customer = await ensureCustomer(viewer);
-  const session = await s.billingPortal.sessions.create({ customer, return_url: absoluteUrl("/settings/billing") });
-  return session.url;
+/**
+ * The member's Paddle customer: User.paddleCustomerId, else the customer Paddle reported on their
+ * latest subscription (the webhook stores it on the Subscription).
+ */
+export async function paddleCustomerIdFor(userId: string) {
+  const user = await db.user.findUnique({ where: { id: userId }, select: { paddleCustomerId: true } });
+  if (user?.paddleCustomerId) return user.paddleCustomerId;
+  const sub = await db.subscription.findFirst({ where: { userId, paddleCustomerId: { not: null } }, orderBy: { createdAt: "desc" }, select: { paddleCustomerId: true } });
+  return sub?.paddleCustomerId ?? null;
+}
+
+/** Paddle's customer portal (payment methods, invoices, subscriptions), or null when the member has no Paddle customer yet. */
+export async function billingPortalUrl(viewer: Viewer): Promise<string | null> {
+  const customerId = await paddleCustomerIdFor(viewer.id);
+  if (!customerId) return null;
+  return createPaddlePortalSession(customerId);
 }
 
 /** Applies subscription lifecycle changes reported by Stripe. */

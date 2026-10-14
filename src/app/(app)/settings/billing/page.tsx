@@ -3,11 +3,11 @@ import { CheckCircle2, Crown, ExternalLink, Rocket } from "lucide-react";
 import { getI18n, pageTitle } from "@/i18n/server";
 import { requireViewer } from "@/server/session";
 import { db } from "@/server/db";
-import { paymentsMode } from "@/server/billing";
+import { paddleCustomerIdFor, paymentsMode } from "@/server/billing";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, EmptyState, PageHeader } from "@/components/ui/misc";
 import { buttonClasses } from "@/components/ui/button";
-import { PaymentMethodsButton, SubscriptionToggle } from "@/components/settings/settings-forms";
+import { ManageSubscriptionButton, PaymentMethodsButton, SubscriptionToggle } from "@/components/settings/settings-forms";
 import { featuredJobDays } from "@/lib/billing/products";
 
 export const generateMetadata = pageTitle("nav.billing");
@@ -18,7 +18,7 @@ export default async function BillingPage({ searchParams }: { searchParams: Prom
   const sp = await searchParams;
   const [viewer, { t, f }] = await Promise.all([requireViewer(), getI18n()]);
   const companyScope = viewer.company ? [{ companyId: viewer.company.id }] : [];
-  const [subs, payments, profile] = await Promise.all([
+  const [subs, payments, profile, paddleCustomerId] = await Promise.all([
     db.subscription.findMany({
       where: { OR: [{ userId: viewer.id }, ...companyScope], status: { notIn: ["CANCELED", "INCOMPLETE"] }, currentPeriodEnd: { gt: new Date() } },
       orderBy: { createdAt: "desc" },
@@ -31,9 +31,12 @@ export default async function BillingPage({ searchParams }: { searchParams: Prom
       select: { id: true, product: true, description: true, amount: true, currency: true, status: true, invoiceNumber: true, createdAt: true, receiptUrl: true },
     }),
     db.profile.findUnique({ where: { id: viewer.profileId }, select: { featuredUntil: true } }),
+    paddleCustomerIdFor(viewer.id),
   ]);
   const boostEnds = profile?.featuredUntil && profile.featuredUntil > new Date() ? profile.featuredUntil : null;
   const mode = paymentsMode();
+  // Paddle's customer portal (manage subscriptions, payment methods, invoices) exists once the member has a Paddle customer.
+  const hasPortal = !!paddleCustomerId;
 
   return (
     <div className="space-y-6">
@@ -46,7 +49,10 @@ export default async function BillingPage({ searchParams }: { searchParams: Prom
       )}
 
       <Card className="p-6 sm:p-7">
-        <CardHeader title={t("billing.plans")} />
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <CardHeader title={t("billing.subscriptions")} />
+          {hasPortal && subs.some((s) => s.userId === viewer.id) && <ManageSubscriptionButton />}
+        </div>
         <ul className="mt-4 space-y-3">
           {boostEnds && (
             <li className="flex flex-wrap items-center gap-3 rounded-2xl border border-ember/30 bg-ember-soft/40 p-4">
@@ -67,7 +73,7 @@ export default async function BillingPage({ searchParams }: { searchParams: Prom
                 <div className="text-xs text-fg-muted">
                   {s.cancelAtPeriodEnd
                     ? t("billing.endsOn", { date: f.date(s.currentPeriodEnd, { month: "long", day: "numeric", year: "numeric" }) })
-                    : t("billing.renews", { date: f.date(s.currentPeriodEnd, { month: "long", day: "numeric", year: "numeric" }) })}
+                    : t("billing.renewsOn", { date: f.date(s.currentPeriodEnd, { month: "long", day: "numeric", year: "numeric" }) })}
                 </div>
               </div>
               {s.userId === viewer.id && <SubscriptionToggle subscriptionId={s.id} cancelAtPeriodEnd={s.cancelAtPeriodEnd} />}
@@ -75,7 +81,7 @@ export default async function BillingPage({ searchParams }: { searchParams: Prom
           ))}
           {subs.length === 0 && !boostEnds && (
             <li className="flex flex-wrap items-center justify-between gap-3 text-sm text-fg-muted">
-              {t("billing.noPlans")}
+              {t("billing.noSubscription")}
               <Link href="/premium" className={buttonClasses({ size: "sm", variant: "soft", pill: true })}>
                 <Crown /> {t("billing.explore")}
               </Link>
@@ -87,7 +93,7 @@ export default async function BillingPage({ searchParams }: { searchParams: Prom
       <Card className="p-6 sm:p-7">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <CardHeader title={t("billing.payMethods")} description={t("billing.payMethodsSub")} />
-          {mode === "stripe" ? <PaymentMethodsButton /> : <p className="max-w-xs text-xs text-fg-subtle">{t("billing.noStripe")}</p>}
+          {mode === "stripe" || hasPortal ? <PaymentMethodsButton /> : <p className="max-w-xs text-xs text-fg-subtle">{t("billing.noStripe")}</p>}
         </div>
       </Card>
 

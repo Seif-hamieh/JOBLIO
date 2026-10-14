@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { withViewer, type ActionState } from "@/server/action";
+import { fail, withViewer, type ActionState } from "@/server/action";
 import { LIMITS } from "@/server/rate-limit";
 import { billingPortalUrl, setCancelAtPeriodEnd, startCheckout } from "@/server/billing";
 import { PRODUCTS, type ProductCode } from "@/lib/billing/products";
@@ -27,5 +27,8 @@ export async function cancelSubscriptionAction(subscriptionId: string, cancel: b
 }
 
 export async function billingPortalAction(): Promise<ActionState<{ url: string }>> {
-  return withViewer<{ url: string }>({ limit: LIMITS.checkout }, async (viewer) => ({ ok: true, data: { url: await billingPortalUrl(viewer) } }));
+  return withViewer<{ url: string }>({ limit: LIMITS.checkout }, async (viewer) => {
+    const url = await billingPortalUrl(viewer);
+    return url ? { ok: true, data: { url } } : fail("@msg.stripeOff");
+  });
 }

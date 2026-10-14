@@ -4,7 +4,7 @@ import { PasswordStrength } from "@/components/auth/password-strength";
 import { assessPassword } from "@/lib/password";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { CreditCard, Globe, KeyRound, LogOut, Printer, Trash2 } from "lucide-react";
+import { CreditCard, ExternalLink, Globe, KeyRound, LogOut, Printer, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { Field, Input, Select } from "@/components/ui/field";
@@ -328,6 +328,35 @@ export function PaymentMethodsButton() {
       }
     >
       <CreditCard /> {t("billing.manageMethods")}
+    </Button>
+  );
+}
+
+/** Paddle's customer portal in a new tab. The tab is opened on click (popup blockers allow that), then pointed at the portal link. */
+export function ManageSubscriptionButton() {
+  const { t } = useI18n();
+  const [pending, start] = useTransition();
+  return (
+    <Button
+      size="sm"
+      variant="outline"
+      loading={pending}
+      onClick={() => {
+        const tab = window.open("about:blank", "_blank");
+        if (tab) tab.opener = null;
+        start(async () => {
+          const res = await billingPortalAction();
+          if (res?.ok && res.data) {
+            if (tab) tab.location.href = res.data.url;
+            else window.location.assign(res.data.url);
+          } else {
+            tab?.close();
+            toast.error(res && !res.ok ? res.error : t("common.somethingWrong"));
+          }
+        });
+      }}
+    >
+      <ExternalLink /> {t("billing.manageSubscription")}
     </Button>
   );
 }

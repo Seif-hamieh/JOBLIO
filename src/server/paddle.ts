@@ -461,3 +461,19 @@ export async function recordSubscriptionPayment(txn: PaddleSubscriptionTransacti
   });
   return true;
 }
+
+/**
+ * A short-lived link to Paddle's customer portal (payment methods, invoices, cancel) —
+ * POST /customers/{customer_id}/portal-sessions. Returns the general overview URL, or null on failure.
+ */
+export async function createPaddlePortalSession(customerId: string): Promise<string | null> {
+  const p = paddle();
+  if (!p) return null;
+  try {
+    const session = await p.customerPortalSessions.create(customerId, []);
+    return session.urls.general.overview;
+  } catch (err) {
+    console.error("[paddle] portal session failed", err);
+    return null;
+  }
+}
