@@ -1291,6 +1291,9 @@ export const en = {
     boostPaid: "Payment received — your profile will be boosted in a moment.",
     urgentPlans: "Choose how long to mark this job as urgent",
     urgentPaid: "Payment received — your job will be marked urgent in a moment.",
+    priorityPacks: "Choose a priority application pack",
+    priorityPack: "{n} pack",
+    priorityPaid: "Payment received — your priority credits will be added in a moment.",
     noUrgentJobs: "No jobs to mark urgent right now — only open jobs you posted (or manage as an admin) that aren’t already urgent.",
     fromPrice: "from {price}",
     noFeaturableJobs: "No jobs to feature right now — only open jobs you posted (or manage as an admin) that aren’t already featured.",
@@ -1348,6 +1351,7 @@ export const en = {
       RECRUITER_PRO: { name: "Recruiter Pro", tagline: "Advanced tools for serious hiring.", features: "Advanced candidate filters|Unlimited search results|300 new candidate contacts / month|Saved searches & unlimited talent lists|Recruitment analytics" },
       PROFILE_BOOST: { name: "Profile Boost", tagline: "Stand out to recruiters for a month.", features: "Priority in recruiter search|Boosted profile badge|Higher placement in search results" },
       URGENT_HIRE: { name: "Urgent Hire", tagline: "Fill this role fast — flag it as urgent.", features: "“Urgent” badge on the job card|Priority in recruiter search|Highlighted in job listings" },
+      PRIORITY_APPLICATION: { name: "Priority Application", tagline: "Put your application at the top of the list.", features: "Your application appears first|Highlighted for the recruiter|Never missed in the pile" },
     },
   },
   billing: {

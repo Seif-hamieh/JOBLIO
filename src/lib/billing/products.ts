@@ -10,7 +10,8 @@ export type ProductCode =
   | "COMPANY_PREMIUM"
   | "RECRUITER_PRO"
   | "PROFILE_BOOST"
-  | "URGENT_HIRE";
+  | "URGENT_HIRE"
+  | "PRIORITY_APPLICATION";
 
 export type Product = {
   code: ProductCode;
@@ -127,9 +128,19 @@ export const PRODUCTS: Record<ProductCode, Product> = {
     tagline: "Fill this role fast — flag it as urgent.",
     features: ["“Urgent” badge on the job card", "Priority in recruiter search", "Highlighted in job listings"],
   },
+  PRIORITY_APPLICATION: {
+    code: "PRIORITY_APPLICATION",
+    name: "Priority Application",
+    amount: 100,
+    currency: "usd",
+    mode: "payment",
+    audience: "member",
+    tagline: "Put your application at the top of the list.",
+    features: ["Your application appears first", "Highlighted for the recruiter", "Never missed in the pile"],
+  },
 };
 
-export const MEMBER_PRODUCTS: ProductCode[] = ["CAREER_BOOST_7", "CAREER_BOOST_30", "PREMIUM_PORTFOLIO", "PROFILE_BOOST"];
+export const MEMBER_PRODUCTS: ProductCode[] = ["CAREER_BOOST_7", "CAREER_BOOST_30", "PREMIUM_PORTFOLIO", "PROFILE_BOOST", "PRIORITY_APPLICATION"];
 export const BUSINESS_PRODUCTS: ProductCode[] = ["RECRUITER_PRO", "COMPANY_PREMIUM", "FEATURED_JOB", "SPONSORED_JOB", "URGENT_HIRE"];
 
 // ── Featured Job plans (Paddle) ─────────────────────────────────────────────
@@ -196,6 +207,27 @@ export const URGENT_HIRE_PLANS: UrgentHirePlan[] = [
 
 export const URGENT_HIRE_PLAN_CODES = URGENT_HIRE_PLANS.map((p) => p.code) as [UrgentHirePlanCode, ...UrgentHirePlanCode[]];
 
+// ── Priority Application credit packs (Paddle) ──────────────
+export type PriorityApplicationPlanCode = "PRIORITY_APPLICATION_1" | "PRIORITY_APPLICATION_5" | "PRIORITY_APPLICATION_10";
+
+export type PriorityApplicationPlan = {
+  code: PriorityApplicationPlanCode;
+  priceId: string | undefined;
+  /** How many priority credits the buyer receives. */
+  credits: number;
+  /** Minor units (cents), USD — what Paddle charges for this price. */
+  amount: number;
+};
+
+/** Ascending by price. */
+export const PRIORITY_APPLICATION_PLANS: PriorityApplicationPlan[] = [
+  { code: "PRIORITY_APPLICATION_1", priceId: process.env.PADDLE_PRICE_PRIORITY_APPLICATION_1, credits: 1, amount: 100 },
+  { code: "PRIORITY_APPLICATION_5", priceId: process.env.PADDLE_PRICE_PRIORITY_APPLICATION_5, credits: 5, amount: 400 },
+  { code: "PRIORITY_APPLICATION_10", priceId: process.env.PADDLE_PRICE_PRIORITY_APPLICATION_10, credits: 10, amount: 700 },
+];
+
+export const PRIORITY_APPLICATION_PLAN_CODES = PRIORITY_APPLICATION_PLANS.map((p) => p.code) as [PriorityApplicationPlanCode, ...PriorityApplicationPlanCode[]];
+
 /** Days of a Featured Job payment, from its description ("Featured Job · 14 days"). */
 export function featuredJobDays(payment: { product: string; description: string }) {
   if (payment.product !== "FEATURED_JOB") return null;
@@ -215,4 +247,16 @@ export function urgentHireDays(payment: { product: string; description: string }
   if (payment.product !== "URGENT_HIRE") return null;
   const days = Number(/(\d+)\s*days?/i.exec(payment.description)?.[1]);
   return Number.isFinite(days) && days > 0 ? days : null;
+}
+
+/** Credits of a Priority Application payment, from its plan or description. */
+export function priorityApplicationCredits(payment: { product: string; description: string }) {
+  if (payment.product !== "PRIORITY_APPLICATION") return null;
+  // From description like "Priority Application · 5 pack".
+  const m = /(\d+)\s*pack/i.exec(payment.description);
+  if (m) {
+    const n = Number(m[1]);
+    if (Number.isFinite(n) && n > 0) return n;
+  }
+  return 1;
 }

@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 vi.mock("server-only", () => ({}));
 const unmarshal = vi.fn();
 const featuredDays = vi.fn();
-vi.mock("@/server/paddle", () => ({ paddle: () => ({ webhooks: { unmarshal } }), featuredDays, profileBoostPaidDays: vi.fn(), urgentHirePaidDays: vi.fn() }));
+vi.mock("@/server/paddle", () => ({ paddle: () => ({ webhooks: { unmarshal } }), featuredDays, profileBoostPaidDays: vi.fn(), urgentHirePaidDays: vi.fn(), priorityApplicationPaidCredits: vi.fn() }));
 const fulfillPayment = vi.fn();
 const markPaymentFailed = vi.fn();
 vi.mock("@/server/billing", () => ({ fulfillPayment, markPaymentFailed }));

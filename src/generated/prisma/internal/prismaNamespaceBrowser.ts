@@ -133,7 +133,8 @@ export const UserScalarFieldEnum = {
   platformRole: 'platformRole',
   onboardedAt: 'onboardedAt',
   lastSeenAt: 'lastSeenAt',
-  stripeCustomerId: 'stripeCustomerId'
+  stripeCustomerId: 'stripeCustomerId',
+  priorityCredits: 'priorityCredits'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -628,6 +629,7 @@ export const ApplicationScalarFieldEnum = {
   matchSnapshot: 'matchSnapshot',
   rating: 'rating',
   viewedAt: 'viewedAt',
+  priorityAt: 'priorityAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

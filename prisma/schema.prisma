@@ -246,6 +246,7 @@ enum ProductCode {
   RECRUITER_PRO
   PROFILE_BOOST
   URGENT_HIRE
+  PRIORITY_APPLICATION
 }
 
 enum PaymentStatus {
@@ -288,6 +289,7 @@ model User {
   onboardedAt      DateTime?
   lastSeenAt       DateTime?
   stripeCustomerId String?      @unique
+  priorityCredits  Int          @default(0)
 
   sessions             Session[]
   accounts             Account[]
@@ -946,6 +948,7 @@ model Application {
   matchSnapshot Json?
   rating        Int?
   viewedAt      DateTime?
+  priorityAt    DateTime?
   createdAt     DateTime          @default(now())
   updatedAt     DateTime          @updatedAt
   job           Job               @relation(fields: [jobId], references: [id], onDelete: Cascade)
@@ -959,6 +962,7 @@ model Application {
   @@index([applicantId, createdAt])
   @@index([jobId, stage, stagePosition])
   @@index([jobId, status])
+  @@index([jobId, priorityAt])
   @@map("applications")
 }
 
