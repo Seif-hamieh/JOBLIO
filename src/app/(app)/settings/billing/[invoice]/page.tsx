@@ -28,7 +28,6 @@ export default async function InvoicePage({ params }: { params: Promise<{ invoic
       invoiceNumber: true,
       createdAt: true,
       paidAt: true,
-      stripePaymentIntentId: true,
       user: { select: { name: true, email: true } },
       company: { select: { name: true } },
     },
@@ -96,7 +95,9 @@ export default async function InvoicePage({ params }: { params: Promise<{ invoic
             </tr>
           </tfoot>
         </table>
-        <p className="mt-10 text-xs text-fg-subtle">{payment.stripePaymentIntentId ? t("billing.paidVia") : t("billing.simulated")}</p>
+        {payment.status === "SUCCEEDED" && payment.paidAt && (
+          <p className="mt-10 text-xs text-fg-subtle">{t("billing.paidVia")}</p>
+        )}
       </Card>
     </div>
   );

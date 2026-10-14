@@ -1397,7 +1397,7 @@ export const en = {
     issued: "Issued",
     total: "Total",
     print: "Print / save as PDF",
-    paidVia: "Paid via Stripe",
+    paidVia: "Paid via Paddle",
     simulated: "Simulated (development)",
   },
   settings: {

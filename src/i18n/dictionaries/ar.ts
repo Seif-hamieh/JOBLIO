@@ -1399,7 +1399,7 @@ export const ar: Dictionary = {
     issued: "تاريخ الإصدار",
     total: "الإجمالي",
     print: "طباعة / حفظ PDF",
-    paidVia: "مدفوعة عبر Stripe",
+    paidVia: "مدفوع عبر Paddle",
     simulated: "محاكاة (وضع التطوير)",
   },
   settings: {
