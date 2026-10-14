@@ -9,8 +9,8 @@ export type StaticSection = { heading: string; body: string[] };
 export type StaticPage = { title: string; intro: string; updated?: string; sections: StaticSection[] };
 export type StaticPageId = "about" | "terms" | "privacy" | "contact";
 
-const UPDATED_EN = "Last updated: 12 October 2026";
-const UPDATED_AR = "آخر تحديث: 12 أكتوبر 2026";
+const UPDATED_EN = "Last updated: 14 October 2026";
+const UPDATED_AR = "آخر تحديث: 14 أكتوبر 2026";
 
 export const STATIC_PAGES: Record<StaticPageId, Record<Locale, StaticPage>> = {
   about: {
@@ -42,7 +42,7 @@ export const STATIC_PAGES: Record<StaticPageId, Record<Locale, StaticPage>> = {
         {
           heading: "How we make money",
           body: [
-            "Optional paid features increase visibility — such as Career Boost, featured and sponsored jobs, premium company pages and Recruiter Pro. Sponsored content is always labelled, and paying never changes how a match is calculated.",
+            "Optional paid features increase visibility — such as Profile Boost, Featured Jobs, Urgent Hire, Priority Application, Job Seeker Pro and Company Premium. Sponsored content is always labelled, and paying never changes how a match is calculated.",
           ],
         },
       ],
@@ -75,7 +75,7 @@ export const STATIC_PAGES: Record<StaticPageId, Record<Locale, StaticPage>> = {
         {
           heading: "كيف نحقق الدخل",
           body: [
-            "ميزات مدفوعة اختيارية تزيد الظهور، مثل Career Boost، والوظائف المميزة والمموّلة، وصفحات الشركات المميزة، وRecruiter Pro. المحتوى المموّل يُوسم دائمًا بوضوح، والدفع لا يغيّر طريقة حساب المطابقة أبدًا.",
+            "ميزات مدفوعة اختيارية تزيد الظهور، مثل تعزيز الملف والوظائف المميزة والتوظيف العاجل والتقديم بأولوية وباحث عن عمل برو وصفحات الشركات المميزة. المحتوى الممول يوسم دائماً بوضوح، والدفع لا يغيّر طريقة حساب المطابقة أبداً.",
           ],
         },
       ],
@@ -116,7 +116,7 @@ export const STATIC_PAGES: Record<StaticPageId, Record<Locale, StaticPage>> = {
         {
           heading: "5. Paid features",
           body: [
-            "Paid features are described with their price and duration before you buy. Payments are processed by Stripe; JOBLIO never sees your card details. Subscriptions renew until cancelled and can be cancelled at the end of the current period from Billing & Payments. Visibility features increase exposure but do not guarantee results.",
+            "Paid features are described with their price and duration before you buy. Payments are processed by Paddle (as merchant of record); JOBLIO never sees your card details. Subscriptions renew until cancelled and can be managed from Billing & Payments, or through Paddle's hosted customer portal. Visibility features increase exposure but do not guarantee results.",
           ],
         },
         {
@@ -168,7 +168,7 @@ export const STATIC_PAGES: Record<StaticPageId, Record<Locale, StaticPage>> = {
         {
           heading: "5. الميزات المدفوعة",
           body: [
-            "توضَّح الميزات المدفوعة بسعرها ومدتها قبل الشراء. تُعالَج المدفوعات عبر Stripe، ولا يطّلع JOBLIO على بيانات بطاقتك. تتجدد الاشتراكات حتى تُلغى، ويمكن إلغاؤها في نهاية الفترة الحالية من صفحة الفوترة والمدفوعات. ميزات الظهور تزيد الانتشار لكنها لا تضمن نتائج.",
+            "توضَّح الميزات المدفوعة بسعرها ومدتها قبل الشراء. تُعالَج المدفوعات عبر Paddle (بصفته التاجر المسجَّل)، ولا يطّلع JOBLIO على بيانات بطاقتك. تتجدد الاشتراكات حتى تُلغى، ويمكن إدارتها من صفحة الفوترة والمدفوعات، أو عبر بوابة Paddle المخصصة للعملاء. ميزات الظهور تزيد الانتشار لكنها لا تضمن نتائج.",
           ],
         },
         {
@@ -218,7 +218,7 @@ export const STATIC_PAGES: Record<StaticPageId, Record<Locale, StaticPage>> = {
         {
           heading: "Where your data is stored",
           body: [
-            "JOBLIO uses trusted providers to run the service: Vercel (hosting), Neon (database, in the EU), Supabase (file storage), Stripe (payments), Google (optional sign-in) and an email provider for account emails. They process data only to provide their service to us.",
+            "JOBLIO uses trusted providers to run the service: Vercel (hosting), Neon (database, in the EU), Supabase (file storage), Paddle (payments), Google (optional sign-in) and an email provider for account emails. They process data only to provide their service to us.",
           ],
         },
         {
@@ -273,7 +273,7 @@ export const STATIC_PAGES: Record<StaticPageId, Record<Locale, StaticPage>> = {
         {
           heading: "أين تُخزَّن بياناتك",
           body: [
-            "يستعين JOBLIO بمزوّدين موثوقين لتشغيل الخدمة: Vercel (الاستضافة)، وNeon (قاعدة البيانات داخل الاتحاد الأوروبي)، وSupabase (تخزين الملفات)، وStripe (المدفوعات)، وGoogle (تسجيل دخول اختياري)، ومزوّد بريد لرسائل الحساب. ويعالج هؤلاء البيانات فقط لتقديم خدماتهم لنا.",
+            "يستعين JOBLIO بمزوّدين موثوقين لتشغيل الخدمة: Vercel (الاستضافة)، وNeon (قاعدة البيانات داخل الاتحاد الأوروبي)، وSupabase (تخزين الملفات)، وPaddle (المدفوعات)، وGoogle (تسجيل دخول اختياري)، ومزوّد بريد لرسائل الحساب. ويعالج هؤلاء البيانات فقط لتقديم خدماتهم لنا.",
           ],
         },
         {
