@@ -377,8 +377,9 @@ export default async function LandingPage() {
               <div className="pointer-events-none absolute -end-12 -top-12 size-40 rounded-full bg-[radial-gradient(circle,color-mix(in_oklch,var(--ember)_30%,transparent),transparent_70%)]" />
               <div className="relative text-sm font-semibold text-ember-fg">{t("landing.boostTitle")}</div>
               <div className="relative mt-2 font-display text-4xl font-semibold">
-                {t("premium.fromPrice", { price: "$2.00" })}<span className="text-base font-normal text-fg-muted"> {t("landing.boostPrice")}</span>
+                {t("premium.fromPrice", { price: "$2.00" })}
               </div>
+              <div className="relative text-base font-normal text-fg-muted">{t("landing.boostPrice")}</div>
               <ul className="relative mt-5 space-y-2 text-sm">
                 {[t("landing.boost1"), t("landing.boost2"), t("landing.boost3")].map((p) => (
                   <li key={p} className="flex gap-2">
