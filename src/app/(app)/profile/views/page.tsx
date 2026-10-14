@@ -1,6 +1,6 @@
 import { getI18n, pageTitle } from "@/i18n/server";
 import Link from "next/link";
-import { EyeOff, Eye, Rocket } from "lucide-react";
+import { EyeOff, Eye, Lock, Rocket } from "lucide-react";
 import { requireViewer } from "@/server/session";
 import { db } from "@/server/db";
 import { Bars } from "@/components/charts/bars";
@@ -8,7 +8,7 @@ import { Avatar } from "@/components/ui/avatar";
 import { Card, CardHeader, EmptyState, PageHeader, Stat } from "@/components/ui/misc";
 import { buttonClasses } from "@/components/ui/button";
 import { ClaimFreeBoostButton } from "@/components/billing/claim-free-boost-button";
-import { isEligibleForFreeBoost } from "@/server/services/subscriptions";
+import { hasJobSeekerPro, isEligibleForFreeBoost } from "@/server/services/subscriptions";
 
 export const generateMetadata = pageTitle("profile.tabViews");
 
@@ -16,7 +16,7 @@ export default async function ProfileViewsPage() {
   const [viewer, { t, f }] = await Promise.all([requireViewer(), getI18n()]);
   const since = new Date(Date.now() - 29 * 86_400_000);
   since.setHours(0, 0, 0, 0);
-  const [views, total, prev, freeBoost] = await Promise.all([
+  const [views, total, prev, freeBoost, isPro] = await Promise.all([
     db.profileView.findMany({
       where: { viewedId: viewer.id, createdAt: { gte: since } },
       orderBy: { createdAt: "desc" },
@@ -30,6 +30,7 @@ export default async function ProfileViewsPage() {
     db.profile.findUnique({ where: { id: viewer.profileId }, select: { profileViewCount: true } }),
     db.profileView.count({ where: { viewedId: viewer.id, createdAt: { gte: new Date(since.getTime() - 30 * 86_400_000), lt: since } } }),
     isEligibleForFreeBoost(viewer.id),
+    hasJobSeekerPro(viewer.id),
   ]);
   const days = Array.from({ length: 30 }, (_, i) => {
     const d = new Date(since.getTime() + i * 86_400_000);
@@ -41,6 +42,9 @@ export default async function ProfileViewsPage() {
   }
   const recruiters = views.filter((v) => !v.anonymous && v.viewer?.companyMemberships.length).length;
   const change = prev ? Math.round(((views.length - prev) / prev) * 100) : null;
+  // Job Seeker Pro sees every recent viewer; everyone else sees the latest 3 (only those are rendered).
+  const visible = isPro ? views.slice(0, 40) : views.slice(0, 3);
+  const hidden = isPro ? 0 : views.length - visible.length;
 
   return (
     <div className="space-y-6">
@@ -84,7 +88,7 @@ export default async function ProfileViewsPage() {
           <EmptyState className="mt-4" icon={<Eye />} title={t("profileEdit.noViews")} description={t("profileEdit.noViewsBody")} />
         ) : (
           <ul className="mt-4 divide-y divide-border">
-            {views.slice(0, 40).map((v) =>
+            {visible.map((v) =>
               v.anonymous || !v.viewer ? (
                 <li key={v.id} className="flex items-center gap-3 py-3">
                   <span className="grid size-10 place-items-center rounded-full bg-surface-3 text-fg-subtle">
@@ -107,6 +111,16 @@ export default async function ProfileViewsPage() {
               ),
             )}
           </ul>
+        )}
+        {hidden > 0 && (
+          <div className="mt-4 rounded-2xl bg-gradient-to-br from-brand/10 to-ember/10 p-5 text-center ring-1 ring-brand/20">
+            <Lock className="mx-auto size-6 text-brand" />
+            <div className="mt-2 font-semibold">{t("profileEdit.lockedTitle", { n: hidden })}</div>
+            <div className="mt-1 text-sm text-fg-muted">{t("profileEdit.lockedBody")}</div>
+            <Link href="/premium" className={buttonClasses({ className: "mt-4", pill: true })}>
+              <Rocket /> {t("profileEdit.lockedCta")}
+            </Link>
+          </div>
         )}
       </Card>
     </div>
