@@ -36,10 +36,23 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the full design.
 
 ## Payments
 
-Payments use Stripe Checkout. Card details are entered on Stripe's page and never reach JOBLIO; only Stripe IDs are stored.
+Payments use **Paddle** (merchant of record). Card details are entered on Paddle's hosted page and never reach JOBLIO; only Paddle IDs are stored.
 
-- Set `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET`, and point a webhook at `/api/webhooks/stripe` (events: `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`, `checkout.session.expired`, `invoice.paid`, `customer.subscription.updated`, `customer.subscription.deleted`).
-- In development, `PAYMENTS_DEV_SIMULATE=true` fulfils purchases instantly without Stripe so every premium flow can be tried.
+**Products available:**
+- **One-time payments:** Featured Job, Profile Boost, Urgent Hire
+- **Credit packs:** Priority Application (1/5/10)
+- **Subscriptions:** Job Seeker Pro, Company Premium (monthly/yearly)
+
+**Environment variables:**
+- `PADDLE_API_KEY`, `PADDLE_WEBHOOK_SECRET`, `PADDLE_ENVIRONMENT` (`sandbox` or `production`)
+- `PADDLE_CLIENT_TOKEN` — Paddle's client-side token; the server passes it to the browser to open the checkout
+- `PADDLE_PRICE_*` — one variable per Paddle price ID (see `.env.example` for the full list)
+
+**Webhook:** point Paddle to `/api/webhooks/paddle`. Events handled: `transaction.completed`, `transaction.payment_failed`, `subscription.created`, `subscription.activated`, `subscription.updated`, `subscription.past_due`, `subscription.canceled`.
+
+**Customer portal:** the "Manage subscription" button on `/settings/billing` opens Paddle's hosted portal for updating payment methods or canceling.
+
+In development, without `PADDLE_API_KEY`, purchases are simulated automatically in any non-production environment.
 
 ## File uploads
 
