@@ -17,7 +17,7 @@ import {
 } from "@dnd-kit/core";
 import { SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { CalendarClock, Eye, Star, XCircle } from "lucide-react";
+import { CalendarClock, Eye, Star, XCircle, Zap } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/components/ui/toast";
@@ -39,6 +39,7 @@ export type BoardCard = {
   rating: number | null;
   createdAt: Date;
   viewedAt: Date | null;
+  priorityAt: Date | null;
   applicant: { id: string; name: string; image: string | null; username: string | null; profile: { headline: string | null } | null };
   interviews: number;
 };
@@ -60,7 +61,7 @@ const columnOf = (c: BoardCard): Column => (c.status === "REJECTED" ? "REJECTED"
 function CardBody({ c, dragging }: { c: BoardCard; dragging?: boolean }) {
   const { t, f } = useI18n();
   return (
-    <div className={cn("rounded-2xl border border-border bg-surface p-3 shadow-soft transition-shadow", dragging && "rotate-2 shadow-float ring-2 ring-brand/40")}>
+    <div className={cn("rounded-2xl border border-border bg-surface p-3 shadow-soft transition-shadow", c.priorityAt && "ring-1 ring-ember/35", dragging && "rotate-2 shadow-float ring-2 ring-brand/40")}>
       <div className="flex items-start gap-2.5">
         <Avatar name={c.applicant.name} src={c.applicant.image} size="sm" />
         <div className="min-w-0 flex-1">
@@ -70,6 +71,11 @@ function CardBody({ c, dragging }: { c: BoardCard; dragging?: boolean }) {
       </div>
       <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
         <MatchPill score={c.matchScore} />
+        {c.priorityAt && (
+          <Badge tone="ember" size="xs">
+            <Zap className="size-3" /> {t("common.priority")}
+          </Badge>
+        )}
         {c.status === "OFFER" && <Badge tone="mint" size="xs">{t("recruiter.offer")}</Badge>}
         {c.interviews > 0 && (
           <Badge size="xs">

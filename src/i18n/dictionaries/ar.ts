@@ -67,6 +67,7 @@ export const ar: Dictionary = {
     applied: "تم التقديم",
     featured: "مميّزة",
     urgent: "عاجل",
+    priority: "أولوية",
     sponsored: "مموّلة",
     premium: "بريميوم",
     verified: "موثّق",

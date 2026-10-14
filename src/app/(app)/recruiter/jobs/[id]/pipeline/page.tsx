@@ -25,6 +25,7 @@ export default async function PipelinePage({ params, searchParams }: PageProps<"
     rating: x.rating,
     createdAt: x.createdAt,
     viewedAt: x.viewedAt,
+    priorityAt: x.priorityAt,
     applicant: { id: x.applicant.id, name: x.applicant.name, image: x.applicant.image, username: x.applicant.username, profile: x.applicant.profile ? { headline: x.applicant.profile.headline } : null },
     interviews: x._count.interviews,
   }));

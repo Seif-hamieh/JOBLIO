@@ -65,6 +65,7 @@ export const en = {
     applied: "Applied",
     featured: "Featured",
     urgent: "Urgent",
+    priority: "Priority",
     sponsored: "Sponsored",
     premium: "Premium",
     verified: "Verified",

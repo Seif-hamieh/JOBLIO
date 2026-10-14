@@ -188,6 +188,7 @@ export async function getPipeline(jobId: string, companyId: string) {
       rating: true,
       createdAt: true,
       viewedAt: true,
+      priorityAt: true,
       applicant: { select: { id: true, name: true, image: true, username: true, profile: { select: { headline: true, city: true, countryCode: true, yearsExperience: true, availability: true } } } },
       _count: { select: { interviews: true, notes: true } },
     },
