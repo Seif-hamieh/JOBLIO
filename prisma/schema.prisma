@@ -244,6 +244,7 @@ enum ProductCode {
   SPONSORED_JOB
   COMPANY_PREMIUM
   RECRUITER_PRO
+  PROFILE_BOOST
 }
 
 enum PaymentStatus {

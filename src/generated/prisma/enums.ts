@@ -306,7 +306,8 @@ export const ProductCode = {
   FEATURED_JOB: 'FEATURED_JOB',
   SPONSORED_JOB: 'SPONSORED_JOB',
   COMPANY_PREMIUM: 'COMPANY_PREMIUM',
-  RECRUITER_PRO: 'RECRUITER_PRO'
+  RECRUITER_PRO: 'RECRUITER_PRO',
+  PROFILE_BOOST: 'PROFILE_BOOST'
 } as const
 
 export type ProductCode = (typeof ProductCode)[keyof typeof ProductCode]

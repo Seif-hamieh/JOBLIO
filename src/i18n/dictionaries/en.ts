@@ -1286,6 +1286,8 @@ export const en = {
     savePage: "Save company page",
   },
   premium: {
+    boostPlans: "Choose how long to boost your profile",
+    boostPaid: "Payment received — your profile will be boosted in a moment.",
     fromPrice: "from {price}",
     noFeaturableJobs: "No jobs to feature right now — only open jobs you posted (or manage as an admin) that aren’t already featured.",
     badge: "JOBLIO Premium",
@@ -1340,6 +1342,7 @@ export const en = {
       SPONSORED_JOB: { name: "Sponsored Job · 14 days", tagline: "Prominent placement across JOBLIO.", features: "Sponsored slot above search results|Clearly labelled “Sponsored”|Shown only when it matches the search" },
       COMPANY_PREMIUM: { name: "Premium Company Page", tagline: "Make your employer brand shine.", features: "Brand colours across your page|Up to 30 photos & videos|Priority in company search|Job analytics: saves & conversion" },
       RECRUITER_PRO: { name: "Recruiter Pro", tagline: "Advanced tools for serious hiring.", features: "Advanced candidate filters|Unlimited search results|300 new candidate contacts / month|Saved searches & unlimited talent lists|Recruitment analytics" },
+      PROFILE_BOOST: { name: "Profile Boost", tagline: "Stand out to recruiters for a month.", features: "Priority in recruiter search|Boosted profile badge|Higher placement in search results" },
     },
   },
   billing: {

@@ -165,11 +165,12 @@ export async function fulfillPayment(
 
     switch (payment.product) {
       case "CAREER_BOOST_7":
-      case "CAREER_BOOST_30": {
+      case "CAREER_BOOST_30":
+      case "PROFILE_BOOST": {
         const profile = await tx.profile.findUniqueOrThrow({ where: { userId: payment.userId }, select: { featuredUntil: true } });
         // Stack on top of an active boost instead of overlapping it.
         const start = profile.featuredUntil && profile.featuredUntil > now ? profile.featuredUntil : now;
-        const endsAt = addDays(start, product.days!);
+        const endsAt = addDays(start, stripeData.days ?? product.days!);
         await tx.profileBoost.create({ data: { userId: payment.userId, product: payment.product, startsAt: start, endsAt, paymentId: payment.id } });
         await tx.profile.update({ where: { userId: payment.userId }, data: { featuredUntil: endsAt, openToWork: true } });
         break;
