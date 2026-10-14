@@ -10,7 +10,7 @@ const COLUMNS: { title: TKey | "JOBLIO"; links: { href: string; label: TKey }[] 
       { href: "/jobs", label: "footer.findJobs" },
       { href: "/jobs/for-you", label: "footer.jobsForYou" },
       { href: "/companies", label: "footer.exploreCompanies" },
-      { href: "/premium", label: "footer.careerBoost" },
+      { href: "/premium", label: "nav.premium" },
     ],
   },
   {
@@ -18,7 +18,7 @@ const COLUMNS: { title: TKey | "JOBLIO"; links: { href: string; label: TKey }[] 
     links: [
       { href: "/register?intent=RECRUITER", label: "footer.postJob" },
       { href: "/recruiter/candidates", label: "footer.searchTalent" },
-      { href: "/premium#business", label: "footer.recruiterPro" },
+      { href: "/premium", label: "nav.pricing" },
       { href: "/jobs/featured", label: "footer.featuredJobs" },
     ],
   },
