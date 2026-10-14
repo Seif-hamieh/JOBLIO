@@ -75,7 +75,7 @@ export const STATIC_PAGES: Record<StaticPageId, Record<Locale, StaticPage>> = {
         {
           heading: "كيف نحقق الدخل",
           body: [
-            "ميزات مدفوعة اختيارية تزيد الظهور، مثل تعزيز الملف والوظائف المميزة والتوظيف العاجل والتقديم بأولوية وباحث عن عمل برو وصفحات الشركات المميزة. المحتوى الممول يوسم دائماً بوضوح، والدفع لا يغيّر طريقة حساب المطابقة أبداً.",
+            "ميزات مدفوعة اختيارية تزيد الظهور، مثل تعزيز الملف والوظائف المميزة والتوظيف العاجل والتقديم بأولوية وباحث عن عمل برو وصفحات الشركات المميزة. المحتوى المموّل يُوسم دائمًا بوضوح، والدفع لا يغيّر طريقة حساب المطابقة أبدًا.",
           ],
         },
       ],
@@ -321,7 +321,7 @@ export const STATIC_PAGES: Record<StaticPageId, Record<Locale, StaticPage>> = {
         },
         {
           heading: "Companies and billing",
-          body: ["For company pages, Recruiter Pro or a question about an invoice, include your company name and the invoice number if you have one."],
+          body: ["For company pages, Company Premium or a question about an invoice, include your company name and the invoice number if you have one."],
         },
       ],
     },
@@ -343,7 +343,7 @@ export const STATIC_PAGES: Record<StaticPageId, Record<Locale, StaticPage>> = {
         },
         {
           heading: "الشركات والفوترة",
-          body: ["لأسئلة صفحات الشركات أو Recruiter Pro أو الفواتير، اذكر اسم شركتك ورقم الفاتورة إن وُجد."],
+          body: ["لأسئلة صفحات الشركات أو Company Premium أو الفواتير، اذكر اسم شركتك ورقم الفاتورة إن وُجد."],
         },
       ],
     },
