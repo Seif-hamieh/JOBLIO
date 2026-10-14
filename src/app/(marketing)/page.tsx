@@ -375,13 +375,12 @@ export default async function LandingPage() {
             </Reveal>
             <Reveal delay={0.08} className="surface relative overflow-hidden p-6 ring-1 ring-ember/40">
               <div className="pointer-events-none absolute -end-12 -top-12 size-40 rounded-full bg-[radial-gradient(circle,color-mix(in_oklch,var(--ember)_30%,transparent),transparent_70%)]" />
-              <div className="relative text-sm font-semibold text-ember-fg">{t("footer.careerBoost")}</div>
+              <div className="relative text-sm font-semibold text-ember-fg">{t("landing.boostTitle")}</div>
               <div className="relative mt-2 font-display text-4xl font-semibold">
-                $2.99<span className="text-base font-normal text-fg-muted"> {t("landing.boostPrice")}</span>
+                {t("premium.fromPrice", { price: "$2.00" })}<span className="text-base font-normal text-fg-muted"> {t("landing.boostPrice")}</span>
               </div>
-              <div className="relative text-sm text-fg-muted">{t("landing.boostAlt", { price: "$7.99" })}</div>
               <ul className="relative mt-5 space-y-2 text-sm">
-                {[t("landing.boost1"), t("landing.boost2"), t("landing.boost3"), t("landing.boost4")].map((p) => (
+                {[t("landing.boost1"), t("landing.boost2"), t("landing.boost3")].map((p) => (
                   <li key={p} className="flex gap-2">
                     <Check className="size-4 shrink-0 text-ember" strokeWidth={2.5} />
                     {p}
@@ -389,6 +388,9 @@ export default async function LandingPage() {
                 ))}
               </ul>
               <p className="relative mt-4 text-xs text-fg-subtle">{t("landing.boostNote")}</p>
+              <Link href="/premium" className="relative mt-3 inline-flex items-center gap-1 text-sm font-medium text-ember-fg hover:underline">
+                {t("landing.boostCta")} →
+              </Link>
             </Reveal>
           </div>
         </div>
