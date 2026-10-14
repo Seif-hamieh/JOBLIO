@@ -9,9 +9,11 @@ import {
   FEATURED_JOB_PLANS,
   PROFILE_BOOST_PLANS,
   PRODUCTS,
+  URGENT_HIRE_PLANS,
   type FeaturedJobPlan,
   type FeaturedJobPlanCode,
   type ProfileBoostPlanCode,
+  type UrgentHirePlanCode,
 } from "@/lib/billing/products";
 
 // Paddle Billing for "Feature this job". Paddle is the merchant of record: the buyer
@@ -175,6 +177,72 @@ export async function startProfileBoostCheckout(viewer: Viewer, planCode: Profil
     const transaction = await p.transactions.create({
       items: [{ priceId: plan.priceId!, quantity: 1 }],
       customData: { paymentId: payment.id, userId: viewer.id, product: "PROFILE_BOOST", planCode: plan.code, durationDays: plan.durationDays },
+    });
+    return { transactionId: transaction.id, checkoutUrl: transaction.checkout?.url ?? null, paymentId: payment.id };
+  } catch (err) {
+    console.error("[paddle] transaction create failed", err);
+    await db.payment.update({ where: { id: payment.id }, data: { status: "FAILED" } });
+    throw new ActionError("@msg.checkoutFailed");
+  }
+}
+
+// ── Urgent Hire (Paddle) ────────────────────────────────────────────────────
+// Same flow as Featured Job: the poster or a company admin flags an open job as urgent.
+// Independent of Featured — a featured job can also be urgent.
+
+/** Urgent Hire plans whose Paddle price is configured. */
+export function urgentHirePlans() {
+  return URGENT_HIRE_PLANS.filter((p) => p.priceId);
+}
+
+/** Plans as shown in the browser — no price IDs. */
+export function urgentHirePlanOptions() {
+  return urgentHirePlans().map(({ code, durationDays, amount }) => ({ code, durationDays, amount }));
+}
+
+/** Urgent length: the price that was actually paid, else custom_data.durationDays, else null (product default). */
+export function urgentHirePaidDays(items: { price?: { id?: string | null } | null }[] | null | undefined, customData: unknown): number | null {
+  for (const item of items ?? []) {
+    const plan = urgentHirePlans().find((p) => p.priceId === item.price?.id);
+    if (plan) return plan.durationDays;
+  }
+  const days = Number((customData as { durationDays?: unknown } | null)?.durationDays);
+  return PLAN_DAYS.has(days) ? days : null;
+}
+
+export function canMarkJobUrgent(viewer: Viewer | null, job: { companyId: string; postedById: string; status: string; urgentUntil: Date | null }) {
+  return !!viewer && (job.postedById === viewer.id || canManageCompany(viewer, job.companyId)) && job.status === "OPEN" && !isFeatured(job.urgentUntil);
+}
+
+/** Creates a PENDING Urgent Hire payment and a Paddle transaction for the chosen plan and job. */
+export async function startUrgentHireCheckout(viewer: Viewer, jobId: string, planCode: UrgentHirePlanCode) {
+  const p = paddle();
+  if (!p || !process.env.PADDLE_CLIENT_TOKEN) throw new ActionError("@msg.paymentsOff");
+  const plan = urgentHirePlans().find((x) => x.code === planCode);
+  if (!plan) throw new ActionError("@msg.planUnavailable");
+
+  const job = await db.job.findUnique({ where: { id: jobId }, select: { id: true, companyId: true, postedById: true, status: true, urgentUntil: true } });
+  if (!job || (job.postedById !== viewer.id && !canManageCompany(viewer, job.companyId))) throw new ActionError("@msg.featureNotAllowed");
+  if (job.status !== "OPEN") throw new ActionError("@msg.openJobsOnly");
+  if (isFeatured(job.urgentUntil)) throw new ActionError("@msg.alreadyUrgent");
+
+  const payment = await db.payment.create({
+    data: {
+      userId: viewer.id,
+      companyId: job.companyId,
+      product: "URGENT_HIRE",
+      description: `Urgent Hire · ${plan.durationDays} days`,
+      amount: plan.amount,
+      currency: PRODUCTS.URGENT_HIRE.currency,
+      invoiceNumber: await nextInvoiceNumber(),
+      targetId: job.id,
+    },
+  });
+
+  try {
+    const transaction = await p.transactions.create({
+      items: [{ priceId: plan.priceId!, quantity: 1 }],
+      customData: { paymentId: payment.id, userId: viewer.id, product: "URGENT_HIRE", planCode: plan.code, durationDays: plan.durationDays, jobId: job.id },
     });
     return { transactionId: transaction.id, checkoutUrl: transaction.checkout?.url ?? null, paymentId: payment.id };
   } catch (err) {

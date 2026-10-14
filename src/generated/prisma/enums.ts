@@ -307,7 +307,8 @@ export const ProductCode = {
   SPONSORED_JOB: 'SPONSORED_JOB',
   COMPANY_PREMIUM: 'COMPANY_PREMIUM',
   RECRUITER_PRO: 'RECRUITER_PRO',
-  PROFILE_BOOST: 'PROFILE_BOOST'
+  PROFILE_BOOST: 'PROFILE_BOOST',
+  URGENT_HIRE: 'URGENT_HIRE'
 } as const
 
 export type ProductCode = (typeof ProductCode)[keyof typeof ProductCode]
@@ -336,7 +337,8 @@ export type SubscriptionStatus = (typeof SubscriptionStatus)[keyof typeof Subscr
 
 export const PromotionKind = {
   FEATURED: 'FEATURED',
-  SPONSORED: 'SPONSORED'
+  SPONSORED: 'SPONSORED',
+  URGENT: 'URGENT'
 } as const
 
 export type PromotionKind = (typeof PromotionKind)[keyof typeof PromotionKind]

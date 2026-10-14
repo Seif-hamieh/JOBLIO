@@ -1,12 +1,13 @@
 import { getI18n, pageTitle } from "@/i18n/server";
 import Link from "next/link";
-import { Building2, Check, Crown, Globe, Info, Megaphone, Rocket, ShieldCheck, Star, Users } from "lucide-react";
+import { Building2, Check, Crown, Globe, Info, Megaphone, Rocket, ShieldCheck, Star, Users, Zap } from "lucide-react";
 import { getViewer } from "@/server/session";
 import { db } from "@/server/db";
 import { paymentsMode } from "@/server/billing";
-import { canFeatureJob, featuredJobPlanOptions, paddleClientConfig, profileBoostPlanOptions } from "@/server/paddle";
+import { canFeatureJob, canMarkJobUrgent, featuredJobPlanOptions, paddleClientConfig, profileBoostPlanOptions, urgentHirePlanOptions } from "@/server/paddle";
 import { FeatureJobPicker, PaddlePaymentLink } from "@/components/jobs/feature-job-button";
 import { ProfileBoostPicker } from "@/components/billing/profile-boost-button";
+import { UrgentHirePicker } from "@/components/billing/urgent-hire-button";
 import { BuyButton, PromoteJobBuy } from "@/components/billing/buy-button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/misc";
@@ -46,7 +47,7 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
     viewer
       ? db.subscription.findMany({ where: { OR: [{ userId: viewer.id }, ...(viewer.company ? [{ companyId: viewer.company.id }] : [])], status: { in: ["ACTIVE", "TRIALING", "PAST_DUE"] }, currentPeriodEnd: { gt: new Date() } }, select: { product: true } })
       : [],
-    viewer?.company ? db.job.findMany({ where: { companyId: viewer.company.id, status: "OPEN" }, select: { id: true, title: true, companyId: true, postedById: true, status: true, featuredUntil: true }, orderBy: { publishedAt: "desc" } }) : [],
+    viewer?.company ? db.job.findMany({ where: { companyId: viewer.company.id, status: "OPEN" }, select: { id: true, title: true, companyId: true, postedById: true, status: true, featuredUntil: true, urgentUntil: true }, orderBy: { publishedAt: "desc" } }) : [],
   ]);
   const has = new Set(subs.map((s) => s.product));
   // Featured Job goes through Paddle when it is configured: only jobs this member may feature right now.
@@ -54,6 +55,9 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
   const featuredPlans = paddleConfig ? featuredJobPlanOptions() : [];
   const boostPlans = paddleConfig ? profileBoostPlanOptions() : [];
   const featurable = jobs.filter((j) => canFeatureJob(viewer, j)).map(({ id, title }) => ({ id, title }));
+  // Urgent Hire is independent of Featured: open jobs this member may flag that aren't urgent yet.
+  const urgentPlans = paddleConfig ? urgentHirePlanOptions() : [];
+  const urgentable = jobs.filter((j) => canMarkJobUrgent(viewer, j)).map(({ id, title }) => ({ id, title }));
   const target = typeof sp.target === "string" ? sp.target : null;
   const isAdmin = viewer?.company && (viewer.company.role === "OWNER" || viewer.company.role === "ADMIN");
 
@@ -247,6 +251,29 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
               </div>
             );
           })}
+          <div id="URGENT_HIRE" className="scroll-mt-24">
+            <Card className={`flex h-full flex-col p-6 ${sp.product === "URGENT_HIRE" ? "ring-2 ring-brand" : ""}`}>
+              <div className="flex items-center gap-1.5 text-sm font-semibold text-fg-muted">
+                <Zap className="size-4" /> {name("URGENT_HIRE")}
+              </div>
+              {urgentPlans.length ? (
+                <Price amount={t("premium.fromPrice", { price: f.money(Math.min(...urgentPlans.map((p) => p.amount)), "usd") })} suffix={t("premium.perJob")} />
+              ) : (
+                <Price amount={price("URGENT_HIRE")} suffix={t("premium.perJob")} />
+              )}
+              <p className="mt-1 text-sm text-fg-muted">{tagline("URGENT_HIRE")}</p>
+              <Features items={features("URGENT_HIRE")} />
+              <div className="mt-6">
+                {viewer?.company && paddleConfig && urgentPlans.length ? (
+                  <UrgentHirePicker jobs={urgentable} config={paddleConfig} plans={urgentPlans} signedIn={signedIn} />
+                ) : viewer?.company ? (
+                  <p className="text-xs text-fg-subtle">{t("premium.disabled")}</p>
+                ) : (
+                  <p className="text-xs text-fg-subtle">{t("premium.workspacesOnly")}</p>
+                )}
+              </div>
+            </Card>
+          </div>
         </div>
       </section>
 

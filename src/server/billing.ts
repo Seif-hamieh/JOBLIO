@@ -186,6 +186,14 @@ export async function fulfillPayment(
         await tx.job.update({ where: { id: payment.targetId! }, data: featured ? { featuredUntil: endsAt } : { sponsoredUntil: endsAt } });
         break;
       }
+      case "URGENT_HIRE": {
+        const job = await tx.job.findUniqueOrThrow({ where: { id: payment.targetId! }, select: { urgentUntil: true } });
+        const start = job.urgentUntil && job.urgentUntil > now ? job.urgentUntil : now;
+        const endsAt = addDays(start, stripeData.days ?? product.days!);
+        await tx.jobPromotion.create({ data: { jobId: payment.targetId!, kind: "URGENT", startsAt: start, endsAt, paymentId: payment.id } });
+        await tx.job.update({ where: { id: payment.targetId! }, data: { urgentUntil: endsAt } });
+        break;
+      }
       case "PREMIUM_PORTFOLIO":
       case "RECRUITER_PRO":
       case "COMPANY_PREMIUM": {

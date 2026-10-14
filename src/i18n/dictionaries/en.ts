@@ -1288,6 +1288,9 @@ export const en = {
   premium: {
     boostPlans: "Choose how long to boost your profile",
     boostPaid: "Payment received — your profile will be boosted in a moment.",
+    urgentPlans: "Choose how long to mark this job as urgent",
+    urgentPaid: "Payment received — your job will be marked urgent in a moment.",
+    noUrgentJobs: "No jobs to mark urgent right now — only open jobs you posted (or manage as an admin) that aren’t already urgent.",
     fromPrice: "from {price}",
     noFeaturableJobs: "No jobs to feature right now — only open jobs you posted (or manage as an admin) that aren’t already featured.",
     badge: "JOBLIO Premium",
@@ -1343,6 +1346,7 @@ export const en = {
       COMPANY_PREMIUM: { name: "Premium Company Page", tagline: "Make your employer brand shine.", features: "Brand colours across your page|Up to 30 photos & videos|Priority in company search|Job analytics: saves & conversion" },
       RECRUITER_PRO: { name: "Recruiter Pro", tagline: "Advanced tools for serious hiring.", features: "Advanced candidate filters|Unlimited search results|300 new candidate contacts / month|Saved searches & unlimited talent lists|Recruitment analytics" },
       PROFILE_BOOST: { name: "Profile Boost", tagline: "Stand out to recruiters for a month.", features: "Priority in recruiter search|Boosted profile badge|Higher placement in search results" },
+      URGENT_HIRE: { name: "Urgent Hire", tagline: "Fill this role fast — flag it as urgent.", features: "“Urgent” badge on the job card|Priority in recruiter search|Highlighted in job listings" },
     },
   },
   billing: {
@@ -1488,6 +1492,7 @@ export const en = {
     planUnavailable: "This plan isn’t available right now. Please choose another.",
     featureNotAllowed: "Only the person who posted this job or a company admin can feature it.",
     alreadyFeatured: "This job is already featured.",
+    alreadyUrgent: "This job is already marked urgent.",
     hiredLocked: "This candidate has been hired. Confirm moving them out of Hired first.",
     cannotDeclineHired: "This candidate has been hired. Move them out of Hired before declining.",
     logoUpdated: "Logo updated.",

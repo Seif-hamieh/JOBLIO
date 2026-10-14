@@ -3,10 +3,10 @@ import { z } from "zod";
 import { getViewer } from "@/server/session";
 import { ActionError, fail, localizeState } from "@/server/action";
 import { LIMITS, rateLimit } from "@/server/rate-limit";
-import { startFeaturedJobCheckout, startProfileBoostCheckout } from "@/server/paddle";
+import { startFeaturedJobCheckout, startProfileBoostCheckout, startUrgentHireCheckout } from "@/server/paddle";
 import { getI18n } from "@/i18n/server";
 import { k } from "@/i18n/message";
-import { FEATURED_JOB_PLAN_CODES, PROFILE_BOOST_PLAN_CODES, type ProfileBoostPlanCode } from "@/lib/billing/products";
+import { FEATURED_JOB_PLAN_CODES, PROFILE_BOOST_PLAN_CODES, URGENT_HIRE_PLAN_CODES, type ProfileBoostPlanCode, type UrgentHirePlanCode } from "@/lib/billing/products";
 
 export const dynamic = "force-dynamic";
 
@@ -14,15 +14,16 @@ const body = z
   .object({
     // Featured Job needs the job; Profile Boost is for the member's own profile.
     jobId: z.string().min(1).max(40).optional(),
-    planCode: z.enum([...FEATURED_JOB_PLAN_CODES, ...PROFILE_BOOST_PLAN_CODES]).optional(),
+    planCode: z.enum([...FEATURED_JOB_PLAN_CODES, ...PROFILE_BOOST_PLAN_CODES, ...URGENT_HIRE_PLAN_CODES]).optional(),
     // Pages still open from before the plans existed send only productCode: treat it as the 30-day plan.
     productCode: z.literal("FEATURED_JOB").optional(),
   })
   .refine((b) => b.planCode || b.productCode);
 
 const isProfileBoost = (code: string | undefined): code is ProfileBoostPlanCode => !!code && (PROFILE_BOOST_PLAN_CODES as string[]).includes(code);
+const isUrgentHire = (code: string | undefined): code is UrgentHirePlanCode => !!code && (URGENT_HIRE_PLAN_CODES as string[]).includes(code);
 
-// POST /api/checkout { jobId, planCode } (Featured Job) or { planCode } (Profile Boost) → { transactionId, checkoutUrl }
+// POST /api/checkout { jobId, planCode } (Featured Job, Urgent Hire) or { planCode } (Profile Boost) → { transactionId, checkoutUrl }
 // Signed-in members only; the job must be theirs (poster or company admin). The Paddle
 // API key stays on the server — the browser opens the checkout with the transaction id.
 export async function POST(req: Request) {
@@ -48,7 +49,9 @@ export async function POST(req: Request) {
   try {
     const { transactionId, checkoutUrl } = isProfileBoost(planCode)
       ? await startProfileBoostCheckout(viewer, planCode)
-      : await startFeaturedJobCheckout(viewer, jobId!, planCode ?? "FEATURED_JOB_30D");
+      : isUrgentHire(planCode)
+        ? await startUrgentHireCheckout(viewer, jobId!, planCode)
+        : await startFeaturedJobCheckout(viewer, jobId!, planCode ?? "FEATURED_JOB_30D");
     return NextResponse.json({ transactionId, checkoutUrl });
   } catch (err) {
     if (err instanceof ActionError) return error(err.message, 400);
