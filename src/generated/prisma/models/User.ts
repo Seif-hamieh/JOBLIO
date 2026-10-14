@@ -50,6 +50,7 @@ export type UserMinAggregateOutputType = {
   stripeCustomerId: string | null
   paddleCustomerId: string | null
   priorityCredits: number | null
+  lastFreeBoostClaimedAt: Date | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -68,6 +69,7 @@ export type UserMaxAggregateOutputType = {
   stripeCustomerId: string | null
   paddleCustomerId: string | null
   priorityCredits: number | null
+  lastFreeBoostClaimedAt: Date | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -86,6 +88,7 @@ export type UserCountAggregateOutputType = {
   stripeCustomerId: number
   paddleCustomerId: number
   priorityCredits: number
+  lastFreeBoostClaimedAt: number
   _all: number
 }
 
@@ -114,6 +117,7 @@ export type UserMinAggregateInputType = {
   stripeCustomerId?: true
   paddleCustomerId?: true
   priorityCredits?: true
+  lastFreeBoostClaimedAt?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -132,6 +136,7 @@ export type UserMaxAggregateInputType = {
   stripeCustomerId?: true
   paddleCustomerId?: true
   priorityCredits?: true
+  lastFreeBoostClaimedAt?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -150,6 +155,7 @@ export type UserCountAggregateInputType = {
   stripeCustomerId?: true
   paddleCustomerId?: true
   priorityCredits?: true
+  lastFreeBoostClaimedAt?: true
   _all?: true
 }
 
@@ -255,6 +261,7 @@ export type UserGroupByOutputType = {
   stripeCustomerId: string | null
   paddleCustomerId: string | null
   priorityCredits: number
+  lastFreeBoostClaimedAt: Date | null
   _count: UserCountAggregateOutputType | null
   _avg: UserAvgAggregateOutputType | null
   _sum: UserSumAggregateOutputType | null
@@ -296,6 +303,7 @@ export type UserWhereInput = {
   stripeCustomerId?: Prisma.StringNullableFilter<"User"> | string | null
   paddleCustomerId?: Prisma.StringNullableFilter<"User"> | string | null
   priorityCredits?: Prisma.IntFilter<"User"> | number
+  lastFreeBoostClaimedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   sessions?: Prisma.SessionListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
   profile?: Prisma.XOR<Prisma.ProfileNullableScalarRelationFilter, Prisma.ProfileWhereInput> | null
@@ -350,6 +358,7 @@ export type UserOrderByWithRelationInput = {
   stripeCustomerId?: Prisma.SortOrderInput | Prisma.SortOrder
   paddleCustomerId?: Prisma.SortOrderInput | Prisma.SortOrder
   priorityCredits?: Prisma.SortOrder
+  lastFreeBoostClaimedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   sessions?: Prisma.SessionOrderByRelationAggregateInput
   accounts?: Prisma.AccountOrderByRelationAggregateInput
   profile?: Prisma.ProfileOrderByWithRelationInput
@@ -407,6 +416,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   onboardedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   lastSeenAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   priorityCredits?: Prisma.IntFilter<"User"> | number
+  lastFreeBoostClaimedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   sessions?: Prisma.SessionListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
   profile?: Prisma.XOR<Prisma.ProfileNullableScalarRelationFilter, Prisma.ProfileWhereInput> | null
@@ -461,6 +471,7 @@ export type UserOrderByWithAggregationInput = {
   stripeCustomerId?: Prisma.SortOrderInput | Prisma.SortOrder
   paddleCustomerId?: Prisma.SortOrderInput | Prisma.SortOrder
   priorityCredits?: Prisma.SortOrder
+  lastFreeBoostClaimedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
@@ -487,6 +498,7 @@ export type UserScalarWhereWithAggregatesInput = {
   stripeCustomerId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   paddleCustomerId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   priorityCredits?: Prisma.IntWithAggregatesFilter<"User"> | number
+  lastFreeBoostClaimedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
 }
 
 export type UserCreateInput = {
@@ -505,6 +517,7 @@ export type UserCreateInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -559,6 +572,7 @@ export type UserUncheckedCreateInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -613,6 +627,7 @@ export type UserUpdateInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -667,6 +682,7 @@ export type UserUncheckedUpdateInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -721,6 +737,7 @@ export type UserCreateManyInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
 }
 
 export type UserUpdateManyMutationInput = {
@@ -739,6 +756,7 @@ export type UserUpdateManyMutationInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -757,6 +775,7 @@ export type UserUncheckedUpdateManyInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -775,6 +794,7 @@ export type UserCountOrderByAggregateInput = {
   stripeCustomerId?: Prisma.SortOrder
   paddleCustomerId?: Prisma.SortOrder
   priorityCredits?: Prisma.SortOrder
+  lastFreeBoostClaimedAt?: Prisma.SortOrder
 }
 
 export type UserAvgOrderByAggregateInput = {
@@ -797,6 +817,7 @@ export type UserMaxOrderByAggregateInput = {
   stripeCustomerId?: Prisma.SortOrder
   paddleCustomerId?: Prisma.SortOrder
   priorityCredits?: Prisma.SortOrder
+  lastFreeBoostClaimedAt?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -815,6 +836,7 @@ export type UserMinOrderByAggregateInput = {
   stripeCustomerId?: Prisma.SortOrder
   paddleCustomerId?: Prisma.SortOrder
   priorityCredits?: Prisma.SortOrder
+  lastFreeBoostClaimedAt?: Prisma.SortOrder
 }
 
 export type UserSumOrderByAggregateInput = {
@@ -1395,6 +1417,7 @@ export type UserCreateWithoutSessionsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
   settings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
@@ -1448,6 +1471,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
   settings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
@@ -1517,6 +1541,7 @@ export type UserUpdateWithoutSessionsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
   settings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
@@ -1570,6 +1595,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
   settings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
@@ -1623,6 +1649,7 @@ export type UserCreateWithoutAccountsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
   settings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
@@ -1676,6 +1703,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
   settings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
@@ -1745,6 +1773,7 @@ export type UserUpdateWithoutAccountsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
   settings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
@@ -1798,6 +1827,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
   settings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
@@ -1851,6 +1881,7 @@ export type UserCreateWithoutSettingsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -1904,6 +1935,7 @@ export type UserUncheckedCreateWithoutSettingsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1973,6 +2005,7 @@ export type UserUpdateWithoutSettingsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -2026,6 +2059,7 @@ export type UserUncheckedUpdateWithoutSettingsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2079,6 +2113,7 @@ export type UserCreateWithoutBlocksMadeInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -2132,6 +2167,7 @@ export type UserUncheckedCreateWithoutBlocksMadeInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2190,6 +2226,7 @@ export type UserCreateWithoutBlocksReceivedInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -2243,6 +2280,7 @@ export type UserUncheckedCreateWithoutBlocksReceivedInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2312,6 +2350,7 @@ export type UserUpdateWithoutBlocksMadeInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -2365,6 +2404,7 @@ export type UserUncheckedUpdateWithoutBlocksMadeInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2429,6 +2469,7 @@ export type UserUpdateWithoutBlocksReceivedInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -2482,6 +2523,7 @@ export type UserUncheckedUpdateWithoutBlocksReceivedInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2535,6 +2577,7 @@ export type UserCreateWithoutProfileInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   settings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
@@ -2588,6 +2631,7 @@ export type UserUncheckedCreateWithoutProfileInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   settings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
@@ -2657,6 +2701,7 @@ export type UserUpdateWithoutProfileInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   settings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
@@ -2710,6 +2755,7 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   settings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
@@ -2763,6 +2809,7 @@ export type UserCreateWithoutEndorsementsGivenInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -2816,6 +2863,7 @@ export type UserUncheckedCreateWithoutEndorsementsGivenInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2885,6 +2933,7 @@ export type UserUpdateWithoutEndorsementsGivenInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -2938,6 +2987,7 @@ export type UserUncheckedUpdateWithoutEndorsementsGivenInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2991,6 +3041,7 @@ export type UserCreateWithoutProfileViewsMadeInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -3044,6 +3095,7 @@ export type UserUncheckedCreateWithoutProfileViewsMadeInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -3102,6 +3154,7 @@ export type UserCreateWithoutProfileViewsReceivedInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -3155,6 +3208,7 @@ export type UserUncheckedCreateWithoutProfileViewsReceivedInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -3224,6 +3278,7 @@ export type UserUpdateWithoutProfileViewsMadeInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -3277,6 +3332,7 @@ export type UserUncheckedUpdateWithoutProfileViewsMadeInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -3341,6 +3397,7 @@ export type UserUpdateWithoutProfileViewsReceivedInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -3394,6 +3451,7 @@ export type UserUncheckedUpdateWithoutProfileViewsReceivedInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -3447,6 +3505,7 @@ export type UserCreateWithoutAchievementsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -3500,6 +3559,7 @@ export type UserUncheckedCreateWithoutAchievementsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -3569,6 +3629,7 @@ export type UserUpdateWithoutAchievementsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -3622,6 +3683,7 @@ export type UserUncheckedUpdateWithoutAchievementsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -3675,6 +3737,7 @@ export type UserCreateWithoutCompanyMembershipsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -3728,6 +3791,7 @@ export type UserUncheckedCreateWithoutCompanyMembershipsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -3797,6 +3861,7 @@ export type UserUpdateWithoutCompanyMembershipsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -3850,6 +3915,7 @@ export type UserUncheckedUpdateWithoutCompanyMembershipsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -3903,6 +3969,7 @@ export type UserCreateWithoutCompanyFollowsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -3956,6 +4023,7 @@ export type UserUncheckedCreateWithoutCompanyFollowsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -4025,6 +4093,7 @@ export type UserUpdateWithoutCompanyFollowsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -4078,6 +4147,7 @@ export type UserUncheckedUpdateWithoutCompanyFollowsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -4131,6 +4201,7 @@ export type UserCreateWithoutPostedJobsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -4184,6 +4255,7 @@ export type UserUncheckedCreateWithoutPostedJobsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -4253,6 +4325,7 @@ export type UserUpdateWithoutPostedJobsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -4306,6 +4379,7 @@ export type UserUncheckedUpdateWithoutPostedJobsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -4359,6 +4433,7 @@ export type UserCreateWithoutSavedJobsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -4412,6 +4487,7 @@ export type UserUncheckedCreateWithoutSavedJobsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -4481,6 +4557,7 @@ export type UserUpdateWithoutSavedJobsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -4534,6 +4611,7 @@ export type UserUncheckedUpdateWithoutSavedJobsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -4587,6 +4665,7 @@ export type UserCreateWithoutSavedSearchesInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -4640,6 +4719,7 @@ export type UserUncheckedCreateWithoutSavedSearchesInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -4709,6 +4789,7 @@ export type UserUpdateWithoutSavedSearchesInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -4762,6 +4843,7 @@ export type UserUncheckedUpdateWithoutSavedSearchesInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -4815,6 +4897,7 @@ export type UserCreateWithoutApplicationsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -4868,6 +4951,7 @@ export type UserUncheckedCreateWithoutApplicationsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -4937,6 +5021,7 @@ export type UserUpdateWithoutApplicationsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -4990,6 +5075,7 @@ export type UserUncheckedUpdateWithoutApplicationsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -5043,6 +5129,7 @@ export type UserCreateWithoutApplicationEventsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -5096,6 +5183,7 @@ export type UserUncheckedCreateWithoutApplicationEventsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -5165,6 +5253,7 @@ export type UserUpdateWithoutApplicationEventsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -5218,6 +5307,7 @@ export type UserUncheckedUpdateWithoutApplicationEventsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -5271,6 +5361,7 @@ export type UserCreateWithoutRecruiterNotesInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -5324,6 +5415,7 @@ export type UserUncheckedCreateWithoutRecruiterNotesInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -5393,6 +5485,7 @@ export type UserUpdateWithoutRecruiterNotesInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -5446,6 +5539,7 @@ export type UserUncheckedUpdateWithoutRecruiterNotesInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -5499,6 +5593,7 @@ export type UserCreateWithoutInterviewsScheduledInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -5552,6 +5647,7 @@ export type UserUncheckedCreateWithoutInterviewsScheduledInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -5621,6 +5717,7 @@ export type UserUpdateWithoutInterviewsScheduledInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -5674,6 +5771,7 @@ export type UserUncheckedUpdateWithoutInterviewsScheduledInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -5727,6 +5825,7 @@ export type UserCreateWithoutSavedCandidatesInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -5780,6 +5879,7 @@ export type UserUncheckedCreateWithoutSavedCandidatesInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -5838,6 +5938,7 @@ export type UserCreateWithoutSavedByRecruitersInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -5891,6 +5992,7 @@ export type UserUncheckedCreateWithoutSavedByRecruitersInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -5960,6 +6062,7 @@ export type UserUpdateWithoutSavedCandidatesInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -6013,6 +6116,7 @@ export type UserUncheckedUpdateWithoutSavedCandidatesInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -6077,6 +6181,7 @@ export type UserUpdateWithoutSavedByRecruitersInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -6130,6 +6235,7 @@ export type UserUncheckedUpdateWithoutSavedByRecruitersInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -6183,6 +6289,7 @@ export type UserCreateWithoutSentConnectionsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -6236,6 +6343,7 @@ export type UserUncheckedCreateWithoutSentConnectionsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -6294,6 +6402,7 @@ export type UserCreateWithoutReceivedConnectionsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -6347,6 +6456,7 @@ export type UserUncheckedCreateWithoutReceivedConnectionsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -6416,6 +6526,7 @@ export type UserUpdateWithoutSentConnectionsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -6469,6 +6580,7 @@ export type UserUncheckedUpdateWithoutSentConnectionsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -6533,6 +6645,7 @@ export type UserUpdateWithoutReceivedConnectionsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -6586,6 +6699,7 @@ export type UserUncheckedUpdateWithoutReceivedConnectionsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -6639,6 +6753,7 @@ export type UserCreateWithoutFollowingInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -6692,6 +6807,7 @@ export type UserUncheckedCreateWithoutFollowingInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -6750,6 +6866,7 @@ export type UserCreateWithoutFollowersInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -6803,6 +6920,7 @@ export type UserUncheckedCreateWithoutFollowersInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -6872,6 +6990,7 @@ export type UserUpdateWithoutFollowingInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -6925,6 +7044,7 @@ export type UserUncheckedUpdateWithoutFollowingInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -6989,6 +7109,7 @@ export type UserUpdateWithoutFollowersInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -7042,6 +7163,7 @@ export type UserUncheckedUpdateWithoutFollowersInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -7095,6 +7217,7 @@ export type UserCreateWithoutPostsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -7148,6 +7271,7 @@ export type UserUncheckedCreateWithoutPostsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -7217,6 +7341,7 @@ export type UserUpdateWithoutPostsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -7270,6 +7395,7 @@ export type UserUncheckedUpdateWithoutPostsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -7323,6 +7449,7 @@ export type UserCreateWithoutLikesInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -7376,6 +7503,7 @@ export type UserUncheckedCreateWithoutLikesInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -7445,6 +7573,7 @@ export type UserUpdateWithoutLikesInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -7498,6 +7627,7 @@ export type UserUncheckedUpdateWithoutLikesInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -7551,6 +7681,7 @@ export type UserCreateWithoutCommentsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -7604,6 +7735,7 @@ export type UserUncheckedCreateWithoutCommentsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -7673,6 +7805,7 @@ export type UserUpdateWithoutCommentsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -7726,6 +7859,7 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -7779,6 +7913,7 @@ export type UserCreateWithoutConversationsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -7832,6 +7967,7 @@ export type UserUncheckedCreateWithoutConversationsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -7901,6 +8037,7 @@ export type UserUpdateWithoutConversationsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -7954,6 +8091,7 @@ export type UserUncheckedUpdateWithoutConversationsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -8007,6 +8145,7 @@ export type UserCreateWithoutMessagesInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -8060,6 +8199,7 @@ export type UserUncheckedCreateWithoutMessagesInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -8118,6 +8258,7 @@ export type UserCreateWithoutSharedInMessagesInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -8171,6 +8312,7 @@ export type UserUncheckedCreateWithoutSharedInMessagesInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -8240,6 +8382,7 @@ export type UserUpdateWithoutMessagesInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -8293,6 +8436,7 @@ export type UserUncheckedUpdateWithoutMessagesInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -8357,6 +8501,7 @@ export type UserUpdateWithoutSharedInMessagesInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -8410,6 +8555,7 @@ export type UserUncheckedUpdateWithoutSharedInMessagesInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -8463,6 +8609,7 @@ export type UserCreateWithoutNotificationsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -8516,6 +8663,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -8574,6 +8722,7 @@ export type UserCreateWithoutNotificationsCausedInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -8627,6 +8776,7 @@ export type UserUncheckedCreateWithoutNotificationsCausedInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -8696,6 +8846,7 @@ export type UserUpdateWithoutNotificationsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -8749,6 +8900,7 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -8813,6 +8965,7 @@ export type UserUpdateWithoutNotificationsCausedInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -8866,6 +9019,7 @@ export type UserUncheckedUpdateWithoutNotificationsCausedInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -8919,6 +9073,7 @@ export type UserCreateWithoutSubscriptionsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -8972,6 +9127,7 @@ export type UserUncheckedCreateWithoutSubscriptionsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -9041,6 +9197,7 @@ export type UserUpdateWithoutSubscriptionsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -9094,6 +9251,7 @@ export type UserUncheckedUpdateWithoutSubscriptionsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -9147,6 +9305,7 @@ export type UserCreateWithoutPaymentsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -9200,6 +9359,7 @@ export type UserUncheckedCreateWithoutPaymentsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -9269,6 +9429,7 @@ export type UserUpdateWithoutPaymentsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -9322,6 +9483,7 @@ export type UserUncheckedUpdateWithoutPaymentsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -9375,6 +9537,7 @@ export type UserCreateWithoutBoostsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -9428,6 +9591,7 @@ export type UserUncheckedCreateWithoutBoostsInput = {
   stripeCustomerId?: string | null
   paddleCustomerId?: string | null
   priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -9497,6 +9661,7 @@ export type UserUpdateWithoutBoostsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -9550,6 +9715,7 @@ export type UserUncheckedUpdateWithoutBoostsInput = {
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -9931,6 +10097,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   stripeCustomerId?: boolean
   paddleCustomerId?: boolean
   priorityCredits?: boolean
+  lastFreeBoostClaimedAt?: boolean
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   profile?: boolean | Prisma.User$profileArgs<ExtArgs>
@@ -9986,6 +10153,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   stripeCustomerId?: boolean
   paddleCustomerId?: boolean
   priorityCredits?: boolean
+  lastFreeBoostClaimedAt?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -10004,6 +10172,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   stripeCustomerId?: boolean
   paddleCustomerId?: boolean
   priorityCredits?: boolean
+  lastFreeBoostClaimedAt?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -10022,9 +10191,10 @@ export type UserSelectScalar = {
   stripeCustomerId?: boolean
   paddleCustomerId?: boolean
   priorityCredits?: boolean
+  lastFreeBoostClaimedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "username" | "intent" | "platformRole" | "onboardedAt" | "lastSeenAt" | "stripeCustomerId" | "paddleCustomerId" | "priorityCredits", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "username" | "intent" | "platformRole" | "onboardedAt" | "lastSeenAt" | "stripeCustomerId" | "paddleCustomerId" | "priorityCredits" | "lastFreeBoostClaimedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
@@ -10123,6 +10293,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     stripeCustomerId: string | null
     paddleCustomerId: string | null
     priorityCredits: number
+    lastFreeBoostClaimedAt: Date | null
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -10597,6 +10768,7 @@ export interface UserFieldRefs {
   readonly stripeCustomerId: Prisma.FieldRef<"User", 'String'>
   readonly paddleCustomerId: Prisma.FieldRef<"User", 'String'>
   readonly priorityCredits: Prisma.FieldRef<"User", 'Int'>
+  readonly lastFreeBoostClaimedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
     
 

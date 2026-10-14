@@ -292,6 +292,7 @@ model User {
   stripeCustomerId String?      @unique
   paddleCustomerId String?      @unique
   priorityCredits  Int          @default(0)
+  lastFreeBoostClaimedAt DateTime?
 
   sessions             Session[]
   accounts             Account[]

@@ -7,6 +7,8 @@ import { Bars } from "@/components/charts/bars";
 import { Avatar } from "@/components/ui/avatar";
 import { Card, CardHeader, EmptyState, PageHeader, Stat } from "@/components/ui/misc";
 import { buttonClasses } from "@/components/ui/button";
+import { ClaimFreeBoostButton } from "@/components/billing/claim-free-boost-button";
+import { isEligibleForFreeBoost } from "@/server/services/subscriptions";
 
 export const generateMetadata = pageTitle("profile.tabViews");
 
@@ -14,7 +16,7 @@ export default async function ProfileViewsPage() {
   const [viewer, { t, f }] = await Promise.all([requireViewer(), getI18n()]);
   const since = new Date(Date.now() - 29 * 86_400_000);
   since.setHours(0, 0, 0, 0);
-  const [views, total, prev] = await Promise.all([
+  const [views, total, prev, freeBoost] = await Promise.all([
     db.profileView.findMany({
       where: { viewedId: viewer.id, createdAt: { gte: since } },
       orderBy: { createdAt: "desc" },
@@ -27,6 +29,7 @@ export default async function ProfileViewsPage() {
     }),
     db.profile.findUnique({ where: { id: viewer.profileId }, select: { profileViewCount: true } }),
     db.profileView.count({ where: { viewedId: viewer.id, createdAt: { gte: new Date(since.getTime() - 30 * 86_400_000), lt: since } } }),
+    isEligibleForFreeBoost(viewer.id),
   ]);
   const days = Array.from({ length: 30 }, (_, i) => {
     const d = new Date(since.getTime() + i * 86_400_000);
@@ -42,6 +45,21 @@ export default async function ProfileViewsPage() {
   return (
     <div className="space-y-6">
       <PageHeader title={t("profileEdit.viewsTitle")} description={t("profileEdit.viewsSub")} />
+      {freeBoost.eligible && (
+        <div className="flex flex-wrap items-center gap-4 rounded-2xl bg-ember/10 p-4 ring-1 ring-ember/30">
+          <Rocket className="size-6 shrink-0 text-ember-fg" />
+          <div className="min-w-0 flex-1">
+            <div className="font-semibold">{t("profileEdit.freeBoostTitle")}</div>
+            <div className="text-sm text-fg-muted">{t("profileEdit.freeBoostBody")}</div>
+          </div>
+          <ClaimFreeBoostButton />
+        </div>
+      )}
+      {freeBoost.reason === "too_soon" && freeBoost.nextEligibleAt && (
+        <p className="flex items-center gap-1.5 text-xs text-fg-subtle">
+          <Rocket className="size-3.5" /> {t("profileEdit.freeBoostTooSoon", { date: f.date(freeBoost.nextEligibleAt, { month: "long", day: "numeric" }) })}
+        </p>
+      )}
       <div className="grid gap-3 sm:grid-cols-3">
         <Stat label={t("profileEdit.views30")} value={views.length} icon={<Eye />} hint={change != null ? t("profileEdit.vsPrev", { pct: `${change >= 0 ? "+" : ""}${change}` }) : undefined} />
         <Stat label={t("profileEdit.fromRecruiters")} value={recruiters} hint={t("profileEdit.recruitersHint")} />

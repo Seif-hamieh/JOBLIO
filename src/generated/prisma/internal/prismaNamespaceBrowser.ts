@@ -135,7 +135,8 @@ export const UserScalarFieldEnum = {
   lastSeenAt: 'lastSeenAt',
   stripeCustomerId: 'stripeCustomerId',
   paddleCustomerId: 'paddleCustomerId',
-  priorityCredits: 'priorityCredits'
+  priorityCredits: 'priorityCredits',
+  lastFreeBoostClaimedAt: 'lastFreeBoostClaimedAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
