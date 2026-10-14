@@ -134,6 +134,7 @@ export const UserScalarFieldEnum = {
   onboardedAt: 'onboardedAt',
   lastSeenAt: 'lastSeenAt',
   stripeCustomerId: 'stripeCustomerId',
+  paddleCustomerId: 'paddleCustomerId',
   priorityCredits: 'priorityCredits'
 } as const
 
@@ -818,9 +819,10 @@ export const SubscriptionScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   companyId: 'companyId',
+  paddleCustomerId: 'paddleCustomerId',
   product: 'product',
   status: 'status',
-  stripeSubscriptionId: 'stripeSubscriptionId',
+  paddleSubscriptionId: 'paddleSubscriptionId',
   currentPeriodEnd: 'currentPeriodEnd',
   cancelAtPeriodEnd: 'cancelAtPeriodEnd',
   createdAt: 'createdAt',

@@ -11,7 +11,8 @@ export type ProductCode =
   | "RECRUITER_PRO"
   | "PROFILE_BOOST"
   | "URGENT_HIRE"
-  | "PRIORITY_APPLICATION";
+  | "PRIORITY_APPLICATION"
+  | "JOB_SEEKER_PRO";
 
 export type Product = {
   code: ProductCode;
@@ -104,6 +105,16 @@ export const PRODUCTS: Record<ProductCode, Product> = {
     audience: "recruiter",
     tagline: "Advanced tools for serious hiring.",
     features: ["Advanced candidate filters", "Unlimited search results", "300 new candidate contacts / month", "Saved searches & unlimited talent lists", "Recruitment analytics"],
+  },
+  JOB_SEEKER_PRO: {
+    code: "JOB_SEEKER_PRO",
+    name: "Job Seeker Pro",
+    amount: 700,
+    currency: "usd",
+    mode: "subscription",
+    audience: "member",
+    tagline: "Tools to stand out and get hired faster.",
+    features: ["Everything in Free", "Profile Boost included", "Early access to new jobs", "See who viewed your profile"],
   },
   PROFILE_BOOST: {
     code: "PROFILE_BOOST",
@@ -259,4 +270,29 @@ export function priorityApplicationCredits(payment: { product: string; descripti
     if (Number.isFinite(n) && n > 0) return n;
   }
   return 1;
+}
+
+// ── Subscription plans (Paddle, recurring) ──
+export type SubscriptionProductCode = "JOB_SEEKER_PRO" | "COMPANY_PREMIUM";
+export type SubscriptionPlanCode = "JOB_SEEKER_PRO_MONTHLY" | "JOB_SEEKER_PRO_YEARLY" | "COMPANY_PREMIUM_MONTHLY" | "COMPANY_PREMIUM_YEARLY";
+
+export type SubscriptionPlan = {
+  code: SubscriptionPlanCode;
+  product: SubscriptionProductCode;
+  priceId: string | undefined;
+  interval: "month" | "year";
+  amount: number;
+};
+
+export const SUBSCRIPTION_PLANS: SubscriptionPlan[] = [
+  { code: "JOB_SEEKER_PRO_MONTHLY", product: "JOB_SEEKER_PRO", priceId: process.env.PADDLE_PRICE_JOB_SEEKER_PRO_MONTHLY, interval: "month", amount: 700 },
+  { code: "JOB_SEEKER_PRO_YEARLY", product: "JOB_SEEKER_PRO", priceId: process.env.PADDLE_PRICE_JOB_SEEKER_PRO_YEARLY, interval: "year", amount: 7000 },
+  { code: "COMPANY_PREMIUM_MONTHLY", product: "COMPANY_PREMIUM", priceId: process.env.PADDLE_PRICE_COMPANY_PREMIUM_MONTHLY, interval: "month", amount: 2500 },
+  { code: "COMPANY_PREMIUM_YEARLY", product: "COMPANY_PREMIUM", priceId: process.env.PADDLE_PRICE_COMPANY_PREMIUM_YEARLY, interval: "year", amount: 25000 },
+];
+
+export const SUBSCRIPTION_PLAN_CODES = SUBSCRIPTION_PLANS.map((p) => p.code) as [SubscriptionPlanCode, ...SubscriptionPlanCode[]];
+
+export function findSubscriptionPlan(code: SubscriptionPlanCode): SubscriptionPlan | undefined {
+  return SUBSCRIPTION_PLANS.find((p) => p.code === code);
 }

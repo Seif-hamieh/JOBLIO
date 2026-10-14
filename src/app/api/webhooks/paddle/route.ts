@@ -2,7 +2,15 @@ import { NextResponse } from "next/server";
 import { EventName, type EventEntity } from "@paddle/paddle-node-sdk";
 import { db } from "@/server/db";
 import { fulfillPayment, markPaymentFailed } from "@/server/billing";
-import { featuredDays, paddle, priorityApplicationPaidCredits, profileBoostPaidDays, urgentHirePaidDays } from "@/server/paddle";
+import {
+  featuredDays,
+  paddle,
+  priorityApplicationPaidCredits,
+  profileBoostPaidDays,
+  recordSubscriptionPayment,
+  syncPaddleSubscription,
+  urgentHirePaidDays,
+} from "@/server/paddle";
 
 export const dynamic = "force-dynamic";
 
@@ -25,6 +33,11 @@ async function handle(event: EventEntity) {
   switch (event.eventType) {
     case EventName.TransactionCompleted: {
       const txn = event.data;
+      // Subscription charges (first payment and renewals) have no PENDING Payment: record them.
+      if (txn.subscriptionId) {
+        await recordSubscriptionPayment(txn);
+        return;
+      }
       const payment = await paymentFor(txn.customData);
       if (!payment) {
         console.warn("[paddle webhook] no matching payment for", txn.id);
@@ -57,6 +70,14 @@ async function handle(event: EventEntity) {
       console.warn("[paddle webhook] payment failed for", event.data.id);
       return;
     }
+    // Subscriptions: mirror Paddle's state (status, period end, scheduled cancel) into our table.
+    case EventName.SubscriptionCreated:
+    case EventName.SubscriptionActivated:
+    case EventName.SubscriptionUpdated:
+    case EventName.SubscriptionPastDue:
+    case EventName.SubscriptionCanceled:
+      await syncPaddleSubscription(event.data);
+      return;
   }
 }
 

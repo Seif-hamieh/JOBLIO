@@ -247,6 +247,7 @@ enum ProductCode {
   PROFILE_BOOST
   URGENT_HIRE
   PRIORITY_APPLICATION
+  JOB_SEEKER_PRO
 }
 
 enum PaymentStatus {
@@ -289,6 +290,7 @@ model User {
   onboardedAt      DateTime?
   lastSeenAt       DateTime?
   stripeCustomerId String?      @unique
+  paddleCustomerId String?      @unique
   priorityCredits  Int          @default(0)
 
   sessions             Session[]
@@ -1208,9 +1210,10 @@ model Subscription {
   id                   String             @id @default(cuid())
   userId               String
   companyId            String?
+  paddleCustomerId     String?
   product              ProductCode
   status               SubscriptionStatus
-  stripeSubscriptionId String?            @unique
+  paddleSubscriptionId String?            @unique @map("stripeSubscriptionId")
   currentPeriodEnd     DateTime
   cancelAtPeriodEnd    Boolean            @default(false)
   createdAt            DateTime           @default(now())
@@ -1220,6 +1223,7 @@ model Subscription {
 
   @@index([userId, status])
   @@index([companyId, status])
+  @@index([paddleCustomerId])
   @@map("subscriptions")
 }
 
