@@ -5,7 +5,14 @@ import { ActionError } from "@/server/action";
 import type { Viewer } from "@/server/session";
 import { canManageCompany } from "@/server/session";
 import { nextInvoiceNumber } from "@/server/billing";
-import { FEATURED_JOB_PLANS, PRODUCTS, type FeaturedJobPlan, type FeaturedJobPlanCode } from "@/lib/billing/products";
+import {
+  FEATURED_JOB_PLANS,
+  PROFILE_BOOST_PLANS,
+  PRODUCTS,
+  type FeaturedJobPlan,
+  type FeaturedJobPlanCode,
+  type ProfileBoostPlanCode,
+} from "@/lib/billing/products";
 
 // Paddle Billing for "Feature this job". Paddle is the merchant of record: the buyer
 // pays in Paddle's checkout overlay and card data never reaches JOBLIO. Paddle then
@@ -113,6 +120,61 @@ export async function startFeaturedJobCheckout(viewer: Viewer, jobId: string, pl
     const transaction = await p.transactions.create({
       items: [{ priceId: plan.priceId!, quantity: 1 }],
       customData: { paymentId: payment.id, jobId: job.id, userId: viewer.id, planCode: plan.code, durationDays: plan.durationDays },
+    });
+    return { transactionId: transaction.id, checkoutUrl: transaction.checkout?.url ?? null, paymentId: payment.id };
+  } catch (err) {
+    console.error("[paddle] transaction create failed", err);
+    await db.payment.update({ where: { id: payment.id }, data: { status: "FAILED" } });
+    throw new ActionError("@msg.checkoutFailed");
+  }
+}
+
+// ── Profile Boost (Paddle) ──────────────────────────────────────────────────
+// Same flow as Featured Job, for the member's own profile (no target): a PENDING
+// PROFILE_BOOST payment + a Paddle transaction; the webhook grants the boost.
+
+/** Profile Boost plans whose Paddle price is configured. */
+export function profileBoostPlans() {
+  return PROFILE_BOOST_PLANS.filter((p) => p.priceId);
+}
+
+/** Plans as shown in the browser — no price IDs. */
+export function profileBoostPlanOptions() {
+  return profileBoostPlans().map(({ code, durationDays, amount }) => ({ code, durationDays, amount }));
+}
+
+/** Boost length: the price that was actually paid, else custom_data.durationDays, else null (product default). */
+export function profileBoostPaidDays(items: { price?: { id?: string | null } | null }[] | null | undefined, customData: unknown): number | null {
+  for (const item of items ?? []) {
+    const plan = profileBoostPlans().find((p) => p.priceId === item.price?.id);
+    if (plan) return plan.durationDays;
+  }
+  const days = Number((customData as { durationDays?: unknown } | null)?.durationDays);
+  return PLAN_DAYS.has(days) ? days : null;
+}
+
+/** Creates a PENDING Profile Boost payment and a Paddle transaction for the chosen plan. */
+export async function startProfileBoostCheckout(viewer: Viewer, planCode: ProfileBoostPlanCode) {
+  const p = paddle();
+  if (!p || !process.env.PADDLE_CLIENT_TOKEN) throw new ActionError("@msg.paymentsOff");
+  const plan = profileBoostPlans().find((x) => x.code === planCode);
+  if (!plan) throw new ActionError("@msg.planUnavailable");
+
+  const payment = await db.payment.create({
+    data: {
+      userId: viewer.id,
+      product: "PROFILE_BOOST",
+      description: `Profile Boost · ${plan.durationDays} days`,
+      amount: plan.amount,
+      currency: PRODUCTS.PROFILE_BOOST.currency,
+      invoiceNumber: await nextInvoiceNumber(),
+    },
+  });
+
+  try {
+    const transaction = await p.transactions.create({
+      items: [{ priceId: plan.priceId!, quantity: 1 }],
+      customData: { paymentId: payment.id, userId: viewer.id, product: "PROFILE_BOOST", planCode: plan.code, durationDays: plan.durationDays },
     });
     return { transactionId: transaction.id, checkoutUrl: transaction.checkout?.url ?? null, paymentId: payment.id };
   } catch (err) {

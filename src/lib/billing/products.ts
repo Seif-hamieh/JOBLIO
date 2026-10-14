@@ -8,7 +8,8 @@ export type ProductCode =
   | "FEATURED_JOB"
   | "SPONSORED_JOB"
   | "COMPANY_PREMIUM"
-  | "RECRUITER_PRO";
+  | "RECRUITER_PRO"
+  | "PROFILE_BOOST";
 
 export type Product = {
   code: ProductCode;
@@ -102,9 +103,20 @@ export const PRODUCTS: Record<ProductCode, Product> = {
     tagline: "Advanced tools for serious hiring.",
     features: ["Advanced candidate filters", "Unlimited search results", "300 new candidate contacts / month", "Saved searches & unlimited talent lists", "Recruitment analytics"],
   },
+  PROFILE_BOOST: {
+    code: "PROFILE_BOOST",
+    name: "Profile Boost",
+    amount: 500,
+    currency: "usd",
+    mode: "payment",
+    days: 30,
+    audience: "member",
+    tagline: "Stand out to recruiters for a month.",
+    features: ["Priority in recruiter search", "Boosted profile badge", "Higher placement in search results"],
+  },
 };
 
-export const MEMBER_PRODUCTS: ProductCode[] = ["CAREER_BOOST_7", "CAREER_BOOST_30", "PREMIUM_PORTFOLIO"];
+export const MEMBER_PRODUCTS: ProductCode[] = ["CAREER_BOOST_7", "CAREER_BOOST_30", "PREMIUM_PORTFOLIO", "PROFILE_BOOST"];
 export const BUSINESS_PRODUCTS: ProductCode[] = ["RECRUITER_PRO", "COMPANY_PREMIUM", "FEATURED_JOB", "SPONSORED_JOB"];
 
 // ── Featured Job plans (Paddle) ─────────────────────────────────────────────
@@ -131,9 +143,36 @@ export const FEATURED_JOB_PLANS: FeaturedJobPlan[] = [
 
 export const FEATURED_JOB_PLAN_CODES = FEATURED_JOB_PLANS.map((p) => p.code) as [FeaturedJobPlanCode, ...FeaturedJobPlanCode[]];
 
+// ── Profile Boost plans (Paddle) ──────────────────────────────
+export type ProfileBoostPlanCode = "PROFILE_BOOST_7D" | "PROFILE_BOOST_14D" | "PROFILE_BOOST_30D";
+
+export type ProfileBoostPlan = {
+  code: ProfileBoostPlanCode;
+  priceId: string | undefined;
+  durationDays: number;
+  /** Minor units (cents), USD — what Paddle charges for this price. */
+  amount: number;
+};
+
+/** Ascending by price. */
+export const PROFILE_BOOST_PLANS: ProfileBoostPlan[] = [
+  { code: "PROFILE_BOOST_7D", priceId: process.env.PADDLE_PRICE_PROFILE_BOOST_7D, durationDays: 7, amount: 200 },
+  { code: "PROFILE_BOOST_14D", priceId: process.env.PADDLE_PRICE_PROFILE_BOOST_14D, durationDays: 14, amount: 300 },
+  { code: "PROFILE_BOOST_30D", priceId: process.env.PADDLE_PRICE_PROFILE_BOOST_30D, durationDays: 30, amount: 500 },
+];
+
+export const PROFILE_BOOST_PLAN_CODES = PROFILE_BOOST_PLANS.map((p) => p.code) as [ProfileBoostPlanCode, ...ProfileBoostPlanCode[]];
+
 /** Days of a Featured Job payment, from its description ("Featured Job · 14 days"). */
 export function featuredJobDays(payment: { product: string; description: string }) {
   if (payment.product !== "FEATURED_JOB") return null;
+  const days = Number(/(\d+)\s*days?/i.exec(payment.description)?.[1]);
+  return Number.isFinite(days) && days > 0 ? days : null;
+}
+
+/** Days of a Profile Boost payment, from its description ("Profile Boost · 14 days"). */
+export function profileBoostDays(payment: { product: string; description: string }) {
+  if (payment.product !== "PROFILE_BOOST") return null;
   const days = Number(/(\d+)\s*days?/i.exec(payment.description)?.[1]);
   return Number.isFinite(days) && days > 0 ? days : null;
 }

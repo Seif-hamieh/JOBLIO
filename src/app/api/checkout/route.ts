@@ -3,23 +3,26 @@ import { z } from "zod";
 import { getViewer } from "@/server/session";
 import { ActionError, fail, localizeState } from "@/server/action";
 import { LIMITS, rateLimit } from "@/server/rate-limit";
-import { startFeaturedJobCheckout } from "@/server/paddle";
+import { startFeaturedJobCheckout, startProfileBoostCheckout } from "@/server/paddle";
 import { getI18n } from "@/i18n/server";
 import { k } from "@/i18n/message";
-import { FEATURED_JOB_PLAN_CODES } from "@/lib/billing/products";
+import { FEATURED_JOB_PLAN_CODES, PROFILE_BOOST_PLAN_CODES, type ProfileBoostPlanCode } from "@/lib/billing/products";
 
 export const dynamic = "force-dynamic";
 
 const body = z
   .object({
-    jobId: z.string().min(1).max(40),
-    planCode: z.enum(FEATURED_JOB_PLAN_CODES).optional(),
+    // Featured Job needs the job; Profile Boost is for the member's own profile.
+    jobId: z.string().min(1).max(40).optional(),
+    planCode: z.enum([...FEATURED_JOB_PLAN_CODES, ...PROFILE_BOOST_PLAN_CODES]).optional(),
     // Pages still open from before the plans existed send only productCode: treat it as the 30-day plan.
     productCode: z.literal("FEATURED_JOB").optional(),
   })
   .refine((b) => b.planCode || b.productCode);
 
-// POST /api/checkout { jobId, planCode } → { transactionId, checkoutUrl }
+const isProfileBoost = (code: string | undefined): code is ProfileBoostPlanCode => !!code && (PROFILE_BOOST_PLAN_CODES as string[]).includes(code);
+
+// POST /api/checkout { jobId, planCode } (Featured Job) or { planCode } (Profile Boost) → { transactionId, checkoutUrl }
 // Signed-in members only; the job must be theirs (poster or company admin). The Paddle
 // API key stays on the server — the browser opens the checkout with the transaction id.
 export async function POST(req: Request) {
@@ -39,8 +42,13 @@ export async function POST(req: Request) {
   const parsed = body.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return error(k("msg.error"), 400);
 
+  const { jobId, planCode } = parsed.data;
+  if (!isProfileBoost(planCode) && !jobId) return error(k("msg.error"), 400);
+
   try {
-    const { transactionId, checkoutUrl } = await startFeaturedJobCheckout(viewer, parsed.data.jobId, parsed.data.planCode ?? "FEATURED_JOB_30D");
+    const { transactionId, checkoutUrl } = isProfileBoost(planCode)
+      ? await startProfileBoostCheckout(viewer, planCode)
+      : await startFeaturedJobCheckout(viewer, jobId!, planCode ?? "FEATURED_JOB_30D");
     return NextResponse.json({ transactionId, checkoutUrl });
   } catch (err) {
     if (err instanceof ActionError) return error(err.message, 400);

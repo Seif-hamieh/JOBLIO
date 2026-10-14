@@ -4,8 +4,9 @@ import { Building2, Check, Crown, Globe, Info, Megaphone, Rocket, ShieldCheck, S
 import { getViewer } from "@/server/session";
 import { db } from "@/server/db";
 import { paymentsMode } from "@/server/billing";
-import { canFeatureJob, featuredJobPlanOptions, paddleClientConfig } from "@/server/paddle";
+import { canFeatureJob, featuredJobPlanOptions, paddleClientConfig, profileBoostPlanOptions } from "@/server/paddle";
 import { FeatureJobPicker, PaddlePaymentLink } from "@/components/jobs/feature-job-button";
+import { ProfileBoostPicker } from "@/components/billing/profile-boost-button";
 import { BuyButton, PromoteJobBuy } from "@/components/billing/buy-button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/misc";
@@ -51,6 +52,7 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
   // Featured Job goes through Paddle when it is configured: only jobs this member may feature right now.
   const paddleConfig = paddleClientConfig();
   const featuredPlans = paddleConfig ? featuredJobPlanOptions() : [];
+  const boostPlans = paddleConfig ? profileBoostPlanOptions() : [];
   const featurable = jobs.filter((j) => canFeatureJob(viewer, j)).map(({ id, title }) => ({ id, title }));
   const target = typeof sp.target === "string" ? sp.target : null;
   const isAdmin = viewer?.company && (viewer.company.role === "OWNER" || viewer.company.role === "ADMIN");
@@ -94,6 +96,25 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
                 {t("common.joinFree")}
               </Link>
             )}
+          </Card>
+          <Card className="flex flex-col p-6">
+            <div className="flex items-center gap-1.5 text-sm font-semibold text-ember-fg">
+              <Rocket className="size-4" /> {name("PROFILE_BOOST")}
+            </div>
+            {boostPlans.length ? (
+              <Price amount={t("premium.fromPrice", { price: f.money(Math.min(...boostPlans.map((p) => p.amount)), "usd") })} suffix="" />
+            ) : (
+              <Price amount={price("PROFILE_BOOST")} suffix={t("premium.perDays", { n: PRODUCTS.PROFILE_BOOST.days ?? 0 })} />
+            )}
+            <p className="mt-1 text-sm text-fg-muted">{tagline("PROFILE_BOOST")}</p>
+            <Features items={features("PROFILE_BOOST")} tone="text-ember" />
+            <div className="mt-6">
+              {paddleConfig && boostPlans.length ? (
+                <ProfileBoostPicker plans={boostPlans} signedIn={signedIn} config={paddleConfig} />
+              ) : (
+                <p className="text-xs text-fg-subtle">{t("premium.disabled")}</p>
+              )}
+            </div>
           </Card>
           {SHOW_LEGACY_PLANS && (["CAREER_BOOST_7", "CAREER_BOOST_30"] as const).map((code, i) => (
             <Card key={code} className={`relative flex flex-col overflow-hidden p-6 ${i === 1 ? "ring-2 ring-ember/50" : ""}`}>

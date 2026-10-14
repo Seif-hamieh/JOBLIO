@@ -18,12 +18,17 @@ export type PaddleClientConfig = { token: string; environment: "sandbox" | "prod
 // Paddle.js is loaded once, on the first click (not on page load).
 let paddlePromise: Promise<Paddle | undefined> | null = null;
 let onEvent: (event: PaddleEventData) => void = () => {};
-function loadPaddle(config: PaddleClientConfig) {
+export function loadPaddle(config: PaddleClientConfig) {
   paddlePromise ??= initializePaddle({ token: config.token, environment: config.environment, eventCallback: (e) => onEvent(e) }).catch((err) => {
     paddlePromise = null;
     throw err;
   });
   return paddlePromise;
+}
+
+/** Paddle.js keeps a single event callback; other checkout buttons (Profile Boost) route their events here. */
+export function setPaddleEventHandler(handler: (event: PaddleEventData) => void) {
+  onEvent = handler;
 }
 
 export type FeaturedJobPlanOption = { code: FeaturedJobPlanCode; durationDays: number; amount: number };
