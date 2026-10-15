@@ -56,7 +56,13 @@ async function getLandingData() {
       }),
       db.company.findMany({ orderBy: { followerCount: "desc" }, take: 14, select: { slug: true, name: true, logoUrl: true, brandColor: true } }),
     ]);
-    return { stats: { jobs, companies, professionals, skills }, latestJobs, topCompanies };
+    // Hide the stats strip until the platform has enough content
+    // to look credible. Skills is reference data (always populated), so we
+    // gate on jobs + companies only.
+    const MIN_JOBS_FOR_STATS = 5;
+    const MIN_COMPANIES_FOR_STATS = 5;
+    const showStats = jobs >= MIN_JOBS_FOR_STATS && companies >= MIN_COMPANIES_FOR_STATS;
+    return { stats: showStats ? { jobs, companies, professionals, skills } : null, latestJobs, topCompanies };
   } catch {
     return { stats: null, latestJobs: [], topCompanies: [] };
   }
