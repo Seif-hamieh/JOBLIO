@@ -24,6 +24,9 @@ import { buttonClasses } from "@/components/ui/button";
 import { CompanyLogo } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { getI18n } from "@/i18n/server";
+import { jsonLdScript } from "@/lib/job-posting-ld";
+import { organizationJsonLd, websiteJsonLd } from "@/lib/site-ld";
+import { APP_URL } from "@/lib/utils";
 
 // Rendered per request (it follows the visitor's language). Data loading
 // degrades gracefully so the page still renders without a database.
@@ -89,6 +92,9 @@ export default async function LandingPage() {
 
   return (
     <>
+      {/* Structured data: brand info and the sitelinks search box. */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(organizationJsonLd(APP_URL, locale)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(websiteJsonLd(APP_URL)) }} />
       {/* ── Hero ─────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden">
         <div className="bg-dots pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_top,black_30%,transparent_70%)]" />
