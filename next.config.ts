@@ -32,6 +32,10 @@ const nextConfig: NextConfig = {
     // Uploads go through server actions; allow files up to the configured limit.
     serverActions: { bodySizeLimit: "12mb" },
   },
+  async redirects() {
+    // /professionals has no list of its own yet: send people to Featured Professionals.
+    return [{ source: "/professionals", destination: "/professionals/featured", permanent: false }];
+  },
   async headers() {
     return [
       { source: "/:path*", headers: securityHeaders },

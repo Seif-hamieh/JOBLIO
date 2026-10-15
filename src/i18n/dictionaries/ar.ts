@@ -500,6 +500,8 @@ export const ar: Dictionary = {
     noResults: "لا وظائف تطابق عوامل التصفية",
     noResultsBody: "جرّب إزالة أحد العوامل أو البحث بمسمّى أو موقع أوسع.",
     clearSearch: "مسح البحث",
+    noJobsYet: "لا توجد وظائف بعد",
+    noJobsYetBody: "عُد قريبًا.",
     featuredCardTitle: "الوظائف المميّزة",
     featuredCardBody: "وظائف أبرزتها الشركات على JOBLIO",
     savedCardTitle: "الوظائف وعمليات البحث المحفوظة",

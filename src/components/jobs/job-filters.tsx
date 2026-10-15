@@ -46,11 +46,11 @@ export function JobSearchBar({ params }: { params: JobSearchParams }) {
     >
       <label className="flex flex-1 items-center gap-2.5 px-3">
         <Search className="size-4 shrink-0 text-fg-subtle" />
-        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={t("jobs.keywords")} aria-label={t("jobs.keywords")} className="h-10 w-full bg-transparent text-sm outline-none" />
+        <input type="search" name="q" value={q} onChange={(e) => setQ(e.target.value)} placeholder={t("jobs.keywords")} aria-label={t("jobs.keywords")} className="h-10 w-full bg-transparent text-sm outline-none" />
       </label>
       <label className="flex flex-1 items-center gap-2.5 border-border px-3 sm:border-s">
         <MapPin className="size-4 shrink-0 text-fg-subtle" />
-        <input value={location} onChange={(e) => setLocation(e.target.value)} placeholder={t("jobs.where")} aria-label={t("jobs.location")} className="h-10 w-full bg-transparent text-sm outline-none" />
+        <input type="search" name="location" value={location} onChange={(e) => setLocation(e.target.value)} placeholder={t("jobs.where")} aria-label={t("jobs.location")} className="h-10 w-full bg-transparent text-sm outline-none" />
       </label>
       <Button type="submit" loading={pending} className="sm:ms-1">
         {t("common.search")}

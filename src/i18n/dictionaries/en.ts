@@ -498,6 +498,8 @@ export const en = {
     noResults: "No jobs match these filters",
     noResultsBody: "Try removing a filter or searching a broader title or location.",
     clearSearch: "Clear search",
+    noJobsYet: "No jobs yet",
+    noJobsYetBody: "Check back soon.",
     featuredCardTitle: "Featured jobs",
     featuredCardBody: "Highlighted roles from companies on JOBLIO",
     savedCardTitle: "Saved jobs & searches",

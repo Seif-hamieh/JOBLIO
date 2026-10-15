@@ -1,6 +1,7 @@
 import { getI18n, pageTitle } from "@/i18n/server";
 import Link from "next/link";
-import { Bookmark, SearchX, Sparkles, Star } from "lucide-react";
+import { redirect } from "next/navigation";
+import { Bookmark, Briefcase, SearchX, Sparkles, Star } from "lucide-react";
 import { getViewer } from "@/server/session";
 import { searchJobs } from "@/server/services/jobs";
 import { listIndustries } from "@/server/services/companies";
@@ -23,6 +24,21 @@ export default async function JobsPage({ searchParams }: PageProps<"/jobs">) {
     params.skills.length ? db.skill.findMany({ where: { slug: { in: params.skills } }, select: { slug: true, name: true } }) : [],
   ]);
   const skillNames = Object.fromEntries(skills.map((s) => [s.slug, s.name]));
+  // A page past the last one (e.g. ?page=2 with a single result) would show the total above an empty list.
+  if (params.page > results.pageCount) redirect(`/jobs${toQueryString(params, { page: results.pageCount })}`);
+  // Any search or filter in play? (page and sort aren't filters.)
+  const hasFilters = !!(
+    params.q ||
+    params.location ||
+    params.mode.length ||
+    params.type.length ||
+    params.level.length ||
+    params.salary ||
+    params.industry ||
+    params.skills.length ||
+    params.company ||
+    params.posted
+  );
 
   return (
     <div className="space-y-6">
@@ -64,18 +80,21 @@ export default async function JobsPage({ searchParams }: PageProps<"/jobs">) {
             <JobCard key={job.id} job={job} signedIn={!!viewer} />
           ))}
 
-          {results.jobs.length === 0 && results.sponsored.length === 0 && (
-            <EmptyState
-              icon={<SearchX />}
-              title={t("jobs.noResults")}
-              description={t("jobs.noResultsBody")}
-              action={
-                <Link href="/jobs" className={buttonClasses({ variant: "outline", pill: true })}>
-                  {t("jobs.clearSearch")}
-                </Link>
-              }
-            />
-          )}
+          {results.jobs.length === 0 && results.sponsored.length === 0 &&
+            (hasFilters ? (
+              <EmptyState
+                icon={<SearchX />}
+                title={t("jobs.noResults")}
+                description={t("jobs.noResultsBody")}
+                action={
+                  <Link href="/jobs" className={buttonClasses({ variant: "outline", pill: true })}>
+                    {t("jobs.clearSearch")}
+                  </Link>
+                }
+              />
+            ) : (
+              <EmptyState icon={<Briefcase />} title={t("jobs.noJobsYet")} description={t("jobs.noJobsYetBody")} />
+            ))}
 
           <Pagination page={params.page} pageCount={results.pageCount} href={(page) => `/jobs${toQueryString(params, { page })}`} />
 
