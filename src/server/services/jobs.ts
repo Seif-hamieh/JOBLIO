@@ -6,6 +6,7 @@ import { db, type Prisma } from "@/server/db";
 import { resolveCountryCode } from "@/lib/geo";
 import type { JobSearchParams } from "@/lib/validation/search";
 import type { MatchResult } from "@/lib/matching/engine";
+import type { EmploymentType, ExperienceLevel, WorkMode } from "@/lib/constants";
 import { getCandidateFacts, jobMatchSelect, scoreJobs } from "@/server/services/matching";
 
 export const PAGE_SIZE = 20;
@@ -271,13 +272,32 @@ export async function recordJobView(jobId: string, viewerKey: string) {
   ]);
 }
 
-export async function similarJobs(job: { id: string; skills: { skillId: string }[]; companyId?: string }, viewerId: string | null) {
-  const jobs = await db.job.findMany({
-    where: { status: "OPEN", id: { not: job.id }, skills: { some: { skillId: { in: job.skills.map((s) => s.skillId) } } } },
+/**
+ * Up to 3 open jobs like this one: same company, or the same work mode + employment type +
+ * experience level, or sharing a skill. Currently featured jobs first, then the newest.
+ */
+export async function similarJobs(
+  job: { id: string; skills: { skillId: string }[]; company: { id: string }; workMode: WorkMode; employmentType: EmploymentType; experienceLevel: ExperienceLevel },
+  viewerId: string | null,
+) {
+  const candidates = await db.job.findMany({
+    where: {
+      status: "OPEN",
+      id: { not: job.id },
+      OR: [
+        { companyId: job.company.id },
+        { workMode: job.workMode, employmentType: job.employmentType, experienceLevel: job.experienceLevel },
+        ...(job.skills.length ? [{ skills: { some: { skillId: { in: job.skills.map((s) => s.skillId) } } } }] : []),
+      ],
+    },
     select: jobCardSelect,
     orderBy: { publishedAt: "desc" },
-    take: 4,
+    take: 12,
   });
+  // Featured first — only while the promotion is active (an expired featuredUntil doesn't count).
+  const now = Date.now();
+  const featured = (j: (typeof candidates)[number]) => (j.featuredUntil && j.featuredUntil.getTime() > now ? 1 : 0);
+  const jobs = [...candidates].sort((a, b) => featured(b) - featured(a)).slice(0, 3);
   return annotateForViewer(jobs, viewerId);
 }
 

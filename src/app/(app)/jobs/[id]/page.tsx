@@ -310,8 +310,8 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
 
           {similar.length > 0 && (
             <section>
-              <h2 className="mb-3 font-display text-lg font-semibold">{t("jobs.similar")}</h2>
-              <div className="space-y-3">
+              <h2 className="mb-3 font-display text-lg font-semibold">{t("jobs.similarTitle")}</h2>
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {similar.map((j) => (
                   <JobCard key={j.id} job={j} signedIn={!!viewer} />
                 ))}

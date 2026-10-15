@@ -530,6 +530,7 @@ export const ar: Dictionary = {
     languages: "اللغات",
     benefits: "المزايا",
     similar: "وظائف مشابهة",
+    similarTitle: "وظائف مشابهة",
     howMatch: "ما مدى مطابقتك؟",
     howMatchBody: "أنشئ ملفًا مجانيًا لترى نسبة مطابقتك وكيف حُسبت بالضبط.",
     getScore: "اعرف نسبة مطابقتي",

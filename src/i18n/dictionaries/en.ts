@@ -528,6 +528,7 @@ export const en = {
     languages: "Languages",
     benefits: "Benefits",
     similar: "Similar roles",
+    similarTitle: "Similar jobs",
     howMatch: "How well do you match?",
     howMatchBody: "Create a free profile to see your match score and exactly how it's calculated.",
     getScore: "Get my match score",
