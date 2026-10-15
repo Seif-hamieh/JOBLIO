@@ -7,7 +7,7 @@ import type { Locale } from "@/i18n/config";
 
 export type StaticSection = { heading: string; body: string[] };
 export type StaticPage = { title: string; intro: string; updated?: string; sections: StaticSection[] };
-export type StaticPageId = "about" | "terms" | "privacy" | "contact";
+export type StaticPageId = "about" | "terms" | "privacy" | "refunds" | "contact";
 
 const UPDATED_EN = "Last updated: 14 October 2026";
 const UPDATED_AR = "آخر تحديث: 14 أكتوبر 2026";
@@ -297,6 +297,107 @@ export const STATIC_PAGES: Record<StaticPageId, Record<Locale, StaticPage>> = {
         {
           heading: "التغييرات",
           body: ["إذا غيّرنا هذه السياسة تغييرًا جوهريًا فسنحدّث التاريخ أعلاه ونُعلم الأعضاء."],
+        },
+      ],
+    },
+  },
+
+  refunds: {
+    en: {
+      title: "Refund Policy",
+      updated: UPDATED_EN,
+      intro:
+        "This policy explains how refunds work for paid features on JOBLIO. Paddle, our payment provider and Merchant of Record, processes all refunds.",
+      sections: [
+        {
+          heading: "1. Your right to a refund",
+          body: [
+            "You may request a full refund within 14 days of purchase for any paid feature or subscription, provided you have not significantly used the product. \"Significantly used\" means you have consumed the main benefit (for example, a Featured Job that has been live for more than a few days, credits you have spent, or a subscription period you have mostly completed).",
+          ],
+        },
+        {
+          heading: "2. How to request a refund",
+          body: [
+            "Because Paddle is the Merchant of Record, refunds are processed by Paddle. You can request a refund by contacting Paddle's support directly, or by emailing us at support@getjoblio.app with your invoice number and reason. We forward eligible requests to Paddle, who issue the refund to your original payment method.",
+          ],
+        },
+        {
+          heading: "3. Subscriptions",
+          body: [
+            "You can cancel a subscription at any time from Billing & Payments in your account settings, or through Paddle's customer portal. Cancellation stops future renewals; you keep access until the end of the current billing period.",
+            "If you cancel within 14 days of a renewal and have not used the subscription during that new period, you may be eligible for a refund of that renewal.",
+          ],
+        },
+        {
+          heading: "4. Credit packs",
+          body: [
+            "Unused credits (such as Priority Application packs) can be refunded within 14 days of purchase. Once a credit has been spent, that portion is no longer refundable.",
+          ],
+        },
+        {
+          heading: "5. What cannot be refunded",
+          body: [
+            "We cannot refund: (a) products that have been substantially used or consumed, (b) purchases older than 14 days, or (c) cases where a refund is prohibited by applicable law. This does not affect any statutory rights you may have under the consumer laws of your country.",
+          ],
+        },
+        {
+          heading: "6. Processing time",
+          body: [
+            "Refunds are usually processed within 5-10 business days after approval, depending on your bank or card issuer. Paddle sends a confirmation email once the refund is issued.",
+          ],
+        },
+        {
+          heading: "7. Contact",
+          body: ["For any refund question, contact support@getjoblio.app with your invoice number. We answer every message."],
+        },
+      ],
+    },
+    ar: {
+      title: "سياسة الاسترداد",
+      updated: UPDATED_AR,
+      intro:
+        "توضّح هذه السياسة كيف تعمل المبالغ المستردة للميزات المدفوعة على JOBLIO. Paddle، مزوّد الدفع والتاجر المسجَّل، يتولى معالجة جميع عمليات الاسترداد.",
+      sections: [
+        {
+          heading: "1. حقّك في الاسترداد",
+          body: [
+            "يمكنك طلب استرداد كامل خلال 14 يوماً من الشراء لأي ميزة مدفوعة أو اشتراك، شرط ألّا تكون قد استخدمت المنتج بشكل كبير. «الاستخدام الكبير» يعني أنك استهلكت الفائدة الأساسية (مثلاً وظيفة مميزة ظلّت منشورة أكثر من بضعة أيام، أرصدة استهلكتها، أو فترة اشتراك أكملت معظمها).",
+          ],
+        },
+        {
+          heading: "2. كيف تطلب الاسترداد",
+          body: [
+            "لأنّ Paddle هو التاجر المسجَّل، فإنّ عمليات الاسترداد تُعالَج عبر Paddle. يمكنك طلب الاسترداد بالتواصل مع دعم Paddle مباشرةً، أو بمراسلتنا على support@getjoblio.app مع رقم الفاتورة والسبب. نمرّر الطلبات المؤهَّلة إلى Paddle، الذي يعيد المبلغ إلى وسيلة الدفع الأصلية.",
+          ],
+        },
+        {
+          heading: "3. الاشتراكات",
+          body: [
+            "يمكنك إلغاء الاشتراك في أي وقت من صفحة الفوترة والمدفوعات في إعدادات حسابك، أو عبر بوابة Paddle المخصصة للعملاء. الإلغاء يوقف التجديدات المستقبلية، وتبقى محتفظاً بالوصول حتى نهاية فترة الفوترة الحالية.",
+            "إذا ألغيت خلال 14 يوماً من تجديد، ولم تستخدم الاشتراك في الفترة الجديدة، فقد تكون مؤهلاً لاسترداد قيمة ذلك التجديد.",
+          ],
+        },
+        {
+          heading: "4. حزم الأرصدة",
+          body: [
+            "الأرصدة غير المستخدمة (مثل حزم التقديم بأولوية) قابلة للاسترداد خلال 14 يوماً من الشراء. بمجرد استهلاك رصيد، لا يعود ذلك الجزء قابلاً للاسترداد.",
+          ],
+        },
+        {
+          heading: "5. ما لا يمكن استرداده",
+          body: [
+            "لا يمكننا استرداد: (أ) المنتجات التي استُخدمت أو استُهلكت بشكل كبير، (ب) المشتريات التي مضى عليها أكثر من 14 يوماً، أو (ج) الحالات التي يمنع فيها القانون المعمول به الاسترداد. هذا لا يمسّ أي حقوق قانونية قد تكون لك بموجب قوانين حماية المستهلك في بلدك.",
+          ],
+        },
+        {
+          heading: "6. مدة المعالجة",
+          body: [
+            "عادةً تُعالَج عمليات الاسترداد خلال 5-10 أيام عمل بعد الموافقة، حسب البنك أو مصدّر البطاقة. يرسل Paddle رسالة تأكيد بعد إصدار الاسترداد.",
+          ],
+        },
+        {
+          heading: "7. التواصل",
+          body: ["لأي سؤال حول الاسترداد، راسلنا على support@getjoblio.app مع رقم الفاتورة. نجيب على كل رسالة."],
         },
       ],
     },

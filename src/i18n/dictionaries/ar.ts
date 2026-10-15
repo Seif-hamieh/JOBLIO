@@ -1773,6 +1773,7 @@ export const ar: Dictionary = {
     about: "من نحن",
     terms: "شروط الخدمة",
     privacy: "سياسة الخصوصية",
+    refunds: "سياسة الاسترداد",
     contact: "تواصل معنا",
     emailUs: "راسلنا عبر البريد",
     replyTime: "نسعى للرد خلال يومَي عمل.",

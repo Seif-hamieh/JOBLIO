@@ -41,6 +41,7 @@ export async function CompactFooter() {
     { href: "/about", label: t("legal.about") },
     { href: "/terms", label: t("legal.terms") },
     { href: "/privacy", label: t("legal.privacy") },
+    { href: "/refunds", label: t("legal.refunds") },
     { href: "/contact", label: t("legal.contact") },
   ];
   return (
@@ -95,6 +96,9 @@ export async function SiteFooter() {
             </Link>
             <Link href="/privacy" className="inline-flex min-h-11 items-center hover:text-fg md:min-h-0">
               {t("legal.privacy")}
+            </Link>
+            <Link href="/refunds" className="inline-flex min-h-11 items-center hover:text-fg md:min-h-0">
+              {t("legal.refunds")}
             </Link>
           </span>
           <span>{t("footer.freeLine")}</span>

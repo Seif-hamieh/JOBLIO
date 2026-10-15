@@ -1773,6 +1773,7 @@ export const en = {
     about: "About",
     terms: "Terms",
     privacy: "Privacy",
+    refunds: "Refund policy",
     contact: "Contact",
     emailUs: "Email us",
     replyTime: "We aim to reply within two working days.",

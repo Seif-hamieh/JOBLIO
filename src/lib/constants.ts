@@ -196,7 +196,7 @@ export const SOCIAL_PLATFORM_LABEL: Record<SocialPlatform, string> = {
 export const RESERVED_USERNAMES = new Set([
   "api", "app", "admin", "auth", "login", "register", "signup", "sign-up", "logout", "onboarding", "home", "feed", "jobs",
   "job", "in", "p", "profile", "network", "messages", "notifications", "companies", "company", "recruiter", "applications",
-  "interviews", "settings", "premium", "billing", "professionals", "about", "help", "terms", "privacy", "forgot-password",
+  "interviews", "settings", "premium", "billing", "professionals", "about", "help", "terms", "privacy", "refunds", "forgot-password",
   "reset-password", "verify-email", "joblio", "support", "static", "_next", "favicon.ico", "robots.txt", "sitemap.xml",
   "contact", "search", "people", "legal", "dev-mailbox",
 ]);
