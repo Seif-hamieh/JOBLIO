@@ -17,6 +17,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
           headline: viewer.headline,
           company: viewer.company && { slug: viewer.company.slug, name: viewer.company.name },
           boosted: viewer.boosted,
+          isAdmin: viewer.isAdmin,
         }
       }
       counts={counts}

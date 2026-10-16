@@ -14,6 +14,7 @@ import {
   Home,
   KanbanSquare,
   Languages,
+  LayoutDashboard,
   LogOut,
   MessageSquare,
   Moon,
@@ -49,6 +50,7 @@ export type ShellViewer = {
   headline: string | null;
   company: { slug: string; name: string } | null;
   boosted: boolean;
+  isAdmin: boolean;
 };
 
 const noopSubscribe = () => () => {};
@@ -155,6 +157,11 @@ function UserMenu({ viewer }: { viewer: ShellViewer }) {
             {t("pwa.install_app")}
           </MenuItem>
         ) : null}
+        {viewer.isAdmin && (
+          <MenuItem icon={<LayoutDashboard />} onSelect={() => router.push("/admin")}>
+            {t("admin.openAdmin")}
+          </MenuItem>
+        )}
         <MenuItem icon={<Settings />} onSelect={() => router.push("/settings")}>
           {t("nav.settings")}
         </MenuItem>

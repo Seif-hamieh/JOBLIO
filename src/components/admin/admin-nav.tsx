@@ -14,9 +14,9 @@ const ITEMS = [
   { href: "/admin/companies", key: "admin.companies", icon: Building2, ready: true },
   { href: "/admin/jobs", key: "admin.jobs", icon: Briefcase, ready: true },
   { href: "/admin/subscriptions", key: "admin.subscriptions", icon: CreditCard, ready: true },
-  { href: "/admin/payments", key: "admin.payments", icon: Receipt, ready: false },
-  { href: "/admin/applications", key: "admin.applications", icon: FileText, ready: false },
-  { href: "/admin/settings", key: "admin.settings", icon: Settings, ready: false },
+  { href: "/admin/payments", key: "admin.payments", icon: Receipt, ready: true },
+  { href: "/admin/applications", key: "admin.applications", icon: FileText, ready: true },
+  { href: "/admin/settings", key: "admin.settings", icon: Settings, ready: true },
 ] as const;
 
 export function AdminNav() {

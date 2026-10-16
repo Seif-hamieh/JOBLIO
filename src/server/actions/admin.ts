@@ -90,3 +90,16 @@ export async function cancelSubscription(subscriptionId: string) {
     return { ok: true, message: k("admin.msg.subscriptionCanceled") };
   });
 }
+
+// Only these public pages can be refreshed from the admin settings page.
+const REVALIDATE_PATHS = ["/", "/jobs", "/premium", "/companies"] as const;
+
+/** Clears the cached render of one public page, so the next visit is rebuilt from the database. */
+export async function revalidatePathAction(path: string) {
+  return asAdmin(async () => {
+    const target = REVALIDATE_PATHS.find((p) => p === path);
+    if (!target) return fail(k("admin.msg.pathNotAllowed"));
+    revalidatePath(target);
+    return { ok: true, message: k("admin.msg.revalidated", { path: target }) };
+  });
+}

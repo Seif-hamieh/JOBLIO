@@ -32,8 +32,8 @@ export default async function InvoicePage({ params }: { params: Promise<{ invoic
       company: { select: { name: true } },
     },
   });
-  // Visible to the purchaser, or to members of the company it was bought for.
-  if (!payment || (payment.userId !== viewer.id && (!payment.companyId || payment.companyId !== viewer.company?.id))) notFound();
+  // Visible to the purchaser, to members of the company it was bought for, and to admins.
+  if (!payment || (!viewer.isAdmin && payment.userId !== viewer.id && (!payment.companyId || payment.companyId !== viewer.company?.id))) notFound();
 
   const date = (d: Date) => f.date(d, { year: "numeric", month: "long", day: "numeric" });
 
