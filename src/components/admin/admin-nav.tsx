@@ -11,9 +11,9 @@ import { cn } from "@/lib/utils";
 const ITEMS = [
   { href: "/admin", key: "admin.dashboard", icon: LayoutDashboard, ready: true, exact: true },
   { href: "/admin/users", key: "admin.users", icon: Users, ready: true },
-  { href: "/admin/companies", key: "admin.companies", icon: Building2, ready: false },
+  { href: "/admin/companies", key: "admin.companies", icon: Building2, ready: true },
   { href: "/admin/jobs", key: "admin.jobs", icon: Briefcase, ready: true },
-  { href: "/admin/subscriptions", key: "admin.subscriptions", icon: CreditCard, ready: false },
+  { href: "/admin/subscriptions", key: "admin.subscriptions", icon: CreditCard, ready: true },
   { href: "/admin/payments", key: "admin.payments", icon: Receipt, ready: false },
   { href: "/admin/applications", key: "admin.applications", icon: FileText, ready: false },
   { href: "/admin/settings", key: "admin.settings", icon: Settings, ready: false },

@@ -52,3 +52,41 @@ export async function deleteJob(jobId: string) {
     return { ok: true, message: k("admin.msg.jobDeleted") };
   });
 }
+
+export async function setCompanyVerified(companyId: string, verified: boolean) {
+  return asAdmin(async () => {
+    const id = Id.parse(companyId);
+    const next = z.boolean().parse(verified);
+    const { count } = await db.company.updateMany({ where: { id }, data: { verified: next } });
+    if (!count) return fail(k("admin.msg.companyNotFound"));
+    revalidatePath("/admin/companies");
+    return { ok: true, message: k(next ? "admin.msg.companyVerified" : "admin.msg.companyUnverified") };
+  });
+}
+
+/** Permanent: the company's jobs (with their applications), members, posts and media are deleted with it (cascade). */
+export async function deleteCompany(companyId: string) {
+  return asAdmin(async () => {
+    const id = Id.parse(companyId);
+    const { count } = await db.company.deleteMany({ where: { id } });
+    if (!count) return fail(k("admin.msg.companyNotFound"));
+    revalidatePath("/admin/companies");
+    return { ok: true, message: k("admin.msg.companyDeleted") };
+  });
+}
+
+/**
+ * Cancels at the end of the current period: the status stays ACTIVE, so access lasts until
+ * currentPeriodEnd and then ends on its own (access checks compare currentPeriodEnd with now).
+ * Database only — it doesn't call Paddle. A Paddle subscription is really cancelled from Paddle,
+ * and a later Paddle webhook may overwrite this flag.
+ */
+export async function cancelSubscription(subscriptionId: string) {
+  return asAdmin(async () => {
+    const id = Id.parse(subscriptionId);
+    const { count } = await db.subscription.updateMany({ where: { id, status: "ACTIVE" }, data: { cancelAtPeriodEnd: true } });
+    if (!count) return fail(k("admin.msg.subscriptionNotActive"));
+    revalidatePath("/admin/subscriptions");
+    return { ok: true, message: k("admin.msg.subscriptionCanceled") };
+  });
+}
