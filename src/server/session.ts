@@ -1,7 +1,7 @@
 import "server-only";
 import { cache } from "react";
 import { headers } from "next/headers";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { auth } from "@/server/auth";
 import { db } from "@/server/db";
 import type { UserIntent } from "@/lib/constants";
@@ -92,6 +92,13 @@ export async function requireViewer(opts: { allowUnonboarded?: boolean } = {}) {
   const viewer = await getViewer();
   if (!viewer) redirect("/login");
   if (!opts.allowUnonboarded && !viewer.onboardedAt) redirect("/onboarding");
+  return viewer;
+}
+
+/** For admin pages: non-admins get a plain 404, so the panel's existence isn't revealed. */
+export async function requireAdmin() {
+  const viewer = await requireViewer();
+  if (!viewer.isAdmin) notFound();
   return viewer;
 }
 
