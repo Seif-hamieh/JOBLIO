@@ -123,18 +123,21 @@ function ensureBuckets() {
       [publicBucket, true],
       [privateBucket, false],
     ] as const) {
-      const { data } = await client().storage.getBucket(name);
-      if (data) {
-        if (data.public !== isPublic) console.warn(`[storage] Supabase bucket "${name}" should be ${isPublic ? "public" : "private"}.`);
-        continue;
+      try {
+        const { data } = await client().storage.getBucket(name);
+        if (data) {
+          if (data.public !== isPublic) console.warn(`[storage] Supabase bucket "${name}" should be ${isPublic ? "public" : "private"}.`);
+          continue;
+        }
+        const { error } = await client().storage.createBucket(name, { public: isPublic, fileSizeLimit: MAX_BYTES });
+        // Usually the bucket already exists (made in the dashboard). Never block the upload on this:
+        // if the bucket is really missing, the upload itself fails with Supabase's own error.
+        if (error && !/already exists|duplicate/i.test(error.message)) console.warn(`[storage] Could not create Supabase bucket "${name}": ${error.message}`);
+      } catch (e) {
+        console.warn(`[storage] Could not check Supabase bucket "${name}":`, e);
       }
-      const { error } = await client().storage.createBucket(name, { public: isPublic, fileSizeLimit: MAX_BYTES });
-      if (error && !/already exists/i.test(error.message)) throw new Error(`Could not create Supabase bucket "${name}": ${error.message}`);
     }
-  })().catch((e) => {
-    bucketsReady = null;
-    throw e;
-  });
+  })();
   return bucketsReady;
 }
 
