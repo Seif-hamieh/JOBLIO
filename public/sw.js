@@ -4,11 +4,13 @@
  *   /_next/static/* (JS/CSS/fonts, content-hashed)   cache first
  *   images (<img> requests, /_next/image)             stale-while-revalidate
  *   never cached: non-GET (server actions), /api/*, RSC/prefetch requests,
- *                 /_vercel/* (analytics), cross-origin requests, this file.
+ *                 /_vercel/* (analytics), cross-origin requests, this file,
+ *                 signed-in pages (PRIVATE paths, or any response marked no-store / private).
  *
  * Bump VERSION to drop every cache on the next deploy.
  */
-const VERSION = "v1";
+// v2: earlier versions cached signed-in pages; bumping drops those copies on activation.
+const VERSION = "v2";
 const PRECACHE = `joblio-precache-${VERSION}`;
 const PAGES = `joblio-pages-${VERSION}`;
 const STATIC = `joblio-static-${VERSION}`;
@@ -17,6 +19,32 @@ const KEEP = [PRECACHE, PAGES, STATIC, IMAGES];
 const OFFLINE_URL = "/offline.html";
 const MAX_PAGES = 50;
 const MAX_IMAGES = 150;
+// Pages that only exist for a signed-in member: always from the network, never stored.
+const PRIVATE = [
+  "/home",
+  "/feed",
+  "/settings",
+  "/onboarding",
+  "/profile",
+  "/messages",
+  "/notifications",
+  "/network",
+  "/applications",
+  "/interviews",
+  "/recruiter",
+  "/company",
+  "/admin",
+  "/jobs/for-you",
+  "/jobs/saved",
+];
+const isPrivate = (path) => PRIVATE.some((p) => path === p || path.startsWith(`${p}/`));
+
+// Pages rendered for a signed-in member are dynamic, and Next marks them no-store/private.
+// Storing them would keep someone's personal data on the device (and show it to the next user).
+function isStorable(response) {
+  const cc = (response.headers.get("Cache-Control") || "").toLowerCase();
+  return !cc.includes("no-store") && !cc.includes("private");
+}
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -38,10 +66,11 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-// Signing out (or switching accounts) wipes the cached pages — they hold personal data.
+// Signing out (or switching accounts) wipes the cached pages and images — they may hold personal data.
+// Sent by clearCachedPages() in src/components/pwa/pwa.tsx.
 self.addEventListener("message", (event) => {
   if (event.data && event.data.type === "clear-pages") {
-    event.waitUntil(caches.delete(PAGES));
+    event.waitUntil(Promise.all([caches.delete(PAGES), caches.delete(IMAGES)]));
   }
 });
 
@@ -61,7 +90,8 @@ async function networkFirstPage(event) {
     const response = (await event.preloadResponse) || (await fetch(request));
     // Only keep complete, final HTML pages (not redirects to sign-in, errors, or 404s).
     const type = response.headers.get("Content-Type") || "";
-    if (response.ok && !response.redirected && response.type === "basic" && type.includes("text/html")) {
+    const path = new URL(request.url).pathname;
+    if (response.ok && !response.redirected && response.type === "basic" && type.includes("text/html") && !isPrivate(path) && isStorable(response)) {
       const copy = response.clone();
       event.waitUntil(
         caches
@@ -72,7 +102,8 @@ async function networkFirstPage(event) {
     }
     return response;
   } catch {
-    const cached = await caches.match(request, { cacheName: PAGES, ignoreVary: true });
+    const path = new URL(request.url).pathname;
+    const cached = isPrivate(path) ? null : await caches.match(request, { cacheName: PAGES, ignoreVary: true });
     return cached || (await caches.match(OFFLINE_URL)) || Response.error();
   }
 }

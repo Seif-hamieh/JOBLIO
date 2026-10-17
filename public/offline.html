@@ -1,40 +1,35 @@
 <!doctype html>
-<html lang="en">
+<html lang="ar" dir="rtl">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="noindex" />
-    <meta name="theme-color" content="#5b46e5" />
-    <title>Offline · JOBLIO</title>
+    <meta name="theme-color" content="#f7f7fc" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#14131f" media="(prefers-color-scheme: dark)" />
+    <title>غير متصل · JOBLIO</title>
     <link rel="icon" href="/icon-192.png" />
     <style>
       :root { color-scheme: light dark; --bg: #f7f7fc; --surface: #ffffff; --fg: #1b1d2e; --muted: #5d6178; --brand: #5b46e5; --border: #e6e8f2; }
       @media (prefers-color-scheme: dark) { :root { --bg: #14131f; --surface: #1c1b2a; --fg: #f3f3f8; --muted: #b3b5c7; --border: #2c2b3d; } }
       * { box-sizing: border-box; }
-      body { margin: 0; min-height: 100dvh; display: grid; place-items: center; padding: 24px; background: var(--bg); color: var(--fg);
-        font-family: Inter, "Segoe UI", Tahoma, "Noto Sans Arabic", Arial, sans-serif; }
+      body { margin: 0; min-height: 100dvh; display: grid; place-items: center; background: var(--bg); color: var(--fg);
+        padding: max(24px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
+        font-family: "Noto Sans Arabic", Tahoma, "Segoe UI", Inter, Arial, sans-serif; }
       main { width: 100%; max-width: 420px; background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 32px; text-align: center; }
       img { width: 64px; height: 64px; }
       h1 { margin: 20px 0 8px; font-size: 22px; }
-      p { margin: 0; color: var(--muted); line-height: 1.6; font-size: 15px; }
-      hr { border: 0; border-top: 1px solid var(--border); margin: 24px 0; }
-      .ar { direction: rtl; }
+      p { margin: 0; color: var(--muted); line-height: 1.7; font-size: 15px; }
       button { margin-top: 24px; min-height: 44px; padding: 0 22px; border: 0; border-radius: 999px; background: var(--brand); color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
     </style>
   </head>
   <body>
     <main>
       <img src="/icon-192.png" alt="JOBLIO" />
-      <h1>You're offline</h1>
-      <p>Check your connection. Pages you've opened recently are still available.</p>
-      <hr />
-      <div class="ar" lang="ar">
-        <h1>أنت غير متصل بالإنترنت</h1>
-        <p>تحقّق من اتصالك. الصفحات التي فتحتها مؤخرًا ما زالت متاحة.</p>
-      </div>
+      <h1>أنت غير متصل بالإنترنت</h1>
+      <p>تحقّق من اتصالك ثم حاول مرة أخرى. الصفحات العامة التي فتحتها مؤخرًا ما زالت متاحة.</p>
       <!-- A plain GET form (no script) reloads the current URL; works under the CSP. -->
       <form method="get" action="" style="margin: 0">
-        <button type="submit">Try again · حاول مرة أخرى</button>
+        <button type="submit">حاول مرة أخرى</button>
       </form>
     </main>
   </body>

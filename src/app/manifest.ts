@@ -12,9 +12,10 @@ export default function manifest(): MetadataRoute.Manifest {
     start_url: "/",
     scope: "/",
     display: "standalone",
-    orientation: "portrait-primary",
+    orientation: "any",
     background_color: "#ffffff",
-    theme_color: "#5b46e5",
+    // Matches the light-mode title bar; the per-scheme theme-color meta tags (layout viewport) switch it to #14131f in dark mode.
+    theme_color: "#f7f7fc",
     lang: "en",
     dir: "auto",
     categories: ["business", "productivity", "social"],
