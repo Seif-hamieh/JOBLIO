@@ -97,13 +97,16 @@ export const mimeFromKey = (key: string) => MIME_BY_EXT[key.split(".").pop()?.to
 let supabase: SupabaseClient | null = null;
 let bucketsReady: Promise<void> | null = null;
 
+// Fixed bucket names (the SUPABASE_BUCKET / SUPABASE_PRIVATE_BUCKET variables are no longer read).
+const PUBLIC_BUCKET = "uploads";
+const PRIVATE_BUCKET = "uploads-private";
+
 function supabaseConfig() {
   const url = process.env.SUPABASE_URL;
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!serviceKey) console.warn("[storage] SUPABASE_SERVICE_ROLE_KEY is not set — Supabase uploads will fail. Add it in Vercel → Settings → Environment Variables.");
   if (!url || !serviceKey) throw new Error("STORAGE_DRIVER=supabase needs SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.");
-  const publicBucket = process.env.SUPABASE_BUCKET || "uploads";
-  const privateBucket = process.env.SUPABASE_PRIVATE_BUCKET || `${publicBucket}-private`;
-  return { url, serviceKey, publicBucket, privateBucket };
+  return { url, serviceKey, publicBucket: PUBLIC_BUCKET, privateBucket: PRIVATE_BUCKET };
 }
 
 /** Server-only client using the service role key (bypasses RLS; never sent to browsers). */
