@@ -43,7 +43,8 @@ import { Card, CardHeader } from "@/components/ui/misc";
 import { Reveal } from "@/components/ui/motion";
 import { RichText } from "@/components/feed/rich-text";
 import type { AchievementCode } from "@/lib/achievements";
-import { hostname, safeExternalUrl } from "@/lib/utils";
+import { APP_URL, hostname, safeExternalUrl } from "@/lib/utils";
+import { jsonLdScript } from "@/lib/job-posting-ld";
 import { getI18n } from "@/i18n/server";
 
 export async function generateMetadata({ params }: PageProps<"/in/[username]">): Promise<Metadata> {
@@ -123,9 +124,24 @@ export default async function ProfilePage({ params }: PageProps<"/in/[username]"
   const location = f.location(p.city, p.countryCode);
   const website = safeExternalUrl(p.website);
   const membership = user.companyMemberships[0];
+  // schema.org Person for search engines — public profiles only (others aren't meant to be indexed).
+  const personLd =
+    p.visibility === "PUBLIC"
+      ? {
+          "@context": "https://schema.org",
+          "@type": "Person",
+          name: user.name,
+          url: `${APP_URL}/in/${username}`,
+          ...(p.headline && { jobTitle: p.headline }),
+          ...(user.image && { image: user.image.startsWith("/") ? `${APP_URL}${user.image}` : user.image }),
+          ...(p.skills.length > 0 && { knowsAbout: p.skills.map((s) => s.skill.name) }),
+          ...(website && { sameAs: [website] }),
+        }
+      : null;
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
+      {personLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(personLd) }} />}
       <div className="min-w-0 space-y-6">
         {/* Hero */}
         <section className="surface overflow-hidden">

@@ -18,11 +18,12 @@ import { Card, CardHeader, EmptyState } from "@/components/ui/misc";
 import { Reveal } from "@/components/ui/motion";
 import { buttonClasses } from "@/components/ui/button";
 import { RichText } from "@/components/feed/rich-text";
-import { hostname, safeExternalUrl } from "@/lib/utils";
+import { APP_URL, hostname, safeExternalUrl } from "@/lib/utils";
+import { jsonLdScript } from "@/lib/job-posting-ld";
 import { getI18n } from "@/i18n/server";
 import { industryName } from "@/i18n/translate";
 
-const clip = (s: string | null | undefined, n = 160) => (s ? (s.length > n ? s.slice(0, n - 1).trimEnd() + "…" : s).replace(/s+/g, " ") : undefined);
+const clip = (s: string | null | undefined, n = 160) => (s ? (s.length > n ? s.slice(0, n - 1).trimEnd() + "…" : s).replace(/\s+/g, " ") : undefined);
 
 export async function generateMetadata({ params }: PageProps<"/companies/[slug]">): Promise<Metadata> {
   const { slug } = await params;
@@ -71,9 +72,20 @@ export default async function CompanyPage({ params }: PageProps<"/companies/[slu
   const matches = scoreJobs(facts, jobs);
   const website = safeExternalUrl(company.website);
   const location = f.location(company.city, company.countryCode);
+  // schema.org Organization for search engines (uploaded logos are stored as site-relative URLs).
+  const organizationLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: company.name,
+    url: `${APP_URL}/companies/${company.slug}`,
+    ...(company.logoUrl && { logo: company.logoUrl.startsWith("/") ? `${APP_URL}${company.logoUrl}` : company.logoUrl }),
+    ...((company.tagline || company.about) && { description: clip(company.tagline || company.about, 300) }),
+    ...(website && { sameAs: [website] }),
+  };
 
   return (
     <div className="space-y-6" style={accent ? ({ "--brand": accent } as React.CSSProperties) : undefined}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(organizationLd) }} />
       <section className="surface overflow-hidden">
         <div
           className="relative h-40 overflow-hidden sm:h-56"

@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { useI18n } from "@/i18n/client";
-import { BadgeCheck, CheckCircle2, MapPin, Megaphone, Star, Users, Zap } from "lucide-react";
+import { BadgeCheck, CheckCircle2, MapPin, Megaphone, Sparkles, Star, Users, Zap } from "lucide-react";
 import type { JobCardWithMatch } from "@/server/services/jobs";
 import { CompanyLogo } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -22,7 +23,8 @@ export function JobCard({
   className?: string;
 }) {
   const { t, f } = useI18n();
-  const now = Date.now();
+  // Read the clock once per card (not on every render), so re-renders can't flip the badges.
+  const [now] = useState(() => Date.now());
   const featured = !!job.featuredUntil && job.featuredUntil.getTime() > now;
   const urgent = !!job.urgentUntil && job.urgentUntil.getTime() > now;
   const salary = f.salary(job.salaryMin, job.salaryMax, job.salaryCurrency, job.salaryPeriod);
@@ -104,7 +106,16 @@ export function JobCard({
         {job.match ? (
           <MatchHighlights match={job.match} />
         ) : (
-          <div className="flex flex-wrap gap-1.5">
+          <div className="flex flex-wrap items-center gap-1.5">
+            {/* Visitors have no profile to score against: invite them instead of showing nothing (or 0%). */}
+            {!signedIn && (
+              <Link
+                href="/register?intent=SEEKER"
+                className="relative z-10 inline-flex items-center gap-1 rounded-md bg-brand-soft px-2 py-0.5 text-xs font-medium text-brand-soft-fg hover:underline"
+              >
+                <Sparkles className="size-3" /> {t("jobs.matchSignIn")}
+              </Link>
+            )}
             {job.skills.slice(0, 4).map((s) => (
               <span key={s.skillId} className="rounded-md bg-surface-2 px-2 py-0.5 text-xs text-fg-muted">
                 {s.skill.name}

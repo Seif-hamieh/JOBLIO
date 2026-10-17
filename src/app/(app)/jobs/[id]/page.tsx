@@ -45,7 +45,7 @@ import { industryName } from "@/i18n/translate";
 // A bad link (e.g. "/jobs/undefined") answers 404 without querying the database.
 const isJobId = (id: string | undefined): id is string => !!id && id !== "undefined" && id !== "null" && id.length <= 64;
 
-const clip = (s: string | null | undefined, n = 160) => (s ? (s.length > n ? s.slice(0, n - 1).trimEnd() + "…" : s).replace(/s+/g, " ") : undefined);
+const clip = (s: string | null | undefined, n = 160) => (s ? (s.length > n ? s.slice(0, n - 1).trimEnd() + "…" : s).replace(/\s+/g, " ") : undefined);
 
 // Missing (or closed, for outsiders) jobs 404 here too: metadata is resolved before streaming
 // for crawlers, so they get a real 404 status instead of a 200 "not found" page.

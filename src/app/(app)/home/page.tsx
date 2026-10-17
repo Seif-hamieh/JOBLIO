@@ -23,13 +23,19 @@ import { buildJourney } from "@/lib/journey";
 
 export const generateMetadata = pageTitle("nav.home");
 
+/** Midnight (server time) `days` days ago — the start of the profile-views chart. Server-only: no hydration involved. */
+function startOfDayDaysAgo(days: number) {
+  const d = new Date(Date.now() - days * 86_400_000);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
 export default async function HomePage() {
   const [viewer, { t, f }] = await Promise.all([requireViewer(), getI18n()]);
   if (viewer.intent === "RECRUITER" && viewer.company) redirect("/recruiter");
 
-  const since14 = new Date(Date.now() - 13 * 86_400_000);
-  since14.setHours(0, 0, 0, 0);
-  const [jobs, appCounts, nextInterview, savedCount, views, notifications, people, achievements, journeyData, hiring] = await Promise.all([
+  const since14 = startOfDayDaysAgo(13);
+  const [jobs, appCounts, nextInterview, savedCount, views, notifications, people, achievements, journeyData, hiring, skillCount] = await Promise.all([
     jobsForYou(viewer.id, { limit: 4, minScore: 50 }),
     db.application.groupBy({ by: ["status"], where: { applicantId: viewer.id }, _count: true }),
     db.interview.findFirst({
@@ -58,6 +64,7 @@ export default async function HomePage() {
           db.application.count({ where: { job: { companyId: viewer.company.id }, status: "APPLIED" } }),
         ])
       : null,
+    db.userSkill.count({ where: { profileId: viewer.profileId } }),
   ]);
   const relations = await relationStates(viewer.id, people.map((p) => p.user.id));
 
@@ -155,7 +162,7 @@ export default async function HomePage() {
                 <JobCard key={j.id} job={j} signedIn />
               ))}
             </div>
-          ) : (
+          ) : skillCount === 0 ? (
             <EmptyState
               icon={<Sparkles />}
               title={t("home.unlock")}
@@ -163,6 +170,18 @@ export default async function HomePage() {
               action={
                 <Link href="/profile/skills" className={buttonClasses({ pill: true })}>
                   {t("jobs.addSkills")}
+                </Link>
+              }
+            />
+          ) : (
+            // Has skills, but no open job matches well enough yet: point to the full list instead.
+            <EmptyState
+              icon={<Briefcase />}
+              title={t("home.noMatchesYet")}
+              description={t("home.noMatchesYetBody")}
+              action={
+                <Link href="/jobs" className={buttonClasses({ pill: true })}>
+                  {t("home.browseJobs")}
                 </Link>
               }
             />
