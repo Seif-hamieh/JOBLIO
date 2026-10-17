@@ -60,18 +60,18 @@ export async function relationStates(viewerId: string, others: string[]) {
  *   +1 same country, +2 same current company.
  */
 export async function suggestions(userId: string, take = 6) {
-  const [mine, me] = await Promise.all([
+  const [mine, me, pending, blocked] = await Promise.all([
     connectionIds(userId),
     db.profile.findUnique({
       where: { userId },
       select: { city: true, countryCode: true, skills: { select: { skillId: true } }, experiences: { where: { isCurrent: true }, select: { companyId: true } } },
     }),
+    db.connection.findMany({
+      where: { OR: [{ requesterId: userId }, { addresseeId: userId }] },
+      select: { requesterId: true, addresseeId: true },
+    }),
+    db.block.findMany({ where: { OR: [{ blockerId: userId }, { blockedId: userId }] }, select: { blockerId: true, blockedId: true } }),
   ]);
-  const pending = await db.connection.findMany({
-    where: { OR: [{ requesterId: userId }, { addresseeId: userId }] },
-    select: { requesterId: true, addresseeId: true },
-  });
-  const blocked = await db.block.findMany({ where: { OR: [{ blockerId: userId }, { blockedId: userId }] }, select: { blockerId: true, blockedId: true } });
   const exclude = new Set([userId, ...pending.flatMap((p) => [p.requesterId, p.addresseeId]), ...blocked.flatMap((b) => [b.blockerId, b.blockedId])]);
 
   const skillIds = me?.skills.map((s) => s.skillId) ?? [];

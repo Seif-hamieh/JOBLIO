@@ -5,6 +5,10 @@ import { conversationPartnerIds } from "@/server/services/counts";
 
 export const dynamic = "force-dynamic";
 
+// Serverless functions are cut off after a few minutes (300 s on Vercel), which Sentry reports
+// as a hung request. The server ends each stream before that; EventSource reconnects by itself.
+const MAX_STREAM_MS = 240_000;
+
 // GET /api/v1/stream — per-user Server-Sent Events: new messages, read
 // receipts, typing, notifications and presence.
 export async function GET(req: Request) {
@@ -12,10 +16,12 @@ export async function GET(req: Request) {
   if (!session) return new Response("Unauthorized", { status: 401 });
   const userId = session.user.id;
   const encoder = new TextEncoder();
+  let stop: (() => void) | undefined;
 
   const stream = new ReadableStream({
     start(controller) {
       let closed = false;
+      let finished = false;
       const write = (chunk: string) => {
         if (closed) return;
         try {
@@ -41,15 +47,30 @@ export async function GET(req: Request) {
 
       const heartbeat = setInterval(() => write(": ping\n\n"), 25_000);
 
-      req.signal.addEventListener("abort", () => {
+      // Runs once, whichever comes first: the client leaves, the stream is cancelled, or it times out.
+      // A planned timeout doesn't announce "offline": the tab reconnects within a second.
+      const finish = (announceOffline: boolean) => {
+        if (finished) return;
+        finished = true;
         clearInterval(heartbeat);
+        clearTimeout(rotate);
         unsubscribe();
-        if (markDisconnected(userId)) void announce(false);
+        if (markDisconnected(userId) && announceOffline) void announce(false);
         closed = true;
         try {
           controller.close();
         } catch {}
-      });
+      };
+      const rotate = setTimeout(() => {
+        write("retry: 1000\n\n"); // reconnect quickly after this planned close
+        finish(false);
+      }, MAX_STREAM_MS);
+      stop = () => finish(true);
+
+      req.signal.addEventListener("abort", () => finish(true));
+    },
+    cancel() {
+      stop?.();
     },
   });
 

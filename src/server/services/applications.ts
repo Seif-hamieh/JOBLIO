@@ -29,6 +29,7 @@ function dayStart(d = new Date()) {
 }
 
 export async function applyToJob(userId: string, jobId: string, input: { coverLetter: string | null; resumeUrl: string | null }) {
+  if (!jobId || jobId === "undefined") throw new ActionError("@msg.jobClosed");
   const [job, profile, existing] = await Promise.all([
     db.job.findUnique({
       where: { id: jobId },
@@ -97,6 +98,7 @@ export async function applyToJob(userId: string, jobId: string, input: { coverLe
 }
 
 export async function withdrawApplication(userId: string, applicationId: string) {
+  if (!applicationId) throw new ActionError("@msg.appNotFound");
   const app = await db.application.findUnique({ where: { id: applicationId }, select: { applicantId: true, status: true, stage: true } });
   if (!app || app.applicantId !== userId) throw new ActionError("@msg.appNotFound");
   if (["HIRED", "REJECTED", "WITHDRAWN"].includes(app.status)) throw new ActionError("@msg.cantWithdraw");

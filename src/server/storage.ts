@@ -72,10 +72,21 @@ export type StoredFile = { key: string; url: string; name: string; size: number;
 
 export type StorageDriver = "local" | "supabase";
 
+let warnedMissingSupabase = false;
+
 export function storageDriver(): StorageDriver {
   const d = process.env.STORAGE_DRIVER?.trim().toLowerCase();
-  if (d === "supabase" || d === "local") return d;
-  return process.env.SUPABASE_URL ? "supabase" : "local";
+  if (d === "local") return "local";
+  if (d === "supabase" || (!d && process.env.SUPABASE_URL)) {
+    if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) return "supabase";
+    // Misconfigured: fall back to local storage instead of throwing on every upload and file read.
+    // On Vercel, local uploads are still refused with a clear error (read-only filesystem).
+    if (!warnedMissingSupabase) {
+      warnedMissingSupabase = true;
+      console.warn("[storage] STORAGE_DRIVER=supabase but SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY are not set — using local storage instead.");
+    }
+  }
+  return "local";
 }
 
 const MIME_BY_EXT: Record<string, string> = Object.fromEntries(Object.entries(EXT).map(([mime, ext]) => [ext, mime]));

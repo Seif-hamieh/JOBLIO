@@ -23,6 +23,7 @@ describe("storage", () => {
     vi.stubEnv("SUPABASE_URL", "");
     expect(storage.storageDriver()).toBe("local");
     vi.stubEnv("SUPABASE_URL", "https://x.supabase.co");
+    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", "key");
     expect(storage.storageDriver()).toBe("supabase");
     vi.stubEnv("STORAGE_DRIVER", "local");
     expect(storage.storageDriver()).toBe("local");
@@ -61,10 +62,14 @@ describe("storage", () => {
     await expect(storage.storeUpload(new File([PNG], "a.png"), "post", "u1")).rejects.toThrow(/Vercel/);
   });
 
-  it("requires Supabase credentials when the supabase driver is chosen", async () => {
+  it("falls back to local storage when the supabase driver is chosen without credentials", () => {
     vi.stubEnv("STORAGE_DRIVER", "supabase");
     vi.stubEnv("SUPABASE_URL", "");
     vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", "");
-    await expect(storage.storeUpload(new File([PNG], "a.png"), "post", "u1")).rejects.toThrow(/SUPABASE_URL/);
+    expect(storage.storageDriver()).toBe("local");
+    vi.stubEnv("SUPABASE_URL", "https://x.supabase.co");
+    expect(storage.storageDriver()).toBe("local");
+    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", "key");
+    expect(storage.storageDriver()).toBe("supabase");
   });
 });

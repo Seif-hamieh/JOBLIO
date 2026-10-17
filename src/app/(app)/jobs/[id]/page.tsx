@@ -42,12 +42,16 @@ import { hostname, safeExternalUrl, APP_URL } from "@/lib/utils";
 import { getI18n } from "@/i18n/server";
 import { industryName } from "@/i18n/translate";
 
+// A bad link (e.g. "/jobs/undefined") answers 404 without querying the database.
+const isJobId = (id: string | undefined): id is string => !!id && id !== "undefined" && id !== "null" && id.length <= 64;
+
 const clip = (s: string | null | undefined, n = 160) => (s ? (s.length > n ? s.slice(0, n - 1).trimEnd() + "…" : s).replace(/s+/g, " ") : undefined);
 
 // Missing (or closed, for outsiders) jobs 404 here too: metadata is resolved before streaming
 // for crawlers, so they get a real 404 status instead of a 200 "not found" page.
 export async function generateMetadata({ params }: PageProps<"/jobs/[id]">): Promise<Metadata> {
   const { id } = await params;
+  if (!isJobId(id)) notFound();
   const [job, viewer, { t }] = await Promise.all([
     db.job.findUnique({ where: { id }, select: { title: true, summary: true, description: true, status: true, companyId: true, company: { select: { name: true } } } }),
     getViewer(),
@@ -65,6 +69,7 @@ export async function generateMetadata({ params }: PageProps<"/jobs/[id]">): Pro
 
 export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
   const { id } = await params;
+  if (!isJobId(id)) notFound();
   await expirePromotions(); // also closes jobs past their closing day (throttled)
   const [job, viewer, { t, f }] = await Promise.all([getJob(id), getViewer(), getI18n()]);
   if (!job) notFound();

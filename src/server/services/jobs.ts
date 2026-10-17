@@ -175,8 +175,7 @@ export async function searchJobs(p: JobSearchParams, viewerId: string | null) {
  * user's location / remote preference), then transparent scoring in memory.
  */
 export async function jobsForYou(userId: string, opts: { limit?: number; minScore?: number } = {}) {
-  await expirePromotions();
-  const facts = await getCandidateFacts(userId);
+  const [, facts] = await Promise.all([expirePromotions(), getCandidateFacts(userId)]);
   if (!facts) return [];
   const or: Prisma.JobWhereInput[] = [];
   if (facts.skills.length) or.push({ skills: { some: { skillId: { in: facts.skills.map((s) => s.skillId) } } } });
@@ -188,7 +187,8 @@ export async function jobsForYou(userId: string, opts: { limit?: number; minScor
     where: { status: "OPEN", ...(or.length ? { OR: or } : {}), applications: { none: { applicantId: userId } } },
     select: jobCardSelect,
     orderBy: { publishedAt: "desc" },
-    take: 400,
+    // Score at most 400 recent jobs; a small widget (the home page shows 4) needs far fewer.
+    take: Math.min(400, Math.max(100, (opts.limit ?? 50) * 25)),
   });
   const matches = scoreJobs(facts, pool);
   const ranked = pool
@@ -236,6 +236,7 @@ export const jobDetailSelect = {
 export type JobDetail = Prisma.JobGetPayload<{ select: typeof jobDetailSelect }>;
 
 export async function getJob(id: string) {
+  if (!id || id === "undefined") return null;
   return db.job.findUnique({ where: { id }, select: jobDetailSelect });
 }
 
