@@ -24,7 +24,17 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/misc";
 import { Reveal } from "@/components/ui/motion";
 import { Button, buttonClasses } from "@/components/ui/button";
-import { PAYMENTS_PAUSED, PRODUCTS, type ProductCode } from "@/lib/billing/products";
+import {
+  FEATURED_JOB_PLANS,
+  PAYMENTS_PAUSED,
+  PRIORITY_APPLICATION_PLANS,
+  PRODUCTS,
+  PROFILE_BOOST_PLANS,
+  SUBSCRIPTION_PLANS,
+  URGENT_HIRE_PLANS,
+  type ProductCode,
+} from "@/lib/billing/products";
+import { PausedPlans, type PausedPlan } from "@/components/billing/paused-plans";
 
 export const generateMetadata = pageTitle("nav.premium");
 
@@ -73,16 +83,40 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
   const has = new Set(subs.map((s) => s.product));
   // Featured Job goes through Paddle when it is configured: only jobs this member may feature right now.
   const paddleConfig = paddleClientConfig();
-  const featuredPlans = paddleConfig ? featuredJobPlanOptions() : [];
-  const boostPlans = paddleConfig ? profileBoostPlanOptions() : [];
-  const priorityPlans = paddleConfig ? priorityApplicationPlanOptions() : [];
+  // While payments are paused the plans still show (with their prices), from the plan lists themselves:
+  // the checkout pickers need a Paddle config, so they never render and PausedPlans stands in for them.
+  const days = <C extends string>({ code, durationDays, amount }: { code: C; durationDays: number; amount: number }) => ({ code, durationDays, amount });
+  const featuredPlans = paddleConfig ? featuredJobPlanOptions() : PAYMENTS_PAUSED ? FEATURED_JOB_PLANS.map(days) : [];
+  const boostPlans = paddleConfig ? profileBoostPlanOptions() : PAYMENTS_PAUSED ? PROFILE_BOOST_PLANS.map(days) : [];
+  const priorityPlans = paddleConfig
+    ? priorityApplicationPlanOptions()
+    : PAYMENTS_PAUSED
+      ? PRIORITY_APPLICATION_PLANS.map(({ code, credits, amount }) => ({ code, credits, amount }))
+      : [];
   const featurable = jobs.filter((j) => canFeatureJob(viewer, j)).map(({ id, title }) => ({ id, title }));
   // Urgent Hire is independent of Featured: open jobs this member may flag that aren't urgent yet.
-  const urgentPlans = paddleConfig ? urgentHirePlanOptions() : [];
+  const urgentPlans = paddleConfig ? urgentHirePlanOptions() : PAYMENTS_PAUSED ? URGENT_HIRE_PLANS.map(days) : [];
   const urgentable = jobs.filter((j) => canMarkJobUrgent(viewer, j)).map(({ id, title }) => ({ id, title }));
   // Subscriptions (Paddle): monthly + yearly per product.
-  const seekerProPlans = paddleConfig ? subscriptionPlanOptions("JOB_SEEKER_PRO") : [];
-  const companyPremiumPlans = paddleConfig ? subscriptionPlanOptions("COMPANY_PREMIUM") : [];
+  const subPlans = (product: "JOB_SEEKER_PRO" | "COMPANY_PREMIUM") =>
+    paddleConfig
+      ? subscriptionPlanOptions(product)
+      : PAYMENTS_PAUSED
+        ? SUBSCRIPTION_PLANS.filter((p) => p.product === product).map(({ code, interval, amount }) => ({ code, interval, amount }))
+        : [];
+  const seekerProPlans = subPlans("JOB_SEEKER_PRO");
+  const companyPremiumPlans = subPlans("COMPANY_PREMIUM");
+
+  // The same labels as the pickers' buttons ("14 days — $3.00", "5 pack — $4.00", "Monthly — $7.00").
+  const soon = t("premium.comingSoon");
+  const byDays = (plans: { code: string; durationDays: number; amount: number }[]): PausedPlan[] =>
+    plans.map((p) => ({ key: p.code, label: `${t("jobs.planDays", { n: p.durationDays })} — ${f.money(p.amount, "usd")}`, primary: p.durationDays === 14 }));
+  const byInterval = (plans: { code: string; interval: string; amount: number }[]): PausedPlan[] =>
+    plans.map((p) => ({ key: p.code, label: `${p.interval === "month" ? t("premium.planMonthly") : t("premium.planYearly")} — ${f.money(p.amount, "usd")}`, primary: p.interval === "month" }));
+  // Paused: every plan, disabled, marked "Coming soon". Not configured (no plans): the single disabled button.
+  const plansSoon = (plans: PausedPlan[], group: string) =>
+    PAYMENTS_PAUSED && plans.length ? <PausedPlans plans={plans} soonLabel={soon} groupLabel={group} /> : <PaymentsSoon label={soon} />;
+  const pausedPriority: PausedPlan[] = priorityPlans.map((p) => ({ key: p.code, label: `${t("premium.priorityPack", { n: p.credits })} — ${f.money(p.amount, "usd")}`, primary: p.credits === 5 }));
   const target = typeof sp.target === "string" ? sp.target : null;
   const isAdmin = viewer?.company && (viewer.company.role === "OWNER" || viewer.company.role === "ADMIN");
 
@@ -107,7 +141,12 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
             <Info className="mt-0.5 size-4 shrink-0" /> {t("premium.simulate")}
           </p>
         )}
-        {mode === "disabled" && !paddleConfig && <p className="mx-auto mt-4 max-w-md rounded-xl bg-surface-2 px-4 py-2 text-sm text-fg-muted">{t("premium.disabled")}</p>}
+        {mode === "disabled" && !paddleConfig && (
+          // A small notice only: each plan's buttons already say "Coming soon".
+          <p className="mx-auto mt-4 inline-flex items-center gap-1.5 rounded-full bg-surface-2 px-3 py-1 text-xs font-medium text-fg-muted">
+            <Clock className="size-3.5" aria-hidden /> {soon}
+          </p>
+        )}
       </Reveal>
 
       {/* Members */}
@@ -141,7 +180,7 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
               {paddleConfig && boostPlans.length ? (
                 <ProfileBoostPicker plans={boostPlans} signedIn={signedIn} config={paddleConfig} />
               ) : (
-                <PaymentsSoon label={t("premium.comingSoon")} />
+                plansSoon(byDays(boostPlans), name("PROFILE_BOOST"))
               )}
             </div>
           </Card>
@@ -160,7 +199,7 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
               {paddleConfig && priorityPlans.length ? (
                 <PriorityApplicationPicker plans={priorityPlans} signedIn={signedIn} config={paddleConfig} />
               ) : (
-                <PaymentsSoon label={t("premium.comingSoon")} />
+                plansSoon(pausedPriority, name("PRIORITY_APPLICATION"))
               )}
             </div>
           </Card>
@@ -186,7 +225,7 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
                   manageHref="/settings/billing"
                 />
               ) : (
-                <PaymentsSoon label={t("premium.comingSoon")} />
+                plansSoon(byInterval(seekerProPlans), name("JOB_SEEKER_PRO"))
               )}
             </div>
           </Card>
@@ -305,8 +344,8 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
                   <div className="mt-6">
                     {viewer?.company && code === "FEATURED_JOB" && paddleConfig ? (
                       <FeatureJobPicker jobs={featurable} initialJob={sp.product === code ? target : null} config={paddleConfig} plans={featuredPlans} />
-                    ) : viewer?.company && PAYMENTS_PAUSED ? (
-                      <PaymentsSoon label={t("premium.comingSoon")} />
+                    ) : PAYMENTS_PAUSED ? (
+                      plansSoon(byDays(featuredPlans), name("FEATURED_JOB"))
                     ) : viewer?.company ? (
                       <PromoteJobBuy
                         product={code}
@@ -338,8 +377,8 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
               <div className="mt-6">
                 {viewer?.company && paddleConfig && urgentPlans.length ? (
                   <UrgentHirePicker jobs={urgentable} config={paddleConfig} plans={urgentPlans} signedIn={signedIn} />
-                ) : viewer?.company ? (
-                  <PaymentsSoon label={t("premium.comingSoon")} />
+                ) : PAYMENTS_PAUSED || viewer?.company ? (
+                  plansSoon(byDays(urgentPlans), name("URGENT_HIRE"))
                 ) : (
                   <p className="text-xs text-fg-subtle">{t("premium.workspacesOnly")}</p>
                 )}
@@ -362,7 +401,9 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
               <p className="mt-1 text-sm text-fg-muted">{tagline("COMPANY_PREMIUM")}</p>
               <Features items={features("COMPANY_PREMIUM")} tone="text-ember" />
               <div className="mt-6">
-                {!viewer?.company ? (
+                {PAYMENTS_PAUSED ? (
+                  plansSoon(byInterval(companyPremiumPlans), name("COMPANY_PREMIUM"))
+                ) : !viewer?.company ? (
                   <Link href={viewer ? "/recruiter/setup" : "/register?intent=RECRUITER"} className={buttonClasses({ variant: "outline", className: "w-full" })}>
                     {t("premium.createWorkspace")}
                   </Link>
