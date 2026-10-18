@@ -64,7 +64,7 @@ export default async function AdminDashboardPage() {
         {recentUsers.length === 0 ? (
           <p className="px-5 pb-5 text-sm text-fg-muted sm:px-6">{t("admin.noData")}</p>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="relative overflow-x-auto">
             <table className="w-full min-w-[560px] text-sm">
               <thead>
                 <tr className="border-y border-border">
@@ -94,7 +94,7 @@ export default async function AdminDashboardPage() {
         {recentJobs.length === 0 ? (
           <p className="px-5 pb-5 text-sm text-fg-muted sm:px-6">{t("admin.noData")}</p>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="relative overflow-x-auto">
             <table className="w-full min-w-[560px] text-sm">
               <thead>
                 <tr className="border-y border-border">

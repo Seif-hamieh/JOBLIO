@@ -128,7 +128,7 @@ export default async function AdminPaymentsPage({ searchParams }: { searchParams
         <EmptyState icon={<Receipt />} title={t("admin.noData")} />
       ) : (
         <Card className="overflow-hidden">
-          <div className="overflow-x-auto">
+          <div className="relative overflow-x-auto">
             <table className="w-full min-w-[960px] text-sm">
               <thead>
                 <tr className="border-b border-border">

@@ -29,6 +29,9 @@ const EMPLOYMENT: Record<JobForLd["employmentType"], string> = {
   INTERNSHIP: "INTERN",
 };
 
+const DAY_MS = 86_400_000;
+const DEFAULT_REMOTE_COUNTRY = "LB";
+
 const esc = (s: string) => s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]!);
 
 export function jobPostingJsonLd(job: JobForLd, siteUrl: string) {
@@ -40,9 +43,19 @@ export function jobPostingJsonLd(job: JobForLd, siteUrl: string) {
     job.requirements.length ? `<ul>${job.requirements.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>` : "",
   ].join("");
   const remote = job.workMode === "REMOTE";
+  // The job's own location, else the company's.
   const city = job.city ?? job.company.city;
   const country = job.countryCode ?? job.company.countryCode;
+  // Google requires applicantLocationRequirements for remote jobs: default to Lebanon when unknown.
+  const remoteCountry = country ?? DEFAULT_REMOTE_COUNTRY;
   const salary = job.salaryMin != null || job.salaryMax != null;
+  const posted = job.publishedAt ?? job.createdAt;
+  // closesAt is the closing *day* (00:00 UTC) and the job stays open through it: end of that day.
+  // Without one: 30 days after posting, but never already past while the job is still open
+  // (an expired validThrough makes Google drop a live job), so older jobs roll forward 30 days.
+  const validThrough = job.closesAt
+    ? new Date(job.closesAt.getTime() + DAY_MS - 1000)
+    : new Date(Math.max(posted.getTime(), Date.now()) + 30 * DAY_MS);
 
   return {
     "@context": "https://schema.org",
@@ -50,9 +63,8 @@ export function jobPostingJsonLd(job: JobForLd, siteUrl: string) {
     title: job.title,
     description: html,
     identifier: { "@type": "PropertyValue", name: "JOBLIO", value: job.id },
-    datePosted: (job.publishedAt ?? job.createdAt).toISOString(),
-    // closesAt is the closing *day* (00:00 UTC) and the job stays open through it: end of that day.
-    ...(job.closesAt && { validThrough: new Date(job.closesAt.getTime() + 86_400_000 - 1000).toISOString() }),
+    datePosted: posted.toISOString(),
+    validThrough: validThrough.toISOString(),
     employmentType: EMPLOYMENT[job.employmentType],
     url: `${siteUrl}/jobs/${job.id}`,
     hiringOrganization: {
@@ -61,9 +73,7 @@ export function jobPostingJsonLd(job: JobForLd, siteUrl: string) {
       ...(job.company.website && { sameAs: job.company.website }),
       ...(job.company.logoUrl && { logo: abs(job.company.logoUrl) }),
     },
-    ...(remote
-      ? { jobLocationType: "TELECOMMUTE", ...(country && { applicantLocationRequirements: { "@type": "Country", name: country } }) }
-      : {}),
+    ...(remote ? { jobLocationType: "TELECOMMUTE", applicantLocationRequirements: { "@type": "Country", name: remoteCountry } } : {}),
     ...((!remote || city) && (city || country)
       ? { jobLocation: { "@type": "Place", address: { "@type": "PostalAddress", ...(city && { addressLocality: city }), ...(country && { addressCountry: country }) } } }
       : {}),

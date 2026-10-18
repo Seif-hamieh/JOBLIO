@@ -65,7 +65,7 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: P
         <EmptyState icon={<Users />} title={t("admin.noData")} />
       ) : (
         <Card className="overflow-hidden">
-          <div className="overflow-x-auto">
+          <div className="relative overflow-x-auto">
             <table className="w-full min-w-[760px] text-sm">
               <thead>
                 <tr className="border-b border-border">

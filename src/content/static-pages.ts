@@ -116,7 +116,7 @@ export const STATIC_PAGES: Record<StaticPageId, Record<Locale, StaticPage>> = {
         {
           heading: "5. Paid features",
           body: [
-            "Paid features are described with their price and duration before you buy. Payments are processed by Paddle (as merchant of record); JOBLIO never sees your card details. Subscriptions renew until cancelled and can be managed from Billing & Payments, or through Paddle's hosted customer portal. Visibility features increase exposure but do not guarantee results.",
+            "Paid features are described with their price and duration before you buy. Payments are processed by our payment provider; JOBLIO never sees your card details. Subscriptions renew until cancelled and can be managed from Billing & Payments, or through the payment provider's customer portal. Visibility features increase exposure but do not guarantee results.",
           ],
         },
         {
@@ -168,7 +168,7 @@ export const STATIC_PAGES: Record<StaticPageId, Record<Locale, StaticPage>> = {
         {
           heading: "5. الميزات المدفوعة",
           body: [
-            "توضَّح الميزات المدفوعة بسعرها ومدتها قبل الشراء. تُعالَج المدفوعات عبر Paddle (بصفته التاجر المسجَّل)، ولا يطّلع JOBLIO على بيانات بطاقتك. تتجدد الاشتراكات حتى تُلغى، ويمكن إدارتها من صفحة الفوترة والمدفوعات، أو عبر بوابة Paddle المخصصة للعملاء. ميزات الظهور تزيد الانتشار لكنها لا تضمن نتائج.",
+            "توضَّح الميزات المدفوعة بسعرها ومدتها قبل الشراء. تُعالَج المدفوعات عبر مزوّد الدفع، ولا يطّلع JOBLIO على بيانات بطاقتك. تتجدد الاشتراكات حتى تُلغى، ويمكن إدارتها من صفحة الفوترة والمدفوعات، أو عبر بوابة العملاء لدى مزوّد الدفع. ميزات الظهور تزيد الانتشار لكنها لا تضمن نتائج.",
           ],
         },
         {
@@ -218,7 +218,7 @@ export const STATIC_PAGES: Record<StaticPageId, Record<Locale, StaticPage>> = {
         {
           heading: "Where your data is stored",
           body: [
-            "JOBLIO uses trusted providers to run the service: Vercel (hosting), Neon (database, in the EU), Supabase (file storage), Paddle (payments), Google (optional sign-in) and an email provider for account emails. They process data only to provide their service to us.",
+            "JOBLIO uses trusted providers to run the service: Vercel (hosting), Neon (database, in the EU), Supabase (file storage), our payment provider (payments), Google (optional sign-in) and an email provider for account emails. They process data only to provide their service to us.",
           ],
         },
         {
@@ -273,7 +273,7 @@ export const STATIC_PAGES: Record<StaticPageId, Record<Locale, StaticPage>> = {
         {
           heading: "أين تُخزَّن بياناتك",
           body: [
-            "يستعين JOBLIO بمزوّدين موثوقين لتشغيل الخدمة: Vercel (الاستضافة)، وNeon (قاعدة البيانات داخل الاتحاد الأوروبي)، وSupabase (تخزين الملفات)، وPaddle (المدفوعات)، وGoogle (تسجيل دخول اختياري)، ومزوّد بريد لرسائل الحساب. ويعالج هؤلاء البيانات فقط لتقديم خدماتهم لنا.",
+            "يستعين JOBLIO بمزوّدين موثوقين لتشغيل الخدمة: Vercel (الاستضافة)، وNeon (قاعدة البيانات داخل الاتحاد الأوروبي)، وSupabase (تخزين الملفات)، ومزوّد الدفع (المدفوعات)، وGoogle (تسجيل دخول اختياري)، ومزوّد بريد لرسائل الحساب. ويعالج هؤلاء البيانات فقط لتقديم خدماتهم لنا.",
           ],
         },
         {
@@ -307,7 +307,7 @@ export const STATIC_PAGES: Record<StaticPageId, Record<Locale, StaticPage>> = {
       title: "Refund Policy",
       updated: UPDATED_EN,
       intro:
-        "This policy explains how refunds work for paid features on JOBLIO. Paddle, our payment provider and Merchant of Record, processes all refunds.",
+        "This policy explains how refunds work for paid features on JOBLIO. Our payment provider processes all refunds.",
       sections: [
         {
           heading: "1. Your right to a refund",
@@ -318,13 +318,13 @@ export const STATIC_PAGES: Record<StaticPageId, Record<Locale, StaticPage>> = {
         {
           heading: "2. How to request a refund",
           body: [
-            "Because Paddle is the Merchant of Record, refunds are processed by Paddle. You can request a refund by contacting Paddle's support directly, or by emailing us at support@getjoblio.app with your invoice number and reason. We forward eligible requests to Paddle, who issue the refund to your original payment method.",
+            "Refunds are processed by our payment provider. You can request a refund by emailing us at support@getjoblio.app with your invoice number and reason. We forward eligible requests to the payment provider, who issues the refund to your original payment method.",
           ],
         },
         {
           heading: "3. Subscriptions",
           body: [
-            "You can cancel a subscription at any time from Billing & Payments in your account settings, or through Paddle's customer portal. Cancellation stops future renewals; you keep access until the end of the current billing period.",
+            "You can cancel a subscription at any time from Billing & Payments in your account settings, or through the payment provider's customer portal. Cancellation stops future renewals; you keep access until the end of the current billing period.",
             "If you cancel within 14 days of a renewal and have not used the subscription during that new period, you may be eligible for a refund of that renewal.",
           ],
         },
@@ -343,7 +343,7 @@ export const STATIC_PAGES: Record<StaticPageId, Record<Locale, StaticPage>> = {
         {
           heading: "6. Processing time",
           body: [
-            "Refunds are usually processed within 5-10 business days after approval, depending on your bank or card issuer. Paddle sends a confirmation email once the refund is issued.",
+            "Refunds are usually processed within 5-10 business days after approval, depending on your bank or card issuer. The payment provider sends a confirmation email once the refund is issued.",
           ],
         },
         {
@@ -356,7 +356,7 @@ export const STATIC_PAGES: Record<StaticPageId, Record<Locale, StaticPage>> = {
       title: "سياسة الاسترداد",
       updated: UPDATED_AR,
       intro:
-        "توضّح هذه السياسة كيف تعمل المبالغ المستردة للميزات المدفوعة على JOBLIO. Paddle، مزوّد الدفع والتاجر المسجَّل، يتولى معالجة جميع عمليات الاسترداد.",
+        "توضّح هذه السياسة كيف تعمل المبالغ المستردة للميزات المدفوعة على JOBLIO. يتولى مزوّد الدفع معالجة جميع عمليات الاسترداد.",
       sections: [
         {
           heading: "1. حقّك في الاسترداد",
@@ -367,13 +367,13 @@ export const STATIC_PAGES: Record<StaticPageId, Record<Locale, StaticPage>> = {
         {
           heading: "2. كيف تطلب الاسترداد",
           body: [
-            "لأنّ Paddle هو التاجر المسجَّل، فإنّ عمليات الاسترداد تُعالَج عبر Paddle. يمكنك طلب الاسترداد بالتواصل مع دعم Paddle مباشرةً، أو بمراسلتنا على support@getjoblio.app مع رقم الفاتورة والسبب. نمرّر الطلبات المؤهَّلة إلى Paddle، الذي يعيد المبلغ إلى وسيلة الدفع الأصلية.",
+            "تُعالَج عمليات الاسترداد عبر مزوّد الدفع. يمكنك طلب الاسترداد بمراسلتنا على support@getjoblio.app مع رقم الفاتورة والسبب. نمرّر الطلبات المؤهَّلة إلى مزوّد الدفع، الذي يعيد المبلغ إلى وسيلة الدفع الأصلية.",
           ],
         },
         {
           heading: "3. الاشتراكات",
           body: [
-            "يمكنك إلغاء الاشتراك في أي وقت من صفحة الفوترة والمدفوعات في إعدادات حسابك، أو عبر بوابة Paddle المخصصة للعملاء. الإلغاء يوقف التجديدات المستقبلية، وتبقى محتفظاً بالوصول حتى نهاية فترة الفوترة الحالية.",
+            "يمكنك إلغاء الاشتراك في أي وقت من صفحة الفوترة والمدفوعات في إعدادات حسابك، أو عبر بوابة العملاء لدى مزوّد الدفع. الإلغاء يوقف التجديدات المستقبلية، وتبقى محتفظاً بالوصول حتى نهاية فترة الفوترة الحالية.",
             "إذا ألغيت خلال 14 يوماً من تجديد، ولم تستخدم الاشتراك في الفترة الجديدة، فقد تكون مؤهلاً لاسترداد قيمة ذلك التجديد.",
           ],
         },
@@ -392,7 +392,7 @@ export const STATIC_PAGES: Record<StaticPageId, Record<Locale, StaticPage>> = {
         {
           heading: "6. مدة المعالجة",
           body: [
-            "عادةً تُعالَج عمليات الاسترداد خلال 5-10 أيام عمل بعد الموافقة، حسب البنك أو مصدّر البطاقة. يرسل Paddle رسالة تأكيد بعد إصدار الاسترداد.",
+            "عادةً تُعالَج عمليات الاسترداد خلال 5-10 أيام عمل بعد الموافقة، حسب البنك أو مصدّر البطاقة. يرسل مزوّد الدفع رسالة تأكيد بعد إصدار الاسترداد.",
           ],
         },
         {

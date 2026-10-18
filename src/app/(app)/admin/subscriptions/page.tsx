@@ -95,7 +95,7 @@ export default async function AdminSubscriptionsPage({ searchParams }: { searchP
         <EmptyState icon={<CreditCard />} title={t("admin.noData")} />
       ) : (
         <Card className="overflow-hidden">
-          <div className="overflow-x-auto">
+          <div className="relative overflow-x-auto">
             <table className="w-full min-w-[920px] text-sm">
               <thead>
                 <tr className="border-b border-border">

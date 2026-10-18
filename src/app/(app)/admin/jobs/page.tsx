@@ -80,7 +80,7 @@ export default async function AdminJobsPage({ searchParams }: { searchParams: Pr
         <EmptyState icon={<Briefcase />} title={t("admin.noData")} />
       ) : (
         <Card className="overflow-hidden">
-          <div className="overflow-x-auto">
+          <div className="relative overflow-x-auto">
             <table className="w-full min-w-[820px] text-sm">
               <thead>
                 <tr className="border-b border-border">

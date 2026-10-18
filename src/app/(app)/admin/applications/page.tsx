@@ -108,7 +108,7 @@ export default async function AdminApplicationsPage({ searchParams }: { searchPa
         <EmptyState icon={<FileText />} title={t("admin.noData")} />
       ) : (
         <Card className="overflow-hidden">
-          <div className="overflow-x-auto">
+          <div className="relative overflow-x-auto">
             <table className="w-full min-w-[1000px] text-sm">
               <thead>
                 <tr className="border-b border-border">

@@ -130,16 +130,26 @@ function FrameLimiter({ fps }: { fps: number }) {
   return null;
 }
 
+const INTRO_MS = 4000; // animate this long after the scene appears
+const IDLE_AFTER_MS = 1500; // and stop this long after the last pointer movement
+
 export default function NetworkScene({ palette, className }: { palette: ScenePalette; className?: string }) {
   const wrapper = useRef<HTMLDivElement>(null);
   const pointer = useRef({ x: 0, y: 0 });
   const [inView, setInView] = useState(true);
   const [pageVisible, setPageVisible] = useState(true);
+  // Animates only briefly after load and while the visitor moves the pointer; otherwise the canvas
+  // keeps its last frame and no work is done. State changes only when activity starts or stops.
+  const [active, setActive] = useState(true);
   const visible = inView && pageVisible;
 
   useEffect(() => {
+    let idle = window.setTimeout(() => setActive(false), INTRO_MS);
     const onMove = (e: PointerEvent) => {
       pointer.current = { x: (e.clientX / window.innerWidth) * 2 - 1, y: (e.clientY / window.innerHeight) * 2 - 1 };
+      setActive(true); // no re-render when already active
+      window.clearTimeout(idle);
+      idle = window.setTimeout(() => setActive(false), IDLE_AFTER_MS);
     };
     window.addEventListener("pointermove", onMove, { passive: true });
     // Stop rendering entirely when the hero scrolls out of view or the tab hides.
@@ -148,6 +158,7 @@ export default function NetworkScene({ palette, className }: { palette: ScenePal
     const onVis = () => setPageVisible(document.visibilityState === "visible");
     document.addEventListener("visibilitychange", onVis);
     return () => {
+      window.clearTimeout(idle);
       window.removeEventListener("pointermove", onMove);
       document.removeEventListener("visibilitychange", onVis);
       io.disconnect();
@@ -163,7 +174,7 @@ export default function NetworkScene({ palette, className }: { palette: ScenePal
         frameloop={visible ? "demand" : "never"}
         aria-hidden
       >
-        {visible && <FrameLimiter fps={30} />}
+        {visible && active && <FrameLimiter fps={30} />}
         <Network palette={palette} pointer={pointer} />
       </Canvas>
     </div>
