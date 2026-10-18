@@ -132,9 +132,13 @@ export default async function BillingPage({ searchParams }: { searchParams: Prom
                     </td>
                     <td className="px-6 py-3 text-end">
                       <div className="inline-flex items-center gap-3">
-                        <Link href={`/settings/billing/${p.invoiceNumber}`} className="font-medium text-brand-soft-fg hover:underline">
-                          {t("billing.view")}
-                        </Link>
+                        {p.status === "SUCCEEDED" ? (
+                          <Link href={`/settings/billing/${p.invoiceNumber}`} className="font-medium text-brand-soft-fg hover:underline">
+                            {t("billing.view")}
+                          </Link>
+                        ) : (
+                          <span className="text-fg-subtle">—</span>
+                        )}
                         {p.receiptUrl && (
                           <a href={p.receiptUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-fg-muted hover:text-fg">
                             {t("billing.receipt")} <ExternalLink className="size-3" />

@@ -25,7 +25,7 @@ export function AdminNav() {
   const item = "flex shrink-0 items-center gap-2.5 rounded-xl px-3 py-2 text-sm [&_svg]:size-4 [&_svg]:shrink-0";
 
   return (
-    <nav aria-label={t("admin.title")} className="lg:sticky lg:top-24 lg:self-start">
+    <nav aria-label={t("admin.title")} className="min-w-0 lg:sticky lg:top-24 lg:self-start">
       <ul className="-mx-4 flex gap-1 overflow-x-auto px-4 pb-1 lg:mx-0 lg:flex-col lg:overflow-visible lg:px-0 lg:pb-0">
         {ITEMS.map(({ href, key, icon: Icon, ready, ...rest }) => {
           const active = "exact" in rest ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);

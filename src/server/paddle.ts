@@ -7,6 +7,7 @@ import { canManageCompany } from "@/server/session";
 import { nextInvoiceNumber } from "@/server/billing";
 import {
   FEATURED_JOB_PLANS,
+  PAYMENTS_PAUSED,
   PRIORITY_APPLICATION_PLANS,
   PROFILE_BOOST_PLANS,
   PRODUCTS,
@@ -78,7 +79,8 @@ export function paddleEnabled() {
 
 /** What the browser needs to open the checkout. The client token is public by design; the API key never leaves the server. */
 export function paddleClientConfig() {
-  if (!paddleEnabled()) return null;
+  // Without a config the pages show no checkout (premium plans, "Feature this job").
+  if (PAYMENTS_PAUSED || !paddleEnabled()) return null;
   return { token: process.env.PADDLE_CLIENT_TOKEN!, environment: environment() === Environment.production ? ("production" as const) : ("sandbox" as const) };
 }
 

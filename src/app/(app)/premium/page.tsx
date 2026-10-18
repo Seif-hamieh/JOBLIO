@@ -1,6 +1,6 @@
 import { getI18n, pageTitle } from "@/i18n/server";
 import Link from "next/link";
-import { Building2, Check, Crown, Globe, Info, Megaphone, Rocket, ShieldCheck, Star, Users, Zap } from "lucide-react";
+import { Building2, Check, Clock, Crown, Globe, Info, Megaphone, Rocket, ShieldCheck, Star, Users, Zap } from "lucide-react";
 import { getViewer } from "@/server/session";
 import { db } from "@/server/db";
 import { paymentsMode } from "@/server/billing";
@@ -23,8 +23,8 @@ import { BuyButton, PromoteJobBuy } from "@/components/billing/buy-button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/misc";
 import { Reveal } from "@/components/ui/motion";
-import { buttonClasses } from "@/components/ui/button";
-import { PRODUCTS, type ProductCode } from "@/lib/billing/products";
+import { Button, buttonClasses } from "@/components/ui/button";
+import { PAYMENTS_PAUSED, PRODUCTS, type ProductCode } from "@/lib/billing/products";
 
 export const generateMetadata = pageTitle("nav.premium");
 
@@ -40,6 +40,15 @@ function Features({ items, tone = "text-mint" }: { items: string[]; tone?: strin
   );
 }
 
+/** Stands in for a checkout button while payments are off: visibly disabled, nothing to click. */
+function PaymentsSoon({ label }: { label: string }) {
+  return (
+    <Button variant="outline" className="w-full" disabled aria-disabled>
+      <Clock /> {label}
+    </Button>
+  );
+}
+
 function Price({ amount, suffix }: { amount: string; suffix: string }) {
   return (
     <div className="mt-3 font-display text-4xl font-semibold tracking-tight">
@@ -52,7 +61,8 @@ function Price({ amount, suffix }: { amount: string; suffix: string }) {
 export default async function PremiumPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const sp = await searchParams;
   const [viewer, { t, f }] = await Promise.all([getViewer(), getI18n()]);
-  const mode = paymentsMode();
+  // Paused payments look like "disabled": the "coming soon" notice shows and every buy button is off.
+  const mode = PAYMENTS_PAUSED ? "disabled" : paymentsMode();
   const signedIn = !!viewer;
   const [subs, jobs] = await Promise.all([
     viewer
@@ -131,7 +141,7 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
               {paddleConfig && boostPlans.length ? (
                 <ProfileBoostPicker plans={boostPlans} signedIn={signedIn} config={paddleConfig} />
               ) : (
-                <p className="text-xs text-fg-subtle">{t("premium.disabled")}</p>
+                <PaymentsSoon label={t("premium.comingSoon")} />
               )}
             </div>
           </Card>
@@ -150,7 +160,7 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
               {paddleConfig && priorityPlans.length ? (
                 <PriorityApplicationPicker plans={priorityPlans} signedIn={signedIn} config={paddleConfig} />
               ) : (
-                <p className="text-xs text-fg-subtle">{t("premium.disabled")}</p>
+                <PaymentsSoon label={t("premium.comingSoon")} />
               )}
             </div>
           </Card>
@@ -176,7 +186,7 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
                   manageHref="/settings/billing"
                 />
               ) : (
-                <p className="text-xs text-fg-subtle">{t("premium.disabled")}</p>
+                <PaymentsSoon label={t("premium.comingSoon")} />
               )}
             </div>
           </Card>
@@ -295,6 +305,8 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
                   <div className="mt-6">
                     {viewer?.company && code === "FEATURED_JOB" && paddleConfig ? (
                       <FeatureJobPicker jobs={featurable} initialJob={sp.product === code ? target : null} config={paddleConfig} plans={featuredPlans} />
+                    ) : viewer?.company && PAYMENTS_PAUSED ? (
+                      <PaymentsSoon label={t("premium.comingSoon")} />
                     ) : viewer?.company ? (
                       <PromoteJobBuy
                         product={code}
@@ -327,7 +339,7 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
                 {viewer?.company && paddleConfig && urgentPlans.length ? (
                   <UrgentHirePicker jobs={urgentable} config={paddleConfig} plans={urgentPlans} signedIn={signedIn} />
                 ) : viewer?.company ? (
-                  <p className="text-xs text-fg-subtle">{t("premium.disabled")}</p>
+                  <PaymentsSoon label={t("premium.comingSoon")} />
                 ) : (
                   <p className="text-xs text-fg-subtle">{t("premium.workspacesOnly")}</p>
                 )}
@@ -366,7 +378,7 @@ export default async function PremiumPage({ searchParams }: { searchParams: Prom
                     manageHref="/settings/billing"
                   />
                 ) : (
-                  <p className="text-xs text-fg-subtle">{t("premium.disabled")}</p>
+                  <PaymentsSoon label={t("premium.comingSoon")} />
                 )}
               </div>
             </Card>

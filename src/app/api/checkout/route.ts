@@ -14,6 +14,7 @@ import { getI18n } from "@/i18n/server";
 import { k } from "@/i18n/message";
 import {
   FEATURED_JOB_PLAN_CODES,
+  PAYMENTS_PAUSED,
   PRIORITY_APPLICATION_PLAN_CODES,
   PROFILE_BOOST_PLAN_CODES,
   SUBSCRIPTION_PLAN_CODES,
@@ -54,6 +55,9 @@ export async function POST(req: Request) {
   // Same-origin only (the session cookie alone must not be enough to start a purchase).
   const origin = req.headers.get("origin");
   if (!origin || origin !== new URL(req.url).origin) return error(k("msg.error"), 403);
+
+  // Payments are paused (see PAYMENTS_PAUSED): refuse before anything is created at Paddle.
+  if (PAYMENTS_PAUSED) return error(k("msg.paymentsOff"), 503);
 
   const viewer = await getViewer();
   if (!viewer) return error(k("msg.signIn"), 401);

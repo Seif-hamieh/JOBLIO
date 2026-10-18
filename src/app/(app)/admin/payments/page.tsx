@@ -162,9 +162,11 @@ export default async function AdminPaymentsPage({ searchParams }: { searchParams
                         <Link href={p.user.username ? `/in/${p.user.username}` : `/admin/users?q=${encodeURIComponent(p.user.email)}`} className={link}>
                           {t("admin.paymentsTable.viewUser")}
                         </Link>
-                        <Link href={`/settings/billing/${encodeURIComponent(p.invoiceNumber)}`} className={link}>
-                          {t("admin.paymentsTable.viewInvoice")}
-                        </Link>
+                        {p.status === "SUCCEEDED" && (
+                          <Link href={`/settings/billing/${encodeURIComponent(p.invoiceNumber)}`} className={link}>
+                            {t("admin.paymentsTable.viewInvoice")}
+                          </Link>
+                        )}
                       </div>
                     </td>
                   </tr>

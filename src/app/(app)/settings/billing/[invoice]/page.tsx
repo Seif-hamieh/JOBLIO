@@ -34,6 +34,9 @@ export default async function InvoicePage({ params }: { params: Promise<{ invoic
   });
   // Visible to the purchaser, to members of the company it was bought for, and to admins.
   if (!payment || (!viewer.isAdmin && payment.userId !== viewer.id && (!payment.companyId || payment.companyId !== viewer.company?.id))) notFound();
+  // An invoice exists only for a completed payment: pending, failed or refunded attempts have none
+  // (their row keeps a reserved invoice number, but no invoice is ever issued for it).
+  if (payment.status !== "SUCCEEDED") notFound();
 
   const date = (d: Date) => f.date(d, { year: "numeric", month: "long", day: "numeric" });
 

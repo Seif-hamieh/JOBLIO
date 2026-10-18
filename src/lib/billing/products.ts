@@ -1,6 +1,13 @@
 // Paid products. Core features (profile, search, apply, connect, message)
 // are always free — paid products only add visibility and pro tools.
 
+/**
+ * Kill switch: while true, nobody can start a payment. Checkout buttons show "Payments coming soon",
+ * and the server refuses every checkout (/api/checkout and the legacy startCheckout).
+ * Existing subscriptions, webhooks, cancellations and invoices keep working. Set to false to reopen.
+ */
+export const PAYMENTS_PAUSED = true;
+
 export type ProductCode =
   | "CAREER_BOOST_7"
   | "CAREER_BOOST_30"

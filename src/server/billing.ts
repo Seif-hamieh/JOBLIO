@@ -4,7 +4,7 @@ import { ActionError } from "@/server/action";
 import type { Viewer } from "@/server/session";
 import { notify } from "@/server/services/notifications";
 import { k } from "@/i18n/message";
-import { PRODUCTS, priorityApplicationCredits, type ProductCode } from "@/lib/billing/products";
+import { PAYMENTS_PAUSED, PRODUCTS, priorityApplicationCredits, type ProductCode } from "@/lib/billing/products";
 import { absoluteUrl, formatMoney } from "@/lib/utils";
 import { createPaddlePortalSession, paddle } from "@/server/paddle";
 
@@ -68,7 +68,7 @@ async function authorize(viewer: Viewer, code: ProductCode, targetId: string | n
  */
 export async function startCheckout(viewer: Viewer, code: ProductCode, targetId: string | null) {
   const mode = paymentsMode();
-  if (mode !== "simulate") throw new ActionError("@msg.paymentsOff");
+  if (PAYMENTS_PAUSED || mode !== "simulate") throw new ActionError("@msg.paymentsOff");
   await authorize(viewer, code, targetId);
   const product = PRODUCTS[code];
 

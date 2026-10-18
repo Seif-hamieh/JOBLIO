@@ -15,7 +15,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const [, { t }] = await Promise.all([requireAdmin(), getI18n()]);
 
   return (
-    <div className="mx-auto max-w-6xl space-y-6">
+    <div className="mx-auto w-full min-w-0 max-w-6xl space-y-6">
       <PageHeader
         title={
           <span className="flex flex-wrap items-center gap-2">
@@ -30,7 +30,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         }
       />
 
-      <div className="grid gap-6 lg:grid-cols-[220px_minmax(0,1fr)]">
+      {/* grid-cols-1 (= minmax(0, 1fr)) keeps wide tables from stretching the page on phones; they scroll inside their card. */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[220px_minmax(0,1fr)]">
         <AdminNav />
         <div className="min-w-0">{children}</div>
       </div>
