@@ -30,7 +30,19 @@ const EMPLOYMENT: Record<JobForLd["employmentType"], string> = {
 };
 
 const DAY_MS = 86_400_000;
+// Default country (ISO 3166-1 code) when neither the job nor the company has one.
 const DEFAULT_REMOTE_COUNTRY = "LB";
+
+// applicantLocationRequirements takes the country's English name ("Lebanon", not "LB");
+// addressCountry keeps the ISO code, which is what Google expects there.
+const regionNames = new Intl.DisplayNames(["en"], { type: "region" });
+function countryName(code: string) {
+  try {
+    return regionNames.of(code.toUpperCase()) ?? code;
+  } catch {
+    return code;
+  }
+}
 
 const esc = (s: string) => s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]!);
 
@@ -73,9 +85,16 @@ export function jobPostingJsonLd(job: JobForLd, siteUrl: string) {
       ...(job.company.website && { sameAs: job.company.website }),
       ...(job.company.logoUrl && { logo: abs(job.company.logoUrl) }),
     },
-    ...(remote ? { jobLocationType: "TELECOMMUTE", applicantLocationRequirements: { "@type": "Country", name: remoteCountry } } : {}),
-    ...((!remote || city) && (city || country)
-      ? { jobLocation: { "@type": "Place", address: { "@type": "PostalAddress", ...(city && { addressLocality: city }), ...(country && { addressCountry: country }) } } }
+    ...(remote ? { jobLocationType: "TELECOMMUTE", applicantLocationRequirements: { "@type": "Country", name: countryName(remoteCountry) } } : {}),
+    // Google requires jobLocation for every job that isn't fully remote: always present for those
+    // (job location → company location → Lebanon). Remote jobs get it only when a city is known.
+    ...(!remote || city
+      ? {
+          jobLocation: {
+            "@type": "Place",
+            address: { "@type": "PostalAddress", ...(city && { addressLocality: city }), addressCountry: country ?? DEFAULT_REMOTE_COUNTRY },
+          },
+        }
       : {}),
     ...(salary && {
       baseSalary: {
