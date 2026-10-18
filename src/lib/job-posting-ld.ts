@@ -51,7 +51,8 @@ export function jobPostingJsonLd(job: JobForLd, siteUrl: string) {
     description: html,
     identifier: { "@type": "PropertyValue", name: "JOBLIO", value: job.id },
     datePosted: (job.publishedAt ?? job.createdAt).toISOString(),
-    ...(job.closesAt && { validThrough: job.closesAt.toISOString() }),
+    // closesAt is the closing *day* (00:00 UTC) and the job stays open through it: end of that day.
+    ...(job.closesAt && { validThrough: new Date(job.closesAt.getTime() + 86_400_000 - 1000).toISOString() }),
     employmentType: EMPLOYMENT[job.employmentType],
     url: `${siteUrl}/jobs/${job.id}`,
     hiringOrganization: {

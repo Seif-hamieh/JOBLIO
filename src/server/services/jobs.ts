@@ -10,6 +10,8 @@ import type { EmploymentType, ExperienceLevel, WorkMode } from "@/lib/constants"
 import { getCandidateFacts, jobMatchSelect, scoreJobs } from "@/server/services/matching";
 
 export const PAGE_SIZE = 20;
+// How many of the newest open jobs are scored in memory when ranking by match (/jobs, /home, For You).
+const MATCH_POOL_SIZE = 300;
 
 export const jobCardSelect = {
   id: true,
@@ -148,7 +150,7 @@ export async function searchJobs(p: JobSearchParams, viewerId: string | null) {
   if (p.sort === "match" && viewerId) {
     // Rank a bounded candidate set by score in memory (see docs/ARCHITECTURE.md).
     const [pool, facts] = await Promise.all([
-      db.job.findMany({ where: organicWhere, select: jobCardSelect, orderBy: { publishedAt: "desc" }, take: 300 }),
+      db.job.findMany({ where: organicWhere, select: jobCardSelect, orderBy: { publishedAt: "desc" }, take: MATCH_POOL_SIZE }),
       getCandidateFacts(viewerId),
     ]);
     matches = scoreJobs(facts, pool);
@@ -177,18 +179,15 @@ export async function searchJobs(p: JobSearchParams, viewerId: string | null) {
 export async function jobsForYou(userId: string, opts: { limit?: number; minScore?: number } = {}) {
   const [, facts] = await Promise.all([expirePromotions(), getCandidateFacts(userId)]);
   if (!facts) return [];
-  const or: Prisma.JobWhereInput[] = [];
-  if (facts.skills.length) or.push({ skills: { some: { skillId: { in: facts.skills.map((s) => s.skillId) } } } });
-  if (facts.preferredWorkModes.includes("REMOTE")) or.push({ workMode: "REMOTE" });
-  if (facts.countryCode) or.push({ countryCode: facts.countryCode });
-  if (facts.preferredIndustryIds.length) or.push({ industryId: { in: facts.preferredIndustryIds } });
 
+  // The same candidate pool as /jobs sorted by match (searchJobs: the newest open jobs, scored by the
+  // same engine), so a job shown at 92% there is never missing here. The only difference: jobs the
+  // member already applied to are left out of recommendations.
   const pool = await db.job.findMany({
-    where: { status: "OPEN", ...(or.length ? { OR: or } : {}), applications: { none: { applicantId: userId } } },
+    where: { status: "OPEN", applications: { none: { applicantId: userId } } },
     select: jobCardSelect,
     orderBy: { publishedAt: "desc" },
-    // Score at most 400 recent jobs; a small widget (the home page shows 4) needs far fewer.
-    take: Math.min(400, Math.max(100, (opts.limit ?? 50) * 25)),
+    take: MATCH_POOL_SIZE,
   });
   const matches = scoreJobs(facts, pool);
   const ranked = pool

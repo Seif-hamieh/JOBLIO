@@ -4,7 +4,7 @@ import { useI18n } from "@/i18n/client";
 import dynamic from "next/dynamic";
 import { useTheme } from "@/components/theme";
 import { m, useMotionValue, useSpring, useTransform } from "motion/react";
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
 import { BadgeCheck, Building2, Check, MapPin, Sparkles } from "lucide-react";
 import { Avatar, CompanyLogo } from "@/components/ui/avatar";
 import { OpenToWorkBadge } from "@/components/ui/badge";
@@ -44,14 +44,57 @@ function useCan3D() {
   return ok;
 }
 
+/** True when the visitor asked the OS for less motion; follows changes to the setting live. */
+function useReducedMotion() {
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduced(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+  return reduced;
+}
+
+/**
+ * Pauses the SVG's SMIL animations (<animate>) when motion is reduced, the SVG is off screen, or the
+ * tab is hidden. CSS rules (like the global reduced-motion one) don't reach SMIL, so it's done here.
+ */
+function usePausedSmil(svg: RefObject<SVGSVGElement | null>) {
+  const reduced = useReducedMotion();
+  const [inView, setInView] = useState(true);
+  const [pageVisible, setPageVisible] = useState(true);
+  useEffect(() => {
+    const el = svg.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => setInView(!!entry?.isIntersecting), { threshold: 0.01 });
+    io.observe(el);
+    const onVis = () => setPageVisible(document.visibilityState === "visible");
+    document.addEventListener("visibilitychange", onVis);
+    return () => {
+      io.disconnect();
+      document.removeEventListener("visibilitychange", onVis);
+    };
+  }, [svg]);
+  useEffect(() => {
+    const el = svg.current;
+    if (!el) return;
+    if (!reduced && inView && pageVisible) el.unpauseAnimations();
+    else el.pauseAnimations();
+  }, [svg, reduced, inView, pageVisible]);
+}
+
 function NetworkFallback({ className }: { className?: string }) {
+  const svg = useRef<SVGSVGElement>(null);
+  usePausedSmil(svg);
   const { nodes, edges } = useMemo(() => buildNetwork(46, 2.7, 11), []);
   // Rounded so server and browser math libraries produce identical markup.
   const r2 = (n: number) => Math.round(n * 100) / 100;
   const project = (x: number, y: number, z: number) => ({ px: r2(200 + x * 62 + z * 12), py: r2(200 + y * 62 - z * 6) });
   const fill = { person: "var(--brand)", company: "var(--aurora)", job: "var(--mint)", skill: "var(--ember)" } as const;
   return (
-    <svg viewBox="0 0 400 400" className={className} aria-hidden>
+    <svg ref={svg} viewBox="0 0 400 400" className={className} aria-hidden>
       <g stroke="var(--brand)" strokeOpacity="0.18" strokeWidth="0.8">
         {edges.map(([a, b], i) => {
           const p = project(nodes[a]!.x, nodes[a]!.y, nodes[a]!.z);
@@ -106,7 +149,9 @@ function FloatCard({ children, className, delay = 0, depth = 1, mx, my }: { chil
 export function HeroVisual() {
   const { t, locale } = useI18n();
   const ar = locale === "ar";
-  const can3D = useCan3D();
+  // Turning on "reduce motion" while the page is open swaps the 3D scene for the (paused) SVG.
+  const reducedMotion = useReducedMotion();
+  const can3D = useCan3D() && !reducedMotion;
   const { resolvedTheme } = useTheme();
   const palette = PALETTES[resolvedTheme === "dark" ? "dark" : "light"];
   const rawX = useMotionValue(0);

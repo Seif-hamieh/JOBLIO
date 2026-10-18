@@ -1,6 +1,6 @@
 "use client";
 
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { buildNetwork, type NodeKind } from "./network-data";
@@ -117,6 +117,19 @@ function Network({ palette, pointer }: { palette: ScenePalette; pointer: React.R
   );
 }
 
+/**
+ * Renders at most `fps` frames a second (the Canvas runs with frameloop="demand"). The motion is slow,
+ * so 30 fps looks the same as 60 and halves the main-thread and GPU work.
+ */
+function FrameLimiter({ fps }: { fps: number }) {
+  const invalidate = useThree((s) => s.invalidate);
+  useEffect(() => {
+    const id = window.setInterval(() => invalidate(), 1000 / fps);
+    return () => window.clearInterval(id);
+  }, [invalidate, fps]);
+  return null;
+}
+
 export default function NetworkScene({ palette, className }: { palette: ScenePalette; className?: string }) {
   const wrapper = useRef<HTMLDivElement>(null);
   const pointer = useRef({ x: 0, y: 0 });
@@ -147,9 +160,10 @@ export default function NetworkScene({ palette, className }: { palette: ScenePal
         dpr={[1, 1.6]}
         camera={{ position: [0, 0, 7.2], fov: 42 }}
         gl={{ antialias: true, alpha: true, powerPreference: "default" }}
-        frameloop={visible ? "always" : "never"}
+        frameloop={visible ? "demand" : "never"}
         aria-hidden
       >
+        {visible && <FrameLimiter fps={30} />}
         <Network palette={palette} pointer={pointer} />
       </Canvas>
     </div>
