@@ -46,7 +46,7 @@ export function Dialog({
               <D.Content asChild forceMount>
                 <m.div
                   className={cn(
-                    "relative flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-3xl border border-border bg-surface shadow-float sm:rounded-3xl",
+                    "glass-panel relative flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-3xl border border-border/70 shadow-float sm:rounded-3xl",
                     size === "sm" && "sm:max-w-md",
                     size === "md" && "sm:max-w-lg",
                     size === "lg" && "sm:max-w-2xl",

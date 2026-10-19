@@ -293,7 +293,7 @@ export function AppShell({ viewer, counts, children, footer }: { viewer: ShellVi
   const pathname = usePathname();
   const showFooter = !pathname.startsWith("/messages");
   const header = (
-    <header className="glass sticky top-0 z-40 border-b border-border pt-[env(safe-area-inset-top)]">
+    <header className="glass sticky top-0 z-40 border-b border-border/60 pt-[env(safe-area-inset-top)]">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6">
         <Logo href={viewer ? "/home" : "/"} compact={!!viewer} className="shrink-0" />
         {viewer ? (

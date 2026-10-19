@@ -51,7 +51,7 @@ export function MarketingNav() {
   }, []);
 
   return (
-    <header className={cn("sticky top-0 z-40 pt-[env(safe-area-inset-top)] transition-all duration-300", scrolled ? "glass border-b border-border" : "border-b border-transparent")}>
+    <header className={cn("sticky top-0 z-40 pt-[env(safe-area-inset-top)] transition-all duration-300", scrolled ? "glass border-b border-border/60" : "border-b border-transparent")}>
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-6 px-4 sm:px-6">
         <Logo />
         <nav className="hidden items-center gap-1 lg:flex">

@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function Card({ className, children, hover, as: As = "div" }: { className?: string; children: ReactNode; hover?: boolean; as?: "div" | "section" | "article" | "li" }) {
-  return <As className={cn("surface", hover && "surface-hover", className)}>{children}</As>;
+  return <As className={cn("glass-card", hover && "surface-hover", className)}>{children}</As>;
 }
 
 export function CardHeader({ title, description, action, className }: { title: ReactNode; description?: ReactNode; action?: ReactNode; className?: string }) {
