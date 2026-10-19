@@ -30,8 +30,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         }
       />
 
-      {/* grid-cols-1 (= minmax(0, 1fr)) keeps wide tables from stretching the page on phones; they scroll inside their card. */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[220px_minmax(0,1fr)]">
+      {/* Sidebar from md (768px); below that the nav is a sticky strip. grid-cols-1 (= minmax(0, 1fr)) keeps wide tables from stretching the page on phones; they scroll inside their card. */}
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-[200px_minmax(0,1fr)] lg:grid-cols-[220px_minmax(0,1fr)]">
         <AdminNav />
         <div className="min-w-0">{children}</div>
       </div>

@@ -25,8 +25,13 @@ export function AdminNav() {
   const item = "flex shrink-0 items-center gap-2.5 rounded-xl px-3 py-2 text-sm [&_svg]:size-4 [&_svg]:shrink-0";
 
   return (
-    <nav aria-label={t("admin.title")} className="min-w-0 lg:sticky lg:top-24 lg:self-start">
-      <ul className="-mx-4 flex gap-1 overflow-x-auto px-4 pb-1 lg:mx-0 lg:flex-col lg:overflow-visible lg:px-0 lg:pb-0">
+    // Phones: a horizontal strip that stays pinned under the site header (top bar = 4rem + safe area),
+    // so the admin links never scroll away. From md (768px): the sidebar on the start side.
+    <nav
+      aria-label={t("admin.title")}
+      className="glass sticky top-[calc(4rem+env(safe-area-inset-top))] z-30 -mx-4 min-w-0 border-b border-border/60 px-4 py-2 sm:-mx-6 sm:px-6 md:top-24 md:z-auto md:mx-0 md:self-start md:border-0 md:bg-transparent md:p-0 md:backdrop-blur-none"
+    >
+      <ul className="scrollbar-none flex gap-1 overflow-x-auto md:flex-col md:overflow-visible">
         {ITEMS.map(({ href, key, icon: Icon, ready, ...rest }) => {
           const active = "exact" in rest ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
           return (
