@@ -10,6 +10,7 @@ import { k } from "@/i18n/message";
 import { getComments, getFeed, type FeedComment, type FeedPost } from "@/server/services/feed";
 import { deleteStored, storeUpload, UploadError } from "@/server/storage";
 import { isBlockedEitherWay, isConnected } from "@/server/services/profile";
+import { canManageCompany } from "@/server/session";
 
 const id = z.string().min(1).max(40);
 
@@ -44,7 +45,13 @@ export async function createPostAction(_prev: ActionState, form: FormData): Prom
       const project = await db.project.findUnique({ where: { id: d.projectId }, select: { profileId: true } });
       if (!project || project.profileId !== viewer.profileId) return fail("@msg.projectNotFound");
     }
-    const asCompany = d.asCompany === "1" && viewer.company ? viewer.company.id : null;
+    // Only the company's owners and admins may speak for it; the composer hides the option for others,
+    // and a crafted request is refused here rather than silently posted under the member's own name.
+    let asCompany: string | null = null;
+    if (d.asCompany === "1") {
+      if (!viewer.company || !canManageCompany(viewer, viewer.company.id)) return fail("@msg.companyPostAdminsOnly");
+      asCompany = viewer.company.id;
+    }
 
     const files = form.getAll("media").filter((f): f is File => f instanceof File && f.size > 0).slice(0, 4);
     const mediaUrls: string[] = [];

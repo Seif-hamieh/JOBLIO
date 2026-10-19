@@ -115,14 +115,34 @@ export function Composer({
                   {visibility === "PUBLIC" ? <Globe2 className="size-3" /> : <Users className="size-3" />}
                   {visibility === "PUBLIC" ? t("feed.anyone") : t("feed.connectionsOnly")}
                 </button>
-                {company && (
-                  <button type="button" onClick={() => setAsCompany((a) => !a)} className={cn("rounded-full border px-2.5 py-0.5 text-xs", asCompany ? "border-brand bg-brand-soft text-brand-soft-fg" : "border-border text-fg-muted")}>
-                    {t("feed.postAs", { company: company.name })}
-                  </button>
-                )}
               </div>
             </div>
           </div>
+
+          {/* Company owners/admins choose who's speaking: themselves or the company (logo + name on the post). */}
+          {company && (
+            <div role="radiogroup" aria-label={t("feed.postIdentity")} className="inline-flex rounded-full border border-border bg-surface-2/60 p-0.5">
+              {[
+                { value: false, label: t("feed.postAsUser"), icon: <Avatar name={viewer.name} src={viewer.image} size="xs" /> },
+                { value: true, label: t("feed.postAsCompany", { company: company.name }), icon: <CompanyLogo name={company.name} src={company.logoUrl} size="sm" className="size-5 rounded-md text-[10px]" /> },
+              ].map((o) => (
+                <button
+                  key={String(o.value)}
+                  type="button"
+                  role="radio"
+                  aria-checked={asCompany === o.value}
+                  onClick={() => setAsCompany(o.value)}
+                  className={cn(
+                    "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition",
+                    asCompany === o.value ? "bg-brand-soft text-brand-soft-fg shadow-sm" : "text-fg-muted hover:text-fg",
+                  )}
+                >
+                  {o.icon}
+                  <span className="max-w-40 truncate">{o.label}</span>
+                </button>
+              ))}
+            </div>
+          )}
 
           <div className="flex flex-wrap gap-2">
             {availableTypes.map((o) => (
