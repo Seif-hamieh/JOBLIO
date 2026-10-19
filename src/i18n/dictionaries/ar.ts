@@ -1820,6 +1820,13 @@ export const ar: Dictionary = {
     installed: "JOBLIO مثبّت على هذا الجهاز.",
     ios_hint: "على iPhone أو iPad: اضغط زر المشاركة في Safari ثم اختر «إضافة إلى الشاشة الرئيسية».",
     browser_hint: "للتثبيت، افتح JOBLIO في Chrome أو Edge أو Safari واختر «تثبيت التطبيق» أو «إضافة إلى الشاشة الرئيسية» من قائمة المتصفح.",
+    installApp: "تثبيت التطبيق",
+    installAppTitle: "تثبيت JOBLIO",
+    iosInstallTitle: "التثبيت على آيفون",
+    iosInstallBody: "اضغط على زر المشاركة (Share) في أسفل متصفح سفاري، ثم اختر 'إضافة إلى الشاشة الرئيسية'.",
+    installBtn: "تثبيت",
+    iosStepShare: "مشاركة",
+    iosStepAdd: "إضافة إلى الشاشة الرئيسية",
   },
   portfolio: {
     contact: "تواصل",

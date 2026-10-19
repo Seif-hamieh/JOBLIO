@@ -38,6 +38,7 @@ import type { TKey } from "@/i18n/translate";
 import { RealtimeProvider, useRealtime, type Counts } from "@/components/realtime/realtime-provider";
 import { authClient } from "@/lib/auth-client";
 import { clearCachedPages, useInstallPrompt } from "@/components/pwa/pwa";
+import { InstallPWA } from "@/components/pwa/install-pwa";
 import { toast } from "@/components/ui/toast";
 import { setLocaleAction } from "@/server/actions/locale";
 import { cn } from "@/lib/utils";
@@ -304,6 +305,8 @@ export function AppShell({ viewer, counts, children, footer }: { viewer: ShellVi
               <span className="mx-1 hidden h-8 w-px bg-border md:block" />
               <LanguageToggle className="hidden sm:inline-flex" />
               <ThemeToggle className="hidden sm:grid" />
+              {/* Phones and tablets only; on desktop the browser's install option stays in the user menu. */}
+              <InstallPWA className="lg:hidden" />
               <UserMenu viewer={viewer} />
             </div>
           </>

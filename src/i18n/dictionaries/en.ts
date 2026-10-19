@@ -1820,6 +1820,13 @@ export const en = {
     installed: "JOBLIO is installed on this device.",
     ios_hint: "On iPhone or iPad: tap the Share button in Safari, then choose “Add to Home Screen”.",
     browser_hint: "To install, open JOBLIO in Chrome, Edge or Safari and use the browser menu’s “Install app” or “Add to Home Screen” option.",
+    installApp: "Install App",
+    installAppTitle: "Install JOBLIO",
+    iosInstallTitle: "Install on iPhone",
+    iosInstallBody: "Tap the Share button at the bottom of Safari, then choose 'Add to Home Screen'.",
+    installBtn: "Install",
+    iosStepShare: "Share",
+    iosStepAdd: "Add to Home Screen",
   },
   portfolio: {
     contact: "Contact",
