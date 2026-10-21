@@ -82,6 +82,7 @@ export const ModelName = {
   JobPromotion: 'JobPromotion',
   JobDailyStat: 'JobDailyStat',
   JobView: 'JobView',
+  JobReport: 'JobReport',
   SavedJob: 'SavedJob',
   SavedSearch: 'SavedSearch',
   Application: 'Application',
@@ -598,6 +599,21 @@ export const JobViewScalarFieldEnum = {
 } as const
 
 export type JobViewScalarFieldEnum = (typeof JobViewScalarFieldEnum)[keyof typeof JobViewScalarFieldEnum]
+
+
+export const JobReportScalarFieldEnum = {
+  id: 'id',
+  jobId: 'jobId',
+  reporterId: 'reporterId',
+  reporterKey: 'reporterKey',
+  reason: 'reason',
+  details: 'details',
+  status: 'status',
+  createdAt: 'createdAt',
+  resolvedAt: 'resolvedAt'
+} as const
+
+export type JobReportScalarFieldEnum = (typeof JobReportScalarFieldEnum)[keyof typeof JobReportScalarFieldEnum]
 
 
 export const SavedJobScalarFieldEnum = {

@@ -250,6 +250,21 @@ enum ProductCode {
   JOB_SEEKER_PRO
 }
 
+// Why a visitor reported a job (Report job on the job page; reviewed in Admin → Reports).
+enum JobReportReason {
+  FAKE
+  SCAM
+  SPAM
+  OFFENSIVE
+  EXPIRED
+  OTHER
+}
+
+enum JobReportStatus {
+  OPEN
+  RESOLVED
+}
+
 // Public job boards that jobs are imported from (src/server/job-import).
 enum JobSource {
   ARBEITNOW
@@ -337,6 +352,7 @@ model User {
   boosts               ProfileBoost[]
   blocksMade           Block[]             @relation("Blocker")
   blocksReceived       Block[]             @relation("Blocked")
+  jobReports           JobReport[]
 
   @@map("users")
 }
@@ -839,6 +855,7 @@ model Job {
   promotions   JobPromotion[]
   dailyStats   JobDailyStat[]
   views        JobView[]
+  reports      JobReport[]
   posts        Post[]
   sharedIn     Message[]      @relation("MessageSharedJob")
 
@@ -920,6 +937,26 @@ model JobView {
   @@id([jobId, viewerKey])
   @@index([viewedAt])
   @@map("job_views")
+}
+
+// A visitor's report of a fake / scam / broken job. Signed-in members are recorded; anonymous
+// visitors are identified only by a non-reversible key (network address + browser), for dedupe.
+model JobReport {
+  id          String          @id @default(cuid())
+  jobId       String
+  reporterId  String?
+  reporterKey String          @db.VarChar(64)
+  reason      JobReportReason
+  details     String?         @db.VarChar(1000)
+  status      JobReportStatus @default(OPEN)
+  createdAt   DateTime        @default(now())
+  resolvedAt  DateTime?
+  job         Job             @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  reporter    User?           @relation(fields: [reporterId], references: [id], onDelete: SetNull)
+
+  @@index([status, createdAt(sort: Desc)])
+  @@index([jobId, reporterKey])
+  @@map("job_reports")
 }
 
 model SavedJob {

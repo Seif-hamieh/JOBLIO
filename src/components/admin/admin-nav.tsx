@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Briefcase, Building2, CreditCard, FileText, LayoutDashboard, Receipt, Settings, Users } from "lucide-react";
+import { Briefcase, Building2, CreditCard, FileText, Flag, LayoutDashboard, Receipt, Settings, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useI18n } from "@/i18n/client";
 import { cn } from "@/lib/utils";
@@ -16,6 +16,7 @@ const ITEMS = [
   { href: "/admin/subscriptions", key: "admin.subscriptions", icon: CreditCard, ready: true },
   { href: "/admin/payments", key: "admin.payments", icon: Receipt, ready: true },
   { href: "/admin/applications", key: "admin.applications", icon: FileText, ready: true },
+  { href: "/admin/reports", key: "admin.reports", icon: Flag, ready: true },
   { href: "/admin/settings", key: "admin.settings", icon: Settings, ready: true },
 ] as const;
 

@@ -316,6 +316,26 @@ export const ProductCode = {
 export type ProductCode = (typeof ProductCode)[keyof typeof ProductCode]
 
 
+export const JobReportReason = {
+  FAKE: 'FAKE',
+  SCAM: 'SCAM',
+  SPAM: 'SPAM',
+  OFFENSIVE: 'OFFENSIVE',
+  EXPIRED: 'EXPIRED',
+  OTHER: 'OTHER'
+} as const
+
+export type JobReportReason = (typeof JobReportReason)[keyof typeof JobReportReason]
+
+
+export const JobReportStatus = {
+  OPEN: 'OPEN',
+  RESOLVED: 'RESOLVED'
+} as const
+
+export type JobReportStatus = (typeof JobReportStatus)[keyof typeof JobReportStatus]
+
+
 export const JobSource = {
   ARBEITNOW: 'ARBEITNOW',
   JOBICY: 'JOBICY',

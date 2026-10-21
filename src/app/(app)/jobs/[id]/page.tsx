@@ -34,6 +34,7 @@ import { buttonClasses } from "@/components/ui/button";
 import { SOURCE_NAMES } from "@/server/job-import/normalize";
 import { Card, CardHeader } from "@/components/ui/misc";
 import { ApplyButton } from "@/components/jobs/apply-dialog";
+import { ReportJobButton } from "@/components/jobs/report-job-button";
 import { SaveJobButton, ShareButton } from "@/components/jobs/job-actions";
 import { JobCard } from "@/components/jobs/job-card";
 import { MatchBreakdown } from "@/components/match/match-breakdown";
@@ -209,6 +210,8 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
                   <CalendarClock className="size-4" /> {t("jobs.closes", { date: f.date(job.closesAt, { month: "short", day: "numeric", year: "numeric" }) })}
                 </span>
               )}
+              {/* Visitors can flag a fake or broken job; the company's own team doesn't see this. */}
+              {!isTeam && job.status === "OPEN" && <ReportJobButton jobId={job.id} className="ms-auto" />}
             </div>
           </div>
         </div>

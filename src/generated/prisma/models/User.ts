@@ -340,6 +340,7 @@ export type UserWhereInput = {
   boosts?: Prisma.ProfileBoostListRelationFilter
   blocksMade?: Prisma.BlockListRelationFilter
   blocksReceived?: Prisma.BlockListRelationFilter
+  jobReports?: Prisma.JobReportListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -395,6 +396,7 @@ export type UserOrderByWithRelationInput = {
   boosts?: Prisma.ProfileBoostOrderByRelationAggregateInput
   blocksMade?: Prisma.BlockOrderByRelationAggregateInput
   blocksReceived?: Prisma.BlockOrderByRelationAggregateInput
+  jobReports?: Prisma.JobReportOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -453,6 +455,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   boosts?: Prisma.ProfileBoostListRelationFilter
   blocksMade?: Prisma.BlockListRelationFilter
   blocksReceived?: Prisma.BlockListRelationFilter
+  jobReports?: Prisma.JobReportListRelationFilter
 }, "id" | "email" | "username" | "stripeCustomerId" | "paddleCustomerId">
 
 export type UserOrderByWithAggregationInput = {
@@ -554,6 +557,7 @@ export type UserCreateInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -609,6 +613,7 @@ export type UserUncheckedCreateInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserUpdateInput = {
@@ -664,6 +669,7 @@ export type UserUpdateInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -719,6 +725,7 @@ export type UserUncheckedUpdateInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -1071,6 +1078,22 @@ export type UserUpdateOneRequiredWithoutPostedJobsNestedInput = {
   upsert?: Prisma.UserUpsertWithoutPostedJobsInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPostedJobsInput, Prisma.UserUpdateWithoutPostedJobsInput>, Prisma.UserUncheckedUpdateWithoutPostedJobsInput>
+}
+
+export type UserCreateNestedOneWithoutJobReportsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutJobReportsInput, Prisma.UserUncheckedCreateWithoutJobReportsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutJobReportsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutJobReportsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutJobReportsInput, Prisma.UserUncheckedCreateWithoutJobReportsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutJobReportsInput
+  upsert?: Prisma.UserUpsertWithoutJobReportsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutJobReportsInput, Prisma.UserUpdateWithoutJobReportsInput>, Prisma.UserUncheckedUpdateWithoutJobReportsInput>
 }
 
 export type UserCreateNestedOneWithoutSavedJobsInput = {
@@ -1453,6 +1476,7 @@ export type UserCreateWithoutSessionsInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -1507,6 +1531,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -1577,6 +1602,7 @@ export type UserUpdateWithoutSessionsInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -1631,6 +1657,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -1685,6 +1712,7 @@ export type UserCreateWithoutAccountsInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -1739,6 +1767,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -1809,6 +1838,7 @@ export type UserUpdateWithoutAccountsInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -1863,6 +1893,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutSettingsInput = {
@@ -1917,6 +1948,7 @@ export type UserCreateWithoutSettingsInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutSettingsInput = {
@@ -1971,6 +2003,7 @@ export type UserUncheckedCreateWithoutSettingsInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutSettingsInput = {
@@ -2041,6 +2074,7 @@ export type UserUpdateWithoutSettingsInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSettingsInput = {
@@ -2095,6 +2129,7 @@ export type UserUncheckedUpdateWithoutSettingsInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutBlocksMadeInput = {
@@ -2149,6 +2184,7 @@ export type UserCreateWithoutBlocksMadeInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutBlocksMadeInput = {
@@ -2203,6 +2239,7 @@ export type UserUncheckedCreateWithoutBlocksMadeInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutBlocksMadeInput = {
@@ -2262,6 +2299,7 @@ export type UserCreateWithoutBlocksReceivedInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutBlocksReceivedInput = {
@@ -2316,6 +2354,7 @@ export type UserUncheckedCreateWithoutBlocksReceivedInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutBlocksReceivedInput = {
@@ -2386,6 +2425,7 @@ export type UserUpdateWithoutBlocksMadeInput = {
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBlocksMadeInput = {
@@ -2440,6 +2480,7 @@ export type UserUncheckedUpdateWithoutBlocksMadeInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUpsertWithoutBlocksReceivedInput = {
@@ -2505,6 +2546,7 @@ export type UserUpdateWithoutBlocksReceivedInput = {
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBlocksReceivedInput = {
@@ -2559,6 +2601,7 @@ export type UserUncheckedUpdateWithoutBlocksReceivedInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutProfileInput = {
@@ -2613,6 +2656,7 @@ export type UserCreateWithoutProfileInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutProfileInput = {
@@ -2667,6 +2711,7 @@ export type UserUncheckedCreateWithoutProfileInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutProfileInput = {
@@ -2737,6 +2782,7 @@ export type UserUpdateWithoutProfileInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfileInput = {
@@ -2791,6 +2837,7 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutEndorsementsGivenInput = {
@@ -2845,6 +2892,7 @@ export type UserCreateWithoutEndorsementsGivenInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutEndorsementsGivenInput = {
@@ -2899,6 +2947,7 @@ export type UserUncheckedCreateWithoutEndorsementsGivenInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutEndorsementsGivenInput = {
@@ -2969,6 +3018,7 @@ export type UserUpdateWithoutEndorsementsGivenInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutEndorsementsGivenInput = {
@@ -3023,6 +3073,7 @@ export type UserUncheckedUpdateWithoutEndorsementsGivenInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutProfileViewsMadeInput = {
@@ -3077,6 +3128,7 @@ export type UserCreateWithoutProfileViewsMadeInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutProfileViewsMadeInput = {
@@ -3131,6 +3183,7 @@ export type UserUncheckedCreateWithoutProfileViewsMadeInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutProfileViewsMadeInput = {
@@ -3190,6 +3243,7 @@ export type UserCreateWithoutProfileViewsReceivedInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutProfileViewsReceivedInput = {
@@ -3244,6 +3298,7 @@ export type UserUncheckedCreateWithoutProfileViewsReceivedInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutProfileViewsReceivedInput = {
@@ -3314,6 +3369,7 @@ export type UserUpdateWithoutProfileViewsMadeInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfileViewsMadeInput = {
@@ -3368,6 +3424,7 @@ export type UserUncheckedUpdateWithoutProfileViewsMadeInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUpsertWithoutProfileViewsReceivedInput = {
@@ -3433,6 +3490,7 @@ export type UserUpdateWithoutProfileViewsReceivedInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfileViewsReceivedInput = {
@@ -3487,6 +3545,7 @@ export type UserUncheckedUpdateWithoutProfileViewsReceivedInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutAchievementsInput = {
@@ -3541,6 +3600,7 @@ export type UserCreateWithoutAchievementsInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutAchievementsInput = {
@@ -3595,6 +3655,7 @@ export type UserUncheckedCreateWithoutAchievementsInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutAchievementsInput = {
@@ -3665,6 +3726,7 @@ export type UserUpdateWithoutAchievementsInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAchievementsInput = {
@@ -3719,6 +3781,7 @@ export type UserUncheckedUpdateWithoutAchievementsInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutCompanyMembershipsInput = {
@@ -3773,6 +3836,7 @@ export type UserCreateWithoutCompanyMembershipsInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutCompanyMembershipsInput = {
@@ -3827,6 +3891,7 @@ export type UserUncheckedCreateWithoutCompanyMembershipsInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutCompanyMembershipsInput = {
@@ -3897,6 +3962,7 @@ export type UserUpdateWithoutCompanyMembershipsInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCompanyMembershipsInput = {
@@ -3951,6 +4017,7 @@ export type UserUncheckedUpdateWithoutCompanyMembershipsInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutCompanyFollowsInput = {
@@ -4005,6 +4072,7 @@ export type UserCreateWithoutCompanyFollowsInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutCompanyFollowsInput = {
@@ -4059,6 +4127,7 @@ export type UserUncheckedCreateWithoutCompanyFollowsInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutCompanyFollowsInput = {
@@ -4129,6 +4198,7 @@ export type UserUpdateWithoutCompanyFollowsInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCompanyFollowsInput = {
@@ -4183,6 +4253,7 @@ export type UserUncheckedUpdateWithoutCompanyFollowsInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutPostedJobsInput = {
@@ -4237,6 +4308,7 @@ export type UserCreateWithoutPostedJobsInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutPostedJobsInput = {
@@ -4291,6 +4363,7 @@ export type UserUncheckedCreateWithoutPostedJobsInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutPostedJobsInput = {
@@ -4361,6 +4434,7 @@ export type UserUpdateWithoutPostedJobsInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPostedJobsInput = {
@@ -4385,6 +4459,243 @@ export type UserUncheckedUpdateWithoutPostedJobsInput = {
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
   settings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
   companyMemberships?: Prisma.CompanyMemberUncheckedUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ApplicationUncheckedUpdateManyWithoutApplicantNestedInput
+  savedJobs?: Prisma.SavedJobUncheckedUpdateManyWithoutUserNestedInput
+  savedSearches?: Prisma.SavedSearchUncheckedUpdateManyWithoutUserNestedInput
+  savedCandidates?: Prisma.SavedCandidateUncheckedUpdateManyWithoutRecruiterNestedInput
+  savedByRecruiters?: Prisma.SavedCandidateUncheckedUpdateManyWithoutCandidateNestedInput
+  sentConnections?: Prisma.ConnectionUncheckedUpdateManyWithoutRequesterNestedInput
+  receivedConnections?: Prisma.ConnectionUncheckedUpdateManyWithoutAddresseeNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  companyFollows?: Prisma.CompanyFollowerUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  likes?: Prisma.PostLikeUncheckedUpdateManyWithoutUserNestedInput
+  endorsementsGiven?: Prisma.EndorsementUncheckedUpdateManyWithoutEndorserNestedInput
+  conversations?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  sharedInMessages?: Prisma.MessageUncheckedUpdateManyWithoutSharedUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  notificationsCaused?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
+  achievements?: Prisma.UserAchievementUncheckedUpdateManyWithoutUserNestedInput
+  profileViewsMade?: Prisma.ProfileViewUncheckedUpdateManyWithoutViewerNestedInput
+  profileViewsReceived?: Prisma.ProfileViewUncheckedUpdateManyWithoutViewedNestedInput
+  interviewsScheduled?: Prisma.InterviewUncheckedUpdateManyWithoutScheduledByNestedInput
+  applicationEvents?: Prisma.ApplicationEventUncheckedUpdateManyWithoutActorNestedInput
+  recruiterNotes?: Prisma.RecruiterNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
+  boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
+  blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+}
+
+export type UserCreateWithoutJobReportsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  username?: string | null
+  intent?: $Enums.UserIntent
+  platformRole?: $Enums.PlatformRole
+  onboardedAt?: Date | string | null
+  lastSeenAt?: Date | string | null
+  stripeCustomerId?: string | null
+  paddleCustomerId?: string | null
+  priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  settings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
+  companyMemberships?: Prisma.CompanyMemberCreateNestedManyWithoutUserInput
+  postedJobs?: Prisma.JobCreateNestedManyWithoutPostedByInput
+  applications?: Prisma.ApplicationCreateNestedManyWithoutApplicantInput
+  savedJobs?: Prisma.SavedJobCreateNestedManyWithoutUserInput
+  savedSearches?: Prisma.SavedSearchCreateNestedManyWithoutUserInput
+  savedCandidates?: Prisma.SavedCandidateCreateNestedManyWithoutRecruiterInput
+  savedByRecruiters?: Prisma.SavedCandidateCreateNestedManyWithoutCandidateInput
+  sentConnections?: Prisma.ConnectionCreateNestedManyWithoutRequesterInput
+  receivedConnections?: Prisma.ConnectionCreateNestedManyWithoutAddresseeInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  companyFollows?: Prisma.CompanyFollowerCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
+  comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  likes?: Prisma.PostLikeCreateNestedManyWithoutUserInput
+  endorsementsGiven?: Prisma.EndorsementCreateNestedManyWithoutEndorserInput
+  conversations?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
+  messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  sharedInMessages?: Prisma.MessageCreateNestedManyWithoutSharedUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  notificationsCaused?: Prisma.NotificationCreateNestedManyWithoutActorInput
+  achievements?: Prisma.UserAchievementCreateNestedManyWithoutUserInput
+  profileViewsMade?: Prisma.ProfileViewCreateNestedManyWithoutViewerInput
+  profileViewsReceived?: Prisma.ProfileViewCreateNestedManyWithoutViewedInput
+  interviewsScheduled?: Prisma.InterviewCreateNestedManyWithoutScheduledByInput
+  applicationEvents?: Prisma.ApplicationEventCreateNestedManyWithoutActorInput
+  recruiterNotes?: Prisma.RecruiterNoteCreateNestedManyWithoutAuthorInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
+  boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
+  blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+}
+
+export type UserUncheckedCreateWithoutJobReportsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  username?: string | null
+  intent?: $Enums.UserIntent
+  platformRole?: $Enums.PlatformRole
+  onboardedAt?: Date | string | null
+  lastSeenAt?: Date | string | null
+  stripeCustomerId?: string | null
+  paddleCustomerId?: string | null
+  priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  settings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
+  companyMemberships?: Prisma.CompanyMemberUncheckedCreateNestedManyWithoutUserInput
+  postedJobs?: Prisma.JobUncheckedCreateNestedManyWithoutPostedByInput
+  applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutApplicantInput
+  savedJobs?: Prisma.SavedJobUncheckedCreateNestedManyWithoutUserInput
+  savedSearches?: Prisma.SavedSearchUncheckedCreateNestedManyWithoutUserInput
+  savedCandidates?: Prisma.SavedCandidateUncheckedCreateNestedManyWithoutRecruiterInput
+  savedByRecruiters?: Prisma.SavedCandidateUncheckedCreateNestedManyWithoutCandidateInput
+  sentConnections?: Prisma.ConnectionUncheckedCreateNestedManyWithoutRequesterInput
+  receivedConnections?: Prisma.ConnectionUncheckedCreateNestedManyWithoutAddresseeInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  companyFollows?: Prisma.CompanyFollowerUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  likes?: Prisma.PostLikeUncheckedCreateNestedManyWithoutUserInput
+  endorsementsGiven?: Prisma.EndorsementUncheckedCreateNestedManyWithoutEndorserInput
+  conversations?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  sharedInMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSharedUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  notificationsCaused?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
+  achievements?: Prisma.UserAchievementUncheckedCreateNestedManyWithoutUserInput
+  profileViewsMade?: Prisma.ProfileViewUncheckedCreateNestedManyWithoutViewerInput
+  profileViewsReceived?: Prisma.ProfileViewUncheckedCreateNestedManyWithoutViewedInput
+  interviewsScheduled?: Prisma.InterviewUncheckedCreateNestedManyWithoutScheduledByInput
+  applicationEvents?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutActorInput
+  recruiterNotes?: Prisma.RecruiterNoteUncheckedCreateNestedManyWithoutAuthorInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
+  boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
+  blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+}
+
+export type UserCreateOrConnectWithoutJobReportsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutJobReportsInput, Prisma.UserUncheckedCreateWithoutJobReportsInput>
+}
+
+export type UserUpsertWithoutJobReportsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutJobReportsInput, Prisma.UserUncheckedUpdateWithoutJobReportsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutJobReportsInput, Prisma.UserUncheckedCreateWithoutJobReportsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutJobReportsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutJobReportsInput, Prisma.UserUncheckedUpdateWithoutJobReportsInput>
+}
+
+export type UserUpdateWithoutJobReportsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  intent?: Prisma.EnumUserIntentFieldUpdateOperationsInput | $Enums.UserIntent
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  settings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
+  companyMemberships?: Prisma.CompanyMemberUpdateManyWithoutUserNestedInput
+  postedJobs?: Prisma.JobUpdateManyWithoutPostedByNestedInput
+  applications?: Prisma.ApplicationUpdateManyWithoutApplicantNestedInput
+  savedJobs?: Prisma.SavedJobUpdateManyWithoutUserNestedInput
+  savedSearches?: Prisma.SavedSearchUpdateManyWithoutUserNestedInput
+  savedCandidates?: Prisma.SavedCandidateUpdateManyWithoutRecruiterNestedInput
+  savedByRecruiters?: Prisma.SavedCandidateUpdateManyWithoutCandidateNestedInput
+  sentConnections?: Prisma.ConnectionUpdateManyWithoutRequesterNestedInput
+  receivedConnections?: Prisma.ConnectionUpdateManyWithoutAddresseeNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  companyFollows?: Prisma.CompanyFollowerUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  likes?: Prisma.PostLikeUpdateManyWithoutUserNestedInput
+  endorsementsGiven?: Prisma.EndorsementUpdateManyWithoutEndorserNestedInput
+  conversations?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  sharedInMessages?: Prisma.MessageUpdateManyWithoutSharedUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  notificationsCaused?: Prisma.NotificationUpdateManyWithoutActorNestedInput
+  achievements?: Prisma.UserAchievementUpdateManyWithoutUserNestedInput
+  profileViewsMade?: Prisma.ProfileViewUpdateManyWithoutViewerNestedInput
+  profileViewsReceived?: Prisma.ProfileViewUpdateManyWithoutViewedNestedInput
+  interviewsScheduled?: Prisma.InterviewUpdateManyWithoutScheduledByNestedInput
+  applicationEvents?: Prisma.ApplicationEventUpdateManyWithoutActorNestedInput
+  recruiterNotes?: Prisma.RecruiterNoteUpdateManyWithoutAuthorNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
+  boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
+  blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+}
+
+export type UserUncheckedUpdateWithoutJobReportsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  intent?: Prisma.EnumUserIntentFieldUpdateOperationsInput | $Enums.UserIntent
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  settings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
+  companyMemberships?: Prisma.CompanyMemberUncheckedUpdateManyWithoutUserNestedInput
+  postedJobs?: Prisma.JobUncheckedUpdateManyWithoutPostedByNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutApplicantNestedInput
   savedJobs?: Prisma.SavedJobUncheckedUpdateManyWithoutUserNestedInput
   savedSearches?: Prisma.SavedSearchUncheckedUpdateManyWithoutUserNestedInput
@@ -4469,6 +4780,7 @@ export type UserCreateWithoutSavedJobsInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutSavedJobsInput = {
@@ -4523,6 +4835,7 @@ export type UserUncheckedCreateWithoutSavedJobsInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutSavedJobsInput = {
@@ -4593,6 +4906,7 @@ export type UserUpdateWithoutSavedJobsInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSavedJobsInput = {
@@ -4647,6 +4961,7 @@ export type UserUncheckedUpdateWithoutSavedJobsInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutSavedSearchesInput = {
@@ -4701,6 +5016,7 @@ export type UserCreateWithoutSavedSearchesInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutSavedSearchesInput = {
@@ -4755,6 +5071,7 @@ export type UserUncheckedCreateWithoutSavedSearchesInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutSavedSearchesInput = {
@@ -4825,6 +5142,7 @@ export type UserUpdateWithoutSavedSearchesInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSavedSearchesInput = {
@@ -4879,6 +5197,7 @@ export type UserUncheckedUpdateWithoutSavedSearchesInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutApplicationsInput = {
@@ -4933,6 +5252,7 @@ export type UserCreateWithoutApplicationsInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutApplicationsInput = {
@@ -4987,6 +5307,7 @@ export type UserUncheckedCreateWithoutApplicationsInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutApplicationsInput = {
@@ -5057,6 +5378,7 @@ export type UserUpdateWithoutApplicationsInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApplicationsInput = {
@@ -5111,6 +5433,7 @@ export type UserUncheckedUpdateWithoutApplicationsInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutApplicationEventsInput = {
@@ -5165,6 +5488,7 @@ export type UserCreateWithoutApplicationEventsInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutApplicationEventsInput = {
@@ -5219,6 +5543,7 @@ export type UserUncheckedCreateWithoutApplicationEventsInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutApplicationEventsInput = {
@@ -5289,6 +5614,7 @@ export type UserUpdateWithoutApplicationEventsInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApplicationEventsInput = {
@@ -5343,6 +5669,7 @@ export type UserUncheckedUpdateWithoutApplicationEventsInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutRecruiterNotesInput = {
@@ -5397,6 +5724,7 @@ export type UserCreateWithoutRecruiterNotesInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutRecruiterNotesInput = {
@@ -5451,6 +5779,7 @@ export type UserUncheckedCreateWithoutRecruiterNotesInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutRecruiterNotesInput = {
@@ -5521,6 +5850,7 @@ export type UserUpdateWithoutRecruiterNotesInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRecruiterNotesInput = {
@@ -5575,6 +5905,7 @@ export type UserUncheckedUpdateWithoutRecruiterNotesInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutInterviewsScheduledInput = {
@@ -5629,6 +5960,7 @@ export type UserCreateWithoutInterviewsScheduledInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutInterviewsScheduledInput = {
@@ -5683,6 +6015,7 @@ export type UserUncheckedCreateWithoutInterviewsScheduledInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutInterviewsScheduledInput = {
@@ -5753,6 +6086,7 @@ export type UserUpdateWithoutInterviewsScheduledInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutInterviewsScheduledInput = {
@@ -5807,6 +6141,7 @@ export type UserUncheckedUpdateWithoutInterviewsScheduledInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutSavedCandidatesInput = {
@@ -5861,6 +6196,7 @@ export type UserCreateWithoutSavedCandidatesInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutSavedCandidatesInput = {
@@ -5915,6 +6251,7 @@ export type UserUncheckedCreateWithoutSavedCandidatesInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutSavedCandidatesInput = {
@@ -5974,6 +6311,7 @@ export type UserCreateWithoutSavedByRecruitersInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutSavedByRecruitersInput = {
@@ -6028,6 +6366,7 @@ export type UserUncheckedCreateWithoutSavedByRecruitersInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutSavedByRecruitersInput = {
@@ -6098,6 +6437,7 @@ export type UserUpdateWithoutSavedCandidatesInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSavedCandidatesInput = {
@@ -6152,6 +6492,7 @@ export type UserUncheckedUpdateWithoutSavedCandidatesInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUpsertWithoutSavedByRecruitersInput = {
@@ -6217,6 +6558,7 @@ export type UserUpdateWithoutSavedByRecruitersInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSavedByRecruitersInput = {
@@ -6271,6 +6613,7 @@ export type UserUncheckedUpdateWithoutSavedByRecruitersInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutSentConnectionsInput = {
@@ -6325,6 +6668,7 @@ export type UserCreateWithoutSentConnectionsInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutSentConnectionsInput = {
@@ -6379,6 +6723,7 @@ export type UserUncheckedCreateWithoutSentConnectionsInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutSentConnectionsInput = {
@@ -6438,6 +6783,7 @@ export type UserCreateWithoutReceivedConnectionsInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutReceivedConnectionsInput = {
@@ -6492,6 +6838,7 @@ export type UserUncheckedCreateWithoutReceivedConnectionsInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutReceivedConnectionsInput = {
@@ -6562,6 +6909,7 @@ export type UserUpdateWithoutSentConnectionsInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSentConnectionsInput = {
@@ -6616,6 +6964,7 @@ export type UserUncheckedUpdateWithoutSentConnectionsInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUpsertWithoutReceivedConnectionsInput = {
@@ -6681,6 +7030,7 @@ export type UserUpdateWithoutReceivedConnectionsInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReceivedConnectionsInput = {
@@ -6735,6 +7085,7 @@ export type UserUncheckedUpdateWithoutReceivedConnectionsInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutFollowingInput = {
@@ -6789,6 +7140,7 @@ export type UserCreateWithoutFollowingInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutFollowingInput = {
@@ -6843,6 +7195,7 @@ export type UserUncheckedCreateWithoutFollowingInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutFollowingInput = {
@@ -6902,6 +7255,7 @@ export type UserCreateWithoutFollowersInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutFollowersInput = {
@@ -6956,6 +7310,7 @@ export type UserUncheckedCreateWithoutFollowersInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutFollowersInput = {
@@ -7026,6 +7381,7 @@ export type UserUpdateWithoutFollowingInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFollowingInput = {
@@ -7080,6 +7436,7 @@ export type UserUncheckedUpdateWithoutFollowingInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUpsertWithoutFollowersInput = {
@@ -7145,6 +7502,7 @@ export type UserUpdateWithoutFollowersInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFollowersInput = {
@@ -7199,6 +7557,7 @@ export type UserUncheckedUpdateWithoutFollowersInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutPostsInput = {
@@ -7253,6 +7612,7 @@ export type UserCreateWithoutPostsInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutPostsInput = {
@@ -7307,6 +7667,7 @@ export type UserUncheckedCreateWithoutPostsInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutPostsInput = {
@@ -7377,6 +7738,7 @@ export type UserUpdateWithoutPostsInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPostsInput = {
@@ -7431,6 +7793,7 @@ export type UserUncheckedUpdateWithoutPostsInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutLikesInput = {
@@ -7485,6 +7848,7 @@ export type UserCreateWithoutLikesInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutLikesInput = {
@@ -7539,6 +7903,7 @@ export type UserUncheckedCreateWithoutLikesInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutLikesInput = {
@@ -7609,6 +7974,7 @@ export type UserUpdateWithoutLikesInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLikesInput = {
@@ -7663,6 +8029,7 @@ export type UserUncheckedUpdateWithoutLikesInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutCommentsInput = {
@@ -7717,6 +8084,7 @@ export type UserCreateWithoutCommentsInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutCommentsInput = {
@@ -7771,6 +8139,7 @@ export type UserUncheckedCreateWithoutCommentsInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutCommentsInput = {
@@ -7841,6 +8210,7 @@ export type UserUpdateWithoutCommentsInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCommentsInput = {
@@ -7895,6 +8265,7 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutConversationsInput = {
@@ -7949,6 +8320,7 @@ export type UserCreateWithoutConversationsInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutConversationsInput = {
@@ -8003,6 +8375,7 @@ export type UserUncheckedCreateWithoutConversationsInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutConversationsInput = {
@@ -8073,6 +8446,7 @@ export type UserUpdateWithoutConversationsInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutConversationsInput = {
@@ -8127,6 +8501,7 @@ export type UserUncheckedUpdateWithoutConversationsInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutMessagesInput = {
@@ -8181,6 +8556,7 @@ export type UserCreateWithoutMessagesInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutMessagesInput = {
@@ -8235,6 +8611,7 @@ export type UserUncheckedCreateWithoutMessagesInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutMessagesInput = {
@@ -8294,6 +8671,7 @@ export type UserCreateWithoutSharedInMessagesInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutSharedInMessagesInput = {
@@ -8348,6 +8726,7 @@ export type UserUncheckedCreateWithoutSharedInMessagesInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutSharedInMessagesInput = {
@@ -8418,6 +8797,7 @@ export type UserUpdateWithoutMessagesInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMessagesInput = {
@@ -8472,6 +8852,7 @@ export type UserUncheckedUpdateWithoutMessagesInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUpsertWithoutSharedInMessagesInput = {
@@ -8537,6 +8918,7 @@ export type UserUpdateWithoutSharedInMessagesInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSharedInMessagesInput = {
@@ -8591,6 +8973,7 @@ export type UserUncheckedUpdateWithoutSharedInMessagesInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutNotificationsInput = {
@@ -8645,6 +9028,7 @@ export type UserCreateWithoutNotificationsInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -8699,6 +9083,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -8758,6 +9143,7 @@ export type UserCreateWithoutNotificationsCausedInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsCausedInput = {
@@ -8812,6 +9198,7 @@ export type UserUncheckedCreateWithoutNotificationsCausedInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsCausedInput = {
@@ -8882,6 +9269,7 @@ export type UserUpdateWithoutNotificationsInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -8936,6 +9324,7 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUpsertWithoutNotificationsCausedInput = {
@@ -9001,6 +9390,7 @@ export type UserUpdateWithoutNotificationsCausedInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsCausedInput = {
@@ -9055,6 +9445,7 @@ export type UserUncheckedUpdateWithoutNotificationsCausedInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutSubscriptionsInput = {
@@ -9109,6 +9500,7 @@ export type UserCreateWithoutSubscriptionsInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutSubscriptionsInput = {
@@ -9163,6 +9555,7 @@ export type UserUncheckedCreateWithoutSubscriptionsInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutSubscriptionsInput = {
@@ -9233,6 +9626,7 @@ export type UserUpdateWithoutSubscriptionsInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSubscriptionsInput = {
@@ -9287,6 +9681,7 @@ export type UserUncheckedUpdateWithoutSubscriptionsInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutPaymentsInput = {
@@ -9341,6 +9736,7 @@ export type UserCreateWithoutPaymentsInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutPaymentsInput = {
@@ -9395,6 +9791,7 @@ export type UserUncheckedCreateWithoutPaymentsInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutPaymentsInput = {
@@ -9465,6 +9862,7 @@ export type UserUpdateWithoutPaymentsInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPaymentsInput = {
@@ -9519,6 +9917,7 @@ export type UserUncheckedUpdateWithoutPaymentsInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutBoostsInput = {
@@ -9573,6 +9972,7 @@ export type UserCreateWithoutBoostsInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutBoostsInput = {
@@ -9627,6 +10027,7 @@ export type UserUncheckedCreateWithoutBoostsInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutBoostsInput = {
@@ -9697,6 +10098,7 @@ export type UserUpdateWithoutBoostsInput = {
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBoostsInput = {
@@ -9751,6 +10153,7 @@ export type UserUncheckedUpdateWithoutBoostsInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 
@@ -9793,6 +10196,7 @@ export type UserCountOutputType = {
   boosts: number
   blocksMade: number
   blocksReceived: number
+  jobReports: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -9830,6 +10234,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   boosts?: boolean | UserCountOutputTypeCountBoostsArgs
   blocksMade?: boolean | UserCountOutputTypeCountBlocksMadeArgs
   blocksReceived?: boolean | UserCountOutputTypeCountBlocksReceivedArgs
+  jobReports?: boolean | UserCountOutputTypeCountJobReportsArgs
 }
 
 /**
@@ -10080,6 +10485,13 @@ export type UserCountOutputTypeCountBlocksReceivedArgs<ExtArgs extends runtime.T
   where?: Prisma.BlockWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountJobReportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.JobReportWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -10134,6 +10546,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   boosts?: boolean | Prisma.User$boostsArgs<ExtArgs>
   blocksMade?: boolean | Prisma.User$blocksMadeArgs<ExtArgs>
   blocksReceived?: boolean | Prisma.User$blocksReceivedArgs<ExtArgs>
+  jobReports?: boolean | Prisma.User$jobReportsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -10232,6 +10645,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   boosts?: boolean | Prisma.User$boostsArgs<ExtArgs>
   blocksMade?: boolean | Prisma.User$blocksMadeArgs<ExtArgs>
   blocksReceived?: boolean | Prisma.User$blocksReceivedArgs<ExtArgs>
+  jobReports?: boolean | Prisma.User$jobReportsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -10276,6 +10690,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     boosts: Prisma.$ProfileBoostPayload<ExtArgs>[]
     blocksMade: Prisma.$BlockPayload<ExtArgs>[]
     blocksReceived: Prisma.$BlockPayload<ExtArgs>[]
+    jobReports: Prisma.$JobReportPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -10724,6 +11139,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   boosts<T extends Prisma.User$boostsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$boostsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProfileBoostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   blocksMade<T extends Prisma.User$blocksMadeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$blocksMadeArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   blocksReceived<T extends Prisma.User$blocksReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$blocksReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  jobReports<T extends Prisma.User$jobReportsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$jobReportsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$JobReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12022,6 +12438,30 @@ export type User$blocksReceivedArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.BlockScalarFieldEnum | Prisma.BlockScalarFieldEnum[]
+}
+
+/**
+ * User.jobReports
+ */
+export type User$jobReportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the JobReport
+   */
+  select?: Prisma.JobReportSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the JobReport
+   */
+  omit?: Prisma.JobReportOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.JobReportInclude<ExtArgs> | null
+  where?: Prisma.JobReportWhereInput
+  orderBy?: Prisma.JobReportOrderByWithRelationInput | Prisma.JobReportOrderByWithRelationInput[]
+  cursor?: Prisma.JobReportWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.JobReportScalarFieldEnum | Prisma.JobReportScalarFieldEnum[]
 }
 
 /**

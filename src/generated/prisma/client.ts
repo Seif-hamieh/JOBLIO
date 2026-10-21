@@ -199,6 +199,11 @@ export type JobDailyStat = Prisma.JobDailyStatModel
  */
 export type JobView = Prisma.JobViewModel
 /**
+ * Model JobReport
+ * 
+ */
+export type JobReport = Prisma.JobReportModel
+/**
  * Model SavedJob
  * 
  */

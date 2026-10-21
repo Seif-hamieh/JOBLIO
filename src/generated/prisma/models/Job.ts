@@ -474,6 +474,7 @@ export type JobWhereInput = {
   promotions?: Prisma.JobPromotionListRelationFilter
   dailyStats?: Prisma.JobDailyStatListRelationFilter
   views?: Prisma.JobViewListRelationFilter
+  reports?: Prisma.JobReportListRelationFilter
   posts?: Prisma.PostListRelationFilter
   sharedIn?: Prisma.MessageListRelationFilter
 }
@@ -524,6 +525,7 @@ export type JobOrderByWithRelationInput = {
   promotions?: Prisma.JobPromotionOrderByRelationAggregateInput
   dailyStats?: Prisma.JobDailyStatOrderByRelationAggregateInput
   views?: Prisma.JobViewOrderByRelationAggregateInput
+  reports?: Prisma.JobReportOrderByRelationAggregateInput
   posts?: Prisma.PostOrderByRelationAggregateInput
   sharedIn?: Prisma.MessageOrderByRelationAggregateInput
 }
@@ -578,6 +580,7 @@ export type JobWhereUniqueInput = Prisma.AtLeast<{
   promotions?: Prisma.JobPromotionListRelationFilter
   dailyStats?: Prisma.JobDailyStatListRelationFilter
   views?: Prisma.JobViewListRelationFilter
+  reports?: Prisma.JobReportListRelationFilter
   posts?: Prisma.PostListRelationFilter
   sharedIn?: Prisma.MessageListRelationFilter
 }, "id" | "externalSource_externalId">
@@ -709,6 +712,7 @@ export type JobCreateInput = {
   promotions?: Prisma.JobPromotionCreateNestedManyWithoutJobInput
   dailyStats?: Prisma.JobDailyStatCreateNestedManyWithoutJobInput
   views?: Prisma.JobViewCreateNestedManyWithoutJobInput
+  reports?: Prisma.JobReportCreateNestedManyWithoutJobInput
   posts?: Prisma.PostCreateNestedManyWithoutJobInput
   sharedIn?: Prisma.MessageCreateNestedManyWithoutSharedJobInput
 }
@@ -756,6 +760,7 @@ export type JobUncheckedCreateInput = {
   promotions?: Prisma.JobPromotionUncheckedCreateNestedManyWithoutJobInput
   dailyStats?: Prisma.JobDailyStatUncheckedCreateNestedManyWithoutJobInput
   views?: Prisma.JobViewUncheckedCreateNestedManyWithoutJobInput
+  reports?: Prisma.JobReportUncheckedCreateNestedManyWithoutJobInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutJobInput
   sharedIn?: Prisma.MessageUncheckedCreateNestedManyWithoutSharedJobInput
 }
@@ -803,6 +808,7 @@ export type JobUpdateInput = {
   promotions?: Prisma.JobPromotionUpdateManyWithoutJobNestedInput
   dailyStats?: Prisma.JobDailyStatUpdateManyWithoutJobNestedInput
   views?: Prisma.JobViewUpdateManyWithoutJobNestedInput
+  reports?: Prisma.JobReportUpdateManyWithoutJobNestedInput
   posts?: Prisma.PostUpdateManyWithoutJobNestedInput
   sharedIn?: Prisma.MessageUpdateManyWithoutSharedJobNestedInput
 }
@@ -850,6 +856,7 @@ export type JobUncheckedUpdateInput = {
   promotions?: Prisma.JobPromotionUncheckedUpdateManyWithoutJobNestedInput
   dailyStats?: Prisma.JobDailyStatUncheckedUpdateManyWithoutJobNestedInput
   views?: Prisma.JobViewUncheckedUpdateManyWithoutJobNestedInput
+  reports?: Prisma.JobReportUncheckedUpdateManyWithoutJobNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutJobNestedInput
   sharedIn?: Prisma.MessageUncheckedUpdateManyWithoutSharedJobNestedInput
 }
@@ -1351,6 +1358,20 @@ export type JobUpdateOneRequiredWithoutViewsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.JobUpdateToOneWithWhereWithoutViewsInput, Prisma.JobUpdateWithoutViewsInput>, Prisma.JobUncheckedUpdateWithoutViewsInput>
 }
 
+export type JobCreateNestedOneWithoutReportsInput = {
+  create?: Prisma.XOR<Prisma.JobCreateWithoutReportsInput, Prisma.JobUncheckedCreateWithoutReportsInput>
+  connectOrCreate?: Prisma.JobCreateOrConnectWithoutReportsInput
+  connect?: Prisma.JobWhereUniqueInput
+}
+
+export type JobUpdateOneRequiredWithoutReportsNestedInput = {
+  create?: Prisma.XOR<Prisma.JobCreateWithoutReportsInput, Prisma.JobUncheckedCreateWithoutReportsInput>
+  connectOrCreate?: Prisma.JobCreateOrConnectWithoutReportsInput
+  upsert?: Prisma.JobUpsertWithoutReportsInput
+  connect?: Prisma.JobWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.JobUpdateToOneWithWhereWithoutReportsInput, Prisma.JobUpdateWithoutReportsInput>, Prisma.JobUncheckedUpdateWithoutReportsInput>
+}
+
 export type JobCreateNestedOneWithoutSavedByInput = {
   create?: Prisma.XOR<Prisma.JobCreateWithoutSavedByInput, Prisma.JobUncheckedCreateWithoutSavedByInput>
   connectOrCreate?: Prisma.JobCreateOrConnectWithoutSavedByInput
@@ -1453,6 +1474,7 @@ export type JobCreateWithoutPostedByInput = {
   promotions?: Prisma.JobPromotionCreateNestedManyWithoutJobInput
   dailyStats?: Prisma.JobDailyStatCreateNestedManyWithoutJobInput
   views?: Prisma.JobViewCreateNestedManyWithoutJobInput
+  reports?: Prisma.JobReportCreateNestedManyWithoutJobInput
   posts?: Prisma.PostCreateNestedManyWithoutJobInput
   sharedIn?: Prisma.MessageCreateNestedManyWithoutSharedJobInput
 }
@@ -1499,6 +1521,7 @@ export type JobUncheckedCreateWithoutPostedByInput = {
   promotions?: Prisma.JobPromotionUncheckedCreateNestedManyWithoutJobInput
   dailyStats?: Prisma.JobDailyStatUncheckedCreateNestedManyWithoutJobInput
   views?: Prisma.JobViewUncheckedCreateNestedManyWithoutJobInput
+  reports?: Prisma.JobReportUncheckedCreateNestedManyWithoutJobInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutJobInput
   sharedIn?: Prisma.MessageUncheckedCreateNestedManyWithoutSharedJobInput
 }
@@ -1612,6 +1635,7 @@ export type JobCreateWithoutIndustryInput = {
   promotions?: Prisma.JobPromotionCreateNestedManyWithoutJobInput
   dailyStats?: Prisma.JobDailyStatCreateNestedManyWithoutJobInput
   views?: Prisma.JobViewCreateNestedManyWithoutJobInput
+  reports?: Prisma.JobReportCreateNestedManyWithoutJobInput
   posts?: Prisma.PostCreateNestedManyWithoutJobInput
   sharedIn?: Prisma.MessageCreateNestedManyWithoutSharedJobInput
 }
@@ -1658,6 +1682,7 @@ export type JobUncheckedCreateWithoutIndustryInput = {
   promotions?: Prisma.JobPromotionUncheckedCreateNestedManyWithoutJobInput
   dailyStats?: Prisma.JobDailyStatUncheckedCreateNestedManyWithoutJobInput
   views?: Prisma.JobViewUncheckedCreateNestedManyWithoutJobInput
+  reports?: Prisma.JobReportUncheckedCreateNestedManyWithoutJobInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutJobInput
   sharedIn?: Prisma.MessageUncheckedCreateNestedManyWithoutSharedJobInput
 }
@@ -1730,6 +1755,7 @@ export type JobCreateWithoutCompanyInput = {
   promotions?: Prisma.JobPromotionCreateNestedManyWithoutJobInput
   dailyStats?: Prisma.JobDailyStatCreateNestedManyWithoutJobInput
   views?: Prisma.JobViewCreateNestedManyWithoutJobInput
+  reports?: Prisma.JobReportCreateNestedManyWithoutJobInput
   posts?: Prisma.PostCreateNestedManyWithoutJobInput
   sharedIn?: Prisma.MessageCreateNestedManyWithoutSharedJobInput
 }
@@ -1776,6 +1802,7 @@ export type JobUncheckedCreateWithoutCompanyInput = {
   promotions?: Prisma.JobPromotionUncheckedCreateNestedManyWithoutJobInput
   dailyStats?: Prisma.JobDailyStatUncheckedCreateNestedManyWithoutJobInput
   views?: Prisma.JobViewUncheckedCreateNestedManyWithoutJobInput
+  reports?: Prisma.JobReportUncheckedCreateNestedManyWithoutJobInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutJobInput
   sharedIn?: Prisma.MessageUncheckedCreateNestedManyWithoutSharedJobInput
 }
@@ -1848,6 +1875,7 @@ export type JobCreateWithoutSkillsInput = {
   promotions?: Prisma.JobPromotionCreateNestedManyWithoutJobInput
   dailyStats?: Prisma.JobDailyStatCreateNestedManyWithoutJobInput
   views?: Prisma.JobViewCreateNestedManyWithoutJobInput
+  reports?: Prisma.JobReportCreateNestedManyWithoutJobInput
   posts?: Prisma.PostCreateNestedManyWithoutJobInput
   sharedIn?: Prisma.MessageCreateNestedManyWithoutSharedJobInput
 }
@@ -1894,6 +1922,7 @@ export type JobUncheckedCreateWithoutSkillsInput = {
   promotions?: Prisma.JobPromotionUncheckedCreateNestedManyWithoutJobInput
   dailyStats?: Prisma.JobDailyStatUncheckedCreateNestedManyWithoutJobInput
   views?: Prisma.JobViewUncheckedCreateNestedManyWithoutJobInput
+  reports?: Prisma.JobReportUncheckedCreateNestedManyWithoutJobInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutJobInput
   sharedIn?: Prisma.MessageUncheckedCreateNestedManyWithoutSharedJobInput
 }
@@ -1956,6 +1985,7 @@ export type JobUpdateWithoutSkillsInput = {
   promotions?: Prisma.JobPromotionUpdateManyWithoutJobNestedInput
   dailyStats?: Prisma.JobDailyStatUpdateManyWithoutJobNestedInput
   views?: Prisma.JobViewUpdateManyWithoutJobNestedInput
+  reports?: Prisma.JobReportUpdateManyWithoutJobNestedInput
   posts?: Prisma.PostUpdateManyWithoutJobNestedInput
   sharedIn?: Prisma.MessageUpdateManyWithoutSharedJobNestedInput
 }
@@ -2002,6 +2032,7 @@ export type JobUncheckedUpdateWithoutSkillsInput = {
   promotions?: Prisma.JobPromotionUncheckedUpdateManyWithoutJobNestedInput
   dailyStats?: Prisma.JobDailyStatUncheckedUpdateManyWithoutJobNestedInput
   views?: Prisma.JobViewUncheckedUpdateManyWithoutJobNestedInput
+  reports?: Prisma.JobReportUncheckedUpdateManyWithoutJobNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutJobNestedInput
   sharedIn?: Prisma.MessageUncheckedUpdateManyWithoutSharedJobNestedInput
 }
@@ -2048,6 +2079,7 @@ export type JobCreateWithoutLanguagesInput = {
   promotions?: Prisma.JobPromotionCreateNestedManyWithoutJobInput
   dailyStats?: Prisma.JobDailyStatCreateNestedManyWithoutJobInput
   views?: Prisma.JobViewCreateNestedManyWithoutJobInput
+  reports?: Prisma.JobReportCreateNestedManyWithoutJobInput
   posts?: Prisma.PostCreateNestedManyWithoutJobInput
   sharedIn?: Prisma.MessageCreateNestedManyWithoutSharedJobInput
 }
@@ -2094,6 +2126,7 @@ export type JobUncheckedCreateWithoutLanguagesInput = {
   promotions?: Prisma.JobPromotionUncheckedCreateNestedManyWithoutJobInput
   dailyStats?: Prisma.JobDailyStatUncheckedCreateNestedManyWithoutJobInput
   views?: Prisma.JobViewUncheckedCreateNestedManyWithoutJobInput
+  reports?: Prisma.JobReportUncheckedCreateNestedManyWithoutJobInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutJobInput
   sharedIn?: Prisma.MessageUncheckedCreateNestedManyWithoutSharedJobInput
 }
@@ -2156,6 +2189,7 @@ export type JobUpdateWithoutLanguagesInput = {
   promotions?: Prisma.JobPromotionUpdateManyWithoutJobNestedInput
   dailyStats?: Prisma.JobDailyStatUpdateManyWithoutJobNestedInput
   views?: Prisma.JobViewUpdateManyWithoutJobNestedInput
+  reports?: Prisma.JobReportUpdateManyWithoutJobNestedInput
   posts?: Prisma.PostUpdateManyWithoutJobNestedInput
   sharedIn?: Prisma.MessageUpdateManyWithoutSharedJobNestedInput
 }
@@ -2202,6 +2236,7 @@ export type JobUncheckedUpdateWithoutLanguagesInput = {
   promotions?: Prisma.JobPromotionUncheckedUpdateManyWithoutJobNestedInput
   dailyStats?: Prisma.JobDailyStatUncheckedUpdateManyWithoutJobNestedInput
   views?: Prisma.JobViewUncheckedUpdateManyWithoutJobNestedInput
+  reports?: Prisma.JobReportUncheckedUpdateManyWithoutJobNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutJobNestedInput
   sharedIn?: Prisma.MessageUncheckedUpdateManyWithoutSharedJobNestedInput
 }
@@ -2248,6 +2283,7 @@ export type JobCreateWithoutPromotionsInput = {
   savedBy?: Prisma.SavedJobCreateNestedManyWithoutJobInput
   dailyStats?: Prisma.JobDailyStatCreateNestedManyWithoutJobInput
   views?: Prisma.JobViewCreateNestedManyWithoutJobInput
+  reports?: Prisma.JobReportCreateNestedManyWithoutJobInput
   posts?: Prisma.PostCreateNestedManyWithoutJobInput
   sharedIn?: Prisma.MessageCreateNestedManyWithoutSharedJobInput
 }
@@ -2294,6 +2330,7 @@ export type JobUncheckedCreateWithoutPromotionsInput = {
   savedBy?: Prisma.SavedJobUncheckedCreateNestedManyWithoutJobInput
   dailyStats?: Prisma.JobDailyStatUncheckedCreateNestedManyWithoutJobInput
   views?: Prisma.JobViewUncheckedCreateNestedManyWithoutJobInput
+  reports?: Prisma.JobReportUncheckedCreateNestedManyWithoutJobInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutJobInput
   sharedIn?: Prisma.MessageUncheckedCreateNestedManyWithoutSharedJobInput
 }
@@ -2356,6 +2393,7 @@ export type JobUpdateWithoutPromotionsInput = {
   savedBy?: Prisma.SavedJobUpdateManyWithoutJobNestedInput
   dailyStats?: Prisma.JobDailyStatUpdateManyWithoutJobNestedInput
   views?: Prisma.JobViewUpdateManyWithoutJobNestedInput
+  reports?: Prisma.JobReportUpdateManyWithoutJobNestedInput
   posts?: Prisma.PostUpdateManyWithoutJobNestedInput
   sharedIn?: Prisma.MessageUpdateManyWithoutSharedJobNestedInput
 }
@@ -2402,6 +2440,7 @@ export type JobUncheckedUpdateWithoutPromotionsInput = {
   savedBy?: Prisma.SavedJobUncheckedUpdateManyWithoutJobNestedInput
   dailyStats?: Prisma.JobDailyStatUncheckedUpdateManyWithoutJobNestedInput
   views?: Prisma.JobViewUncheckedUpdateManyWithoutJobNestedInput
+  reports?: Prisma.JobReportUncheckedUpdateManyWithoutJobNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutJobNestedInput
   sharedIn?: Prisma.MessageUncheckedUpdateManyWithoutSharedJobNestedInput
 }
@@ -2448,6 +2487,7 @@ export type JobCreateWithoutDailyStatsInput = {
   savedBy?: Prisma.SavedJobCreateNestedManyWithoutJobInput
   promotions?: Prisma.JobPromotionCreateNestedManyWithoutJobInput
   views?: Prisma.JobViewCreateNestedManyWithoutJobInput
+  reports?: Prisma.JobReportCreateNestedManyWithoutJobInput
   posts?: Prisma.PostCreateNestedManyWithoutJobInput
   sharedIn?: Prisma.MessageCreateNestedManyWithoutSharedJobInput
 }
@@ -2494,6 +2534,7 @@ export type JobUncheckedCreateWithoutDailyStatsInput = {
   savedBy?: Prisma.SavedJobUncheckedCreateNestedManyWithoutJobInput
   promotions?: Prisma.JobPromotionUncheckedCreateNestedManyWithoutJobInput
   views?: Prisma.JobViewUncheckedCreateNestedManyWithoutJobInput
+  reports?: Prisma.JobReportUncheckedCreateNestedManyWithoutJobInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutJobInput
   sharedIn?: Prisma.MessageUncheckedCreateNestedManyWithoutSharedJobInput
 }
@@ -2556,6 +2597,7 @@ export type JobUpdateWithoutDailyStatsInput = {
   savedBy?: Prisma.SavedJobUpdateManyWithoutJobNestedInput
   promotions?: Prisma.JobPromotionUpdateManyWithoutJobNestedInput
   views?: Prisma.JobViewUpdateManyWithoutJobNestedInput
+  reports?: Prisma.JobReportUpdateManyWithoutJobNestedInput
   posts?: Prisma.PostUpdateManyWithoutJobNestedInput
   sharedIn?: Prisma.MessageUpdateManyWithoutSharedJobNestedInput
 }
@@ -2602,6 +2644,7 @@ export type JobUncheckedUpdateWithoutDailyStatsInput = {
   savedBy?: Prisma.SavedJobUncheckedUpdateManyWithoutJobNestedInput
   promotions?: Prisma.JobPromotionUncheckedUpdateManyWithoutJobNestedInput
   views?: Prisma.JobViewUncheckedUpdateManyWithoutJobNestedInput
+  reports?: Prisma.JobReportUncheckedUpdateManyWithoutJobNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutJobNestedInput
   sharedIn?: Prisma.MessageUncheckedUpdateManyWithoutSharedJobNestedInput
 }
@@ -2648,6 +2691,7 @@ export type JobCreateWithoutViewsInput = {
   savedBy?: Prisma.SavedJobCreateNestedManyWithoutJobInput
   promotions?: Prisma.JobPromotionCreateNestedManyWithoutJobInput
   dailyStats?: Prisma.JobDailyStatCreateNestedManyWithoutJobInput
+  reports?: Prisma.JobReportCreateNestedManyWithoutJobInput
   posts?: Prisma.PostCreateNestedManyWithoutJobInput
   sharedIn?: Prisma.MessageCreateNestedManyWithoutSharedJobInput
 }
@@ -2694,6 +2738,7 @@ export type JobUncheckedCreateWithoutViewsInput = {
   savedBy?: Prisma.SavedJobUncheckedCreateNestedManyWithoutJobInput
   promotions?: Prisma.JobPromotionUncheckedCreateNestedManyWithoutJobInput
   dailyStats?: Prisma.JobDailyStatUncheckedCreateNestedManyWithoutJobInput
+  reports?: Prisma.JobReportUncheckedCreateNestedManyWithoutJobInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutJobInput
   sharedIn?: Prisma.MessageUncheckedCreateNestedManyWithoutSharedJobInput
 }
@@ -2756,6 +2801,7 @@ export type JobUpdateWithoutViewsInput = {
   savedBy?: Prisma.SavedJobUpdateManyWithoutJobNestedInput
   promotions?: Prisma.JobPromotionUpdateManyWithoutJobNestedInput
   dailyStats?: Prisma.JobDailyStatUpdateManyWithoutJobNestedInput
+  reports?: Prisma.JobReportUpdateManyWithoutJobNestedInput
   posts?: Prisma.PostUpdateManyWithoutJobNestedInput
   sharedIn?: Prisma.MessageUpdateManyWithoutSharedJobNestedInput
 }
@@ -2802,6 +2848,211 @@ export type JobUncheckedUpdateWithoutViewsInput = {
   savedBy?: Prisma.SavedJobUncheckedUpdateManyWithoutJobNestedInput
   promotions?: Prisma.JobPromotionUncheckedUpdateManyWithoutJobNestedInput
   dailyStats?: Prisma.JobDailyStatUncheckedUpdateManyWithoutJobNestedInput
+  reports?: Prisma.JobReportUncheckedUpdateManyWithoutJobNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutJobNestedInput
+  sharedIn?: Prisma.MessageUncheckedUpdateManyWithoutSharedJobNestedInput
+}
+
+export type JobCreateWithoutReportsInput = {
+  id?: string
+  title: string
+  summary?: string | null
+  description: string
+  responsibilities?: Prisma.JobCreateresponsibilitiesInput | string[]
+  requirements?: Prisma.JobCreaterequirementsInput | string[]
+  benefits?: Prisma.JobCreatebenefitsInput | string[]
+  workMode: $Enums.WorkMode
+  employmentType: $Enums.EmploymentType
+  experienceLevel: $Enums.ExperienceLevel
+  minYearsExperience?: number
+  educationLevel?: $Enums.EducationLevel
+  city?: string | null
+  countryCode?: string | null
+  salaryMin?: number | null
+  salaryMax?: number | null
+  salaryCurrency?: string
+  salaryPeriod?: $Enums.SalaryPeriod
+  status?: $Enums.JobStatus
+  applicationCount?: number
+  viewCount?: number
+  saveCount?: number
+  publishedAt?: Date | string | null
+  closesAt?: Date | string | null
+  featuredUntil?: Date | string | null
+  sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  company: Prisma.CompanyCreateNestedOneWithoutJobsInput
+  postedBy: Prisma.UserCreateNestedOneWithoutPostedJobsInput
+  industry?: Prisma.IndustryCreateNestedOneWithoutJobsInput
+  skills?: Prisma.JobSkillCreateNestedManyWithoutJobInput
+  languages?: Prisma.JobLanguageCreateNestedManyWithoutJobInput
+  applications?: Prisma.ApplicationCreateNestedManyWithoutJobInput
+  savedBy?: Prisma.SavedJobCreateNestedManyWithoutJobInput
+  promotions?: Prisma.JobPromotionCreateNestedManyWithoutJobInput
+  dailyStats?: Prisma.JobDailyStatCreateNestedManyWithoutJobInput
+  views?: Prisma.JobViewCreateNestedManyWithoutJobInput
+  posts?: Prisma.PostCreateNestedManyWithoutJobInput
+  sharedIn?: Prisma.MessageCreateNestedManyWithoutSharedJobInput
+}
+
+export type JobUncheckedCreateWithoutReportsInput = {
+  id?: string
+  companyId: string
+  postedById: string
+  title: string
+  summary?: string | null
+  description: string
+  responsibilities?: Prisma.JobCreateresponsibilitiesInput | string[]
+  requirements?: Prisma.JobCreaterequirementsInput | string[]
+  benefits?: Prisma.JobCreatebenefitsInput | string[]
+  workMode: $Enums.WorkMode
+  employmentType: $Enums.EmploymentType
+  experienceLevel: $Enums.ExperienceLevel
+  minYearsExperience?: number
+  educationLevel?: $Enums.EducationLevel
+  city?: string | null
+  countryCode?: string | null
+  salaryMin?: number | null
+  salaryMax?: number | null
+  salaryCurrency?: string
+  salaryPeriod?: $Enums.SalaryPeriod
+  industryId?: string | null
+  status?: $Enums.JobStatus
+  applicationCount?: number
+  viewCount?: number
+  saveCount?: number
+  publishedAt?: Date | string | null
+  closesAt?: Date | string | null
+  featuredUntil?: Date | string | null
+  sponsoredUntil?: Date | string | null
+  urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  skills?: Prisma.JobSkillUncheckedCreateNestedManyWithoutJobInput
+  languages?: Prisma.JobLanguageUncheckedCreateNestedManyWithoutJobInput
+  applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutJobInput
+  savedBy?: Prisma.SavedJobUncheckedCreateNestedManyWithoutJobInput
+  promotions?: Prisma.JobPromotionUncheckedCreateNestedManyWithoutJobInput
+  dailyStats?: Prisma.JobDailyStatUncheckedCreateNestedManyWithoutJobInput
+  views?: Prisma.JobViewUncheckedCreateNestedManyWithoutJobInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutJobInput
+  sharedIn?: Prisma.MessageUncheckedCreateNestedManyWithoutSharedJobInput
+}
+
+export type JobCreateOrConnectWithoutReportsInput = {
+  where: Prisma.JobWhereUniqueInput
+  create: Prisma.XOR<Prisma.JobCreateWithoutReportsInput, Prisma.JobUncheckedCreateWithoutReportsInput>
+}
+
+export type JobUpsertWithoutReportsInput = {
+  update: Prisma.XOR<Prisma.JobUpdateWithoutReportsInput, Prisma.JobUncheckedUpdateWithoutReportsInput>
+  create: Prisma.XOR<Prisma.JobCreateWithoutReportsInput, Prisma.JobUncheckedCreateWithoutReportsInput>
+  where?: Prisma.JobWhereInput
+}
+
+export type JobUpdateToOneWithWhereWithoutReportsInput = {
+  where?: Prisma.JobWhereInput
+  data: Prisma.XOR<Prisma.JobUpdateWithoutReportsInput, Prisma.JobUncheckedUpdateWithoutReportsInput>
+}
+
+export type JobUpdateWithoutReportsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  responsibilities?: Prisma.JobUpdateresponsibilitiesInput | string[]
+  requirements?: Prisma.JobUpdaterequirementsInput | string[]
+  benefits?: Prisma.JobUpdatebenefitsInput | string[]
+  workMode?: Prisma.EnumWorkModeFieldUpdateOperationsInput | $Enums.WorkMode
+  employmentType?: Prisma.EnumEmploymentTypeFieldUpdateOperationsInput | $Enums.EmploymentType
+  experienceLevel?: Prisma.EnumExperienceLevelFieldUpdateOperationsInput | $Enums.ExperienceLevel
+  minYearsExperience?: Prisma.IntFieldUpdateOperationsInput | number
+  educationLevel?: Prisma.EnumEducationLevelFieldUpdateOperationsInput | $Enums.EducationLevel
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  salaryMax?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  salaryCurrency?: Prisma.StringFieldUpdateOperationsInput | string
+  salaryPeriod?: Prisma.EnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod
+  status?: Prisma.EnumJobStatusFieldUpdateOperationsInput | $Enums.JobStatus
+  applicationCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  saveCount?: Prisma.IntFieldUpdateOperationsInput | number
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  company?: Prisma.CompanyUpdateOneRequiredWithoutJobsNestedInput
+  postedBy?: Prisma.UserUpdateOneRequiredWithoutPostedJobsNestedInput
+  industry?: Prisma.IndustryUpdateOneWithoutJobsNestedInput
+  skills?: Prisma.JobSkillUpdateManyWithoutJobNestedInput
+  languages?: Prisma.JobLanguageUpdateManyWithoutJobNestedInput
+  applications?: Prisma.ApplicationUpdateManyWithoutJobNestedInput
+  savedBy?: Prisma.SavedJobUpdateManyWithoutJobNestedInput
+  promotions?: Prisma.JobPromotionUpdateManyWithoutJobNestedInput
+  dailyStats?: Prisma.JobDailyStatUpdateManyWithoutJobNestedInput
+  views?: Prisma.JobViewUpdateManyWithoutJobNestedInput
+  posts?: Prisma.PostUpdateManyWithoutJobNestedInput
+  sharedIn?: Prisma.MessageUpdateManyWithoutSharedJobNestedInput
+}
+
+export type JobUncheckedUpdateWithoutReportsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  companyId?: Prisma.StringFieldUpdateOperationsInput | string
+  postedById?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  responsibilities?: Prisma.JobUpdateresponsibilitiesInput | string[]
+  requirements?: Prisma.JobUpdaterequirementsInput | string[]
+  benefits?: Prisma.JobUpdatebenefitsInput | string[]
+  workMode?: Prisma.EnumWorkModeFieldUpdateOperationsInput | $Enums.WorkMode
+  employmentType?: Prisma.EnumEmploymentTypeFieldUpdateOperationsInput | $Enums.EmploymentType
+  experienceLevel?: Prisma.EnumExperienceLevelFieldUpdateOperationsInput | $Enums.ExperienceLevel
+  minYearsExperience?: Prisma.IntFieldUpdateOperationsInput | number
+  educationLevel?: Prisma.EnumEducationLevelFieldUpdateOperationsInput | $Enums.EducationLevel
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  salaryMax?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  salaryCurrency?: Prisma.StringFieldUpdateOperationsInput | string
+  salaryPeriod?: Prisma.EnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod
+  industryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumJobStatusFieldUpdateOperationsInput | $Enums.JobStatus
+  applicationCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  saveCount?: Prisma.IntFieldUpdateOperationsInput | number
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  closesAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  skills?: Prisma.JobSkillUncheckedUpdateManyWithoutJobNestedInput
+  languages?: Prisma.JobLanguageUncheckedUpdateManyWithoutJobNestedInput
+  applications?: Prisma.ApplicationUncheckedUpdateManyWithoutJobNestedInput
+  savedBy?: Prisma.SavedJobUncheckedUpdateManyWithoutJobNestedInput
+  promotions?: Prisma.JobPromotionUncheckedUpdateManyWithoutJobNestedInput
+  dailyStats?: Prisma.JobDailyStatUncheckedUpdateManyWithoutJobNestedInput
+  views?: Prisma.JobViewUncheckedUpdateManyWithoutJobNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutJobNestedInput
   sharedIn?: Prisma.MessageUncheckedUpdateManyWithoutSharedJobNestedInput
 }
@@ -2848,6 +3099,7 @@ export type JobCreateWithoutSavedByInput = {
   promotions?: Prisma.JobPromotionCreateNestedManyWithoutJobInput
   dailyStats?: Prisma.JobDailyStatCreateNestedManyWithoutJobInput
   views?: Prisma.JobViewCreateNestedManyWithoutJobInput
+  reports?: Prisma.JobReportCreateNestedManyWithoutJobInput
   posts?: Prisma.PostCreateNestedManyWithoutJobInput
   sharedIn?: Prisma.MessageCreateNestedManyWithoutSharedJobInput
 }
@@ -2894,6 +3146,7 @@ export type JobUncheckedCreateWithoutSavedByInput = {
   promotions?: Prisma.JobPromotionUncheckedCreateNestedManyWithoutJobInput
   dailyStats?: Prisma.JobDailyStatUncheckedCreateNestedManyWithoutJobInput
   views?: Prisma.JobViewUncheckedCreateNestedManyWithoutJobInput
+  reports?: Prisma.JobReportUncheckedCreateNestedManyWithoutJobInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutJobInput
   sharedIn?: Prisma.MessageUncheckedCreateNestedManyWithoutSharedJobInput
 }
@@ -2956,6 +3209,7 @@ export type JobUpdateWithoutSavedByInput = {
   promotions?: Prisma.JobPromotionUpdateManyWithoutJobNestedInput
   dailyStats?: Prisma.JobDailyStatUpdateManyWithoutJobNestedInput
   views?: Prisma.JobViewUpdateManyWithoutJobNestedInput
+  reports?: Prisma.JobReportUpdateManyWithoutJobNestedInput
   posts?: Prisma.PostUpdateManyWithoutJobNestedInput
   sharedIn?: Prisma.MessageUpdateManyWithoutSharedJobNestedInput
 }
@@ -3002,6 +3256,7 @@ export type JobUncheckedUpdateWithoutSavedByInput = {
   promotions?: Prisma.JobPromotionUncheckedUpdateManyWithoutJobNestedInput
   dailyStats?: Prisma.JobDailyStatUncheckedUpdateManyWithoutJobNestedInput
   views?: Prisma.JobViewUncheckedUpdateManyWithoutJobNestedInput
+  reports?: Prisma.JobReportUncheckedUpdateManyWithoutJobNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutJobNestedInput
   sharedIn?: Prisma.MessageUncheckedUpdateManyWithoutSharedJobNestedInput
 }
@@ -3048,6 +3303,7 @@ export type JobCreateWithoutApplicationsInput = {
   promotions?: Prisma.JobPromotionCreateNestedManyWithoutJobInput
   dailyStats?: Prisma.JobDailyStatCreateNestedManyWithoutJobInput
   views?: Prisma.JobViewCreateNestedManyWithoutJobInput
+  reports?: Prisma.JobReportCreateNestedManyWithoutJobInput
   posts?: Prisma.PostCreateNestedManyWithoutJobInput
   sharedIn?: Prisma.MessageCreateNestedManyWithoutSharedJobInput
 }
@@ -3094,6 +3350,7 @@ export type JobUncheckedCreateWithoutApplicationsInput = {
   promotions?: Prisma.JobPromotionUncheckedCreateNestedManyWithoutJobInput
   dailyStats?: Prisma.JobDailyStatUncheckedCreateNestedManyWithoutJobInput
   views?: Prisma.JobViewUncheckedCreateNestedManyWithoutJobInput
+  reports?: Prisma.JobReportUncheckedCreateNestedManyWithoutJobInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutJobInput
   sharedIn?: Prisma.MessageUncheckedCreateNestedManyWithoutSharedJobInput
 }
@@ -3156,6 +3413,7 @@ export type JobUpdateWithoutApplicationsInput = {
   promotions?: Prisma.JobPromotionUpdateManyWithoutJobNestedInput
   dailyStats?: Prisma.JobDailyStatUpdateManyWithoutJobNestedInput
   views?: Prisma.JobViewUpdateManyWithoutJobNestedInput
+  reports?: Prisma.JobReportUpdateManyWithoutJobNestedInput
   posts?: Prisma.PostUpdateManyWithoutJobNestedInput
   sharedIn?: Prisma.MessageUpdateManyWithoutSharedJobNestedInput
 }
@@ -3202,6 +3460,7 @@ export type JobUncheckedUpdateWithoutApplicationsInput = {
   promotions?: Prisma.JobPromotionUncheckedUpdateManyWithoutJobNestedInput
   dailyStats?: Prisma.JobDailyStatUncheckedUpdateManyWithoutJobNestedInput
   views?: Prisma.JobViewUncheckedUpdateManyWithoutJobNestedInput
+  reports?: Prisma.JobReportUncheckedUpdateManyWithoutJobNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutJobNestedInput
   sharedIn?: Prisma.MessageUncheckedUpdateManyWithoutSharedJobNestedInput
 }
@@ -3249,6 +3508,7 @@ export type JobCreateWithoutPostsInput = {
   promotions?: Prisma.JobPromotionCreateNestedManyWithoutJobInput
   dailyStats?: Prisma.JobDailyStatCreateNestedManyWithoutJobInput
   views?: Prisma.JobViewCreateNestedManyWithoutJobInput
+  reports?: Prisma.JobReportCreateNestedManyWithoutJobInput
   sharedIn?: Prisma.MessageCreateNestedManyWithoutSharedJobInput
 }
 
@@ -3295,6 +3555,7 @@ export type JobUncheckedCreateWithoutPostsInput = {
   promotions?: Prisma.JobPromotionUncheckedCreateNestedManyWithoutJobInput
   dailyStats?: Prisma.JobDailyStatUncheckedCreateNestedManyWithoutJobInput
   views?: Prisma.JobViewUncheckedCreateNestedManyWithoutJobInput
+  reports?: Prisma.JobReportUncheckedCreateNestedManyWithoutJobInput
   sharedIn?: Prisma.MessageUncheckedCreateNestedManyWithoutSharedJobInput
 }
 
@@ -3357,6 +3618,7 @@ export type JobUpdateWithoutPostsInput = {
   promotions?: Prisma.JobPromotionUpdateManyWithoutJobNestedInput
   dailyStats?: Prisma.JobDailyStatUpdateManyWithoutJobNestedInput
   views?: Prisma.JobViewUpdateManyWithoutJobNestedInput
+  reports?: Prisma.JobReportUpdateManyWithoutJobNestedInput
   sharedIn?: Prisma.MessageUpdateManyWithoutSharedJobNestedInput
 }
 
@@ -3403,6 +3665,7 @@ export type JobUncheckedUpdateWithoutPostsInput = {
   promotions?: Prisma.JobPromotionUncheckedUpdateManyWithoutJobNestedInput
   dailyStats?: Prisma.JobDailyStatUncheckedUpdateManyWithoutJobNestedInput
   views?: Prisma.JobViewUncheckedUpdateManyWithoutJobNestedInput
+  reports?: Prisma.JobReportUncheckedUpdateManyWithoutJobNestedInput
   sharedIn?: Prisma.MessageUncheckedUpdateManyWithoutSharedJobNestedInput
 }
 
@@ -3449,6 +3712,7 @@ export type JobCreateWithoutSharedInInput = {
   promotions?: Prisma.JobPromotionCreateNestedManyWithoutJobInput
   dailyStats?: Prisma.JobDailyStatCreateNestedManyWithoutJobInput
   views?: Prisma.JobViewCreateNestedManyWithoutJobInput
+  reports?: Prisma.JobReportCreateNestedManyWithoutJobInput
   posts?: Prisma.PostCreateNestedManyWithoutJobInput
 }
 
@@ -3495,6 +3759,7 @@ export type JobUncheckedCreateWithoutSharedInInput = {
   promotions?: Prisma.JobPromotionUncheckedCreateNestedManyWithoutJobInput
   dailyStats?: Prisma.JobDailyStatUncheckedCreateNestedManyWithoutJobInput
   views?: Prisma.JobViewUncheckedCreateNestedManyWithoutJobInput
+  reports?: Prisma.JobReportUncheckedCreateNestedManyWithoutJobInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutJobInput
 }
 
@@ -3557,6 +3822,7 @@ export type JobUpdateWithoutSharedInInput = {
   promotions?: Prisma.JobPromotionUpdateManyWithoutJobNestedInput
   dailyStats?: Prisma.JobDailyStatUpdateManyWithoutJobNestedInput
   views?: Prisma.JobViewUpdateManyWithoutJobNestedInput
+  reports?: Prisma.JobReportUpdateManyWithoutJobNestedInput
   posts?: Prisma.PostUpdateManyWithoutJobNestedInput
 }
 
@@ -3603,6 +3869,7 @@ export type JobUncheckedUpdateWithoutSharedInInput = {
   promotions?: Prisma.JobPromotionUncheckedUpdateManyWithoutJobNestedInput
   dailyStats?: Prisma.JobDailyStatUncheckedUpdateManyWithoutJobNestedInput
   views?: Prisma.JobViewUncheckedUpdateManyWithoutJobNestedInput
+  reports?: Prisma.JobReportUncheckedUpdateManyWithoutJobNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutJobNestedInput
 }
 
@@ -3685,6 +3952,7 @@ export type JobUpdateWithoutPostedByInput = {
   promotions?: Prisma.JobPromotionUpdateManyWithoutJobNestedInput
   dailyStats?: Prisma.JobDailyStatUpdateManyWithoutJobNestedInput
   views?: Prisma.JobViewUpdateManyWithoutJobNestedInput
+  reports?: Prisma.JobReportUpdateManyWithoutJobNestedInput
   posts?: Prisma.PostUpdateManyWithoutJobNestedInput
   sharedIn?: Prisma.MessageUpdateManyWithoutSharedJobNestedInput
 }
@@ -3731,6 +3999,7 @@ export type JobUncheckedUpdateWithoutPostedByInput = {
   promotions?: Prisma.JobPromotionUncheckedUpdateManyWithoutJobNestedInput
   dailyStats?: Prisma.JobDailyStatUncheckedUpdateManyWithoutJobNestedInput
   views?: Prisma.JobViewUncheckedUpdateManyWithoutJobNestedInput
+  reports?: Prisma.JobReportUncheckedUpdateManyWithoutJobNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutJobNestedInput
   sharedIn?: Prisma.MessageUncheckedUpdateManyWithoutSharedJobNestedInput
 }
@@ -3851,6 +4120,7 @@ export type JobUpdateWithoutIndustryInput = {
   promotions?: Prisma.JobPromotionUpdateManyWithoutJobNestedInput
   dailyStats?: Prisma.JobDailyStatUpdateManyWithoutJobNestedInput
   views?: Prisma.JobViewUpdateManyWithoutJobNestedInput
+  reports?: Prisma.JobReportUpdateManyWithoutJobNestedInput
   posts?: Prisma.PostUpdateManyWithoutJobNestedInput
   sharedIn?: Prisma.MessageUpdateManyWithoutSharedJobNestedInput
 }
@@ -3897,6 +4167,7 @@ export type JobUncheckedUpdateWithoutIndustryInput = {
   promotions?: Prisma.JobPromotionUncheckedUpdateManyWithoutJobNestedInput
   dailyStats?: Prisma.JobDailyStatUncheckedUpdateManyWithoutJobNestedInput
   views?: Prisma.JobViewUncheckedUpdateManyWithoutJobNestedInput
+  reports?: Prisma.JobReportUncheckedUpdateManyWithoutJobNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutJobNestedInput
   sharedIn?: Prisma.MessageUncheckedUpdateManyWithoutSharedJobNestedInput
 }
@@ -4017,6 +4288,7 @@ export type JobUpdateWithoutCompanyInput = {
   promotions?: Prisma.JobPromotionUpdateManyWithoutJobNestedInput
   dailyStats?: Prisma.JobDailyStatUpdateManyWithoutJobNestedInput
   views?: Prisma.JobViewUpdateManyWithoutJobNestedInput
+  reports?: Prisma.JobReportUpdateManyWithoutJobNestedInput
   posts?: Prisma.PostUpdateManyWithoutJobNestedInput
   sharedIn?: Prisma.MessageUpdateManyWithoutSharedJobNestedInput
 }
@@ -4063,6 +4335,7 @@ export type JobUncheckedUpdateWithoutCompanyInput = {
   promotions?: Prisma.JobPromotionUncheckedUpdateManyWithoutJobNestedInput
   dailyStats?: Prisma.JobDailyStatUncheckedUpdateManyWithoutJobNestedInput
   views?: Prisma.JobViewUncheckedUpdateManyWithoutJobNestedInput
+  reports?: Prisma.JobReportUncheckedUpdateManyWithoutJobNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutJobNestedInput
   sharedIn?: Prisma.MessageUncheckedUpdateManyWithoutSharedJobNestedInput
 }
@@ -4117,6 +4390,7 @@ export type JobCountOutputType = {
   promotions: number
   dailyStats: number
   views: number
+  reports: number
   posts: number
   sharedIn: number
 }
@@ -4129,6 +4403,7 @@ export type JobCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.In
   promotions?: boolean | JobCountOutputTypeCountPromotionsArgs
   dailyStats?: boolean | JobCountOutputTypeCountDailyStatsArgs
   views?: boolean | JobCountOutputTypeCountViewsArgs
+  reports?: boolean | JobCountOutputTypeCountReportsArgs
   posts?: boolean | JobCountOutputTypeCountPostsArgs
   sharedIn?: boolean | JobCountOutputTypeCountSharedInArgs
 }
@@ -4195,6 +4470,13 @@ export type JobCountOutputTypeCountViewsArgs<ExtArgs extends runtime.Types.Exten
 /**
  * JobCountOutputType without action
  */
+export type JobCountOutputTypeCountReportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.JobReportWhereInput
+}
+
+/**
+ * JobCountOutputType without action
+ */
 export type JobCountOutputTypeCountPostsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.PostWhereInput
 }
@@ -4253,6 +4535,7 @@ export type JobSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
   promotions?: boolean | Prisma.Job$promotionsArgs<ExtArgs>
   dailyStats?: boolean | Prisma.Job$dailyStatsArgs<ExtArgs>
   views?: boolean | Prisma.Job$viewsArgs<ExtArgs>
+  reports?: boolean | Prisma.Job$reportsArgs<ExtArgs>
   posts?: boolean | Prisma.Job$postsArgs<ExtArgs>
   sharedIn?: boolean | Prisma.Job$sharedInArgs<ExtArgs>
   _count?: boolean | Prisma.JobCountOutputTypeDefaultArgs<ExtArgs>
@@ -4390,6 +4673,7 @@ export type JobInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   promotions?: boolean | Prisma.Job$promotionsArgs<ExtArgs>
   dailyStats?: boolean | Prisma.Job$dailyStatsArgs<ExtArgs>
   views?: boolean | Prisma.Job$viewsArgs<ExtArgs>
+  reports?: boolean | Prisma.Job$reportsArgs<ExtArgs>
   posts?: boolean | Prisma.Job$postsArgs<ExtArgs>
   sharedIn?: boolean | Prisma.Job$sharedInArgs<ExtArgs>
   _count?: boolean | Prisma.JobCountOutputTypeDefaultArgs<ExtArgs>
@@ -4418,6 +4702,7 @@ export type $JobPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     promotions: Prisma.$JobPromotionPayload<ExtArgs>[]
     dailyStats: Prisma.$JobDailyStatPayload<ExtArgs>[]
     views: Prisma.$JobViewPayload<ExtArgs>[]
+    reports: Prisma.$JobReportPayload<ExtArgs>[]
     posts: Prisma.$PostPayload<ExtArgs>[]
     sharedIn: Prisma.$MessagePayload<ExtArgs>[]
   }
@@ -4861,6 +5146,7 @@ export interface Prisma__JobClient<T, Null = never, ExtArgs extends runtime.Type
   promotions<T extends Prisma.Job$promotionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Job$promotionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$JobPromotionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   dailyStats<T extends Prisma.Job$dailyStatsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Job$dailyStatsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$JobDailyStatPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   views<T extends Prisma.Job$viewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Job$viewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$JobViewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  reports<T extends Prisma.Job$reportsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Job$reportsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$JobReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   posts<T extends Prisma.Job$postsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Job$postsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sharedIn<T extends Prisma.Job$sharedInArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Job$sharedInArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -5521,6 +5807,30 @@ export type Job$viewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   take?: number
   skip?: number
   distinct?: Prisma.JobViewScalarFieldEnum | Prisma.JobViewScalarFieldEnum[]
+}
+
+/**
+ * Job.reports
+ */
+export type Job$reportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the JobReport
+   */
+  select?: Prisma.JobReportSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the JobReport
+   */
+  omit?: Prisma.JobReportOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.JobReportInclude<ExtArgs> | null
+  where?: Prisma.JobReportWhereInput
+  orderBy?: Prisma.JobReportOrderByWithRelationInput | Prisma.JobReportOrderByWithRelationInput[]
+  cursor?: Prisma.JobReportWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.JobReportScalarFieldEnum | Prisma.JobReportScalarFieldEnum[]
 }
 
 /**

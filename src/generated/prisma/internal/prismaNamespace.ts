@@ -428,6 +428,7 @@ export const ModelName = {
   JobPromotion: 'JobPromotion',
   JobDailyStat: 'JobDailyStat',
   JobView: 'JobView',
+  JobReport: 'JobReport',
   SavedJob: 'SavedJob',
   SavedSearch: 'SavedSearch',
   Application: 'Application',
@@ -463,7 +464,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification" | "rateLimit" | "userSettings" | "block" | "profile" | "skill" | "userSkill" | "endorsement" | "experience" | "education" | "project" | "certificate" | "userLanguage" | "portfolioItem" | "socialLink" | "profileView" | "userAchievement" | "industry" | "company" | "companyMember" | "companyFollower" | "companyMedia" | "job" | "jobSkill" | "jobLanguage" | "jobPromotion" | "jobDailyStat" | "jobView" | "savedJob" | "savedSearch" | "application" | "applicationEvent" | "recruiterNote" | "interview" | "savedCandidate" | "connection" | "follow" | "post" | "postLike" | "comment" | "conversation" | "conversationParticipant" | "message" | "notification" | "subscription" | "payment" | "profileBoost" | "webhookEvent"
+    modelProps: "user" | "session" | "account" | "verification" | "rateLimit" | "userSettings" | "block" | "profile" | "skill" | "userSkill" | "endorsement" | "experience" | "education" | "project" | "certificate" | "userLanguage" | "portfolioItem" | "socialLink" | "profileView" | "userAchievement" | "industry" | "company" | "companyMember" | "companyFollower" | "companyMedia" | "job" | "jobSkill" | "jobLanguage" | "jobPromotion" | "jobDailyStat" | "jobView" | "jobReport" | "savedJob" | "savedSearch" | "application" | "applicationEvent" | "recruiterNote" | "interview" | "savedCandidate" | "connection" | "follow" | "post" | "postLike" | "comment" | "conversation" | "conversationParticipant" | "message" | "notification" | "subscription" | "payment" | "profileBoost" | "webhookEvent"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2761,6 +2762,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    JobReport: {
+      payload: Prisma.$JobReportPayload<ExtArgs>
+      fields: Prisma.JobReportFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.JobReportFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JobReportPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.JobReportFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JobReportPayload>
+        }
+        findFirst: {
+          args: Prisma.JobReportFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JobReportPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.JobReportFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JobReportPayload>
+        }
+        findMany: {
+          args: Prisma.JobReportFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JobReportPayload>[]
+        }
+        create: {
+          args: Prisma.JobReportCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JobReportPayload>
+        }
+        createMany: {
+          args: Prisma.JobReportCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.JobReportCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JobReportPayload>[]
+        }
+        delete: {
+          args: Prisma.JobReportDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JobReportPayload>
+        }
+        update: {
+          args: Prisma.JobReportUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JobReportPayload>
+        }
+        deleteMany: {
+          args: Prisma.JobReportDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.JobReportUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.JobReportUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JobReportPayload>[]
+        }
+        upsert: {
+          args: Prisma.JobReportUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JobReportPayload>
+        }
+        aggregate: {
+          args: Prisma.JobReportAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateJobReport>
+        }
+        groupBy: {
+          args: Prisma.JobReportGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.JobReportGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.JobReportCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.JobReportCountAggregateOutputType> | number
+        }
+      }
+    }
     SavedJob: {
       payload: Prisma.$SavedJobPayload<ExtArgs>
       fields: Prisma.SavedJobFieldRefs
@@ -4760,6 +4835,21 @@ export const JobViewScalarFieldEnum = {
 export type JobViewScalarFieldEnum = (typeof JobViewScalarFieldEnum)[keyof typeof JobViewScalarFieldEnum]
 
 
+export const JobReportScalarFieldEnum = {
+  id: 'id',
+  jobId: 'jobId',
+  reporterId: 'reporterId',
+  reporterKey: 'reporterKey',
+  reason: 'reason',
+  details: 'details',
+  status: 'status',
+  createdAt: 'createdAt',
+  resolvedAt: 'resolvedAt'
+} as const
+
+export type JobReportScalarFieldEnum = (typeof JobReportScalarFieldEnum)[keyof typeof JobReportScalarFieldEnum]
+
+
 export const SavedJobScalarFieldEnum = {
   userId: 'userId',
   jobId: 'jobId',
@@ -5440,6 +5530,34 @@ export type ListEnumPromotionKindFieldRefInput<$PrismaModel> = FieldRefInputType
 
 
 /**
+ * Reference to a field of type 'JobReportReason'
+ */
+export type EnumJobReportReasonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'JobReportReason'>
+    
+
+
+/**
+ * Reference to a field of type 'JobReportReason[]'
+ */
+export type ListEnumJobReportReasonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'JobReportReason[]'>
+    
+
+
+/**
+ * Reference to a field of type 'JobReportStatus'
+ */
+export type EnumJobReportStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'JobReportStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'JobReportStatus[]'
+ */
+export type ListEnumJobReportStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'JobReportStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'SavedSearchKind'
  */
 export type EnumSavedSearchKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SavedSearchKind'>
@@ -5830,6 +5948,7 @@ export type GlobalOmitConfig = {
   jobPromotion?: Prisma.JobPromotionOmit
   jobDailyStat?: Prisma.JobDailyStatOmit
   jobView?: Prisma.JobViewOmit
+  jobReport?: Prisma.JobReportOmit
   savedJob?: Prisma.SavedJobOmit
   savedSearch?: Prisma.SavedSearchOmit
   application?: Prisma.ApplicationOmit

@@ -48,6 +48,25 @@ export async function publishJob(jobId: string) {
   });
 }
 
+/**
+ * Settles every open report on a job: either closes the job too (the reports were right),
+ * or just dismisses them (the job is fine). Either way it leaves Admin → Reports.
+ */
+export async function resolveJobReports(jobId: string, alsoCloseJob: boolean) {
+  return asAdmin(async () => {
+    const id = Id.parse(jobId);
+    const close = z.boolean().parse(alsoCloseJob);
+    await db.$transaction([
+      ...(close ? [db.job.updateMany({ where: { id, status: "OPEN" }, data: { status: "CLOSED" } })] : []),
+      db.jobReport.updateMany({ where: { jobId: id, status: "OPEN" }, data: { status: "RESOLVED", resolvedAt: new Date() } }),
+    ]);
+    if (close) refreshSitemap();
+    revalidatePath("/admin/reports");
+    revalidatePath("/admin/jobs");
+    return { ok: true, message: k(close ? "admin.msg.reportJobClosed" : "admin.msg.reportsDismissed") };
+  });
+}
+
 export async function closeJob(jobId: string) {
   return asAdmin(async () => {
     const id = Id.parse(jobId);
