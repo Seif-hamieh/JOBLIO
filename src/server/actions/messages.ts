@@ -7,6 +7,7 @@ import { LIMITS } from "@/server/rate-limit";
 import { publish } from "@/server/realtime";
 import { ensureConversation, getThread, markConversationRead, messageSelect, sendMessage, type ChatMessage } from "@/server/services/messaging";
 import { deleteStored, storeUpload, UploadError } from "@/server/storage";
+import { publicCompanyWhere } from "@/server/services/companies";
 
 const id = z.string().min(1).max(64);
 
@@ -117,7 +118,7 @@ export async function shareSearchAction(kind: "job" | "person" | "company", q: s
       return { ok: true, data: jobs.map((j) => ({ id: j.id, title: j.title, subtitle: j.company.name })) };
     }
     if (kind === "company") {
-      const cs = await db.company.findMany({ where: term ? { name: contains } : {}, take: 8, orderBy: { followerCount: "desc" }, select: { id: true, name: true, tagline: true } });
+      const cs = await db.company.findMany({ where: { AND: [term ? { name: contains } : {}, publicCompanyWhere] }, take: 8, orderBy: { followerCount: "desc" }, select: { id: true, name: true, tagline: true } });
       return { ok: true, data: cs.map((c) => ({ id: c.id, title: c.name, subtitle: c.tagline })) };
     }
     const people = await db.user.findMany({

@@ -7,6 +7,12 @@ import { ensureReferenceData } from "@/server/services/reference-data";
 import type { z } from "zod";
 import type { companyCreateSchema } from "@/lib/validation/profile";
 
+/**
+ * Companies the public may see: every real company, plus companies created by the job import
+ * once they have at least one open (published) job.
+ */
+export const publicCompanyWhere: Prisma.CompanyWhereInput = { OR: [{ importSource: null }, { jobs: { some: { status: "OPEN" } } }] };
+
 export async function uniqueCompanySlug(name: string, tx: Prisma.TransactionClient = db) {
   const base = slugify(name) || "company";
   for (let i = 0; i < 20; i++) {

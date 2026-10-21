@@ -250,6 +250,13 @@ enum ProductCode {
   JOB_SEEKER_PRO
 }
 
+// Public job boards that jobs are imported from (src/server/job-import).
+enum JobSource {
+  ARBEITNOW
+  JOBICY
+  HIMALAYAS
+}
+
 enum PaymentStatus {
   PENDING
   SUCCEEDED
@@ -721,6 +728,8 @@ model Company {
   brandColor    String?     @db.VarChar(7)
   verified      Boolean     @default(false)
   premiumUntil  DateTime?
+  // Set when the job import created this company (no members). Hidden from the public until it has an open job.
+  importSource  JobSource?
   followerCount Int         @default(0)
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
@@ -813,6 +822,10 @@ model Job {
   featuredUntil      DateTime?
   sponsoredUntil     DateTime?
   urgentUntil        DateTime?
+  // Imported jobs: where they came from, their ID there, and the original listing (applications happen there).
+  externalSource     JobSource?
+  externalId         String?
+  externalUrl        String?
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
   company            Company         @relation(fields: [companyId], references: [id], onDelete: Cascade)
@@ -839,6 +852,8 @@ model Job {
   @@index([featuredUntil])
   @@index([sponsoredUntil])
   @@index([urgentUntil])
+  // One row per imported listing: the import skips anything already stored.
+  @@unique([externalSource, externalId])
   @@map("jobs")
 }
 

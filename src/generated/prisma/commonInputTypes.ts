@@ -494,6 +494,13 @@ export type EnumCompanySizeFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumCompanySizeFilter<$PrismaModel> | $Enums.CompanySize
 }
 
+export type EnumJobSourceNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.JobSource | Prisma.EnumJobSourceFieldRefInput<$PrismaModel> | null
+  in?: $Enums.JobSource[] | Prisma.ListEnumJobSourceFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.JobSource[] | Prisma.ListEnumJobSourceFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumJobSourceNullableFilter<$PrismaModel> | $Enums.JobSource | null
+}
+
 export type EnumCompanySizeWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.CompanySize | Prisma.EnumCompanySizeFieldRefInput<$PrismaModel>
   in?: $Enums.CompanySize[] | Prisma.ListEnumCompanySizeFieldRefInput<$PrismaModel>
@@ -502,6 +509,16 @@ export type EnumCompanySizeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumCompanySizeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumCompanySizeFilter<$PrismaModel>
+}
+
+export type EnumJobSourceNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.JobSource | Prisma.EnumJobSourceFieldRefInput<$PrismaModel> | null
+  in?: $Enums.JobSource[] | Prisma.ListEnumJobSourceFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.JobSource[] | Prisma.ListEnumJobSourceFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumJobSourceNullableWithAggregatesFilter<$PrismaModel> | $Enums.JobSource | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumJobSourceNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumJobSourceNullableFilter<$PrismaModel>
 }
 
 export type EnumCompanyRoleFilter<$PrismaModel = never> = {
@@ -1451,6 +1468,13 @@ export type NestedEnumCompanySizeFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumCompanySizeFilter<$PrismaModel> | $Enums.CompanySize
 }
 
+export type NestedEnumJobSourceNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.JobSource | Prisma.EnumJobSourceFieldRefInput<$PrismaModel> | null
+  in?: $Enums.JobSource[] | Prisma.ListEnumJobSourceFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.JobSource[] | Prisma.ListEnumJobSourceFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumJobSourceNullableFilter<$PrismaModel> | $Enums.JobSource | null
+}
+
 export type NestedEnumCompanySizeWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.CompanySize | Prisma.EnumCompanySizeFieldRefInput<$PrismaModel>
   in?: $Enums.CompanySize[] | Prisma.ListEnumCompanySizeFieldRefInput<$PrismaModel>
@@ -1459,6 +1483,16 @@ export type NestedEnumCompanySizeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumCompanySizeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumCompanySizeFilter<$PrismaModel>
+}
+
+export type NestedEnumJobSourceNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.JobSource | Prisma.EnumJobSourceFieldRefInput<$PrismaModel> | null
+  in?: $Enums.JobSource[] | Prisma.ListEnumJobSourceFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.JobSource[] | Prisma.ListEnumJobSourceFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumJobSourceNullableWithAggregatesFilter<$PrismaModel> | $Enums.JobSource | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumJobSourceNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumJobSourceNullableFilter<$PrismaModel>
 }
 
 export type NestedEnumCompanyRoleFilter<$PrismaModel = never> = {

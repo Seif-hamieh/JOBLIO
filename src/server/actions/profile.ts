@@ -140,7 +140,7 @@ export async function upsertExperienceAction(input: z.input<typeof experienceSch
     if (!parsed.success) return parsed.state;
     const { id: expId, ...data } = parsed.data;
     // Link to a JOBLIO company page when the name matches exactly.
-    const company = await db.company.findFirst({ where: { name: { equals: data.companyName, mode: "insensitive" } }, select: { id: true } });
+    const company = await db.company.findFirst({ where: { name: { equals: data.companyName, mode: "insensitive" }, importSource: null }, select: { id: true } });
     const row = { ...data, endDate: data.isCurrent ? null : data.endDate, companyId: company?.id ?? null };
     if (expId) {
       const updated = await db.experience.updateMany({ where: { id: expId, profileId: viewer.profileId }, data: row });

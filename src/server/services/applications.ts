@@ -33,12 +33,14 @@ export async function applyToJob(userId: string, jobId: string, input: { coverLe
   const [job, profile, existing] = await Promise.all([
     db.job.findUnique({
       where: { id: jobId },
-      select: { ...jobMatchSelect, id: true, title: true, status: true, postedById: true, publishedAt: true, closesAt: true, company: { select: { id: true, name: true, members: { select: { userId: true } } } } },
+      select: { ...jobMatchSelect, id: true, title: true, status: true, postedById: true, publishedAt: true, closesAt: true, externalUrl: true, company: { select: { id: true, name: true, members: { select: { userId: true } } } } },
     }),
     db.profile.findUnique({ where: { userId }, select: candidateMatchSelect }),
     db.application.findUnique({ where: { jobId_applicantId: { jobId, applicantId: userId } }, select: { id: true, status: true } }),
   ]);
   if (!job || job.status !== "OPEN" || (job.closesAt && job.closesAt.getTime() < startOfTodayUtc())) throw new ActionError("@msg.jobClosed");
+  // Imported listings take applications on their original site only.
+  if (job.externalUrl) throw new ActionError("@msg.applyExternal");
   if (job.company.members.some((m) => m.userId === userId)) throw new ActionError("@msg.ownCompany");
   if (existing && existing.status !== "WITHDRAWN") throw new ActionError("@msg.alreadyApplied");
   if (!profile) throw new ActionError("@msg.completeProfile");

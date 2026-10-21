@@ -3,15 +3,15 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { CircleSlash, Trash2 } from "lucide-react";
+import { CircleSlash, Send, Trash2 } from "lucide-react";
 import { Button, buttonClasses } from "@/components/ui/button";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { toast } from "@/components/ui/toast";
 import { useI18n } from "@/i18n/client";
-import { closeJob, deleteJob } from "@/server/actions/admin";
+import { closeJob, deleteJob, publishJob } from "@/server/actions/admin";
 import type { ActionState } from "@/server/action";
 
-export function JobActions({ job }: { job: { id: string; title: string; isOpen: boolean } }) {
+export function JobActions({ job }: { job: { id: string; title: string; isOpen: boolean; isDraft?: boolean } }) {
   const { t } = useI18n();
   const router = useRouter();
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -32,6 +32,11 @@ export function JobActions({ job }: { job: { id: string; title: string; isOpen: 
       <Link href={`/jobs/${job.id}`} className={buttonClasses({ variant: "ghost", size: "xs" })}>
         {t("admin.view")}
       </Link>
+      {job.isDraft && (
+        <Button size="xs" disabled={pending} onClick={() => run(() => publishJob(job.id))}>
+          <Send /> {t("admin.jobTable.publish")}
+        </Button>
+      )}
       {job.isOpen && (
         <Button variant="outline" size="xs" disabled={pending} onClick={() => run(() => closeJob(job.id))}>
           <CircleSlash /> {t("admin.jobTable.close")}

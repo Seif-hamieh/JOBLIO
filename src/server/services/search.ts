@@ -1,7 +1,7 @@
 import "server-only";
 import { db, type Prisma } from "@/server/db";
 import { searchJobs } from "@/server/services/jobs";
-import { companyCardSelect } from "@/server/services/companies";
+import { companyCardSelect, publicCompanyWhere } from "@/server/services/companies";
 import { connectionIds } from "@/server/services/network";
 import { parseJobSearch } from "@/lib/validation/search";
 
@@ -50,7 +50,7 @@ export async function globalSearch(query: string, viewerId: string | null, limit
       },
     }),
     db.company.findMany({
-      where: { OR: [{ name: { contains: q, mode: "insensitive" } }, { tagline: { contains: q, mode: "insensitive" } }] },
+      where: { AND: [{ OR: [{ name: { contains: q, mode: "insensitive" } }, { tagline: { contains: q, mode: "insensitive" } }] }, publicCompanyWhere] },
       orderBy: [{ followerCount: "desc" }, { name: "asc" }],
       take: limits.companies,
       select: { ...companyCardSelect, _count: { select: { jobs: { where: { status: "OPEN" } } } } },

@@ -9,6 +9,7 @@ import {
   CalendarClock,
   Check,
   Clock,
+  ExternalLink,
   Eye,
   Gift,
   GraduationCap,
@@ -30,6 +31,7 @@ import { computeMatch } from "@/lib/matching/engine";
 import { Avatar, CompanyLogo } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { buttonClasses } from "@/components/ui/button";
+import { SOURCE_NAMES } from "@/server/job-import/normalize";
 import { Card, CardHeader } from "@/components/ui/misc";
 import { ApplyButton } from "@/components/jobs/apply-dialog";
 import { SaveJobButton, ShareButton } from "@/components/jobs/job-actions";
@@ -58,7 +60,7 @@ export async function generateMetadata({ params }: PageProps<"/jobs/[id]">): Pro
     getI18n(),
   ]);
   if (!job) notFound();
-  if (job.status !== "OPEN") {
+  if (job.status !== "OPEN" && !viewer?.isAdmin) {
     const member = viewer && (await db.companyMember.findUnique({ where: { companyId_userId: { companyId: job.companyId, userId: viewer.id } }, select: { id: true } }));
     if (!member) notFound();
   }
@@ -78,7 +80,8 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
     !!viewer &&
     (viewer.company?.id === job.company.id ||
       !!(await db.companyMember.findUnique({ where: { companyId_userId: { companyId: job.company.id, userId: viewer.id } }, select: { id: true } })));
-  if (job.status !== "OPEN" && !isTeam) notFound();
+  // Admins can open drafts too (to review imported jobs before publishing).
+  if (job.status !== "OPEN" && !isTeam && !viewer?.isAdmin) notFound();
   // "Feature this job" (Paddle): the poster or a company admin, open jobs that are not featured yet.
   const paddleConfig = paddleClientConfig();
   const showFeature = !!paddleConfig && canFeatureJob(viewer, { companyId: job.company.id, postedById: job.postedBy.id, status: job.status, featuredUntil: job.featuredUntil });
@@ -110,6 +113,17 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
     signedIn: !!viewer,
     applied,
   };
+  // Imported listings (Arbeitnow, Jobicy, Himalayas): their terms require applying on the original
+  // listing and crediting the source, so the Apply button links there instead of opening our form.
+  const external = job.externalUrl && job.externalSource ? { url: job.externalUrl, source: SOURCE_NAMES[job.externalSource] } : null;
+  const applyAction = (size: "md" | "lg", className?: string) =>
+    external ? (
+      <a href={external.url} target="_blank" rel="noopener noreferrer nofollow" className={buttonClasses({ size, className })}>
+        {t("jobs.applyOnSource", { source: external.source })} <ExternalLink />
+      </a>
+    ) : (
+      <ApplyButton {...applyProps} size={size} className={className} />
+    );
 
   const facts_ = [
     { icon: MapPin, label: t("jobs.location"), value: location },
@@ -121,8 +135,9 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
 
   return (
     <div className="pb-24 md:pb-0">
-      {job.status === "OPEN" && (
-        // Structured data for search engines (Google for Jobs).
+      {job.status === "OPEN" && !job.externalSource && (
+        // Structured data for search engines (Google for Jobs). Never for imported listings: their
+        // sources forbid passing them on to Google Jobs (Himalayas' terms say so explicitly).
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(jobPostingJsonLd(job, APP_URL)) }} />
       )}
       <Link href="/jobs" className="mb-5 inline-flex items-center gap-1.5 text-sm text-fg-muted hover:text-fg">
@@ -152,7 +167,7 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
                   {t("jobs.openPipeline")}
                 </Link>
               ) : (
-                <ApplyButton {...applyProps} />
+                applyAction("lg")
               )}
             </div>
           </div>
@@ -214,6 +229,15 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
 
           <Card className="p-6 sm:p-7">
             <h2 className="font-display text-lg font-semibold">{t("jobs.aboutRole")}</h2>
+            {external && (
+              // Attribution the sources require: name them and link to the original listing.
+              <p className="mt-2 inline-flex flex-wrap items-center gap-1.5 rounded-full bg-surface-2 px-3 py-1 text-xs text-fg-muted">
+                {t("jobs.sourceAttribution", { source: external.source })} ·
+                <a href={external.url} target="_blank" rel="noopener noreferrer nofollow" className="inline-flex items-center gap-1 font-medium text-brand-soft-fg hover:underline">
+                  {t("jobs.viewOriginal")} <ExternalLink className="size-3" />
+                </a>
+              </p>
+            )}
             <div className="mt-3 space-y-3 text-[15px] leading-relaxed text-fg-muted">
               {job.description.split(/\n{2,}/).map((p, i) => (
                 <p key={i} className="whitespace-pre-line break-words [overflow-wrap:anywhere]">
@@ -428,7 +452,7 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
             {t("jobs.openPipeline")}
           </Link>
         ) : (
-          <ApplyButton {...applyProps} size="md" className="flex-1" />
+          applyAction("md", "flex-1")
         )}
       </div>
     </div>

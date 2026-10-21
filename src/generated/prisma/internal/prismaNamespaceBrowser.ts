@@ -465,6 +465,7 @@ export const CompanyScalarFieldEnum = {
   brandColor: 'brandColor',
   verified: 'verified',
   premiumUntil: 'premiumUntil',
+  importSource: 'importSource',
   followerCount: 'followerCount',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -537,6 +538,9 @@ export const JobScalarFieldEnum = {
   featuredUntil: 'featuredUntil',
   sponsoredUntil: 'sponsoredUntil',
   urgentUntil: 'urgentUntil',
+  externalSource: 'externalSource',
+  externalId: 'externalId',
+  externalUrl: 'externalUrl',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

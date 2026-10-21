@@ -4625,6 +4625,7 @@ export const CompanyScalarFieldEnum = {
   brandColor: 'brandColor',
   verified: 'verified',
   premiumUntil: 'premiumUntil',
+  importSource: 'importSource',
   followerCount: 'followerCount',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -4697,6 +4698,9 @@ export const JobScalarFieldEnum = {
   featuredUntil: 'featuredUntil',
   sponsoredUntil: 'sponsoredUntil',
   urgentUntil: 'urgentUntil',
+  externalSource: 'externalSource',
+  externalId: 'externalId',
+  externalUrl: 'externalUrl',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -5348,6 +5352,20 @@ export type EnumCompanySizeFieldRefInput<$PrismaModel> = FieldRefInputType<$Pris
  * Reference to a field of type 'CompanySize[]'
  */
 export type ListEnumCompanySizeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CompanySize[]'>
+    
+
+
+/**
+ * Reference to a field of type 'JobSource'
+ */
+export type EnumJobSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'JobSource'>
+    
+
+
+/**
+ * Reference to a field of type 'JobSource[]'
+ */
+export type ListEnumJobSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'JobSource[]'>
     
 
 

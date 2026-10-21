@@ -54,6 +54,7 @@ export type CompanyMinAggregateOutputType = {
   brandColor: string | null
   verified: boolean | null
   premiumUntil: Date | null
+  importSource: $Enums.JobSource | null
   followerCount: number | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -77,6 +78,7 @@ export type CompanyMaxAggregateOutputType = {
   brandColor: string | null
   verified: boolean | null
   premiumUntil: Date | null
+  importSource: $Enums.JobSource | null
   followerCount: number | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -102,6 +104,7 @@ export type CompanyCountAggregateOutputType = {
   brandColor: number
   verified: number
   premiumUntil: number
+  importSource: number
   followerCount: number
   createdAt: number
   updatedAt: number
@@ -137,6 +140,7 @@ export type CompanyMinAggregateInputType = {
   brandColor?: true
   verified?: true
   premiumUntil?: true
+  importSource?: true
   followerCount?: true
   createdAt?: true
   updatedAt?: true
@@ -160,6 +164,7 @@ export type CompanyMaxAggregateInputType = {
   brandColor?: true
   verified?: true
   premiumUntil?: true
+  importSource?: true
   followerCount?: true
   createdAt?: true
   updatedAt?: true
@@ -185,6 +190,7 @@ export type CompanyCountAggregateInputType = {
   brandColor?: true
   verified?: true
   premiumUntil?: true
+  importSource?: true
   followerCount?: true
   createdAt?: true
   updatedAt?: true
@@ -297,6 +303,7 @@ export type CompanyGroupByOutputType = {
   brandColor: string | null
   verified: boolean
   premiumUntil: Date | null
+  importSource: $Enums.JobSource | null
   followerCount: number
   createdAt: Date
   updatedAt: Date
@@ -345,6 +352,7 @@ export type CompanyWhereInput = {
   brandColor?: Prisma.StringNullableFilter<"Company"> | string | null
   verified?: Prisma.BoolFilter<"Company"> | boolean
   premiumUntil?: Prisma.DateTimeNullableFilter<"Company"> | Date | string | null
+  importSource?: Prisma.EnumJobSourceNullableFilter<"Company"> | $Enums.JobSource | null
   followerCount?: Prisma.IntFilter<"Company"> | number
   createdAt?: Prisma.DateTimeFilter<"Company"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Company"> | Date | string
@@ -380,6 +388,7 @@ export type CompanyOrderByWithRelationInput = {
   brandColor?: Prisma.SortOrderInput | Prisma.SortOrder
   verified?: Prisma.SortOrder
   premiumUntil?: Prisma.SortOrderInput | Prisma.SortOrder
+  importSource?: Prisma.SortOrderInput | Prisma.SortOrder
   followerCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -418,6 +427,7 @@ export type CompanyWhereUniqueInput = Prisma.AtLeast<{
   brandColor?: Prisma.StringNullableFilter<"Company"> | string | null
   verified?: Prisma.BoolFilter<"Company"> | boolean
   premiumUntil?: Prisma.DateTimeNullableFilter<"Company"> | Date | string | null
+  importSource?: Prisma.EnumJobSourceNullableFilter<"Company"> | $Enums.JobSource | null
   followerCount?: Prisma.IntFilter<"Company"> | number
   createdAt?: Prisma.DateTimeFilter<"Company"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Company"> | Date | string
@@ -453,6 +463,7 @@ export type CompanyOrderByWithAggregationInput = {
   brandColor?: Prisma.SortOrderInput | Prisma.SortOrder
   verified?: Prisma.SortOrder
   premiumUntil?: Prisma.SortOrderInput | Prisma.SortOrder
+  importSource?: Prisma.SortOrderInput | Prisma.SortOrder
   followerCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -486,6 +497,7 @@ export type CompanyScalarWhereWithAggregatesInput = {
   brandColor?: Prisma.StringNullableWithAggregatesFilter<"Company"> | string | null
   verified?: Prisma.BoolWithAggregatesFilter<"Company"> | boolean
   premiumUntil?: Prisma.DateTimeNullableWithAggregatesFilter<"Company"> | Date | string | null
+  importSource?: Prisma.EnumJobSourceNullableWithAggregatesFilter<"Company"> | $Enums.JobSource | null
   followerCount?: Prisma.IntWithAggregatesFilter<"Company"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Company"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Company"> | Date | string
@@ -510,6 +522,7 @@ export type CompanyCreateInput = {
   brandColor?: string | null
   verified?: boolean
   premiumUntil?: Date | string | null
+  importSource?: $Enums.JobSource | null
   followerCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -545,6 +558,7 @@ export type CompanyUncheckedCreateInput = {
   brandColor?: string | null
   verified?: boolean
   premiumUntil?: Date | string | null
+  importSource?: $Enums.JobSource | null
   followerCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -578,6 +592,7 @@ export type CompanyUpdateInput = {
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  importSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
   followerCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -613,6 +628,7 @@ export type CompanyUncheckedUpdateInput = {
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  importSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
   followerCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -647,6 +663,7 @@ export type CompanyCreateManyInput = {
   brandColor?: string | null
   verified?: boolean
   premiumUntil?: Date | string | null
+  importSource?: $Enums.JobSource | null
   followerCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -671,6 +688,7 @@ export type CompanyUpdateManyMutationInput = {
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  importSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
   followerCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -696,6 +714,7 @@ export type CompanyUncheckedUpdateManyInput = {
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  importSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
   followerCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -736,6 +755,7 @@ export type CompanyCountOrderByAggregateInput = {
   brandColor?: Prisma.SortOrder
   verified?: Prisma.SortOrder
   premiumUntil?: Prisma.SortOrder
+  importSource?: Prisma.SortOrder
   followerCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -764,6 +784,7 @@ export type CompanyMaxOrderByAggregateInput = {
   brandColor?: Prisma.SortOrder
   verified?: Prisma.SortOrder
   premiumUntil?: Prisma.SortOrder
+  importSource?: Prisma.SortOrder
   followerCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -787,6 +808,7 @@ export type CompanyMinOrderByAggregateInput = {
   brandColor?: Prisma.SortOrder
   verified?: Prisma.SortOrder
   premiumUntil?: Prisma.SortOrder
+  importSource?: Prisma.SortOrder
   followerCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -880,6 +902,10 @@ export type CompanyUpdatebenefitsInput = {
 export type CompanyUpdatevaluesInput = {
   set?: string[]
   push?: string | string[]
+}
+
+export type NullableEnumJobSourceFieldUpdateOperationsInput = {
+  set?: $Enums.JobSource | null
 }
 
 export type CompanyCreateNestedOneWithoutMembersInput = {
@@ -1021,6 +1047,7 @@ export type CompanyCreateWithoutExperiencesInput = {
   brandColor?: string | null
   verified?: boolean
   premiumUntil?: Date | string | null
+  importSource?: $Enums.JobSource | null
   followerCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1055,6 +1082,7 @@ export type CompanyUncheckedCreateWithoutExperiencesInput = {
   brandColor?: string | null
   verified?: boolean
   premiumUntil?: Date | string | null
+  importSource?: $Enums.JobSource | null
   followerCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1103,6 +1131,7 @@ export type CompanyUpdateWithoutExperiencesInput = {
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  importSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
   followerCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1137,6 +1166,7 @@ export type CompanyUncheckedUpdateWithoutExperiencesInput = {
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  importSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
   followerCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1169,6 +1199,7 @@ export type CompanyCreateWithoutIndustryInput = {
   brandColor?: string | null
   verified?: boolean
   premiumUntil?: Date | string | null
+  importSource?: $Enums.JobSource | null
   followerCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1202,6 +1233,7 @@ export type CompanyUncheckedCreateWithoutIndustryInput = {
   brandColor?: string | null
   verified?: boolean
   premiumUntil?: Date | string | null
+  importSource?: $Enums.JobSource | null
   followerCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1265,6 +1297,7 @@ export type CompanyScalarWhereInput = {
   brandColor?: Prisma.StringNullableFilter<"Company"> | string | null
   verified?: Prisma.BoolFilter<"Company"> | boolean
   premiumUntil?: Prisma.DateTimeNullableFilter<"Company"> | Date | string | null
+  importSource?: Prisma.EnumJobSourceNullableFilter<"Company"> | $Enums.JobSource | null
   followerCount?: Prisma.IntFilter<"Company"> | number
   createdAt?: Prisma.DateTimeFilter<"Company"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Company"> | Date | string
@@ -1289,6 +1322,7 @@ export type CompanyCreateWithoutMembersInput = {
   brandColor?: string | null
   verified?: boolean
   premiumUntil?: Date | string | null
+  importSource?: $Enums.JobSource | null
   followerCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1323,6 +1357,7 @@ export type CompanyUncheckedCreateWithoutMembersInput = {
   brandColor?: string | null
   verified?: boolean
   premiumUntil?: Date | string | null
+  importSource?: $Enums.JobSource | null
   followerCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1371,6 +1406,7 @@ export type CompanyUpdateWithoutMembersInput = {
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  importSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
   followerCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1405,6 +1441,7 @@ export type CompanyUncheckedUpdateWithoutMembersInput = {
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  importSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
   followerCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1437,6 +1474,7 @@ export type CompanyCreateWithoutFollowersInput = {
   brandColor?: string | null
   verified?: boolean
   premiumUntil?: Date | string | null
+  importSource?: $Enums.JobSource | null
   followerCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1471,6 +1509,7 @@ export type CompanyUncheckedCreateWithoutFollowersInput = {
   brandColor?: string | null
   verified?: boolean
   premiumUntil?: Date | string | null
+  importSource?: $Enums.JobSource | null
   followerCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1519,6 +1558,7 @@ export type CompanyUpdateWithoutFollowersInput = {
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  importSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
   followerCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1553,6 +1593,7 @@ export type CompanyUncheckedUpdateWithoutFollowersInput = {
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  importSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
   followerCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1585,6 +1626,7 @@ export type CompanyCreateWithoutMediaInput = {
   brandColor?: string | null
   verified?: boolean
   premiumUntil?: Date | string | null
+  importSource?: $Enums.JobSource | null
   followerCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1619,6 +1661,7 @@ export type CompanyUncheckedCreateWithoutMediaInput = {
   brandColor?: string | null
   verified?: boolean
   premiumUntil?: Date | string | null
+  importSource?: $Enums.JobSource | null
   followerCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1667,6 +1710,7 @@ export type CompanyUpdateWithoutMediaInput = {
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  importSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
   followerCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1701,6 +1745,7 @@ export type CompanyUncheckedUpdateWithoutMediaInput = {
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  importSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
   followerCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1733,6 +1778,7 @@ export type CompanyCreateWithoutJobsInput = {
   brandColor?: string | null
   verified?: boolean
   premiumUntil?: Date | string | null
+  importSource?: $Enums.JobSource | null
   followerCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1767,6 +1813,7 @@ export type CompanyUncheckedCreateWithoutJobsInput = {
   brandColor?: string | null
   verified?: boolean
   premiumUntil?: Date | string | null
+  importSource?: $Enums.JobSource | null
   followerCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1815,6 +1862,7 @@ export type CompanyUpdateWithoutJobsInput = {
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  importSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
   followerCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1849,6 +1897,7 @@ export type CompanyUncheckedUpdateWithoutJobsInput = {
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  importSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
   followerCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1881,6 +1930,7 @@ export type CompanyCreateWithoutPostsInput = {
   brandColor?: string | null
   verified?: boolean
   premiumUntil?: Date | string | null
+  importSource?: $Enums.JobSource | null
   followerCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1915,6 +1965,7 @@ export type CompanyUncheckedCreateWithoutPostsInput = {
   brandColor?: string | null
   verified?: boolean
   premiumUntil?: Date | string | null
+  importSource?: $Enums.JobSource | null
   followerCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1963,6 +2014,7 @@ export type CompanyUpdateWithoutPostsInput = {
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  importSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
   followerCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1997,6 +2049,7 @@ export type CompanyUncheckedUpdateWithoutPostsInput = {
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  importSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
   followerCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2029,6 +2082,7 @@ export type CompanyCreateWithoutSharedInInput = {
   brandColor?: string | null
   verified?: boolean
   premiumUntil?: Date | string | null
+  importSource?: $Enums.JobSource | null
   followerCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2063,6 +2117,7 @@ export type CompanyUncheckedCreateWithoutSharedInInput = {
   brandColor?: string | null
   verified?: boolean
   premiumUntil?: Date | string | null
+  importSource?: $Enums.JobSource | null
   followerCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2111,6 +2166,7 @@ export type CompanyUpdateWithoutSharedInInput = {
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  importSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
   followerCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2145,6 +2201,7 @@ export type CompanyUncheckedUpdateWithoutSharedInInput = {
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  importSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
   followerCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2177,6 +2234,7 @@ export type CompanyCreateWithoutSubscriptionsInput = {
   brandColor?: string | null
   verified?: boolean
   premiumUntil?: Date | string | null
+  importSource?: $Enums.JobSource | null
   followerCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2211,6 +2269,7 @@ export type CompanyUncheckedCreateWithoutSubscriptionsInput = {
   brandColor?: string | null
   verified?: boolean
   premiumUntil?: Date | string | null
+  importSource?: $Enums.JobSource | null
   followerCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2259,6 +2318,7 @@ export type CompanyUpdateWithoutSubscriptionsInput = {
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  importSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
   followerCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2293,6 +2353,7 @@ export type CompanyUncheckedUpdateWithoutSubscriptionsInput = {
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  importSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
   followerCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2325,6 +2386,7 @@ export type CompanyCreateWithoutPaymentsInput = {
   brandColor?: string | null
   verified?: boolean
   premiumUntil?: Date | string | null
+  importSource?: $Enums.JobSource | null
   followerCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2359,6 +2421,7 @@ export type CompanyUncheckedCreateWithoutPaymentsInput = {
   brandColor?: string | null
   verified?: boolean
   premiumUntil?: Date | string | null
+  importSource?: $Enums.JobSource | null
   followerCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2407,6 +2470,7 @@ export type CompanyUpdateWithoutPaymentsInput = {
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  importSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
   followerCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2441,6 +2505,7 @@ export type CompanyUncheckedUpdateWithoutPaymentsInput = {
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  importSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
   followerCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2473,6 +2538,7 @@ export type CompanyCreateManyIndustryInput = {
   brandColor?: string | null
   verified?: boolean
   premiumUntil?: Date | string | null
+  importSource?: $Enums.JobSource | null
   followerCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2497,6 +2563,7 @@ export type CompanyUpdateWithoutIndustryInput = {
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  importSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
   followerCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2530,6 +2597,7 @@ export type CompanyUncheckedUpdateWithoutIndustryInput = {
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  importSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
   followerCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2563,6 +2631,7 @@ export type CompanyUncheckedUpdateManyWithoutIndustryInput = {
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  importSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
   followerCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2691,6 +2760,7 @@ export type CompanySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   brandColor?: boolean
   verified?: boolean
   premiumUntil?: boolean
+  importSource?: boolean
   followerCount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -2727,6 +2797,7 @@ export type CompanySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   brandColor?: boolean
   verified?: boolean
   premiumUntil?: boolean
+  importSource?: boolean
   followerCount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -2753,6 +2824,7 @@ export type CompanySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   brandColor?: boolean
   verified?: boolean
   premiumUntil?: boolean
+  importSource?: boolean
   followerCount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -2779,12 +2851,13 @@ export type CompanySelectScalar = {
   brandColor?: boolean
   verified?: boolean
   premiumUntil?: boolean
+  importSource?: boolean
   followerCount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type CompanyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "name" | "tagline" | "about" | "logoUrl" | "coverUrl" | "website" | "industryId" | "size" | "foundedYear" | "city" | "countryCode" | "benefits" | "values" | "cultureText" | "brandColor" | "verified" | "premiumUntil" | "followerCount" | "createdAt" | "updatedAt", ExtArgs["result"]["company"]>
+export type CompanyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "name" | "tagline" | "about" | "logoUrl" | "coverUrl" | "website" | "industryId" | "size" | "foundedYear" | "city" | "countryCode" | "benefits" | "values" | "cultureText" | "brandColor" | "verified" | "premiumUntil" | "importSource" | "followerCount" | "createdAt" | "updatedAt", ExtArgs["result"]["company"]>
 export type CompanyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   industry?: boolean | Prisma.Company$industryArgs<ExtArgs>
   members?: boolean | Prisma.Company$membersArgs<ExtArgs>
@@ -2839,6 +2912,7 @@ export type $CompanyPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     brandColor: string | null
     verified: boolean
     premiumUntil: Date | null
+    importSource: $Enums.JobSource | null
     followerCount: number
     createdAt: Date
     updatedAt: Date
@@ -3294,6 +3368,7 @@ export interface CompanyFieldRefs {
   readonly brandColor: Prisma.FieldRef<"Company", 'String'>
   readonly verified: Prisma.FieldRef<"Company", 'Boolean'>
   readonly premiumUntil: Prisma.FieldRef<"Company", 'DateTime'>
+  readonly importSource: Prisma.FieldRef<"Company", 'JobSource'>
   readonly followerCount: Prisma.FieldRef<"Company", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Company", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Company", 'DateTime'>

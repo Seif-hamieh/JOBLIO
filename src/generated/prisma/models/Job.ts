@@ -72,6 +72,9 @@ export type JobMinAggregateOutputType = {
   featuredUntil: Date | null
   sponsoredUntil: Date | null
   urgentUntil: Date | null
+  externalSource: $Enums.JobSource | null
+  externalId: string | null
+  externalUrl: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -104,6 +107,9 @@ export type JobMaxAggregateOutputType = {
   featuredUntil: Date | null
   sponsoredUntil: Date | null
   urgentUntil: Date | null
+  externalSource: $Enums.JobSource | null
+  externalId: string | null
+  externalUrl: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -139,6 +145,9 @@ export type JobCountAggregateOutputType = {
   featuredUntil: number
   sponsoredUntil: number
   urgentUntil: number
+  externalSource: number
+  externalId: number
+  externalUrl: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -191,6 +200,9 @@ export type JobMinAggregateInputType = {
   featuredUntil?: true
   sponsoredUntil?: true
   urgentUntil?: true
+  externalSource?: true
+  externalId?: true
+  externalUrl?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -223,6 +235,9 @@ export type JobMaxAggregateInputType = {
   featuredUntil?: true
   sponsoredUntil?: true
   urgentUntil?: true
+  externalSource?: true
+  externalId?: true
+  externalUrl?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -258,6 +273,9 @@ export type JobCountAggregateInputType = {
   featuredUntil?: true
   sponsoredUntil?: true
   urgentUntil?: true
+  externalSource?: true
+  externalId?: true
+  externalUrl?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -380,6 +398,9 @@ export type JobGroupByOutputType = {
   featuredUntil: Date | null
   sponsoredUntil: Date | null
   urgentUntil: Date | null
+  externalSource: $Enums.JobSource | null
+  externalId: string | null
+  externalUrl: string | null
   createdAt: Date
   updatedAt: Date
   _count: JobCountAggregateOutputType | null
@@ -438,6 +459,9 @@ export type JobWhereInput = {
   featuredUntil?: Prisma.DateTimeNullableFilter<"Job"> | Date | string | null
   sponsoredUntil?: Prisma.DateTimeNullableFilter<"Job"> | Date | string | null
   urgentUntil?: Prisma.DateTimeNullableFilter<"Job"> | Date | string | null
+  externalSource?: Prisma.EnumJobSourceNullableFilter<"Job"> | $Enums.JobSource | null
+  externalId?: Prisma.StringNullableFilter<"Job"> | string | null
+  externalUrl?: Prisma.StringNullableFilter<"Job"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Job"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Job"> | Date | string
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
@@ -485,6 +509,9 @@ export type JobOrderByWithRelationInput = {
   featuredUntil?: Prisma.SortOrderInput | Prisma.SortOrder
   sponsoredUntil?: Prisma.SortOrderInput | Prisma.SortOrder
   urgentUntil?: Prisma.SortOrderInput | Prisma.SortOrder
+  externalSource?: Prisma.SortOrderInput | Prisma.SortOrder
+  externalId?: Prisma.SortOrderInput | Prisma.SortOrder
+  externalUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   company?: Prisma.CompanyOrderByWithRelationInput
@@ -503,6 +530,7 @@ export type JobOrderByWithRelationInput = {
 
 export type JobWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  externalSource_externalId?: Prisma.JobExternalSourceExternalIdCompoundUniqueInput
   AND?: Prisma.JobWhereInput | Prisma.JobWhereInput[]
   OR?: Prisma.JobWhereInput[]
   NOT?: Prisma.JobWhereInput | Prisma.JobWhereInput[]
@@ -535,6 +563,9 @@ export type JobWhereUniqueInput = Prisma.AtLeast<{
   featuredUntil?: Prisma.DateTimeNullableFilter<"Job"> | Date | string | null
   sponsoredUntil?: Prisma.DateTimeNullableFilter<"Job"> | Date | string | null
   urgentUntil?: Prisma.DateTimeNullableFilter<"Job"> | Date | string | null
+  externalSource?: Prisma.EnumJobSourceNullableFilter<"Job"> | $Enums.JobSource | null
+  externalId?: Prisma.StringNullableFilter<"Job"> | string | null
+  externalUrl?: Prisma.StringNullableFilter<"Job"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Job"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Job"> | Date | string
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
@@ -549,7 +580,7 @@ export type JobWhereUniqueInput = Prisma.AtLeast<{
   views?: Prisma.JobViewListRelationFilter
   posts?: Prisma.PostListRelationFilter
   sharedIn?: Prisma.MessageListRelationFilter
-}, "id">
+}, "id" | "externalSource_externalId">
 
 export type JobOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -582,6 +613,9 @@ export type JobOrderByWithAggregationInput = {
   featuredUntil?: Prisma.SortOrderInput | Prisma.SortOrder
   sponsoredUntil?: Prisma.SortOrderInput | Prisma.SortOrder
   urgentUntil?: Prisma.SortOrderInput | Prisma.SortOrder
+  externalSource?: Prisma.SortOrderInput | Prisma.SortOrder
+  externalId?: Prisma.SortOrderInput | Prisma.SortOrder
+  externalUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.JobCountOrderByAggregateInput
@@ -625,6 +659,9 @@ export type JobScalarWhereWithAggregatesInput = {
   featuredUntil?: Prisma.DateTimeNullableWithAggregatesFilter<"Job"> | Date | string | null
   sponsoredUntil?: Prisma.DateTimeNullableWithAggregatesFilter<"Job"> | Date | string | null
   urgentUntil?: Prisma.DateTimeNullableWithAggregatesFilter<"Job"> | Date | string | null
+  externalSource?: Prisma.EnumJobSourceNullableWithAggregatesFilter<"Job"> | $Enums.JobSource | null
+  externalId?: Prisma.StringNullableWithAggregatesFilter<"Job"> | string | null
+  externalUrl?: Prisma.StringNullableWithAggregatesFilter<"Job"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Job"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Job"> | Date | string
 }
@@ -657,6 +694,9 @@ export type JobCreateInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutJobsInput
@@ -704,6 +744,9 @@ export type JobUncheckedCreateInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   skills?: Prisma.JobSkillUncheckedCreateNestedManyWithoutJobInput
@@ -745,6 +788,9 @@ export type JobUpdateInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutJobsNestedInput
@@ -792,6 +838,9 @@ export type JobUncheckedUpdateInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobSkillUncheckedUpdateManyWithoutJobNestedInput
@@ -836,6 +885,9 @@ export type JobCreateManyInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -868,6 +920,9 @@ export type JobUpdateManyMutationInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -903,6 +958,9 @@ export type JobUncheckedUpdateManyInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -915,6 +973,11 @@ export type JobListRelationFilter = {
 
 export type JobOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type JobExternalSourceExternalIdCompoundUniqueInput = {
+  externalSource: $Enums.JobSource
+  externalId: string
 }
 
 export type JobCountOrderByAggregateInput = {
@@ -948,6 +1011,9 @@ export type JobCountOrderByAggregateInput = {
   featuredUntil?: Prisma.SortOrder
   sponsoredUntil?: Prisma.SortOrder
   urgentUntil?: Prisma.SortOrder
+  externalSource?: Prisma.SortOrder
+  externalId?: Prisma.SortOrder
+  externalUrl?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -989,6 +1055,9 @@ export type JobMaxOrderByAggregateInput = {
   featuredUntil?: Prisma.SortOrder
   sponsoredUntil?: Prisma.SortOrder
   urgentUntil?: Prisma.SortOrder
+  externalSource?: Prisma.SortOrder
+  externalId?: Prisma.SortOrder
+  externalUrl?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -1021,6 +1090,9 @@ export type JobMinOrderByAggregateInput = {
   featuredUntil?: Prisma.SortOrder
   sponsoredUntil?: Prisma.SortOrder
   urgentUntil?: Prisma.SortOrder
+  externalSource?: Prisma.SortOrder
+  externalId?: Prisma.SortOrder
+  externalUrl?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -1367,6 +1439,9 @@ export type JobCreateWithoutPostedByInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutJobsInput
@@ -1412,6 +1487,9 @@ export type JobUncheckedCreateWithoutPostedByInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   skills?: Prisma.JobSkillUncheckedCreateNestedManyWithoutJobInput
@@ -1485,6 +1563,9 @@ export type JobScalarWhereInput = {
   featuredUntil?: Prisma.DateTimeNullableFilter<"Job"> | Date | string | null
   sponsoredUntil?: Prisma.DateTimeNullableFilter<"Job"> | Date | string | null
   urgentUntil?: Prisma.DateTimeNullableFilter<"Job"> | Date | string | null
+  externalSource?: Prisma.EnumJobSourceNullableFilter<"Job"> | $Enums.JobSource | null
+  externalId?: Prisma.StringNullableFilter<"Job"> | string | null
+  externalUrl?: Prisma.StringNullableFilter<"Job"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Job"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Job"> | Date | string
 }
@@ -1517,6 +1598,9 @@ export type JobCreateWithoutIndustryInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutJobsInput
@@ -1562,6 +1646,9 @@ export type JobUncheckedCreateWithoutIndustryInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   skills?: Prisma.JobSkillUncheckedCreateNestedManyWithoutJobInput
@@ -1629,6 +1716,9 @@ export type JobCreateWithoutCompanyInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   postedBy: Prisma.UserCreateNestedOneWithoutPostedJobsInput
@@ -1674,6 +1764,9 @@ export type JobUncheckedCreateWithoutCompanyInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   skills?: Prisma.JobSkillUncheckedCreateNestedManyWithoutJobInput
@@ -1741,6 +1834,9 @@ export type JobCreateWithoutSkillsInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutJobsInput
@@ -1787,6 +1883,9 @@ export type JobUncheckedCreateWithoutSkillsInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   languages?: Prisma.JobLanguageUncheckedCreateNestedManyWithoutJobInput
@@ -1843,6 +1942,9 @@ export type JobUpdateWithoutSkillsInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutJobsNestedInput
@@ -1889,6 +1991,9 @@ export type JobUncheckedUpdateWithoutSkillsInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   languages?: Prisma.JobLanguageUncheckedUpdateManyWithoutJobNestedInput
@@ -1929,6 +2034,9 @@ export type JobCreateWithoutLanguagesInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutJobsInput
@@ -1975,6 +2083,9 @@ export type JobUncheckedCreateWithoutLanguagesInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   skills?: Prisma.JobSkillUncheckedCreateNestedManyWithoutJobInput
@@ -2031,6 +2142,9 @@ export type JobUpdateWithoutLanguagesInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutJobsNestedInput
@@ -2077,6 +2191,9 @@ export type JobUncheckedUpdateWithoutLanguagesInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobSkillUncheckedUpdateManyWithoutJobNestedInput
@@ -2117,6 +2234,9 @@ export type JobCreateWithoutPromotionsInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutJobsInput
@@ -2163,6 +2283,9 @@ export type JobUncheckedCreateWithoutPromotionsInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   skills?: Prisma.JobSkillUncheckedCreateNestedManyWithoutJobInput
@@ -2219,6 +2342,9 @@ export type JobUpdateWithoutPromotionsInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutJobsNestedInput
@@ -2265,6 +2391,9 @@ export type JobUncheckedUpdateWithoutPromotionsInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobSkillUncheckedUpdateManyWithoutJobNestedInput
@@ -2305,6 +2434,9 @@ export type JobCreateWithoutDailyStatsInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutJobsInput
@@ -2351,6 +2483,9 @@ export type JobUncheckedCreateWithoutDailyStatsInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   skills?: Prisma.JobSkillUncheckedCreateNestedManyWithoutJobInput
@@ -2407,6 +2542,9 @@ export type JobUpdateWithoutDailyStatsInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutJobsNestedInput
@@ -2453,6 +2591,9 @@ export type JobUncheckedUpdateWithoutDailyStatsInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobSkillUncheckedUpdateManyWithoutJobNestedInput
@@ -2493,6 +2634,9 @@ export type JobCreateWithoutViewsInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutJobsInput
@@ -2539,6 +2683,9 @@ export type JobUncheckedCreateWithoutViewsInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   skills?: Prisma.JobSkillUncheckedCreateNestedManyWithoutJobInput
@@ -2595,6 +2742,9 @@ export type JobUpdateWithoutViewsInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutJobsNestedInput
@@ -2641,6 +2791,9 @@ export type JobUncheckedUpdateWithoutViewsInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobSkillUncheckedUpdateManyWithoutJobNestedInput
@@ -2681,6 +2834,9 @@ export type JobCreateWithoutSavedByInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutJobsInput
@@ -2727,6 +2883,9 @@ export type JobUncheckedCreateWithoutSavedByInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   skills?: Prisma.JobSkillUncheckedCreateNestedManyWithoutJobInput
@@ -2783,6 +2942,9 @@ export type JobUpdateWithoutSavedByInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutJobsNestedInput
@@ -2829,6 +2991,9 @@ export type JobUncheckedUpdateWithoutSavedByInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobSkillUncheckedUpdateManyWithoutJobNestedInput
@@ -2869,6 +3034,9 @@ export type JobCreateWithoutApplicationsInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutJobsInput
@@ -2915,6 +3083,9 @@ export type JobUncheckedCreateWithoutApplicationsInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   skills?: Prisma.JobSkillUncheckedCreateNestedManyWithoutJobInput
@@ -2971,6 +3142,9 @@ export type JobUpdateWithoutApplicationsInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutJobsNestedInput
@@ -3017,6 +3191,9 @@ export type JobUncheckedUpdateWithoutApplicationsInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobSkillUncheckedUpdateManyWithoutJobNestedInput
@@ -3057,6 +3234,9 @@ export type JobCreateWithoutPostsInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutJobsInput
@@ -3103,6 +3283,9 @@ export type JobUncheckedCreateWithoutPostsInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   skills?: Prisma.JobSkillUncheckedCreateNestedManyWithoutJobInput
@@ -3159,6 +3342,9 @@ export type JobUpdateWithoutPostsInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutJobsNestedInput
@@ -3205,6 +3391,9 @@ export type JobUncheckedUpdateWithoutPostsInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobSkillUncheckedUpdateManyWithoutJobNestedInput
@@ -3245,6 +3434,9 @@ export type JobCreateWithoutSharedInInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutJobsInput
@@ -3291,6 +3483,9 @@ export type JobUncheckedCreateWithoutSharedInInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   skills?: Prisma.JobSkillUncheckedCreateNestedManyWithoutJobInput
@@ -3347,6 +3542,9 @@ export type JobUpdateWithoutSharedInInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutJobsNestedInput
@@ -3393,6 +3591,9 @@ export type JobUncheckedUpdateWithoutSharedInInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobSkillUncheckedUpdateManyWithoutJobNestedInput
@@ -3435,6 +3636,9 @@ export type JobCreateManyPostedByInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -3467,6 +3671,9 @@ export type JobUpdateWithoutPostedByInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutJobsNestedInput
@@ -3512,6 +3719,9 @@ export type JobUncheckedUpdateWithoutPostedByInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobSkillUncheckedUpdateManyWithoutJobNestedInput
@@ -3555,6 +3765,9 @@ export type JobUncheckedUpdateManyWithoutPostedByInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -3589,6 +3802,9 @@ export type JobCreateManyIndustryInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -3621,6 +3837,9 @@ export type JobUpdateWithoutIndustryInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutJobsNestedInput
@@ -3666,6 +3885,9 @@ export type JobUncheckedUpdateWithoutIndustryInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobSkillUncheckedUpdateManyWithoutJobNestedInput
@@ -3709,6 +3931,9 @@ export type JobUncheckedUpdateManyWithoutIndustryInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -3743,6 +3968,9 @@ export type JobCreateManyCompanyInput = {
   featuredUntil?: Date | string | null
   sponsoredUntil?: Date | string | null
   urgentUntil?: Date | string | null
+  externalSource?: $Enums.JobSource | null
+  externalId?: string | null
+  externalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -3775,6 +4003,9 @@ export type JobUpdateWithoutCompanyInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   postedBy?: Prisma.UserUpdateOneRequiredWithoutPostedJobsNestedInput
@@ -3820,6 +4051,9 @@ export type JobUncheckedUpdateWithoutCompanyInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobSkillUncheckedUpdateManyWithoutJobNestedInput
@@ -3863,6 +4097,9 @@ export type JobUncheckedUpdateManyWithoutCompanyInput = {
   featuredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sponsoredUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   urgentUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  externalSource?: Prisma.NullableEnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -4001,6 +4238,9 @@ export type JobSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
   featuredUntil?: boolean
   sponsoredUntil?: boolean
   urgentUntil?: boolean
+  externalSource?: boolean
+  externalId?: boolean
+  externalUrl?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
@@ -4049,6 +4289,9 @@ export type JobSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extension
   featuredUntil?: boolean
   sponsoredUntil?: boolean
   urgentUntil?: boolean
+  externalSource?: boolean
+  externalId?: boolean
+  externalUrl?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
@@ -4087,6 +4330,9 @@ export type JobSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extension
   featuredUntil?: boolean
   sponsoredUntil?: boolean
   urgentUntil?: boolean
+  externalSource?: boolean
+  externalId?: boolean
+  externalUrl?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
@@ -4125,11 +4371,14 @@ export type JobSelectScalar = {
   featuredUntil?: boolean
   sponsoredUntil?: boolean
   urgentUntil?: boolean
+  externalSource?: boolean
+  externalId?: boolean
+  externalUrl?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type JobOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "companyId" | "postedById" | "title" | "summary" | "description" | "responsibilities" | "requirements" | "benefits" | "workMode" | "employmentType" | "experienceLevel" | "minYearsExperience" | "educationLevel" | "city" | "countryCode" | "salaryMin" | "salaryMax" | "salaryCurrency" | "salaryPeriod" | "industryId" | "status" | "applicationCount" | "viewCount" | "saveCount" | "publishedAt" | "closesAt" | "featuredUntil" | "sponsoredUntil" | "urgentUntil" | "createdAt" | "updatedAt", ExtArgs["result"]["job"]>
+export type JobOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "companyId" | "postedById" | "title" | "summary" | "description" | "responsibilities" | "requirements" | "benefits" | "workMode" | "employmentType" | "experienceLevel" | "minYearsExperience" | "educationLevel" | "city" | "countryCode" | "salaryMin" | "salaryMax" | "salaryCurrency" | "salaryPeriod" | "industryId" | "status" | "applicationCount" | "viewCount" | "saveCount" | "publishedAt" | "closesAt" | "featuredUntil" | "sponsoredUntil" | "urgentUntil" | "externalSource" | "externalId" | "externalUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["job"]>
 export type JobInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   postedBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -4203,6 +4452,9 @@ export type $JobPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     featuredUntil: Date | null
     sponsoredUntil: Date | null
     urgentUntil: Date | null
+    externalSource: $Enums.JobSource | null
+    externalId: string | null
+    externalUrl: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["job"]>
@@ -4670,6 +4922,9 @@ export interface JobFieldRefs {
   readonly featuredUntil: Prisma.FieldRef<"Job", 'DateTime'>
   readonly sponsoredUntil: Prisma.FieldRef<"Job", 'DateTime'>
   readonly urgentUntil: Prisma.FieldRef<"Job", 'DateTime'>
+  readonly externalSource: Prisma.FieldRef<"Job", 'JobSource'>
+  readonly externalId: Prisma.FieldRef<"Job", 'String'>
+  readonly externalUrl: Prisma.FieldRef<"Job", 'String'>
   readonly createdAt: Prisma.FieldRef<"Job", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Job", 'DateTime'>
 }

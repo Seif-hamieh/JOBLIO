@@ -16,6 +16,7 @@ import {
   Users,
 } from "lucide-react";
 import { db } from "@/server/db";
+import { publicCompanyWhere } from "@/server/services/companies";
 import { HeroVisual } from "@/components/landing/hero-visual";
 import { MatchDemo } from "@/components/landing/match-demo";
 import { CareerJourney, type JourneyStep } from "@/components/profile/career-journey";
@@ -57,7 +58,7 @@ async function getLandingData() {
           skills: { take: 3, select: { skill: { select: { name: true } } } },
         },
       }),
-      db.company.findMany({ orderBy: { followerCount: "desc" }, take: 14, select: { slug: true, name: true, logoUrl: true, brandColor: true } }),
+      db.company.findMany({ where: publicCompanyWhere, orderBy: { followerCount: "desc" }, take: 14, select: { slug: true, name: true, logoUrl: true, brandColor: true } }),
     ]);
     // Hide the stats strip until the platform has enough content
     // to look credible. Skills is reference data (always populated), so we

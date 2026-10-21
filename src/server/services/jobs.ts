@@ -202,6 +202,9 @@ export async function jobsForYou(userId: string, opts: { limit?: number; minScor
 export const jobDetailSelect = {
   ...jobCardSelect,
   description: true,
+  // Imported listings: shown with "Source: …" and an Apply button to the original site.
+  externalSource: true,
+  externalUrl: true,
   responsibilities: true,
   requirements: true,
   benefits: true,

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { BadgeCheck, Briefcase, Building2, Search, Users } from "lucide-react";
 import { getViewer } from "@/server/session";
 import { db, type Prisma } from "@/server/db";
-import { companyCardSelect, listIndustries } from "@/server/services/companies";
+import { companyCardSelect, listIndustries, publicCompanyWhere } from "@/server/services/companies";
 import { expirePromotions } from "@/server/services/jobs";
 import { FollowCompanyButton } from "@/components/companies/follow-button";
 import { CompanyLogo } from "@/components/ui/avatar";
@@ -39,7 +39,8 @@ export default async function CompaniesPage({ searchParams }: PageProps<"/compan
     and.push({ OR: [{ city: { contains: location, mode: "insensitive" } }, ...(code ? [{ countryCode: code }] : [])] });
   }
   if (hiring) and.push({ jobs: { some: { status: "OPEN" } } });
-  const where: Prisma.CompanyWhereInput = { AND: and };
+  // Imported companies stay hidden until they have a published job.
+  const where: Prisma.CompanyWhereInput = { AND: [...and, publicCompanyWhere] };
 
   const [companies, total, industries, follows] = await Promise.all([
     db.company.findMany({

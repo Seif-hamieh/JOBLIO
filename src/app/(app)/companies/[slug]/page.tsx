@@ -27,8 +27,13 @@ const clip = (s: string | null | undefined, n = 160) => (s ? (s.length > n ? s.s
 
 export async function generateMetadata({ params }: PageProps<"/companies/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const c = await db.company.findUnique({ where: { slug }, select: { name: true, tagline: true, about: true } });
+  const [c, viewer] = await Promise.all([
+    db.company.findUnique({ where: { slug }, select: { name: true, tagline: true, about: true, importSource: true, _count: { select: { jobs: { where: { status: "OPEN" } } } } } }),
+    getViewer(),
+  ]);
   if (!c) notFound(); // real 404 status for crawlers
+  // Imported companies are hidden until they have a published job (admins can still review them).
+  if (c.importSource && c._count.jobs === 0 && !viewer?.isAdmin) notFound();
   const description = clip(c.tagline || c.about);
   return { title: c.name, description, openGraph: { type: "website", siteName: "JOBLIO", title: c.name, description } };
 }
@@ -45,6 +50,7 @@ export default async function CompanyPage({ params }: PageProps<"/companies/[slu
     },
   });
   if (!company) notFound();
+  if (company.importSource && company._count.jobs === 0 && !viewer?.isAdmin) notFound();
 
   const premium = !!company.premiumUntil && company.premiumUntil > new Date();
   const accent = premium && company.brandColor ? company.brandColor : null;

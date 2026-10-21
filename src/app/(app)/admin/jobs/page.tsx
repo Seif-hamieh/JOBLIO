@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input, Select } from "@/components/ui/field";
 import { Card, EmptyState, Pagination } from "@/components/ui/misc";
 import { JobActions } from "@/components/admin/job-actions";
+import { SOURCE_NAMES } from "@/server/job-import/normalize";
 
 const PAGE_SIZE = 50;
 const STATUSES = ["OPEN", "CLOSED", "DRAFT", "PAUSED"] as const;
@@ -35,7 +36,7 @@ export default async function AdminJobsPage({ searchParams }: { searchParams: Pr
       orderBy: { createdAt: "desc" },
       skip: (page - 1) * PAGE_SIZE,
       take: PAGE_SIZE,
-      select: { id: true, title: true, status: true, createdAt: true, featuredUntil: true, urgentUntil: true, company: { select: { name: true } } },
+      select: { id: true, title: true, status: true, createdAt: true, featuredUntil: true, urgentUntil: true, externalSource: true, company: { select: { name: true } } },
     }),
     db.job.count({ where }),
   ]);
@@ -99,7 +100,14 @@ export default async function AdminJobsPage({ searchParams }: { searchParams: Pr
                   const urgent = !!j.urgentUntil && j.urgentUntil > now;
                   return (
                     <tr key={j.id} className="border-b border-border last:border-0">
-                      <td className={`${td} max-w-64 truncate font-medium`}>{j.title}</td>
+                      <td className={`${td} max-w-64 font-medium`}>
+                        <span className="block truncate">{j.title}</span>
+                        {j.externalSource && (
+                          <Badge tone="outline" size="xs" className="mt-1">
+                            {t("admin.jobTable.importedFrom", { source: SOURCE_NAMES[j.externalSource] })}
+                          </Badge>
+                        )}
+                      </td>
                       <td className={`${td} text-fg-muted`}>{j.company.name}</td>
                       <td className={td}>
                         <Badge tone={STATUS_TONE[j.status]} size="xs">{t(`enums.jobStatus.${j.status}`)}</Badge>
@@ -112,7 +120,7 @@ export default async function AdminJobsPage({ searchParams }: { searchParams: Pr
                       </td>
                       <td className={`${td} whitespace-nowrap text-fg-muted`}>{f.date(j.createdAt, { day: "numeric", month: "short", year: "numeric" })}</td>
                       <td className={td}>
-                        <JobActions job={{ id: j.id, title: j.title, isOpen: j.status === "OPEN" }} />
+                        <JobActions job={{ id: j.id, title: j.title, isOpen: j.status === "OPEN", isDraft: j.status === "DRAFT" }} />
                       </td>
                     </tr>
                   );

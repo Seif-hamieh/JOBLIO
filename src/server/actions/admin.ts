@@ -7,6 +7,7 @@ import { fail, withViewer, type ActionState } from "@/server/action";
 import { LIMITS } from "@/server/rate-limit";
 import { k } from "@/i18n/message";
 import type { Viewer } from "@/server/session";
+import { refreshSitemap } from "@/server/sitemap";
 
 // Admin-only mutations. Each one re-checks the role from the database (getViewer) —
 // hiding buttons in the UI is not a security boundary.
@@ -29,6 +30,21 @@ export async function setUserRole(userId: string, role: "USER" | "ADMIN") {
     if (!count) return fail(k("admin.msg.userNotFound"));
     revalidatePath("/admin/users");
     return { ok: true, message: k(next === "ADMIN" ? "admin.msg.adminGranted" : "admin.msg.adminRevoked") };
+  });
+}
+
+/** Publishes a draft (e.g. an imported job after review): it goes live in search, the sitemap and — for an imported company — makes the company page public. */
+export async function publishJob(jobId: string) {
+  return asAdmin(async () => {
+    const id = Id.parse(jobId);
+    const job = await db.job.findUnique({ where: { id }, select: { status: true, publishedAt: true } });
+    if (!job) return fail(k("admin.msg.jobNotFound"));
+    if (job.status !== "DRAFT") return fail(k("admin.msg.jobNotDraft"));
+    await db.job.update({ where: { id }, data: { status: "OPEN", publishedAt: job.publishedAt ?? new Date() } });
+    refreshSitemap();
+    revalidatePath("/admin/jobs");
+    revalidatePath("/jobs");
+    return { ok: true, message: k("admin.msg.jobPublished") };
   });
 }
 

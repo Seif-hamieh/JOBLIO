@@ -316,6 +316,15 @@ export const ProductCode = {
 export type ProductCode = (typeof ProductCode)[keyof typeof ProductCode]
 
 
+export const JobSource = {
+  ARBEITNOW: 'ARBEITNOW',
+  JOBICY: 'JOBICY',
+  HIMALAYAS: 'HIMALAYAS'
+} as const
+
+export type JobSource = (typeof JobSource)[keyof typeof JobSource]
+
+
 export const PaymentStatus = {
   PENDING: 'PENDING',
   SUCCEEDED: 'SUCCEEDED',

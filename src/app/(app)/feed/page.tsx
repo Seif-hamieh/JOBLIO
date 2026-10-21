@@ -4,6 +4,7 @@ import { Hash, TrendingUp } from "lucide-react";
 import { requireViewer } from "@/server/session";
 import { getFeed } from "@/server/services/feed";
 import { composerData } from "@/server/services/composer";
+import { publicCompanyWhere } from "@/server/services/companies";
 import { suggestions, relationStates } from "@/server/services/network";
 import { db } from "@/server/db";
 import { Composer } from "@/components/feed/composer";
@@ -25,7 +26,7 @@ export default async function FeedPage({ searchParams }: PageProps<"/feed">) {
     composerData(viewer),
     suggestions(viewer.id, 4),
     db.company.findMany({
-      where: { followers: { none: { userId: viewer.id } }, members: { none: { userId: viewer.id } } },
+      where: { followers: { none: { userId: viewer.id } }, members: { none: { userId: viewer.id } }, ...publicCompanyWhere },
       orderBy: { followerCount: "desc" },
       take: 4,
       select: { id: true, slug: true, name: true, logoUrl: true, brandColor: true, tagline: true },
