@@ -16,30 +16,22 @@ export default function OpengraphImage() {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: "72px 80px",
-          background: "linear-gradient(135deg, #1b1840 0%, #2a2470 55%, #1f6f8f 100%)",
+          background: "radial-gradient(circle at 85% 0%, #2a1f6b 0%, #0a0a0c 55%)",
           color: "white",
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
-          <svg width="96" height="96" viewBox="0 0 32 32">
-            <defs>
-              <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stopColor="#5b46e5" />
-                <stop offset="1" stopColor="#2fa7d6" />
-              </linearGradient>
-            </defs>
-            <rect width="32" height="32" rx="9.5" fill="url(#g)" />
-            <path d="M19.4 9.2v8.9a5.3 5.3 0 0 1-10.6 0" stroke="#fff" strokeWidth="3.1" strokeLinecap="round" fill="none" />
-            <circle cx="19.4" cy="9.2" r="2.7" fill="#fff" />
-            <circle cx="24.6" cy="22.6" r="2" fill="#4fd1a5" />
+          <svg width="96" height="96" viewBox="0 0 40 40">
+            <path d="M27 6v17a8.5 8.5 0 0 1-17 0v-4" fill="none" stroke="#fff" strokeWidth="5" strokeLinecap="round" />
+            <path d="M10 9.5 4.8 17.8h10.4Z" fill="#8f7dff" stroke="#8f7dff" strokeWidth="1.6" strokeLinejoin="round" />
           </svg>
-          <div style={{ fontSize: 64, fontWeight: 700, letterSpacing: -2 }}>joblio</div>
+          <div style={{ fontSize: 64, fontWeight: 800, letterSpacing: -3 }}>joblio</div>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
           <div style={{ fontSize: 72, fontWeight: 700, lineHeight: 1.05, letterSpacing: -2 }}>Your Career. Your Network. Your Future.</div>
-          <div style={{ fontSize: 32, color: "rgba(255,255,255,0.75)" }}>Jobs, people and companies — with matching you can understand. No AI.</div>
+          <div style={{ fontSize: 32, color: "rgba(255,255,255,0.78)" }}>Jobs, people and companies — with matching you can understand. No AI.</div>
         </div>
-        <div style={{ display: "flex", fontSize: 26, color: "#4fd1a5" }}>getjoblio.app</div>
+        <div style={{ display: "flex", fontSize: 26, color: "#8f7dff" }}>getjoblio.app</div>
       </div>
     ),
     size,
