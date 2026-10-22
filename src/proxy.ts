@@ -40,10 +40,23 @@ async function memberExists(name: string) {
   return USERNAME.test(name) && !!(await db.user.findUnique({ where: { username: name }, select: { id: true } }));
 }
 
-async function exists(kind: string, key: string) {
-  if (kind === "jobs") return NOT_A_JOB.has(key) || !!(await db.job.findUnique({ where: { id: key }, select: { id: true } }));
-  if (kind === "companies") return !!(await db.company.findUnique({ where: { slug: key }, select: { id: true } }));
-  return !!(await db.user.findUnique({ where: { username: key }, select: { id: true } }));
+// "missing": no such row (404). "gone": the row exists but is no longer public — a job that was
+// closed, paused or never published, or an imported company with no open job — answered with
+// 410 Gone so search engines drop the URL instead of reporting it as broken.
+async function detailState(kind: string, key: string): Promise<"ok" | "missing" | "gone"> {
+  if (kind === "jobs") {
+    if (NOT_A_JOB.has(key)) return "ok";
+    const job = await db.job.findUnique({ where: { id: key }, select: { status: true } });
+    return !job ? "missing" : job.status === "OPEN" ? "ok" : "gone";
+  }
+  if (kind === "companies") {
+    const company = await db.company.findUnique({
+      where: { slug: key },
+      select: { importSource: true, _count: { select: { jobs: { where: { status: "OPEN" } } } } },
+    });
+    return !company ? "missing" : company.importSource && company._count.jobs === 0 ? "gone" : "ok";
+  }
+  return (await db.user.findUnique({ where: { username: key }, select: { id: true } })) ? "ok" : "missing";
 }
 
 export async function proxy(request: NextRequest) {
@@ -62,9 +75,16 @@ export async function proxy(request: NextRequest) {
 
   const detail = pathname.match(DETAIL);
   if (detail && request.method === "GET" && !request.headers.get("rsc")) {
-    const ok = await exists(detail[1]!, decodeURIComponent(detail[2]!)).catch(() => true); // never block a page on a DB hiccup
+    const state = await detailState(detail[1]!, decodeURIComponent(detail[2]!)).catch(() => "ok" as const); // never block a page on a DB hiccup
     // A path no route matches renders the not-found page with a real 404 status.
-    if (!ok) return NextResponse.rewrite(new URL("/_missing/not-found", request.url), { status: 404 });
+    if (state === "missing") return NextResponse.rewrite(new URL("/_missing/not-found", request.url), { status: 404 });
+    // Removed listings: 410 for visitors (and crawlers). Signed-in members still reach the page,
+    // which lets the posting team and admins see closed jobs and hidden companies.
+    if (state === "gone" && !hasSession) {
+      const gone = new URL("/gone", request.url);
+      gone.searchParams.set("kind", detail[1] === "companies" ? "company" : "job");
+      return NextResponse.rewrite(gone, { status: 410 });
+    }
   }
 
   // Only document loads (not RSC, not images/files such as /apple-icon.png).

@@ -12,6 +12,10 @@ export const en = {
     candidate: "Candidate",
     notFound: "Page not found",
     notFoundBody: "The page you're looking for doesn't exist or is no longer available.",
+    goneJob: "This job is no longer available",
+    goneJobBody: "It was filled or closed by the employer. Plenty of other open roles are waiting for you.",
+    goneCompany: "This company page is no longer available",
+    goneCompanyBody: "It has no open jobs right now. Browse the latest jobs instead.",
   },
   common: {
     skipToContent: "Skip to content",
