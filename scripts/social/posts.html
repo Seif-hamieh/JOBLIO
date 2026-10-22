@@ -1,0 +1,144 @@
+<!doctype html>
+<!--
+  JOBLIO social posts (1080×1080). Open in a browser to see all three side by side;
+  render one with ?p=1|2|3 (see render.sh). site.png is a screenshot of the live home page.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>JOBLIO social posts</title>
+<style>
+  @font-face {
+    font-family: "Inter";
+    src: url("../../src/fonts/inter-latin.woff2") format("woff2");
+    font-weight: 100 900;
+  }
+  :root {
+    --ink: #09090b;
+    --ink-2: #131318;
+    --line: #26262e;
+    --white: #fafafa;
+    --muted: #a1a1aa;
+    --violet: #7c66f6;
+    --violet-soft: #a594ff;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: #000; font-family: "Inter", system-ui, sans-serif; color: var(--white); -webkit-font-smoothing: antialiased; }
+  .grid { display: flex; gap: 40px; padding: 40px; width: max-content; }
+  body.single .grid { padding: 0; gap: 0; }
+  body.single .post:not(.on) { display: none; }
+
+  .post {
+    position: relative; width: 1080px; height: 1080px; overflow: hidden;
+    background: var(--ink); padding: 84px 88px;
+    display: flex; flex-direction: column;
+    font-feature-settings: "cv11", "ss01", "ss03";
+  }
+  .glow { position: absolute; border-radius: 50%; pointer-events: none; }
+  .brand { display: flex; align-items: center; gap: 14px; font-size: 40px; font-weight: 800; letter-spacing: -0.05em; }
+  .brand svg { width: 46px; height: 46px; }
+  .url { font-size: 26px; font-weight: 500; color: var(--muted); letter-spacing: -0.01em; }
+  h1 { font-weight: 800; letter-spacing: -0.045em; line-height: 0.98; }
+  .v { color: var(--violet-soft); }
+  .top { display: flex; justify-content: space-between; align-items: center; position: relative; }
+  .pill { border: 1.5px solid var(--line); border-radius: 999px; padding: 10px 22px; font-size: 22px; font-weight: 600; color: var(--muted); }
+
+  /* Post 1 */
+  .p1 h1 { font-size: 112px; margin-top: 70px; position: relative; }
+  .p1 h1 .s { display: block; color: var(--muted); font-size: 64px; letter-spacing: -0.035em; margin-bottom: 18px; font-weight: 700; }
+  .shot {
+    position: absolute; left: 88px; right: -60px; bottom: -40px; height: 470px;
+    border: 1.5px solid #34343d; border-radius: 22px; overflow: hidden; background: var(--ink-2);
+    box-shadow: 0 -30px 80px rgb(124 102 246 / 0.18);
+  }
+  .shot .bar { height: 44px; display: flex; align-items: center; gap: 10px; padding: 0 20px; border-bottom: 1.5px solid #26262e; background: #111116; }
+  .shot .bar i { width: 13px; height: 13px; border-radius: 50%; background: #3a3a44; }
+  .shot .bar span { margin-left: 18px; font-size: 17px; color: var(--muted); background: #1b1b22; padding: 5px 16px; border-radius: 8px; }
+  .shot img { display: block; width: 1300px; }
+
+  /* Post 2 */
+  .p2 h1 { font-size: 96px; margin-top: 64px; position: relative; }
+  .cards { display: grid; gap: 22px; margin-top: auto; position: relative; }
+  .card { display: flex; align-items: center; gap: 30px; border: 1.5px solid var(--line); background: var(--ink-2); border-radius: 26px; padding: 30px 36px; }
+  .card b { flex: none; display: grid; place-items: center; width: 92px; height: 92px; border-radius: 22px; background: rgb(124 102 246 / 0.14); border: 1.5px solid rgb(124 102 246 / 0.35); color: var(--violet-soft); font-size: 38px; font-weight: 800; letter-spacing: -0.04em; }
+  .card div { font-size: 40px; font-weight: 700; letter-spacing: -0.03em; }
+  .card small { display: block; font-size: 24px; font-weight: 500; color: var(--muted); letter-spacing: -0.01em; margin-top: 6px; }
+
+  /* Post 3 */
+  .p3 { align-items: center; text-align: center; }
+  .p3 .center { margin: auto 0; display: flex; flex-direction: column; align-items: center; position: relative; }
+  .p3 .mark { width: 150px; height: 150px; border-radius: 40px; background: var(--ink-2); border: 1.5px solid var(--line); display: grid; place-items: center; margin-bottom: 56px; }
+  .p3 .mark svg { width: 92px; height: 92px; }
+  .p3 h1 { font-size: 118px; }
+  .cta {
+    margin-top: 64px; display: inline-flex; align-items: center; gap: 18px;
+    background: var(--violet); color: #fff; border-radius: 999px; padding: 34px 64px;
+    font-size: 48px; font-weight: 700; letter-spacing: -0.025em;
+    box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.22), 0 24px 70px -10px rgb(124 102 246 / 0.65);
+  }
+  .cta svg { width: 44px; height: 44px; }
+  .p3 .foot { position: relative; display: flex; justify-content: center; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="mark" viewBox="2.6 2.6 28.8 33.8">
+    <path d="M27 6v17a8.5 8.5 0 0 1-17 0v-4" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" />
+    <path d="M10 9.5 4.8 17.8h10.4Z" fill="#8f7dff" stroke="#8f7dff" stroke-width="1.6" stroke-linejoin="round" />
+  </symbol>
+</svg>
+
+<div class="grid">
+  <!-- 1. Hook -->
+  <section class="post p1" data-p="1">
+    <div class="glow" style="width:900px;height:900px;right:-380px;top:-420px;background:radial-gradient(closest-side,rgb(124 102 246 / 0.28),transparent)"></div>
+    <div class="top">
+      <div class="brand"><svg><use href="#mark" /></svg>joblio</div>
+      <div class="url">getjoblio.app</div>
+    </div>
+    <h1><span class="s">Stop scrolling.</span>Your next <span class="v">remote job</span> is here.</h1>
+    <div class="shot">
+      <div class="bar"><i></i><i></i><i></i><span>getjoblio.app</span></div>
+      <img src="site.png" alt="" />
+    </div>
+  </section>
+
+  <!-- 2. Value -->
+  <section class="post p2" data-p="2">
+    <div class="glow" style="width:1000px;height:1000px;left:-460px;bottom:-520px;background:radial-gradient(closest-side,rgb(124 102 246 / 0.24),transparent)"></div>
+    <div class="top">
+      <div class="brand"><svg><use href="#mark" /></svg>joblio</div>
+      <div class="pill">Why joblio</div>
+    </div>
+    <h1>Top <span class="v">Global &amp; MENA</span><br />jobs. One place.</h1>
+    <div class="cards">
+      <div class="card"><b><svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5" /><path d="M2.5 12h19M12 2.5c2.6 2.8 3.9 6 3.9 9.5S14.6 18.7 12 21.5M12 2.5C9.4 5.3 8.1 8.5 8.1 12s1.3 6.7 3.9 9.5" /></svg></b><div>Global &amp; MENA jobs<small>Remote and on-site roles, updated daily</small></div></div>
+      <div class="card"><b>0</b><div>Hidden algorithms<small>See exactly why a job matches you</small></div></div>
+      <div class="card"><b style="font-size:29px">100%</b><div>Free to join &amp; apply<small>No fees for job seekers</small></div></div>
+    </div>
+  </section>
+
+  <!-- 3. Call to action -->
+  <section class="post p3" data-p="3">
+    <div class="glow" style="width:1100px;height:1100px;left:-10px;top:-80px;background:radial-gradient(closest-side,rgb(124 102 246 / 0.26),transparent)"></div>
+    <div class="center">
+      <div class="mark"><svg><use href="#mark" /></svg></div>
+      <h1>Find your<br /><span class="v">dream job</span> today.</h1>
+      <div class="cta">
+        Link in bio
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg>
+      </div>
+    </div>
+    <div class="foot"><div class="url">getjoblio.app</div></div>
+  </section>
+</div>
+
+<script>
+  const p = new URLSearchParams(location.search).get("p");
+  if (p) {
+    document.body.classList.add("single");
+    document.querySelector(`.post[data-p="${p}"]`).classList.add("on");
+  }
+</script>
+</body>
+</html>
