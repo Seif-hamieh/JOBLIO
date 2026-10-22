@@ -12,7 +12,7 @@ export function CardHeader({ title, description, action, className }: { title: R
   return (
     <div className={cn("flex items-start justify-between gap-4", className)}>
       <div className="min-w-0">
-        <h3 className="font-display text-[15px] font-semibold">{title}</h3>
+        <h3 className="font-display text-[15px] font-semibold tracking-[-0.015em]">{title}</h3>
         {description && <p className="mt-0.5 text-sm text-fg-muted">{description}</p>}
       </div>
       {action}
@@ -37,7 +37,7 @@ export function PageHeader({
     <header className={cn("flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between", className)}>
       <div className="min-w-0">
         {eyebrow && <div className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-brand-soft-fg">{eyebrow}</div>}
-        <h1 className="font-display text-2xl font-semibold sm:text-[28px]">{title}</h1>
+        <h1 className="font-display text-2xl font-semibold tracking-[-0.03em] sm:text-[30px]">{title}</h1>
         {description && <p className="mt-1.5 max-w-2xl text-[15px] text-fg-muted">{description}</p>}
       </div>
       {actions && <div className="flex shrink-0 flex-wrap items-center gap-2">{actions}</div>}
@@ -102,7 +102,7 @@ export function Pagination({ page, pageCount, href }: { page: number; pageCount:
           <ChevronLeft className="size-4" />
         </Link>
       ) : (
-        <span className={cn(btn, "text-fg-subtle/50")}>
+        <span className={cn(btn, "text-fg-subtle opacity-50")}>
           <ChevronLeft className="size-4" />
         </span>
       )}
@@ -128,7 +128,7 @@ export function Pagination({ page, pageCount, href }: { page: number; pageCount:
           <ChevronRight className="size-4" />
         </Link>
       ) : (
-        <span className={cn(btn, "text-fg-subtle/50")}>
+        <span className={cn(btn, "text-fg-subtle opacity-50")}>
           <ChevronRight className="size-4" />
         </span>
       )}
@@ -141,9 +141,9 @@ export function Stat({ label, value, hint, icon, className }: { label: string; v
     <div className={cn("surface p-5", className)}>
       <div className="flex items-center justify-between text-sm text-fg-muted">
         {label}
-        {icon && <span className="text-fg-subtle [&_svg]:size-4">{icon}</span>}
+        {icon && <span className="grid size-8 place-items-center rounded-lg border border-border bg-surface-2 text-fg-muted [&_svg]:size-4">{icon}</span>}
       </div>
-      <div className="mt-2 font-display text-[28px] font-semibold leading-none tracking-tight">{value}</div>
+      <div className="mt-3 font-display text-[28px] font-semibold leading-none tracking-[-0.03em] tabular-nums">{value}</div>
       {hint && <div className="mt-2 text-xs text-fg-subtle">{hint}</div>}
     </div>
   );

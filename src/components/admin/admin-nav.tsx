@@ -30,7 +30,7 @@ export function AdminNav() {
     // so the admin links never scroll away. From md (768px): the sidebar on the start side.
     <nav
       aria-label={t("admin.title")}
-      className="glass sticky top-[calc(4rem+env(safe-area-inset-top))] z-30 -mx-4 min-w-0 border-b border-border/60 px-4 py-2 sm:-mx-6 sm:px-6 md:top-24 md:z-auto md:mx-0 md:self-start md:border-0 md:bg-transparent md:p-0 md:backdrop-blur-none"
+      className="glass sticky top-[calc(4rem+env(safe-area-inset-top))] z-30 -mx-4 min-w-0 border-b border-border px-4 py-2 sm:-mx-6 sm:px-6 md:top-24 md:z-auto md:mx-0 md:self-start md:border-0 md:bg-transparent md:p-0 md:backdrop-blur-none"
     >
       <ul className="scrollbar-none flex gap-1 overflow-x-auto md:flex-col md:overflow-visible">
         {ITEMS.map(({ href, key, icon: Icon, ready, ...rest }) => {

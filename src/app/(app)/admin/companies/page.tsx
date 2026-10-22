@@ -49,7 +49,7 @@ export default async function AdminCompaniesPage({ searchParams }: { searchParam
     return s ? `/admin/companies?${s}` : "/admin/companies";
   };
 
-  const th = "px-4 py-3 text-start text-xs font-medium text-fg-subtle";
+  const th = "px-4 py-2.5 text-start text-xs font-semibold text-fg-muted";
   const td = "px-4 py-3 align-middle";
 
   return (
@@ -78,7 +78,7 @@ export default async function AdminCompaniesPage({ searchParams }: { searchParam
         <Card className="overflow-hidden">
           <div className="relative overflow-x-auto">
             <table className="w-full min-w-[860px] text-sm">
-              <thead>
+              <thead className="bg-surface-2">
                 <tr className="border-b border-border">
                   <th scope="col" className={th}>{t("admin.companiesTable.name")}</th>
                   <th scope="col" className={th}>{t("admin.companiesTable.slug")}</th>
@@ -89,7 +89,7 @@ export default async function AdminCompaniesPage({ searchParams }: { searchParam
                   <th scope="col" className={th}><span className="sr-only">{t("admin.actions")}</span></th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="[&>tr]:transition-colors [&>tr:hover]:bg-surface-2/60">
                 {companies.map((c) => (
                   <tr key={c.id} className="border-b border-border last:border-0">
                     <td className={td}>

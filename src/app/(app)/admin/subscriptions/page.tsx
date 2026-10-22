@@ -65,7 +65,7 @@ export default async function AdminSubscriptionsPage({ searchParams }: { searchP
   };
   const date = (d: Date) => f.date(d, { day: "numeric", month: "short", year: "numeric" });
 
-  const th = "px-4 py-3 text-start text-xs font-medium text-fg-subtle";
+  const th = "px-4 py-2.5 text-start text-xs font-semibold text-fg-muted";
   const td = "px-4 py-3 align-middle";
 
   return (
@@ -97,7 +97,7 @@ export default async function AdminSubscriptionsPage({ searchParams }: { searchP
         <Card className="overflow-hidden">
           <div className="relative overflow-x-auto">
             <table className="w-full min-w-[920px] text-sm">
-              <thead>
+              <thead className="bg-surface-2">
                 <tr className="border-b border-border">
                   <th scope="col" className={th}>{t("admin.subsTable.subscriber")}</th>
                   <th scope="col" className={th}>{t("admin.subsTable.product")}</th>
@@ -108,7 +108,7 @@ export default async function AdminSubscriptionsPage({ searchParams }: { searchP
                   <th scope="col" className={th}><span className="sr-only">{t("admin.actions")}</span></th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="[&>tr]:transition-colors [&>tr:hover]:bg-surface-2/60">
                 {subs.map((s) => (
                   <tr key={s.id} className="border-b border-border last:border-0">
                     <td className={td}>

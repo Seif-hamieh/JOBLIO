@@ -40,7 +40,7 @@ export default async function AdminDashboardPage() {
   ]);
 
   const date = (d: Date) => f.date(d, { day: "numeric", month: "short", year: "numeric" });
-  const th = "px-4 py-3 text-start text-xs font-medium text-fg-subtle";
+  const th = "px-4 py-2.5 text-start text-xs font-semibold text-fg-muted";
   const td = "px-4 py-3 align-middle";
 
   return (
@@ -66,7 +66,7 @@ export default async function AdminDashboardPage() {
         ) : (
           <div className="relative overflow-x-auto">
             <table className="w-full min-w-[560px] text-sm">
-              <thead>
+              <thead className="bg-surface-2">
                 <tr className="border-y border-border">
                   <th scope="col" className={th}>{t("admin.cols.name")}</th>
                   <th scope="col" className={th}>{t("admin.cols.email")}</th>
@@ -74,7 +74,7 @@ export default async function AdminDashboardPage() {
                   <th scope="col" className={th}>{t("admin.cols.joined")}</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="[&>tr]:transition-colors [&>tr:hover]:bg-surface-2/60">
                 {recentUsers.map((u) => (
                   <tr key={u.id} className="border-b border-border last:border-0">
                     <td className={`${td} font-medium`}>{u.name}</td>
@@ -96,7 +96,7 @@ export default async function AdminDashboardPage() {
         ) : (
           <div className="relative overflow-x-auto">
             <table className="w-full min-w-[560px] text-sm">
-              <thead>
+              <thead className="bg-surface-2">
                 <tr className="border-y border-border">
                   <th scope="col" className={th}>{t("admin.cols.title")}</th>
                   <th scope="col" className={th}>{t("admin.cols.company")}</th>
@@ -104,7 +104,7 @@ export default async function AdminDashboardPage() {
                   <th scope="col" className={th}>{t("admin.cols.posted")}</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="[&>tr]:transition-colors [&>tr:hover]:bg-surface-2/60">
                 {recentJobs.map((j) => (
                   <tr key={j.id} className="border-b border-border last:border-0">
                     <td className={`${td} font-medium`}>{j.title}</td>

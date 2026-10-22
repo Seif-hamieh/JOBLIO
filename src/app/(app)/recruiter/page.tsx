@@ -37,9 +37,11 @@ export default async function RecruiterDashboardPage() {
             <Card className="p-5">
               <div className="flex items-center justify-between text-sm text-fg-muted">
                 {s.label}
-                <s.icon className="size-4 text-brand" />
+                <span className="grid size-8 place-items-center rounded-lg border border-border bg-surface-2">
+                  <s.icon className="size-4 text-brand" />
+                </span>
               </div>
-              <div className="mt-2 font-display text-3xl font-semibold">
+              <div className="mt-3 font-display text-3xl font-semibold tracking-[-0.03em] tabular-nums">
                 <AnimatedNumber value={s.value} />
               </div>
             </Card>
@@ -78,18 +80,18 @@ export default async function RecruiterDashboardPage() {
             <div className="overflow-x-auto">
               <table className="w-full min-w-[640px] text-sm">
                 <thead>
-                  <tr className="border-y border-border bg-surface-2/60 text-start text-xs text-fg-muted">
-                    <th className="px-6 py-2.5 text-start font-medium">{t("recruiter.role")}</th>
-                    <th className="px-3 py-2.5 text-start font-medium">{t("common.status")}</th>
-                    <th className="px-3 py-2.5 text-end font-medium">{t("recruiter.views")}</th>
-                    <th className="px-3 py-2.5 text-end font-medium">{t("recruiter.applicants")}</th>
-                    <th className="px-3 py-2.5 text-end font-medium">{t("recruiter.newCol")}</th>
+                  <tr className="border-y border-border bg-surface-2 text-start text-xs text-fg-muted">
+                    <th className="px-6 py-2.5 text-start font-semibold">{t("recruiter.role")}</th>
+                    <th className="px-3 py-2.5 text-start font-semibold">{t("common.status")}</th>
+                    <th className="px-3 py-2.5 text-end font-semibold">{t("recruiter.views")}</th>
+                    <th className="px-3 py-2.5 text-end font-semibold">{t("recruiter.applicants")}</th>
+                    <th className="px-3 py-2.5 text-end font-semibold">{t("recruiter.newCol")}</th>
                     <th className="w-12 px-3 py-2.5" />
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
                   {d.jobs.map((j) => (
-                    <tr key={j.id} className="transition-colors hover:bg-surface-2/50">
+                    <tr key={j.id} className="transition-colors hover:bg-surface-2/60">
                       <td className="px-6 py-3.5">
                         <Link href={`/recruiter/jobs/${j.id}/pipeline`} className="font-medium hover:underline">
                           {j.title}

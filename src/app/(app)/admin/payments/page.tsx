@@ -80,7 +80,7 @@ export default async function AdminPaymentsPage({ searchParams }: { searchParams
     return s ? `/admin/payments?${s}` : "/admin/payments";
   };
 
-  const th = "px-4 py-3 text-start text-xs font-medium text-fg-subtle";
+  const th = "px-4 py-2.5 text-start text-xs font-semibold text-fg-muted";
   const td = "px-4 py-3 align-middle";
   const link = buttonClasses({ variant: "ghost", size: "xs" });
 
@@ -130,7 +130,7 @@ export default async function AdminPaymentsPage({ searchParams }: { searchParams
         <Card className="overflow-hidden">
           <div className="relative overflow-x-auto">
             <table className="w-full min-w-[960px] text-sm">
-              <thead>
+              <thead className="bg-surface-2">
                 <tr className="border-b border-border">
                   <th scope="col" className={th}>{t("admin.paymentsTable.user")}</th>
                   <th scope="col" className={th}>{t("admin.paymentsTable.product")}</th>
@@ -141,7 +141,7 @@ export default async function AdminPaymentsPage({ searchParams }: { searchParams
                   <th scope="col" className={th}><span className="sr-only">{t("admin.actions")}</span></th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="[&>tr]:transition-colors [&>tr:hover]:bg-surface-2/60">
                 {payments.map((p) => (
                   <tr key={p.id} className="border-b border-border last:border-0">
                     <td className={td}>

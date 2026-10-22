@@ -187,7 +187,7 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
               {job.featuredUntil && job.featuredUntil > new Date() && <Badge tone="ember">{t("common.featured")}</Badge>}
               {job.sponsoredUntil && job.sponsoredUntil > new Date() && <Badge tone="aurora">{t("common.sponsored")}</Badge>}
             </div>
-            <h1 className="mt-1 break-words font-display text-2xl font-semibold tracking-tight [overflow-wrap:anywhere] sm:text-3xl">{job.title}</h1>
+            <h1 className="mt-1 break-words font-display text-2xl font-semibold tracking-[-0.03em] [overflow-wrap:anywhere] sm:text-[32px] sm:leading-tight">{job.title}</h1>
             <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-fg-muted">
               <Link href={`/companies/${job.company.slug}`} className="inline-flex items-center gap-1 font-medium text-fg hover:underline">
                 {job.company.name}
@@ -223,8 +223,10 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
             {facts_.map((fact) => (
               <div key={fact.label} className="surface p-4">
-                <fact.icon className="size-4 text-brand" />
-                <div className="mt-2 text-xs text-fg-subtle">{fact.label}</div>
+                <span className="grid size-8 place-items-center rounded-lg border border-border bg-surface-2">
+                  <fact.icon className="size-4 text-brand" />
+                </span>
+                <div className="mt-3 text-xs text-fg-subtle">{fact.label}</div>
                 <div className="mt-0.5 text-sm font-medium leading-snug">{fact.value}</div>
               </div>
             ))}
@@ -241,7 +243,7 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
                 </a>
               </p>
             )}
-            <div className="mt-3 space-y-3 text-[15px] leading-relaxed text-fg-muted">
+            <div className="mt-3 space-y-3 text-[15px] leading-relaxed text-fg/80">
               {job.description.split(/\n{2,}/).map((p, i) => (
                 <p key={i} className="whitespace-pre-line break-words [overflow-wrap:anywhere]">
                   {p}
@@ -303,7 +305,7 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
                             <Link href={`/jobs?skills=${s.skill.slug}`} className="font-medium hover:underline">
                               {s.skill.name}
                             </Link>
-                            <span className="text-xs opacity-70">· {t(`enums.skillLevel.${s.minLevel}`)}+</span>
+                            <span className="text-xs opacity-80">· {t(`enums.skillLevel.${s.minLevel}`)}+</span>
                           </span>
                         );
                       })}
@@ -332,7 +334,7 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
               <h2 className="font-display text-lg font-semibold">{t("jobs.benefits")}</h2>
               <div className="mt-4 grid gap-2.5 sm:grid-cols-2">
                 {job.benefits.map((b) => (
-                  <div key={b} className="flex items-center gap-3 rounded-xl bg-surface-2/70 px-3.5 py-3 text-sm">
+                  <div key={b} className="flex items-center gap-3 rounded-xl border border-border bg-surface-2 px-3.5 py-3 text-sm">
                     <Gift className="size-4 shrink-0 text-ember" /> {b}
                   </div>
                 ))}
