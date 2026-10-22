@@ -27,7 +27,7 @@ export function TagInput({
     setDraft("");
   };
   return (
-    <div className="flex min-h-11 flex-wrap items-center gap-1.5 rounded-xl border border-border bg-surface px-2 py-1.5 shadow-soft transition focus-within:border-brand focus-within:ring-4 focus-within:ring-[var(--ring)]/25">
+    <div className="flex min-h-11 flex-wrap items-center gap-1.5 rounded-xl border border-border-strong bg-surface px-2 py-1.5 shadow-soft transition focus-within:border-brand focus-within:ring-4 focus-within:ring-[var(--ring)]/25">
       {value.map((t) => (
         <span key={t} className="inline-flex h-7 items-center gap-1 rounded-lg bg-brand-soft ps-2.5 pe-1 text-[13px] font-medium text-brand-soft-fg">
           {t}

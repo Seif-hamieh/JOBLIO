@@ -128,19 +128,18 @@ function NetworkFallback({ className }: { className?: string }) {
 }
 
 function FloatCard({ children, className, delay = 0, depth = 1, mx, my }: { children: ReactNode; className?: string; delay?: number; depth?: number; mx: ReturnType<typeof useSpring>; my: ReturnType<typeof useSpring> }) {
-  const x = useTransform(mx, (v) => v * 14 * depth);
-  const y = useTransform(my, (v) => v * 10 * depth);
+  // Whole-pixel offsets: a card parked between pixels gets its text resampled, which looks soft.
+  const x = useTransform(mx, (v) => Math.round(v * 14 * depth));
+  const y = useTransform(my, (v) => Math.round(v * 10 * depth));
   return (
-    // Outer layer: pointer parallax. Middle: entrance. Inner: idle float (CSS).
+    // Outer layer: pointer parallax. Inner: entrance. (No idle float: a constantly moving layer keeps text blurry.)
     <m.div className={cn("absolute", className)} style={{ x, y }}>
       <m.div
         initial={{ opacity: 0, y: 24, scale: 0.94 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] }}
       >
-        <div className="animate-float" style={{ animationDelay: `${delay * 2}s` }}>
-          {children}
-        </div>
+        {children}
       </m.div>
     </m.div>
   );
@@ -173,14 +172,14 @@ export function HeroVisual() {
       {/* Soft orbit rings */}
       <div className="absolute inset-[6%] rounded-full border border-brand/10" />
       <div className="absolute inset-[18%] rounded-full border border-dashed border-brand/10" />
-      <div className="absolute inset-[22%] rounded-full bg-[radial-gradient(circle,color-mix(in_oklch,var(--brand)_16%,transparent),transparent_70%)] blur-2xl" />
+      <div className="absolute inset-[22%] rounded-full bg-[radial-gradient(circle,color-mix(in_oklch,var(--brand)_16%,transparent),transparent_70%)]" />
 
       <NetworkFallback className={cn("absolute inset-0 size-full transition-opacity duration-700", can3D ? "opacity-0" : "opacity-100")} />
       {can3D && <NetworkScene palette={palette} className="absolute inset-0 animate-[fade-in_1.2s_ease-out]" />}
 
       {/* Profile card */}
       <FloatCard className="start-0 top-[8%] w-[230px] max-sm:start-[-4%] max-sm:w-[200px]" delay={0.3} depth={1.4} mx={mx} my={my}>
-        <div className="glass rounded-2xl border border-border p-3.5 shadow-float">
+        <div className="rounded-2xl border border-border-strong bg-surface p-3.5 shadow-float">
           <div className="flex items-center gap-3">
             <Avatar name="Lina Haddad" size="md" online />
             <div className="min-w-0">
@@ -203,7 +202,7 @@ export function HeroVisual() {
 
       {/* Job card with transparent match */}
       <FloatCard className="end-0 top-[38%] w-[250px] max-sm:end-[-4%] max-sm:w-[215px]" delay={0.55} depth={2} mx={mx} my={my}>
-        <div className="glass rounded-2xl border border-border p-4 shadow-float">
+        <div className="rounded-2xl border border-border-strong bg-surface p-4 shadow-float">
           <div className="flex items-start gap-3">
             <CompanyLogo name="Northwind" color="#2f9fd3" size="sm" />
             <div className="min-w-0 flex-1">
@@ -226,7 +225,7 @@ export function HeroVisual() {
 
       {/* Company card */}
       <FloatCard className="bottom-[6%] start-[8%] w-[220px] max-sm:hidden" delay={0.8} depth={1.1} mx={mx} my={my}>
-        <div className="glass flex items-center gap-3 rounded-2xl border border-border p-3.5 shadow-float">
+        <div className="flex items-center gap-3 rounded-2xl border border-border-strong bg-surface p-3.5 shadow-float">
           <CompanyLogo name="Aurora Labs" color="#6a4cf0" size="md" />
           <div className="min-w-0">
             <div className="text-sm font-semibold">Aurora Labs</div>
@@ -244,7 +243,7 @@ export function HeroVisual() {
         { s: ar ? "تحليل البيانات" : "Data Analysis", c: "start-[30%] top-[46%] max-sm:hidden", d: 1.2 },
       ].map(({ s, c, d }) => (
         <FloatCard key={s} className={c} delay={d} depth={0.7} mx={mx} my={my}>
-          <span className="glass inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-medium shadow-card">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-border-strong bg-surface px-3 py-1.5 text-xs font-medium shadow-card">
             <Sparkles className="size-3 text-ember" />
             {s}
           </span>

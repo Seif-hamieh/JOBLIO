@@ -168,7 +168,7 @@ export default function NetworkScene({ palette, className }: { palette: ScenePal
   return (
     <div ref={wrapper} className={className}>
       <Canvas
-        dpr={[1, 1.6]}
+        dpr={[1, 2]}
         camera={{ position: [0, 0, 7.2], fov: 42 }}
         gl={{ antialias: true, alpha: true, powerPreference: "default" }}
         frameloop={visible ? "demand" : "never"}

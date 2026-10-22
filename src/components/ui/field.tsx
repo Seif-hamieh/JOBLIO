@@ -6,8 +6,8 @@ import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const control =
-  "w-full rounded-xl border border-border bg-surface px-3.5 text-sm text-fg shadow-[var(--shadow-sm)] transition-[border-color,box-shadow] duration-200 " +
-  "hover:border-border-strong focus:border-brand focus:outline-none focus:ring-4 focus:ring-[var(--ring)]/25 " +
+  "w-full rounded-xl border border-border-strong bg-surface px-3.5 text-sm text-fg shadow-[var(--shadow-sm)] transition-[border-color,box-shadow] duration-200 " +
+  "hover:border-fg-subtle/60 focus:border-brand focus:outline-none focus:ring-4 focus:ring-[var(--ring)]/25 " +
   "disabled:cursor-not-allowed disabled:opacity-60 aria-[invalid=true]:border-danger aria-[invalid=true]:focus:ring-danger/20";
 
 export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement> & { invalid?: boolean }>(function Input(

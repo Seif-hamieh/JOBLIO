@@ -42,7 +42,7 @@ export function JobSearchBar({ params }: { params: JobSearchParams }) {
         e.preventDefault();
         go({ q: q.trim() || undefined, location: location.trim() || undefined });
       }}
-      className="flex flex-col gap-2 rounded-2xl border border-border bg-surface p-2 shadow-card transition-[border-color,box-shadow] duration-200 focus-within:border-brand/40 focus-within:shadow-float sm:flex-row sm:items-center sm:gap-0"
+      className="flex flex-col gap-2 rounded-2xl border border-border-strong bg-surface p-2 shadow-card transition-[border-color,box-shadow] duration-200 focus-within:border-brand/60 focus-within:shadow-float sm:flex-row sm:items-center sm:gap-0"
     >
       <label className="flex flex-1 items-center gap-2.5 px-3">
         <Search className="size-4 shrink-0 text-fg-subtle" />
@@ -203,7 +203,7 @@ export function SortSelect({ params, signedIn }: { params: JobSearchParams; sign
       <select
         value={params.sort}
         onChange={(e) => go({ sort: e.target.value as JobSearchParams["sort"] })}
-        className="h-9 rounded-xl border border-border bg-surface px-3 text-sm outline-none focus:border-brand"
+        className="h-9 rounded-xl border border-border-strong bg-surface px-3 text-sm outline-none focus:border-brand"
         aria-label={t("jobs.sort")}
       >
         <option value="relevant">{t("jobs.sortRelevant")}</option>

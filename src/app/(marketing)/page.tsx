@@ -148,7 +148,7 @@ export default async function LandingPage() {
             <div className="motion-safe:animate-[rise-in_0.6s_cubic-bezier(0.16,1,0.3,1)_both]" style={{ animationDelay: "240ms" }}>
               <form
                 action="/jobs"
-                className="mt-10 flex max-w-xl items-center gap-1 rounded-2xl border border-border bg-surface p-1.5 shadow-card transition-[border-color,box-shadow] duration-200 focus-within:border-brand/40 focus-within:shadow-float"
+                className="mt-10 flex max-w-xl items-center gap-1 rounded-2xl border border-border-strong bg-surface p-1.5 shadow-card transition-[border-color,box-shadow] duration-200 focus-within:border-brand/60 focus-within:shadow-float"
               >
                 <label className="flex flex-1 items-center gap-2 px-3">
                   <Search className="size-4 shrink-0 text-fg-subtle" />

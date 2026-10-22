@@ -14,12 +14,13 @@
   --surface: oklch(1 0 0);
   --surface-2: oklch(0.97 0.002 270);
   --surface-3: oklch(0.94 0.003 270);
-  --fg: oklch(0.2 0.006 270);
-  --fg-muted: oklch(0.45 0.008 270);
-  /* 0.53 keeps small "subtle" text at WCAG AA contrast (≥ 4.5:1) on white. */
-  --fg-subtle: oklch(0.53 0.008 270);
-  --border: oklch(0.925 0.003 270);
-  --border-strong: oklch(0.87 0.004 270);
+  --fg: oklch(0.16 0.006 270);
+  /* Secondary text kept dark enough to read crisply, not as a grey haze. */
+  --fg-muted: oklch(0.39 0.008 270);
+  --fg-subtle: oklch(0.47 0.008 270);
+  /* Distinct hairlines: cards and inputs read as clearly defined shapes. */
+  --border: oklch(0.895 0.004 270);
+  --border-strong: oklch(0.82 0.005 270);
 
   /* Brand iris — reserved for primary actions and key highlights. */
   --brand: oklch(0.53 0.22 281);
@@ -50,7 +51,7 @@
   --shadow-sm: 0 1px 2px rgb(var(--shadow-rgb) / 0.04), 0 1px 1px rgb(var(--shadow-rgb) / 0.02);
   --shadow-md: 0 1px 2px rgb(var(--shadow-rgb) / 0.04), 0 10px 28px -10px rgb(var(--shadow-rgb) / 0.12);
   --shadow-lg: 0 2px 6px rgb(var(--shadow-rgb) / 0.04), 0 28px 64px -20px rgb(var(--shadow-rgb) / 0.2);
-  --glass: oklch(1 0 0 / 0.86);
+  --glass: oklch(1 0 0 / 0.96);
   color-scheme: light;
 }
 
@@ -60,11 +61,11 @@
   --surface: oklch(0.175 0.005 270);
   --surface-2: oklch(0.21 0.005 270);
   --surface-3: oklch(0.25 0.006 270);
-  --fg: oklch(0.97 0.002 270);
-  --fg-muted: oklch(0.72 0.006 270);
-  --fg-subtle: oklch(0.6 0.006 270);
-  --border: oklch(0.255 0.005 270);
-  --border-strong: oklch(0.33 0.006 270);
+  --fg: oklch(0.985 0.002 270);
+  --fg-muted: oklch(0.8 0.006 270);
+  --fg-subtle: oklch(0.68 0.006 270);
+  --border: oklch(0.29 0.005 270);
+  --border-strong: oklch(0.38 0.006 270);
 
   --brand: oklch(0.6 0.2 283);
   --brand-hover: oklch(0.66 0.19 283);
@@ -94,7 +95,7 @@
   --shadow-sm: inset 0 1px 0 rgb(255 255 255 / 0.04), 0 1px 2px rgb(0 0 0 / 0.4);
   --shadow-md: inset 0 1px 0 rgb(255 255 255 / 0.05), 0 1px 2px rgb(0 0 0 / 0.4), 0 12px 32px -12px rgb(0 0 0 / 0.6);
   --shadow-lg: 0 2px 6px rgb(0 0 0 / 0.4), 0 32px 72px -20px rgb(0 0 0 / 0.75);
-  --glass: oklch(0.155 0.004 270 / 0.86);
+  --glass: oklch(0.155 0.004 270 / 0.95);
   color-scheme: dark;
 }
 
@@ -187,6 +188,9 @@
   html {
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-optical-sizing: auto;
     /* Anchor jumps and focus scrolling stop below the sticky 64px header. */
     scroll-padding-top: 5.5rem;
   }
@@ -249,7 +253,8 @@
   }
   .glass {
     background: var(--glass);
-    backdrop-filter: saturate(160%) blur(16px);
+    /* Nearly opaque with a light blur: crisp edges, no smeared content showing through. */
+    backdrop-filter: blur(8px);
   }
   /* The Card component: same crisp surface as .surface (no backdrop blur — over a plain page background it
      only cost GPU time). Frosted glass is kept where it shows: the header, menus and dialogs. */
@@ -259,13 +264,13 @@
     border-radius: 1rem;
     box-shadow: var(--shadow-sm);
   }
-  /* Floating layers (menus, dialogs): more opaque and more blurred so text stays crisp over anything. */
+  /* Floating layers (menus, dialogs): near-solid so text stays crisp over anything. */
   .glass-panel {
-    background: color-mix(in oklch, var(--surface) 82%, transparent);
-    backdrop-filter: saturate(180%) blur(24px);
+    background: color-mix(in oklch, var(--surface) 97%, transparent);
+    backdrop-filter: blur(8px);
   }
   .dark .glass-panel {
-    border-color: rgb(255 255 255 / 0.08);
+    border-color: rgb(255 255 255 / 0.1);
   }
   /* No backdrop blur (old browsers) or the user asked for less transparency: solid surfaces, always readable. */
   @supports not (backdrop-filter: blur(1px)) {
