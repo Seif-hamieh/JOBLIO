@@ -4,10 +4,10 @@ import { cn } from "@/lib/utils";
 import { Spinner } from "@/components/ui/spinner";
 
 const VARIANTS = {
-  primary:
-    "bg-brand text-brand-fg shadow-[0_1px_0_0_rgb(255_255_255/0.15)_inset,0_6px_16px_-6px_var(--brand)] hover:bg-brand-hover",
+  // A crisp inner highlight and a hairline shadow instead of a coloured glow.
+  primary: "bg-brand text-brand-fg shadow-[inset_0_1px_0_rgb(255_255_255/0.16),0_1px_2px_rgb(9_9_11/0.12)] hover:bg-brand-hover",
   secondary: "bg-fg text-bg hover:bg-fg/90",
-  outline: "border border-border-strong bg-surface text-fg hover:bg-surface-2 hover:border-fg-subtle/50",
+  outline: "border border-border bg-surface text-fg shadow-[0_1px_2px_rgb(9_9_11/0.04)] hover:bg-surface-2 hover:border-border-strong",
   soft: "bg-brand-soft text-brand-soft-fg hover:bg-brand-soft/70",
   ghost: "text-fg-muted hover:text-fg hover:bg-surface-2",
   danger: "bg-danger text-white hover:bg-danger/90",
@@ -40,7 +40,7 @@ export function buttonClasses({
   return cn(
     "relative inline-flex select-none items-center justify-center whitespace-nowrap font-medium",
     "transition-[background-color,color,border-color,box-shadow,transform] duration-200 ease-out",
-    "active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50",
+    "active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50",
     "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ring)]",
     "[&_svg]:size-4 [&_svg]:shrink-0",
     VARIANTS[variant],

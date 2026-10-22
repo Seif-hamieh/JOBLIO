@@ -42,7 +42,7 @@ export function JobSearchBar({ params }: { params: JobSearchParams }) {
         e.preventDefault();
         go({ q: q.trim() || undefined, location: location.trim() || undefined });
       }}
-      className="flex flex-col gap-2 rounded-2xl border border-border bg-surface p-2 shadow-card sm:flex-row sm:items-center sm:gap-0"
+      className="flex flex-col gap-2 rounded-2xl border border-border bg-surface p-2 shadow-card transition-[border-color,box-shadow] duration-200 focus-within:border-brand/40 focus-within:shadow-float sm:flex-row sm:items-center sm:gap-0"
     >
       <label className="flex flex-1 items-center gap-2.5 px-3">
         <Search className="size-4 shrink-0 text-fg-subtle" />

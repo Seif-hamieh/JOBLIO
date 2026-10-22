@@ -41,19 +41,19 @@ export default async function JobsPage({ searchParams }: PageProps<"/jobs">) {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {viewer && <JobsTabs />}
       <div>
-        <h1 className="font-display text-2xl font-semibold sm:text-[28px]">{t("jobs.searchTitle")}</h1>
-        <p className="mt-1 text-fg-muted">{t("jobs.searchSub")}</p>
+        <h1 className="font-display text-3xl font-semibold tracking-[-0.03em] sm:text-4xl">{t("jobs.searchTitle")}</h1>
+        <p className="mt-2 text-lg text-fg-muted">{t("jobs.searchSub")}</p>
       </div>
       {/* Keyed on the query so "Clear search" (and back/forward) also resets the text fields. */}
       <JobSearchBar key={`${params.q ?? ""}|${params.location ?? ""}`} params={params} />
 
-      <div className="grid gap-8 lg:grid-cols-[260px_1fr]">
+      <div className="grid gap-10 lg:grid-cols-[260px_1fr]">
         <JobFilters params={params} industries={industries} skillNames={skillNames} />
-        <section className="min-w-0 space-y-4">
-          <div className="flex flex-wrap items-center justify-between gap-3">
+        <section className="min-w-0 space-y-3">
+          <div className="flex flex-wrap items-center justify-between gap-3 pb-1">
             <ActiveFilterSummary total={results.total + results.sponsored.length} params={params} />
             <div className="flex items-center gap-2">
               {viewer && <SaveSearchButton params={params} />}
@@ -62,8 +62,10 @@ export default async function JobsPage({ searchParams }: PageProps<"/jobs">) {
           </div>
 
           {!viewer && (
-            <div className="flex flex-col gap-3 rounded-2xl border border-brand/20 bg-brand-soft/50 p-4 sm:flex-row sm:items-center">
-              <Sparkles className="size-5 shrink-0 text-brand" />
+            <div className="surface flex flex-col gap-3 p-4 sm:flex-row sm:items-center">
+              <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-brand-soft text-brand">
+                <Sparkles className="size-4" />
+              </span>
               <p className="flex-1 text-sm">
                 <span className="font-semibold">{t("jobs.upsellTitle")}</span> {t("jobs.upsellBody")}
               </p>
@@ -100,7 +102,7 @@ export default async function JobsPage({ searchParams }: PageProps<"/jobs">) {
 
           <div className="grid gap-3 pt-4 sm:grid-cols-2">
             <Link href="/jobs/featured" className="surface surface-hover flex items-center gap-3 p-4">
-              <span className="grid size-10 place-items-center rounded-xl bg-ember-soft text-ember-fg">
+              <span className="grid size-10 place-items-center rounded-xl border border-border bg-surface-2 text-ember-fg">
                 <Star className="size-5" />
               </span>
               <span>
@@ -110,7 +112,7 @@ export default async function JobsPage({ searchParams }: PageProps<"/jobs">) {
             </Link>
             {viewer && (
               <Link href="/jobs/saved" className="surface surface-hover flex items-center gap-3 p-4">
-                <span className="grid size-10 place-items-center rounded-xl bg-brand-soft text-brand-soft-fg">
+                <span className="grid size-10 place-items-center rounded-xl border border-border bg-surface-2 text-brand">
                   <Bookmark className="size-5" />
                 </span>
                 <span>

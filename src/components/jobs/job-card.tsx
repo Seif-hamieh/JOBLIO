@@ -32,10 +32,10 @@ export function JobCard({
   return (
     <article
       className={cn(
-        "surface surface-hover group relative p-5",
-        placement === "sponsored" && "ring-1 ring-aurora/30",
-        featured && placement !== "sponsored" && "ring-1 ring-ember/35",
-        urgent && "ring-1 ring-red-500/40",
+        "surface surface-hover group relative p-5 sm:p-6",
+        placement === "sponsored" && "ring-1 ring-aurora/25",
+        featured && placement !== "sponsored" && "ring-1 ring-ember/30",
+        urgent && "ring-1 ring-danger/25",
         className,
       )}
     >
@@ -64,8 +64,8 @@ export function JobCard({
               </Badge>
             )}
           </div>
-          <h3 className="mt-0.5 font-display text-[16px] font-semibold leading-snug">
-            <Link href={`/jobs/${job.id}`} className="after:absolute after:inset-0 after:rounded-[1.125rem] focus-visible:outline-none">
+          <h3 className="mt-0.5 font-display text-[16.5px] font-semibold leading-snug tracking-[-0.015em] transition-colors duration-200 group-hover:text-brand">
+            <Link href={`/jobs/${job.id}`} className="after:absolute after:inset-0 after:rounded-2xl focus-visible:outline-none">
               {job.title}
             </Link>
           </h3>
@@ -117,7 +117,7 @@ export function JobCard({
               </Link>
             )}
             {job.skills.slice(0, 4).map((s) => (
-              <span key={s.skillId} className="rounded-md bg-surface-2 px-2 py-0.5 text-xs text-fg-muted">
+              <span key={s.skillId} className="rounded-full border border-border px-2.5 py-0.5 text-xs text-fg-muted">
                 {s.skill.name}
               </span>
             ))}
@@ -138,7 +138,7 @@ export function JobCard({
 
 export function JobCardSkeleton() {
   return (
-    <div className="surface p-5">
+    <div className="surface p-5 sm:p-6">
       <div className="flex gap-4">
         <div className="skeleton size-11 rounded-xl" />
         <div className="flex-1 space-y-2">
