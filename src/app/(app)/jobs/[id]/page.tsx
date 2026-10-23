@@ -24,7 +24,7 @@ import { getViewer } from "@/server/session";
 import { canFeatureJob, featuredJobPlanOptions, paddleClientConfig } from "@/server/paddle";
 import { FeatureJobButton } from "@/components/jobs/feature-job-button";
 import { jobPostingJsonLd, jsonLdScript } from "@/lib/job-posting-ld";
-import { anonymousViewerKey, expirePromotions, getJob, recordJobView, similarJobs } from "@/server/services/jobs";
+import { anonymousViewerKey, expirePromotions, getJob, isBotRequest, recordJobView, similarJobs } from "@/server/services/jobs";
 import { getCandidateFacts, toJobFacts } from "@/server/services/matching";
 import { db } from "@/server/db";
 import { computeMatch } from "@/lib/matching/engine";
@@ -95,7 +95,8 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
     similarJobs(job, viewer?.id ?? null),
     viewer ? db.profile.findUnique({ where: { userId: viewer.id }, select: { resumeUrl: true, resumeName: true } }) : null,
   ]);
-  if (!isTeam) await recordJobView(id, viewer?.id ?? (await anonymousViewerKey()));
+  // Crawlers aren't counted (and skip the database writes).
+  if (!isTeam && (viewer || !(await isBotRequest()))) await recordJobView(id, viewer?.id ?? (await anonymousViewerKey()));
 
   const match = facts ? computeMatch(facts, toJobFacts(job)) : null;
   const held = new Map(facts?.skills.map((s) => [s.skillId, s.level]) ?? []);

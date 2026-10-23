@@ -2,6 +2,8 @@ import "server-only";
 import { startOfTodayUtc } from "@/lib/validation/job";
 import { createHash } from "node:crypto";
 import { headers } from "next/headers";
+import { cache } from "react";
+import { isBot } from "@/lib/bots";
 import { db, type Prisma } from "@/server/db";
 import { resolveCountryCode } from "@/lib/geo";
 import type { JobSearchParams } from "@/lib/validation/search";
@@ -33,12 +35,12 @@ export type JobCardWithMatch = JobCardData & { match?: MatchResult; saved?: bool
 
 // ── Promotion expiry ────────────────────────────────────────────────────────
 // Promotion windows are denormalised onto rows so ranking is one indexed sort.
-// Expired windows are cleared lazily (at most once a minute per process), so
+// Expired windows are cleared lazily (at most once every 10 minutes per process), so
 // no cron job is needed.
 let lastExpiry = 0;
 export async function expirePromotions() {
   const now = Date.now();
-  if (now - lastExpiry < 60_000) return;
+  if (now - lastExpiry < 10 * 60_000) return; // every 10 minutes per server instance
   lastExpiry = now;
   const at = new Date(now);
   await Promise.all([
@@ -237,10 +239,11 @@ export const jobDetailSelect = {
 
 export type JobDetail = Prisma.JobGetPayload<{ select: typeof jobDetailSelect }>;
 
-export async function getJob(id: string) {
+// cache(): the page and its generateMetadata share one query per request.
+export const getJob = cache(async (id: string) => {
   if (!id || id === "undefined") return null;
   return db.job.findUnique({ where: { id }, select: jobDetailSelect });
-}
+});
 
 const VIEW_WINDOW_MS = 24 * 3600 * 1000;
 
@@ -249,6 +252,11 @@ export async function anonymousViewerKey() {
   const h = await headers();
   const ip = h.get("x-forwarded-for")?.split(",")[0]?.trim() ?? h.get("x-real-ip") ?? "";
   return "a:" + createHash("sha256").update(`${ip}|${h.get("user-agent") ?? ""}`).digest("hex").slice(0, 40);
+}
+
+/** True for crawlers and other automated clients: their visits aren't counted as views. */
+export async function isBotRequest() {
+  return isBot((await headers()).get("user-agent"));
 }
 
 /**

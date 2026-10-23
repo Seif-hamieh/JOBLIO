@@ -14,6 +14,7 @@ import {
   Sparkles,
   Users,
 } from "lucide-react";
+import { unstable_cache } from "next/cache";
 import { db } from "@/server/db";
 import { publicCompanyWhere } from "@/server/services/companies";
 import { HeroVisual } from "@/components/landing/hero-visual";
@@ -30,8 +31,10 @@ import { APP_URL } from "@/lib/utils";
 // Rendered per request (it follows the visitor's language). Data loading
 // degrades gracefully so the page still renders without a database.
 
-async function getLandingData() {
-  try {
+// Shared by every visitor and cached for 10 minutes, so the busiest page doesn't query the database
+// on each visit. Counts and the latest jobs may lag by up to that long.
+const landingData = unstable_cache(
+  async () => {
     const [jobs, companies, professionals, skills, latestJobs, topCompanies] = await Promise.all([
       db.job.count({ where: { status: "OPEN" } }),
       db.company.count(),
@@ -65,6 +68,14 @@ async function getLandingData() {
     const MIN_COMPANIES_FOR_STATS = 5;
     const showStats = jobs >= MIN_JOBS_FOR_STATS && companies >= MIN_COMPANIES_FOR_STATS;
     return { stats: showStats ? { jobs, companies, professionals, skills } : null, latestJobs, topCompanies };
+  },
+  ["landing:v1"],
+  { revalidate: 600 },
+);
+
+async function getLandingData() {
+  try {
+    return await landingData();
   } catch {
     return { stats: null, latestJobs: [], topCompanies: [] };
   }

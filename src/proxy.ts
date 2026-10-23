@@ -3,6 +3,7 @@ import { getSessionCookie } from "better-auth/cookies";
 import { buildCsp } from "@/lib/csp";
 import { db } from "@/server/db";
 import { RESERVED_USERNAMES } from "@/lib/constants";
+import { isBlockedBot } from "@/lib/bots";
 
 // Optimistic routing only: checks for the presence of a session cookie to
 // avoid rendering protected pages for signed-out visitors. Real authorization
@@ -61,6 +62,8 @@ async function detailState(kind: string, key: string): Promise<"ok" | "missing" 
 
 export async function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
+  // AI-training and SEO scrapers: turned away before any page renders (they cost CPU and bring no visitors).
+  if (isBlockedBot(request.headers.get("user-agent"))) return new NextResponse("Forbidden", { status: 403 });
   const hasSession = !!getSessionCookie(request);
 
   if (pathname === "/" && hasSession) {
@@ -111,6 +114,6 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!api|monitoring|_next/static|_next/image|media|icon.svg|favicon.ico|robots.txt|sitemap.xml|opengraph-image|twitter-image|sw.js|offline.html|manifest.webmanifest|icon-|apple-touch-icon|apple-icon).*)",
+    "/((?!api|monitoring|_next/static|_next/image|media|icon.svg|favicon.ico|robots.txt|sitemap.xml|opengraph-image|twitter-image|sw.js|offline.html|manifest.webmanifest|icon-|apple-touch-icon|apple-icon|social/|screenshots/|.*\\.(?:png|jpe?g|gif|webp|avif|svg|ico|txt|xml|json|webmanifest|js|css|map|woff2?)$).*)",
   ],
 };

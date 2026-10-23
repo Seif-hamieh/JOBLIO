@@ -47,33 +47,61 @@ export function RealtimeProvider({ initialCounts, children }: { initialCounts: C
 
   useEffect(() => setCounts(initialCounts), [initialCounts]);
 
+  // The live connection stays open only while the tab is visible: a background tab would otherwise keep a
+  // server function busy for hours. It closes a minute after the tab is hidden and reopens (and refreshes
+  // the badge counts) when the tab comes back.
   useEffect(() => {
-    const es = new EventSource("/api/v1/stream");
-    es.onopen = () => setConnected(true);
-    es.onerror = () => setConnected(false);
-    es.onmessage = (msg) => {
-      let event: RealtimeEvent;
-      try {
-        event = JSON.parse(msg.data);
-      } catch {
-        return;
-      }
-      listeners.current.forEach((l) => l(event));
-      if (event.type === "notification") {
-        setCounts((c) => ({ ...c, notifications: c.notifications + 1 }));
-        if (!pathRef.current.startsWith("/notifications")) toast.info(resolveMessage(tRef.current, event.title));
-      } else if (event.type === "message") {
+    let es: EventSource | null = null;
+    let hideTimer: ReturnType<typeof setTimeout> | undefined;
+    const open = () => {
+      if (es) return;
+      es = new EventSource("/api/v1/stream");
+      es.onopen = () => setConnected(true);
+      es.onerror = () => setConnected(false);
+      es.onmessage = (msg) => {
+        let event: RealtimeEvent;
+        try {
+          event = JSON.parse(msg.data);
+        } catch {
+          return;
+        }
+        listeners.current.forEach((l) => l(event));
+        if (event.type === "notification") {
+          setCounts((c) => ({ ...c, notifications: c.notifications + 1 }));
+          if (!pathRef.current.startsWith("/notifications")) toast.info(resolveMessage(tRef.current, event.title));
+        } else if (event.type === "message") {
+          void refreshCounts();
+        } else if (event.type === "presence") {
+          setOnline((prev) => {
+            const next = new Set(prev);
+            if (event.online) next.add(event.userId);
+            else next.delete(event.userId);
+            return next;
+          });
+        }
+      };
+    };
+    const close = () => {
+      es?.close();
+      es = null;
+      setConnected(false);
+    };
+    const onVisibility = () => {
+      clearTimeout(hideTimer);
+      if (document.visibilityState === "hidden") {
+        hideTimer = setTimeout(close, 60_000);
+      } else if (!es) {
+        open();
         void refreshCounts();
-      } else if (event.type === "presence") {
-        setOnline((prev) => {
-          const next = new Set(prev);
-          if (event.online) next.add(event.userId);
-          else next.delete(event.userId);
-          return next;
-        });
       }
     };
-    return () => es.close();
+    if (document.visibilityState === "visible") open();
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      clearTimeout(hideTimer);
+      document.removeEventListener("visibilitychange", onVisibility);
+      close();
+    };
   }, [refreshCounts]);
 
   const subscribe = useCallback((fn: (e: RealtimeEvent) => void) => {
