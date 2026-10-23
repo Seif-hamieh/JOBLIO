@@ -44,3 +44,5 @@ yarn-error.log*
 next-env.d.ts
 
 paddle-products-output.json
+# Intermediate 2x renders
+scripts/social/mockups/out/
