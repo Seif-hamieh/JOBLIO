@@ -82,6 +82,7 @@
   </symbol>
 </svg>
 <div class="grid" id="grid"></div>
+<script src="remote-jobs.js"></script>
 
 <script>
   // id, label, headline ('quoted' words are purple), subtitle, screen (shots/<screen>.png)
@@ -105,6 +106,12 @@
   JOBS.forEach(([title, company, location, mode], i) => {
     const where = location === mode ? [location] : [location, mode]; // "Remote · Remote" reads as a typo
     POSTS.push([`job${i + 1}`, "Now hiring on joblio", `Job: '${title}'`, [company, ...where].join(" · "), `job${i + 1}`]);
+  });
+
+  // Remote batch (remote-jobs.js): remote1 … remote40.
+  (window.REMOTE_JOBS || []).forEach(([, title, company, location, mode], i) => {
+    const where = location === mode ? [location] : [location, mode];
+    POSTS.push([`remote${i + 1}`, "Now hiring on joblio", `Job: '${title}'`, [company, ...where].join(" · "), `remote${i + 1}`]);
   });
 
   const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
