@@ -116,7 +116,7 @@ export async function memberCompany(userId: string) {
 
 /** The signed-in member's own account. Their own email is fine to return; nothing else private is. */
 export function toMe(
-  u: { id: string; name: string; email: string; image?: string | null; username?: string | null; intent?: string | null; onboardedAt?: Date | null; emailVerified: boolean },
+  u: { id: string; name: string; email: string; image?: string | null; username?: string | null; intent?: string | null; onboardedAt?: Date | null; emailVerified: boolean; platformRole?: string | null },
   company: Awaited<ReturnType<typeof memberCompany>>,
 ) {
   return {
@@ -128,6 +128,8 @@ export function toMe(
     username: u.username ?? null,
     intent: u.intent ?? null,
     onboarded: !!u.onboardedAt,
+    // Shows the admin menu in the app; every admin endpoint still checks this itself.
+    isAdmin: u.platformRole === "ADMIN",
     company,
   };
 }
