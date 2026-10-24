@@ -9,9 +9,10 @@ export const dynamic = "force-dynamic";
 export async function GET(req: Request) {
   const a = await getMobileAdmin(req);
   if ("error" in a) return a.error;
-  const [users, admins, companies, verifiedCompanies, jobs, openJobs, draftJobs, applications, activeSubscriptions, payments, openReports, reportedJobs, recentUsers, recentJobs] = await Promise.all([
+  const [users, admins, banned, companies, verifiedCompanies, jobs, openJobs, draftJobs, applications, activeSubscriptions, payments, openReports, reportedJobs, openPostReports, reportedPosts, recentUsers, recentJobs] = await Promise.all([
     db.user.count(),
     db.user.count({ where: { platformRole: "ADMIN" } }),
+    db.user.count({ where: { bannedAt: { not: null } } }),
     db.company.count(),
     db.company.count({ where: { verified: true } }),
     db.job.count(),
@@ -22,12 +23,14 @@ export async function GET(req: Request) {
     db.payment.count({ where: { status: "SUCCEEDED" } }),
     db.jobReport.count({ where: { status: "OPEN" } }),
     db.jobReport.groupBy({ by: ["jobId"], where: { status: "OPEN" } }).then((g) => g.length),
+    db.postReport.count({ where: { status: "OPEN" } }),
+    db.postReport.groupBy({ by: ["postId"], where: { status: "OPEN" } }).then((g) => g.length),
     db.user.findMany({ orderBy: { createdAt: "desc" }, take: 5, select: { id: true, name: true, email: true, image: true, username: true, platformRole: true, createdAt: true } }),
     db.job.findMany({ orderBy: { createdAt: "desc" }, take: 5, select: { id: true, title: true, status: true, createdAt: true, company: { select: { name: true } } } }),
   ]);
   return NextResponse.json(
     {
-      stats: { users, admins, companies, verifiedCompanies, jobs, openJobs, draftJobs, applications, activeSubscriptions, payments, openReports, reportedJobs },
+      stats: { users, admins, banned, companies, verifiedCompanies, jobs, openJobs, draftJobs, applications, activeSubscriptions, payments, openReports, reportedJobs, openPostReports, reportedPosts },
       recentUsers: recentUsers.map((u) => ({ ...u, admin: u.platformRole === "ADMIN", platformRole: undefined, createdAt: u.createdAt.toISOString() })),
       recentJobs: recentJobs.map((j) => ({ id: j.id, title: j.title, status: j.status, company: j.company.name, createdAt: j.createdAt.toISOString() })),
     },

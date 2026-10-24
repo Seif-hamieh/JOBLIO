@@ -657,6 +657,40 @@ export type EnumJobReportStatusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumJobReportStatusFilter<$PrismaModel>
 }
 
+export type EnumPostReportReasonFilter<$PrismaModel = never> = {
+  equals?: $Enums.PostReportReason | Prisma.EnumPostReportReasonFieldRefInput<$PrismaModel>
+  in?: $Enums.PostReportReason[] | Prisma.ListEnumPostReportReasonFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PostReportReason[] | Prisma.ListEnumPostReportReasonFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPostReportReasonFilter<$PrismaModel> | $Enums.PostReportReason
+}
+
+export type EnumPostReportStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.PostReportStatus | Prisma.EnumPostReportStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PostReportStatus[] | Prisma.ListEnumPostReportStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PostReportStatus[] | Prisma.ListEnumPostReportStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPostReportStatusFilter<$PrismaModel> | $Enums.PostReportStatus
+}
+
+export type EnumPostReportReasonWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PostReportReason | Prisma.EnumPostReportReasonFieldRefInput<$PrismaModel>
+  in?: $Enums.PostReportReason[] | Prisma.ListEnumPostReportReasonFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PostReportReason[] | Prisma.ListEnumPostReportReasonFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPostReportReasonWithAggregatesFilter<$PrismaModel> | $Enums.PostReportReason
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPostReportReasonFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPostReportReasonFilter<$PrismaModel>
+}
+
+export type EnumPostReportStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PostReportStatus | Prisma.EnumPostReportStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PostReportStatus[] | Prisma.ListEnumPostReportStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PostReportStatus[] | Prisma.ListEnumPostReportStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPostReportStatusWithAggregatesFilter<$PrismaModel> | $Enums.PostReportStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPostReportStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPostReportStatusFilter<$PrismaModel>
+}
+
 export type EnumSavedSearchKindFilter<$PrismaModel = never> = {
   equals?: $Enums.SavedSearchKind | Prisma.EnumSavedSearchKindFieldRefInput<$PrismaModel>
   in?: $Enums.SavedSearchKind[] | Prisma.ListEnumSavedSearchKindFieldRefInput<$PrismaModel>
@@ -1663,6 +1697,40 @@ export type NestedEnumJobReportStatusWithAggregatesFilter<$PrismaModel = never> 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumJobReportStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumJobReportStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumPostReportReasonFilter<$PrismaModel = never> = {
+  equals?: $Enums.PostReportReason | Prisma.EnumPostReportReasonFieldRefInput<$PrismaModel>
+  in?: $Enums.PostReportReason[] | Prisma.ListEnumPostReportReasonFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PostReportReason[] | Prisma.ListEnumPostReportReasonFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPostReportReasonFilter<$PrismaModel> | $Enums.PostReportReason
+}
+
+export type NestedEnumPostReportStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.PostReportStatus | Prisma.EnumPostReportStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PostReportStatus[] | Prisma.ListEnumPostReportStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PostReportStatus[] | Prisma.ListEnumPostReportStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPostReportStatusFilter<$PrismaModel> | $Enums.PostReportStatus
+}
+
+export type NestedEnumPostReportReasonWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PostReportReason | Prisma.EnumPostReportReasonFieldRefInput<$PrismaModel>
+  in?: $Enums.PostReportReason[] | Prisma.ListEnumPostReportReasonFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PostReportReason[] | Prisma.ListEnumPostReportReasonFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPostReportReasonWithAggregatesFilter<$PrismaModel> | $Enums.PostReportReason
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPostReportReasonFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPostReportReasonFilter<$PrismaModel>
+}
+
+export type NestedEnumPostReportStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PostReportStatus | Prisma.EnumPostReportStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PostReportStatus[] | Prisma.ListEnumPostReportStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PostReportStatus[] | Prisma.ListEnumPostReportStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPostReportStatusWithAggregatesFilter<$PrismaModel> | $Enums.PostReportStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPostReportStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPostReportStatusFilter<$PrismaModel>
 }
 
 export type NestedEnumSavedSearchKindFilter<$PrismaModel = never> = {

@@ -1,10 +1,11 @@
-import { Search, Users } from "lucide-react";
+import Link from "next/link";
+import { Ban, Search, Users } from "lucide-react";
 import { getI18n } from "@/i18n/server";
 import { requireAdmin } from "@/server/session";
 import { db, type Prisma } from "@/server/db";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonClasses } from "@/components/ui/button";
 import { Input } from "@/components/ui/field";
 import { Card, EmptyState, Pagination } from "@/components/ui/misc";
 import { UserActions } from "@/components/admin/user-actions";
@@ -22,17 +23,19 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: P
   const q = first(sp.q)?.trim().slice(0, 100) || undefined;
   const pageNum = Number(first(sp.page));
   const page = Number.isInteger(pageNum) && pageNum > 0 ? pageNum : 1;
+  const bannedOnly = first(sp.filter) === "banned";
 
-  const where: Prisma.UserWhereInput = q
-    ? { OR: [{ name: { contains: q, mode: "insensitive" } }, { email: { contains: q, mode: "insensitive" } }, { username: { contains: q, mode: "insensitive" } }] }
-    : {};
+  const where: Prisma.UserWhereInput = {
+    ...(q && { OR: [{ name: { contains: q, mode: "insensitive" } }, { email: { contains: q, mode: "insensitive" } }, { username: { contains: q, mode: "insensitive" } }] }),
+    ...(bannedOnly && { bannedAt: { not: null } }),
+  };
   const [users, total] = await Promise.all([
     db.user.findMany({
       where,
       orderBy: { createdAt: "desc" },
       skip: (page - 1) * PAGE_SIZE,
       take: PAGE_SIZE,
-      select: { id: true, name: true, email: true, username: true, image: true, platformRole: true, intent: true, createdAt: true },
+      select: { id: true, name: true, email: true, username: true, image: true, platformRole: true, intent: true, createdAt: true, bannedAt: true, bannedReason: true },
     }),
     db.user.count({ where }),
   ]);
@@ -40,6 +43,7 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: P
   const href = (p: number) => {
     const params = new URLSearchParams();
     if (q) params.set("q", q);
+    if (bannedOnly) params.set("filter", "banned");
     if (p > 1) params.set("page", String(p));
     const s = params.toString();
     return s ? `/admin/users?${s}` : "/admin/users";
@@ -55,11 +59,20 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: P
           <Search className="pointer-events-none absolute start-3.5 top-1/2 size-4 -translate-y-1/2 text-fg-subtle" />
           <Input name="q" type="search" defaultValue={q} placeholder={t("admin.userTable.search")} aria-label={t("admin.userTable.search")} maxLength={100} className="ps-10" />
         </div>
+        {bannedOnly && <input type="hidden" name="filter" value="banned" />}
         <Button type="submit" variant="outline" className="h-11">
           {t("admin.search")}
         </Button>
       </form>
-      <p className="text-sm text-fg-muted">{t("admin.results", { n: total })}</p>
+      <div className="flex flex-wrap items-center gap-2 text-sm">
+        <Link href={q ? `/admin/users?q=${encodeURIComponent(q)}` : "/admin/users"} className={buttonClasses({ variant: bannedOnly ? "ghost" : "outline", size: "xs", pill: true })}>
+          {t("admin.userTable.everyone")}
+        </Link>
+        <Link href={`/admin/users?filter=banned${q ? `&q=${encodeURIComponent(q)}` : ""}`} className={buttonClasses({ variant: bannedOnly ? "outline" : "ghost", size: "xs", pill: true })}>
+          <Ban className="size-3.5" /> {t("admin.userTable.bannedOnly")}
+        </Link>
+        <span className="ms-auto text-fg-muted">{t("admin.results", { n: total })}</span>
+      </div>
 
       {users.length === 0 ? (
         <EmptyState icon={<Users />} title={t("admin.noData")} />
@@ -88,12 +101,19 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: P
                     </td>
                     <td className={`${td} text-fg-muted`} dir="ltr">{u.email}</td>
                     <td className={td}>
-                      <Badge tone={u.platformRole === "ADMIN" ? "brand" : "neutral"} size="xs">{u.platformRole}</Badge>
+                      <div className="flex flex-wrap gap-1">
+                        <Badge tone={u.platformRole === "ADMIN" ? "brand" : "neutral"} size="xs">{u.platformRole}</Badge>
+                        {u.bannedAt && (
+                          <Badge tone="danger" size="xs" title={u.bannedReason ?? undefined}>
+                            {t("admin.userTable.banned")}
+                          </Badge>
+                        )}
+                      </div>
                     </td>
                     <td className={`${td} text-fg-muted`}>{t(`admin.intent.${u.intent}`)}</td>
                     <td className={`${td} whitespace-nowrap text-fg-muted`}>{f.date(u.createdAt, { day: "numeric", month: "short", year: "numeric" })}</td>
                     <td className={td}>
-                      <UserActions isSelf={u.id === viewer.id} user={{ id: u.id, name: u.name, username: u.username, isAdmin: u.platformRole === "ADMIN" }} />
+                      <UserActions isSelf={u.id === viewer.id} user={{ id: u.id, name: u.name, username: u.username, isAdmin: u.platformRole === "ADMIN", banned: !!u.bannedAt }} />
                     </td>
                   </tr>
                 ))}

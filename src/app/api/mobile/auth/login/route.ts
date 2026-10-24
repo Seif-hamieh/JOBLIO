@@ -35,6 +35,7 @@ export async function POST(req: Request) {
     const err = (await res.json().catch(() => ({}))) as { code?: string };
     if (res.status === 429) return mobileError(429, "RATE_LIMITED", "Too many attempts. Try again in a minute.");
     if (err.code === "EMAIL_NOT_VERIFIED") return mobileError(403, "EMAIL_NOT_VERIFIED", "Check your inbox to verify your email first.");
+    if (err.code === "ACCOUNT_BANNED") return mobileError(403, "ACCOUNT_BANNED", "This account has been suspended. Contact us if you think this is a mistake.");
     if (err.code === "INVALID_EMAIL_OR_PASSWORD") return mobileError(401, "INVALID_CREDENTIALS", "That email and password combination didn't work.");
     return mobileError(res.status >= 500 ? 502 : res.status, err.code ?? "SIGN_IN_FAILED", "Sign-in failed.");
   }

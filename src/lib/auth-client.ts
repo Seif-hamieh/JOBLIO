@@ -17,6 +17,8 @@ export function authErrorMessage(error: { code?: string; message?: string; statu
       return t("auth.errInvalid");
     case "EMAIL_NOT_VERIFIED":
       return t("auth.errUnverified");
+    case "ACCOUNT_BANNED":
+      return t("auth.errBanned");
     case "USER_ALREADY_EXISTS":
     case "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL":
       return t("auth.errExists");

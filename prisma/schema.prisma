@@ -260,6 +260,21 @@ enum JobReportReason {
   OTHER
 }
 
+enum PostReportReason {
+  SPAM
+  SCAM
+  HARASSMENT
+  HATE
+  INAPPROPRIATE
+  MISINFORMATION
+  OTHER
+}
+
+enum PostReportStatus {
+  OPEN
+  RESOLVED
+}
+
 enum JobReportStatus {
   OPEN
   RESOLVED
@@ -315,6 +330,9 @@ model User {
   paddleCustomerId String?      @unique
   priorityCredits  Int          @default(0)
   lastFreeBoostClaimedAt DateTime?
+  // Banned by an admin: can no longer sign in (website or app); their sessions are ended at once.
+  bannedAt         DateTime?
+  bannedReason     String?      @db.VarChar(300)
 
   sessions             Session[]
   accounts             Account[]
@@ -353,6 +371,7 @@ model User {
   blocksMade           Block[]             @relation("Blocker")
   blocksReceived       Block[]             @relation("Blocked")
   jobReports           JobReport[]
+  postReports          PostReport[]
 
   @@map("users")
 }
@@ -959,6 +978,25 @@ model JobReport {
   @@map("job_reports")
 }
 
+// A member's report of a post in the feed (spam, harassment…). Only signed-in members can report, one open
+// report per member per post. Admins dismiss the reports or delete the post (Admin → Reports).
+model PostReport {
+  id         String           @id @default(cuid())
+  postId     String
+  reporterId String?
+  reason     PostReportReason
+  details    String?          @db.VarChar(1000)
+  status     PostReportStatus @default(OPEN)
+  createdAt  DateTime         @default(now())
+  resolvedAt DateTime?
+  post       Post             @relation(fields: [postId], references: [id], onDelete: Cascade)
+  reporter   User?            @relation(fields: [reporterId], references: [id], onDelete: SetNull)
+
+  @@index([status, createdAt(sort: Desc)])
+  @@index([postId, reporterId])
+  @@map("post_reports")
+}
+
 model SavedJob {
   userId    String
   jobId     String
@@ -1145,6 +1183,7 @@ model Post {
   shares       Post[]         @relation("PostShares")
   likes        PostLike[]
   comments     Comment[]
+  reports      PostReport[]
 
   @@index([authorId, createdAt(sort: Desc)])
   @@index([companyId, createdAt(sort: Desc)])

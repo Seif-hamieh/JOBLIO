@@ -328,6 +328,27 @@ export const JobReportReason = {
 export type JobReportReason = (typeof JobReportReason)[keyof typeof JobReportReason]
 
 
+export const PostReportReason = {
+  SPAM: 'SPAM',
+  SCAM: 'SCAM',
+  HARASSMENT: 'HARASSMENT',
+  HATE: 'HATE',
+  INAPPROPRIATE: 'INAPPROPRIATE',
+  MISINFORMATION: 'MISINFORMATION',
+  OTHER: 'OTHER'
+} as const
+
+export type PostReportReason = (typeof PostReportReason)[keyof typeof PostReportReason]
+
+
+export const PostReportStatus = {
+  OPEN: 'OPEN',
+  RESOLVED: 'RESOLVED'
+} as const
+
+export type PostReportStatus = (typeof PostReportStatus)[keyof typeof PostReportStatus]
+
+
 export const JobReportStatus = {
   OPEN: 'OPEN',
   RESOLVED: 'RESOLVED'

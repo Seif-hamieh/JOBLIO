@@ -3,10 +3,11 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { db } from "@/server/db";
-import { fail, localizeState, parse, type ActionState } from "@/server/action";
+import { ActionError, fail, localizeState, parse, type ActionState } from "@/server/action";
 import { rateLimit } from "@/server/rate-limit";
 import { getViewer } from "@/server/session";
 import { anonymousViewerKey } from "@/server/services/jobs";
+import { postReportSchema, reportPost } from "@/server/services/post-reports";
 import { getI18n } from "@/i18n/server";
 import { k } from "@/i18n/message";
 
@@ -41,4 +42,22 @@ export async function reportJobAction(input: { jobId: string; reason: string; de
     revalidatePath("/admin/reports");
   }
   return localizeState(t, { ok: true, message: k("jobs.reportThanks") });
+}
+
+/** "Report post" in the feed (signed-in members only). Admins review it in Admin → Reports. */
+export async function reportPostAction(input: { postId: string; reason: string; details?: string }): Promise<ActionState> {
+  const { t } = await getI18n();
+  const parsed = parse(postReportSchema, input);
+  if (!parsed.success) return localizeState(t, parsed.state);
+  const viewer = await getViewer();
+  if (!viewer) return localizeState(t, fail(k("msg.signIn")));
+  const limit = rateLimit(`report:u:${viewer.id}`, REPORTS_PER_HOUR, 60 * 60_000);
+  if (!limit.ok) return localizeState(t, fail(k("msg.tooOften", { s: limit.retryAfterSeconds })));
+  try {
+    await reportPost(viewer.id, parsed.data);
+  } catch (e) {
+    if (e instanceof ActionError) return localizeState(t, fail(e.message));
+    throw e;
+  }
+  return localizeState(t, { ok: true, message: k("feed.reportThanks") });
 }

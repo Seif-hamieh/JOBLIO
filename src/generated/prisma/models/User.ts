@@ -51,6 +51,8 @@ export type UserMinAggregateOutputType = {
   paddleCustomerId: string | null
   priorityCredits: number | null
   lastFreeBoostClaimedAt: Date | null
+  bannedAt: Date | null
+  bannedReason: string | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -70,6 +72,8 @@ export type UserMaxAggregateOutputType = {
   paddleCustomerId: string | null
   priorityCredits: number | null
   lastFreeBoostClaimedAt: Date | null
+  bannedAt: Date | null
+  bannedReason: string | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -89,6 +93,8 @@ export type UserCountAggregateOutputType = {
   paddleCustomerId: number
   priorityCredits: number
   lastFreeBoostClaimedAt: number
+  bannedAt: number
+  bannedReason: number
   _all: number
 }
 
@@ -118,6 +124,8 @@ export type UserMinAggregateInputType = {
   paddleCustomerId?: true
   priorityCredits?: true
   lastFreeBoostClaimedAt?: true
+  bannedAt?: true
+  bannedReason?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -137,6 +145,8 @@ export type UserMaxAggregateInputType = {
   paddleCustomerId?: true
   priorityCredits?: true
   lastFreeBoostClaimedAt?: true
+  bannedAt?: true
+  bannedReason?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -156,6 +166,8 @@ export type UserCountAggregateInputType = {
   paddleCustomerId?: true
   priorityCredits?: true
   lastFreeBoostClaimedAt?: true
+  bannedAt?: true
+  bannedReason?: true
   _all?: true
 }
 
@@ -262,6 +274,8 @@ export type UserGroupByOutputType = {
   paddleCustomerId: string | null
   priorityCredits: number
   lastFreeBoostClaimedAt: Date | null
+  bannedAt: Date | null
+  bannedReason: string | null
   _count: UserCountAggregateOutputType | null
   _avg: UserAvgAggregateOutputType | null
   _sum: UserSumAggregateOutputType | null
@@ -304,6 +318,8 @@ export type UserWhereInput = {
   paddleCustomerId?: Prisma.StringNullableFilter<"User"> | string | null
   priorityCredits?: Prisma.IntFilter<"User"> | number
   lastFreeBoostClaimedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  bannedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  bannedReason?: Prisma.StringNullableFilter<"User"> | string | null
   sessions?: Prisma.SessionListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
   profile?: Prisma.XOR<Prisma.ProfileNullableScalarRelationFilter, Prisma.ProfileWhereInput> | null
@@ -341,6 +357,7 @@ export type UserWhereInput = {
   blocksMade?: Prisma.BlockListRelationFilter
   blocksReceived?: Prisma.BlockListRelationFilter
   jobReports?: Prisma.JobReportListRelationFilter
+  postReports?: Prisma.PostReportListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -360,6 +377,8 @@ export type UserOrderByWithRelationInput = {
   paddleCustomerId?: Prisma.SortOrderInput | Prisma.SortOrder
   priorityCredits?: Prisma.SortOrder
   lastFreeBoostClaimedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  bannedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  bannedReason?: Prisma.SortOrderInput | Prisma.SortOrder
   sessions?: Prisma.SessionOrderByRelationAggregateInput
   accounts?: Prisma.AccountOrderByRelationAggregateInput
   profile?: Prisma.ProfileOrderByWithRelationInput
@@ -397,6 +416,7 @@ export type UserOrderByWithRelationInput = {
   blocksMade?: Prisma.BlockOrderByRelationAggregateInput
   blocksReceived?: Prisma.BlockOrderByRelationAggregateInput
   jobReports?: Prisma.JobReportOrderByRelationAggregateInput
+  postReports?: Prisma.PostReportOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -419,6 +439,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   lastSeenAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   priorityCredits?: Prisma.IntFilter<"User"> | number
   lastFreeBoostClaimedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  bannedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  bannedReason?: Prisma.StringNullableFilter<"User"> | string | null
   sessions?: Prisma.SessionListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
   profile?: Prisma.XOR<Prisma.ProfileNullableScalarRelationFilter, Prisma.ProfileWhereInput> | null
@@ -456,6 +478,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   blocksMade?: Prisma.BlockListRelationFilter
   blocksReceived?: Prisma.BlockListRelationFilter
   jobReports?: Prisma.JobReportListRelationFilter
+  postReports?: Prisma.PostReportListRelationFilter
 }, "id" | "email" | "username" | "stripeCustomerId" | "paddleCustomerId">
 
 export type UserOrderByWithAggregationInput = {
@@ -475,6 +498,8 @@ export type UserOrderByWithAggregationInput = {
   paddleCustomerId?: Prisma.SortOrderInput | Prisma.SortOrder
   priorityCredits?: Prisma.SortOrder
   lastFreeBoostClaimedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  bannedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  bannedReason?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
@@ -502,6 +527,8 @@ export type UserScalarWhereWithAggregatesInput = {
   paddleCustomerId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   priorityCredits?: Prisma.IntWithAggregatesFilter<"User"> | number
   lastFreeBoostClaimedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  bannedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  bannedReason?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
 }
 
 export type UserCreateInput = {
@@ -521,6 +548,8 @@ export type UserCreateInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -558,6 +587,7 @@ export type UserCreateInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -577,6 +607,8 @@ export type UserUncheckedCreateInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -614,6 +646,7 @@ export type UserUncheckedCreateInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserUpdateInput = {
@@ -633,6 +666,8 @@ export type UserUpdateInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -670,6 +705,7 @@ export type UserUpdateInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -689,6 +725,8 @@ export type UserUncheckedUpdateInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -726,6 +764,7 @@ export type UserUncheckedUpdateInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -745,6 +784,8 @@ export type UserCreateManyInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
 }
 
 export type UserUpdateManyMutationInput = {
@@ -764,6 +805,8 @@ export type UserUpdateManyMutationInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -783,6 +826,8 @@ export type UserUncheckedUpdateManyInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -802,6 +847,8 @@ export type UserCountOrderByAggregateInput = {
   paddleCustomerId?: Prisma.SortOrder
   priorityCredits?: Prisma.SortOrder
   lastFreeBoostClaimedAt?: Prisma.SortOrder
+  bannedAt?: Prisma.SortOrder
+  bannedReason?: Prisma.SortOrder
 }
 
 export type UserAvgOrderByAggregateInput = {
@@ -825,6 +872,8 @@ export type UserMaxOrderByAggregateInput = {
   paddleCustomerId?: Prisma.SortOrder
   priorityCredits?: Prisma.SortOrder
   lastFreeBoostClaimedAt?: Prisma.SortOrder
+  bannedAt?: Prisma.SortOrder
+  bannedReason?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -844,6 +893,8 @@ export type UserMinOrderByAggregateInput = {
   paddleCustomerId?: Prisma.SortOrder
   priorityCredits?: Prisma.SortOrder
   lastFreeBoostClaimedAt?: Prisma.SortOrder
+  bannedAt?: Prisma.SortOrder
+  bannedReason?: Prisma.SortOrder
 }
 
 export type UserSumOrderByAggregateInput = {
@@ -1094,6 +1145,22 @@ export type UserUpdateOneWithoutJobReportsNestedInput = {
   delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutJobReportsInput, Prisma.UserUpdateWithoutJobReportsInput>, Prisma.UserUncheckedUpdateWithoutJobReportsInput>
+}
+
+export type UserCreateNestedOneWithoutPostReportsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPostReportsInput, Prisma.UserUncheckedCreateWithoutPostReportsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPostReportsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutPostReportsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPostReportsInput, Prisma.UserUncheckedCreateWithoutPostReportsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPostReportsInput
+  upsert?: Prisma.UserUpsertWithoutPostReportsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPostReportsInput, Prisma.UserUpdateWithoutPostReportsInput>, Prisma.UserUncheckedUpdateWithoutPostReportsInput>
 }
 
 export type UserCreateNestedOneWithoutSavedJobsInput = {
@@ -1441,6 +1508,8 @@ export type UserCreateWithoutSessionsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
   settings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
@@ -1477,6 +1546,7 @@ export type UserCreateWithoutSessionsInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -1496,6 +1566,8 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
   settings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
@@ -1532,6 +1604,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -1567,6 +1640,8 @@ export type UserUpdateWithoutSessionsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
   settings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
@@ -1603,6 +1678,7 @@ export type UserUpdateWithoutSessionsInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -1622,6 +1698,8 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
   settings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
@@ -1658,6 +1736,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -1677,6 +1756,8 @@ export type UserCreateWithoutAccountsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
   settings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
@@ -1713,6 +1794,7 @@ export type UserCreateWithoutAccountsInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -1732,6 +1814,8 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
   settings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
@@ -1768,6 +1852,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -1803,6 +1888,8 @@ export type UserUpdateWithoutAccountsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
   settings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
@@ -1839,6 +1926,7 @@ export type UserUpdateWithoutAccountsInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -1858,6 +1946,8 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
   settings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
@@ -1894,6 +1984,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutSettingsInput = {
@@ -1913,6 +2004,8 @@ export type UserCreateWithoutSettingsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -1949,6 +2042,7 @@ export type UserCreateWithoutSettingsInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutSettingsInput = {
@@ -1968,6 +2062,8 @@ export type UserUncheckedCreateWithoutSettingsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2004,6 +2100,7 @@ export type UserUncheckedCreateWithoutSettingsInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutSettingsInput = {
@@ -2039,6 +2136,8 @@ export type UserUpdateWithoutSettingsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -2075,6 +2174,7 @@ export type UserUpdateWithoutSettingsInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSettingsInput = {
@@ -2094,6 +2194,8 @@ export type UserUncheckedUpdateWithoutSettingsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2130,6 +2232,7 @@ export type UserUncheckedUpdateWithoutSettingsInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutBlocksMadeInput = {
@@ -2149,6 +2252,8 @@ export type UserCreateWithoutBlocksMadeInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -2185,6 +2290,7 @@ export type UserCreateWithoutBlocksMadeInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutBlocksMadeInput = {
@@ -2204,6 +2310,8 @@ export type UserUncheckedCreateWithoutBlocksMadeInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2240,6 +2348,7 @@ export type UserUncheckedCreateWithoutBlocksMadeInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutBlocksMadeInput = {
@@ -2264,6 +2373,8 @@ export type UserCreateWithoutBlocksReceivedInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -2300,6 +2411,7 @@ export type UserCreateWithoutBlocksReceivedInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutBlocksReceivedInput = {
@@ -2319,6 +2431,8 @@ export type UserUncheckedCreateWithoutBlocksReceivedInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2355,6 +2469,7 @@ export type UserUncheckedCreateWithoutBlocksReceivedInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutBlocksReceivedInput = {
@@ -2390,6 +2505,8 @@ export type UserUpdateWithoutBlocksMadeInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -2426,6 +2543,7 @@ export type UserUpdateWithoutBlocksMadeInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBlocksMadeInput = {
@@ -2445,6 +2563,8 @@ export type UserUncheckedUpdateWithoutBlocksMadeInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2481,6 +2601,7 @@ export type UserUncheckedUpdateWithoutBlocksMadeInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUpsertWithoutBlocksReceivedInput = {
@@ -2511,6 +2632,8 @@ export type UserUpdateWithoutBlocksReceivedInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -2547,6 +2670,7 @@ export type UserUpdateWithoutBlocksReceivedInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBlocksReceivedInput = {
@@ -2566,6 +2690,8 @@ export type UserUncheckedUpdateWithoutBlocksReceivedInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2602,6 +2728,7 @@ export type UserUncheckedUpdateWithoutBlocksReceivedInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutProfileInput = {
@@ -2621,6 +2748,8 @@ export type UserCreateWithoutProfileInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   settings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
@@ -2657,6 +2786,7 @@ export type UserCreateWithoutProfileInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutProfileInput = {
@@ -2676,6 +2806,8 @@ export type UserUncheckedCreateWithoutProfileInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   settings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
@@ -2712,6 +2844,7 @@ export type UserUncheckedCreateWithoutProfileInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutProfileInput = {
@@ -2747,6 +2880,8 @@ export type UserUpdateWithoutProfileInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   settings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
@@ -2783,6 +2918,7 @@ export type UserUpdateWithoutProfileInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfileInput = {
@@ -2802,6 +2938,8 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   settings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
@@ -2838,6 +2976,7 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutEndorsementsGivenInput = {
@@ -2857,6 +2996,8 @@ export type UserCreateWithoutEndorsementsGivenInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -2893,6 +3034,7 @@ export type UserCreateWithoutEndorsementsGivenInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutEndorsementsGivenInput = {
@@ -2912,6 +3054,8 @@ export type UserUncheckedCreateWithoutEndorsementsGivenInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2948,6 +3092,7 @@ export type UserUncheckedCreateWithoutEndorsementsGivenInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutEndorsementsGivenInput = {
@@ -2983,6 +3128,8 @@ export type UserUpdateWithoutEndorsementsGivenInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -3019,6 +3166,7 @@ export type UserUpdateWithoutEndorsementsGivenInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutEndorsementsGivenInput = {
@@ -3038,6 +3186,8 @@ export type UserUncheckedUpdateWithoutEndorsementsGivenInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -3074,6 +3224,7 @@ export type UserUncheckedUpdateWithoutEndorsementsGivenInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutProfileViewsMadeInput = {
@@ -3093,6 +3244,8 @@ export type UserCreateWithoutProfileViewsMadeInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -3129,6 +3282,7 @@ export type UserCreateWithoutProfileViewsMadeInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutProfileViewsMadeInput = {
@@ -3148,6 +3302,8 @@ export type UserUncheckedCreateWithoutProfileViewsMadeInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -3184,6 +3340,7 @@ export type UserUncheckedCreateWithoutProfileViewsMadeInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutProfileViewsMadeInput = {
@@ -3208,6 +3365,8 @@ export type UserCreateWithoutProfileViewsReceivedInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -3244,6 +3403,7 @@ export type UserCreateWithoutProfileViewsReceivedInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutProfileViewsReceivedInput = {
@@ -3263,6 +3423,8 @@ export type UserUncheckedCreateWithoutProfileViewsReceivedInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -3299,6 +3461,7 @@ export type UserUncheckedCreateWithoutProfileViewsReceivedInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutProfileViewsReceivedInput = {
@@ -3334,6 +3497,8 @@ export type UserUpdateWithoutProfileViewsMadeInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -3370,6 +3535,7 @@ export type UserUpdateWithoutProfileViewsMadeInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfileViewsMadeInput = {
@@ -3389,6 +3555,8 @@ export type UserUncheckedUpdateWithoutProfileViewsMadeInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -3425,6 +3593,7 @@ export type UserUncheckedUpdateWithoutProfileViewsMadeInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUpsertWithoutProfileViewsReceivedInput = {
@@ -3455,6 +3624,8 @@ export type UserUpdateWithoutProfileViewsReceivedInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -3491,6 +3662,7 @@ export type UserUpdateWithoutProfileViewsReceivedInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfileViewsReceivedInput = {
@@ -3510,6 +3682,8 @@ export type UserUncheckedUpdateWithoutProfileViewsReceivedInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -3546,6 +3720,7 @@ export type UserUncheckedUpdateWithoutProfileViewsReceivedInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutAchievementsInput = {
@@ -3565,6 +3740,8 @@ export type UserCreateWithoutAchievementsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -3601,6 +3778,7 @@ export type UserCreateWithoutAchievementsInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutAchievementsInput = {
@@ -3620,6 +3798,8 @@ export type UserUncheckedCreateWithoutAchievementsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -3656,6 +3836,7 @@ export type UserUncheckedCreateWithoutAchievementsInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutAchievementsInput = {
@@ -3691,6 +3872,8 @@ export type UserUpdateWithoutAchievementsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -3727,6 +3910,7 @@ export type UserUpdateWithoutAchievementsInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAchievementsInput = {
@@ -3746,6 +3930,8 @@ export type UserUncheckedUpdateWithoutAchievementsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -3782,6 +3968,7 @@ export type UserUncheckedUpdateWithoutAchievementsInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutCompanyMembershipsInput = {
@@ -3801,6 +3988,8 @@ export type UserCreateWithoutCompanyMembershipsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -3837,6 +4026,7 @@ export type UserCreateWithoutCompanyMembershipsInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutCompanyMembershipsInput = {
@@ -3856,6 +4046,8 @@ export type UserUncheckedCreateWithoutCompanyMembershipsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -3892,6 +4084,7 @@ export type UserUncheckedCreateWithoutCompanyMembershipsInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutCompanyMembershipsInput = {
@@ -3927,6 +4120,8 @@ export type UserUpdateWithoutCompanyMembershipsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -3963,6 +4158,7 @@ export type UserUpdateWithoutCompanyMembershipsInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCompanyMembershipsInput = {
@@ -3982,6 +4178,8 @@ export type UserUncheckedUpdateWithoutCompanyMembershipsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -4018,6 +4216,7 @@ export type UserUncheckedUpdateWithoutCompanyMembershipsInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutCompanyFollowsInput = {
@@ -4037,6 +4236,8 @@ export type UserCreateWithoutCompanyFollowsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -4073,6 +4274,7 @@ export type UserCreateWithoutCompanyFollowsInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutCompanyFollowsInput = {
@@ -4092,6 +4294,8 @@ export type UserUncheckedCreateWithoutCompanyFollowsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -4128,6 +4332,7 @@ export type UserUncheckedCreateWithoutCompanyFollowsInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutCompanyFollowsInput = {
@@ -4163,6 +4368,8 @@ export type UserUpdateWithoutCompanyFollowsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -4199,6 +4406,7 @@ export type UserUpdateWithoutCompanyFollowsInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCompanyFollowsInput = {
@@ -4218,6 +4426,8 @@ export type UserUncheckedUpdateWithoutCompanyFollowsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -4254,6 +4464,7 @@ export type UserUncheckedUpdateWithoutCompanyFollowsInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutPostedJobsInput = {
@@ -4273,6 +4484,8 @@ export type UserCreateWithoutPostedJobsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -4309,6 +4522,7 @@ export type UserCreateWithoutPostedJobsInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutPostedJobsInput = {
@@ -4328,6 +4542,8 @@ export type UserUncheckedCreateWithoutPostedJobsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -4364,6 +4580,7 @@ export type UserUncheckedCreateWithoutPostedJobsInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutPostedJobsInput = {
@@ -4399,6 +4616,8 @@ export type UserUpdateWithoutPostedJobsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -4435,6 +4654,7 @@ export type UserUpdateWithoutPostedJobsInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPostedJobsInput = {
@@ -4454,6 +4674,8 @@ export type UserUncheckedUpdateWithoutPostedJobsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -4490,6 +4712,7 @@ export type UserUncheckedUpdateWithoutPostedJobsInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutJobReportsInput = {
@@ -4509,6 +4732,8 @@ export type UserCreateWithoutJobReportsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -4545,6 +4770,7 @@ export type UserCreateWithoutJobReportsInput = {
   boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutJobReportsInput = {
@@ -4564,6 +4790,8 @@ export type UserUncheckedCreateWithoutJobReportsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -4600,6 +4828,7 @@ export type UserUncheckedCreateWithoutJobReportsInput = {
   boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutJobReportsInput = {
@@ -4635,6 +4864,8 @@ export type UserUpdateWithoutJobReportsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -4671,6 +4902,7 @@ export type UserUpdateWithoutJobReportsInput = {
   boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutJobReportsInput = {
@@ -4690,6 +4922,8 @@ export type UserUncheckedUpdateWithoutJobReportsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -4726,6 +4960,255 @@ export type UserUncheckedUpdateWithoutJobReportsInput = {
   boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
+}
+
+export type UserCreateWithoutPostReportsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  username?: string | null
+  intent?: $Enums.UserIntent
+  platformRole?: $Enums.PlatformRole
+  onboardedAt?: Date | string | null
+  lastSeenAt?: Date | string | null
+  stripeCustomerId?: string | null
+  paddleCustomerId?: string | null
+  priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  settings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
+  companyMemberships?: Prisma.CompanyMemberCreateNestedManyWithoutUserInput
+  postedJobs?: Prisma.JobCreateNestedManyWithoutPostedByInput
+  applications?: Prisma.ApplicationCreateNestedManyWithoutApplicantInput
+  savedJobs?: Prisma.SavedJobCreateNestedManyWithoutUserInput
+  savedSearches?: Prisma.SavedSearchCreateNestedManyWithoutUserInput
+  savedCandidates?: Prisma.SavedCandidateCreateNestedManyWithoutRecruiterInput
+  savedByRecruiters?: Prisma.SavedCandidateCreateNestedManyWithoutCandidateInput
+  sentConnections?: Prisma.ConnectionCreateNestedManyWithoutRequesterInput
+  receivedConnections?: Prisma.ConnectionCreateNestedManyWithoutAddresseeInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  companyFollows?: Prisma.CompanyFollowerCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
+  comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  likes?: Prisma.PostLikeCreateNestedManyWithoutUserInput
+  endorsementsGiven?: Prisma.EndorsementCreateNestedManyWithoutEndorserInput
+  conversations?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
+  messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  sharedInMessages?: Prisma.MessageCreateNestedManyWithoutSharedUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  notificationsCaused?: Prisma.NotificationCreateNestedManyWithoutActorInput
+  achievements?: Prisma.UserAchievementCreateNestedManyWithoutUserInput
+  profileViewsMade?: Prisma.ProfileViewCreateNestedManyWithoutViewerInput
+  profileViewsReceived?: Prisma.ProfileViewCreateNestedManyWithoutViewedInput
+  interviewsScheduled?: Prisma.InterviewCreateNestedManyWithoutScheduledByInput
+  applicationEvents?: Prisma.ApplicationEventCreateNestedManyWithoutActorInput
+  recruiterNotes?: Prisma.RecruiterNoteCreateNestedManyWithoutAuthorInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
+  boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
+  blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+}
+
+export type UserUncheckedCreateWithoutPostReportsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  username?: string | null
+  intent?: $Enums.UserIntent
+  platformRole?: $Enums.PlatformRole
+  onboardedAt?: Date | string | null
+  lastSeenAt?: Date | string | null
+  stripeCustomerId?: string | null
+  paddleCustomerId?: string | null
+  priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  settings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
+  companyMemberships?: Prisma.CompanyMemberUncheckedCreateNestedManyWithoutUserInput
+  postedJobs?: Prisma.JobUncheckedCreateNestedManyWithoutPostedByInput
+  applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutApplicantInput
+  savedJobs?: Prisma.SavedJobUncheckedCreateNestedManyWithoutUserInput
+  savedSearches?: Prisma.SavedSearchUncheckedCreateNestedManyWithoutUserInput
+  savedCandidates?: Prisma.SavedCandidateUncheckedCreateNestedManyWithoutRecruiterInput
+  savedByRecruiters?: Prisma.SavedCandidateUncheckedCreateNestedManyWithoutCandidateInput
+  sentConnections?: Prisma.ConnectionUncheckedCreateNestedManyWithoutRequesterInput
+  receivedConnections?: Prisma.ConnectionUncheckedCreateNestedManyWithoutAddresseeInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  companyFollows?: Prisma.CompanyFollowerUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  likes?: Prisma.PostLikeUncheckedCreateNestedManyWithoutUserInput
+  endorsementsGiven?: Prisma.EndorsementUncheckedCreateNestedManyWithoutEndorserInput
+  conversations?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  sharedInMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSharedUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  notificationsCaused?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
+  achievements?: Prisma.UserAchievementUncheckedCreateNestedManyWithoutUserInput
+  profileViewsMade?: Prisma.ProfileViewUncheckedCreateNestedManyWithoutViewerInput
+  profileViewsReceived?: Prisma.ProfileViewUncheckedCreateNestedManyWithoutViewedInput
+  interviewsScheduled?: Prisma.InterviewUncheckedCreateNestedManyWithoutScheduledByInput
+  applicationEvents?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutActorInput
+  recruiterNotes?: Prisma.RecruiterNoteUncheckedCreateNestedManyWithoutAuthorInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
+  boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
+  blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+}
+
+export type UserCreateOrConnectWithoutPostReportsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPostReportsInput, Prisma.UserUncheckedCreateWithoutPostReportsInput>
+}
+
+export type UserUpsertWithoutPostReportsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPostReportsInput, Prisma.UserUncheckedUpdateWithoutPostReportsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPostReportsInput, Prisma.UserUncheckedCreateWithoutPostReportsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPostReportsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPostReportsInput, Prisma.UserUncheckedUpdateWithoutPostReportsInput>
+}
+
+export type UserUpdateWithoutPostReportsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  intent?: Prisma.EnumUserIntentFieldUpdateOperationsInput | $Enums.UserIntent
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  settings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
+  companyMemberships?: Prisma.CompanyMemberUpdateManyWithoutUserNestedInput
+  postedJobs?: Prisma.JobUpdateManyWithoutPostedByNestedInput
+  applications?: Prisma.ApplicationUpdateManyWithoutApplicantNestedInput
+  savedJobs?: Prisma.SavedJobUpdateManyWithoutUserNestedInput
+  savedSearches?: Prisma.SavedSearchUpdateManyWithoutUserNestedInput
+  savedCandidates?: Prisma.SavedCandidateUpdateManyWithoutRecruiterNestedInput
+  savedByRecruiters?: Prisma.SavedCandidateUpdateManyWithoutCandidateNestedInput
+  sentConnections?: Prisma.ConnectionUpdateManyWithoutRequesterNestedInput
+  receivedConnections?: Prisma.ConnectionUpdateManyWithoutAddresseeNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  companyFollows?: Prisma.CompanyFollowerUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  likes?: Prisma.PostLikeUpdateManyWithoutUserNestedInput
+  endorsementsGiven?: Prisma.EndorsementUpdateManyWithoutEndorserNestedInput
+  conversations?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  sharedInMessages?: Prisma.MessageUpdateManyWithoutSharedUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  notificationsCaused?: Prisma.NotificationUpdateManyWithoutActorNestedInput
+  achievements?: Prisma.UserAchievementUpdateManyWithoutUserNestedInput
+  profileViewsMade?: Prisma.ProfileViewUpdateManyWithoutViewerNestedInput
+  profileViewsReceived?: Prisma.ProfileViewUpdateManyWithoutViewedNestedInput
+  interviewsScheduled?: Prisma.InterviewUpdateManyWithoutScheduledByNestedInput
+  applicationEvents?: Prisma.ApplicationEventUpdateManyWithoutActorNestedInput
+  recruiterNotes?: Prisma.RecruiterNoteUpdateManyWithoutAuthorNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
+  boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
+  blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPostReportsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  intent?: Prisma.EnumUserIntentFieldUpdateOperationsInput | $Enums.UserIntent
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  settings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
+  companyMemberships?: Prisma.CompanyMemberUncheckedUpdateManyWithoutUserNestedInput
+  postedJobs?: Prisma.JobUncheckedUpdateManyWithoutPostedByNestedInput
+  applications?: Prisma.ApplicationUncheckedUpdateManyWithoutApplicantNestedInput
+  savedJobs?: Prisma.SavedJobUncheckedUpdateManyWithoutUserNestedInput
+  savedSearches?: Prisma.SavedSearchUncheckedUpdateManyWithoutUserNestedInput
+  savedCandidates?: Prisma.SavedCandidateUncheckedUpdateManyWithoutRecruiterNestedInput
+  savedByRecruiters?: Prisma.SavedCandidateUncheckedUpdateManyWithoutCandidateNestedInput
+  sentConnections?: Prisma.ConnectionUncheckedUpdateManyWithoutRequesterNestedInput
+  receivedConnections?: Prisma.ConnectionUncheckedUpdateManyWithoutAddresseeNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  companyFollows?: Prisma.CompanyFollowerUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  likes?: Prisma.PostLikeUncheckedUpdateManyWithoutUserNestedInput
+  endorsementsGiven?: Prisma.EndorsementUncheckedUpdateManyWithoutEndorserNestedInput
+  conversations?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  sharedInMessages?: Prisma.MessageUncheckedUpdateManyWithoutSharedUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  notificationsCaused?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
+  achievements?: Prisma.UserAchievementUncheckedUpdateManyWithoutUserNestedInput
+  profileViewsMade?: Prisma.ProfileViewUncheckedUpdateManyWithoutViewerNestedInput
+  profileViewsReceived?: Prisma.ProfileViewUncheckedUpdateManyWithoutViewedNestedInput
+  interviewsScheduled?: Prisma.InterviewUncheckedUpdateManyWithoutScheduledByNestedInput
+  applicationEvents?: Prisma.ApplicationEventUncheckedUpdateManyWithoutActorNestedInput
+  recruiterNotes?: Prisma.RecruiterNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
+  boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
+  blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutSavedJobsInput = {
@@ -4745,6 +5228,8 @@ export type UserCreateWithoutSavedJobsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -4781,6 +5266,7 @@ export type UserCreateWithoutSavedJobsInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutSavedJobsInput = {
@@ -4800,6 +5286,8 @@ export type UserUncheckedCreateWithoutSavedJobsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -4836,6 +5324,7 @@ export type UserUncheckedCreateWithoutSavedJobsInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutSavedJobsInput = {
@@ -4871,6 +5360,8 @@ export type UserUpdateWithoutSavedJobsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -4907,6 +5398,7 @@ export type UserUpdateWithoutSavedJobsInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSavedJobsInput = {
@@ -4926,6 +5418,8 @@ export type UserUncheckedUpdateWithoutSavedJobsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -4962,6 +5456,7 @@ export type UserUncheckedUpdateWithoutSavedJobsInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutSavedSearchesInput = {
@@ -4981,6 +5476,8 @@ export type UserCreateWithoutSavedSearchesInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -5017,6 +5514,7 @@ export type UserCreateWithoutSavedSearchesInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutSavedSearchesInput = {
@@ -5036,6 +5534,8 @@ export type UserUncheckedCreateWithoutSavedSearchesInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -5072,6 +5572,7 @@ export type UserUncheckedCreateWithoutSavedSearchesInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutSavedSearchesInput = {
@@ -5107,6 +5608,8 @@ export type UserUpdateWithoutSavedSearchesInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -5143,6 +5646,7 @@ export type UserUpdateWithoutSavedSearchesInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSavedSearchesInput = {
@@ -5162,6 +5666,8 @@ export type UserUncheckedUpdateWithoutSavedSearchesInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -5198,6 +5704,7 @@ export type UserUncheckedUpdateWithoutSavedSearchesInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutApplicationsInput = {
@@ -5217,6 +5724,8 @@ export type UserCreateWithoutApplicationsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -5253,6 +5762,7 @@ export type UserCreateWithoutApplicationsInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutApplicationsInput = {
@@ -5272,6 +5782,8 @@ export type UserUncheckedCreateWithoutApplicationsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -5308,6 +5820,7 @@ export type UserUncheckedCreateWithoutApplicationsInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutApplicationsInput = {
@@ -5343,6 +5856,8 @@ export type UserUpdateWithoutApplicationsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -5379,6 +5894,7 @@ export type UserUpdateWithoutApplicationsInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApplicationsInput = {
@@ -5398,6 +5914,8 @@ export type UserUncheckedUpdateWithoutApplicationsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -5434,6 +5952,7 @@ export type UserUncheckedUpdateWithoutApplicationsInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutApplicationEventsInput = {
@@ -5453,6 +5972,8 @@ export type UserCreateWithoutApplicationEventsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -5489,6 +6010,7 @@ export type UserCreateWithoutApplicationEventsInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutApplicationEventsInput = {
@@ -5508,6 +6030,8 @@ export type UserUncheckedCreateWithoutApplicationEventsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -5544,6 +6068,7 @@ export type UserUncheckedCreateWithoutApplicationEventsInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutApplicationEventsInput = {
@@ -5579,6 +6104,8 @@ export type UserUpdateWithoutApplicationEventsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -5615,6 +6142,7 @@ export type UserUpdateWithoutApplicationEventsInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApplicationEventsInput = {
@@ -5634,6 +6162,8 @@ export type UserUncheckedUpdateWithoutApplicationEventsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -5670,6 +6200,7 @@ export type UserUncheckedUpdateWithoutApplicationEventsInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutRecruiterNotesInput = {
@@ -5689,6 +6220,8 @@ export type UserCreateWithoutRecruiterNotesInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -5725,6 +6258,7 @@ export type UserCreateWithoutRecruiterNotesInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutRecruiterNotesInput = {
@@ -5744,6 +6278,8 @@ export type UserUncheckedCreateWithoutRecruiterNotesInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -5780,6 +6316,7 @@ export type UserUncheckedCreateWithoutRecruiterNotesInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutRecruiterNotesInput = {
@@ -5815,6 +6352,8 @@ export type UserUpdateWithoutRecruiterNotesInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -5851,6 +6390,7 @@ export type UserUpdateWithoutRecruiterNotesInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRecruiterNotesInput = {
@@ -5870,6 +6410,8 @@ export type UserUncheckedUpdateWithoutRecruiterNotesInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -5906,6 +6448,7 @@ export type UserUncheckedUpdateWithoutRecruiterNotesInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutInterviewsScheduledInput = {
@@ -5925,6 +6468,8 @@ export type UserCreateWithoutInterviewsScheduledInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -5961,6 +6506,7 @@ export type UserCreateWithoutInterviewsScheduledInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutInterviewsScheduledInput = {
@@ -5980,6 +6526,8 @@ export type UserUncheckedCreateWithoutInterviewsScheduledInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -6016,6 +6564,7 @@ export type UserUncheckedCreateWithoutInterviewsScheduledInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutInterviewsScheduledInput = {
@@ -6051,6 +6600,8 @@ export type UserUpdateWithoutInterviewsScheduledInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -6087,6 +6638,7 @@ export type UserUpdateWithoutInterviewsScheduledInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutInterviewsScheduledInput = {
@@ -6106,6 +6658,8 @@ export type UserUncheckedUpdateWithoutInterviewsScheduledInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -6142,6 +6696,7 @@ export type UserUncheckedUpdateWithoutInterviewsScheduledInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutSavedCandidatesInput = {
@@ -6161,6 +6716,8 @@ export type UserCreateWithoutSavedCandidatesInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -6197,6 +6754,7 @@ export type UserCreateWithoutSavedCandidatesInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutSavedCandidatesInput = {
@@ -6216,6 +6774,8 @@ export type UserUncheckedCreateWithoutSavedCandidatesInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -6252,6 +6812,7 @@ export type UserUncheckedCreateWithoutSavedCandidatesInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutSavedCandidatesInput = {
@@ -6276,6 +6837,8 @@ export type UserCreateWithoutSavedByRecruitersInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -6312,6 +6875,7 @@ export type UserCreateWithoutSavedByRecruitersInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutSavedByRecruitersInput = {
@@ -6331,6 +6895,8 @@ export type UserUncheckedCreateWithoutSavedByRecruitersInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -6367,6 +6933,7 @@ export type UserUncheckedCreateWithoutSavedByRecruitersInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutSavedByRecruitersInput = {
@@ -6402,6 +6969,8 @@ export type UserUpdateWithoutSavedCandidatesInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -6438,6 +7007,7 @@ export type UserUpdateWithoutSavedCandidatesInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSavedCandidatesInput = {
@@ -6457,6 +7027,8 @@ export type UserUncheckedUpdateWithoutSavedCandidatesInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -6493,6 +7065,7 @@ export type UserUncheckedUpdateWithoutSavedCandidatesInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUpsertWithoutSavedByRecruitersInput = {
@@ -6523,6 +7096,8 @@ export type UserUpdateWithoutSavedByRecruitersInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -6559,6 +7134,7 @@ export type UserUpdateWithoutSavedByRecruitersInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSavedByRecruitersInput = {
@@ -6578,6 +7154,8 @@ export type UserUncheckedUpdateWithoutSavedByRecruitersInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -6614,6 +7192,7 @@ export type UserUncheckedUpdateWithoutSavedByRecruitersInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutSentConnectionsInput = {
@@ -6633,6 +7212,8 @@ export type UserCreateWithoutSentConnectionsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -6669,6 +7250,7 @@ export type UserCreateWithoutSentConnectionsInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutSentConnectionsInput = {
@@ -6688,6 +7270,8 @@ export type UserUncheckedCreateWithoutSentConnectionsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -6724,6 +7308,7 @@ export type UserUncheckedCreateWithoutSentConnectionsInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutSentConnectionsInput = {
@@ -6748,6 +7333,8 @@ export type UserCreateWithoutReceivedConnectionsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -6784,6 +7371,7 @@ export type UserCreateWithoutReceivedConnectionsInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutReceivedConnectionsInput = {
@@ -6803,6 +7391,8 @@ export type UserUncheckedCreateWithoutReceivedConnectionsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -6839,6 +7429,7 @@ export type UserUncheckedCreateWithoutReceivedConnectionsInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutReceivedConnectionsInput = {
@@ -6874,6 +7465,8 @@ export type UserUpdateWithoutSentConnectionsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -6910,6 +7503,7 @@ export type UserUpdateWithoutSentConnectionsInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSentConnectionsInput = {
@@ -6929,6 +7523,8 @@ export type UserUncheckedUpdateWithoutSentConnectionsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -6965,6 +7561,7 @@ export type UserUncheckedUpdateWithoutSentConnectionsInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUpsertWithoutReceivedConnectionsInput = {
@@ -6995,6 +7592,8 @@ export type UserUpdateWithoutReceivedConnectionsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -7031,6 +7630,7 @@ export type UserUpdateWithoutReceivedConnectionsInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReceivedConnectionsInput = {
@@ -7050,6 +7650,8 @@ export type UserUncheckedUpdateWithoutReceivedConnectionsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -7086,6 +7688,7 @@ export type UserUncheckedUpdateWithoutReceivedConnectionsInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutFollowingInput = {
@@ -7105,6 +7708,8 @@ export type UserCreateWithoutFollowingInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -7141,6 +7746,7 @@ export type UserCreateWithoutFollowingInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutFollowingInput = {
@@ -7160,6 +7766,8 @@ export type UserUncheckedCreateWithoutFollowingInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -7196,6 +7804,7 @@ export type UserUncheckedCreateWithoutFollowingInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutFollowingInput = {
@@ -7220,6 +7829,8 @@ export type UserCreateWithoutFollowersInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -7256,6 +7867,7 @@ export type UserCreateWithoutFollowersInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutFollowersInput = {
@@ -7275,6 +7887,8 @@ export type UserUncheckedCreateWithoutFollowersInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -7311,6 +7925,7 @@ export type UserUncheckedCreateWithoutFollowersInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutFollowersInput = {
@@ -7346,6 +7961,8 @@ export type UserUpdateWithoutFollowingInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -7382,6 +7999,7 @@ export type UserUpdateWithoutFollowingInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFollowingInput = {
@@ -7401,6 +8019,8 @@ export type UserUncheckedUpdateWithoutFollowingInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -7437,6 +8057,7 @@ export type UserUncheckedUpdateWithoutFollowingInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUpsertWithoutFollowersInput = {
@@ -7467,6 +8088,8 @@ export type UserUpdateWithoutFollowersInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -7503,6 +8126,7 @@ export type UserUpdateWithoutFollowersInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFollowersInput = {
@@ -7522,6 +8146,8 @@ export type UserUncheckedUpdateWithoutFollowersInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -7558,6 +8184,7 @@ export type UserUncheckedUpdateWithoutFollowersInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutPostsInput = {
@@ -7577,6 +8204,8 @@ export type UserCreateWithoutPostsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -7613,6 +8242,7 @@ export type UserCreateWithoutPostsInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutPostsInput = {
@@ -7632,6 +8262,8 @@ export type UserUncheckedCreateWithoutPostsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -7668,6 +8300,7 @@ export type UserUncheckedCreateWithoutPostsInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutPostsInput = {
@@ -7703,6 +8336,8 @@ export type UserUpdateWithoutPostsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -7739,6 +8374,7 @@ export type UserUpdateWithoutPostsInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPostsInput = {
@@ -7758,6 +8394,8 @@ export type UserUncheckedUpdateWithoutPostsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -7794,6 +8432,7 @@ export type UserUncheckedUpdateWithoutPostsInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutLikesInput = {
@@ -7813,6 +8452,8 @@ export type UserCreateWithoutLikesInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -7849,6 +8490,7 @@ export type UserCreateWithoutLikesInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutLikesInput = {
@@ -7868,6 +8510,8 @@ export type UserUncheckedCreateWithoutLikesInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -7904,6 +8548,7 @@ export type UserUncheckedCreateWithoutLikesInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutLikesInput = {
@@ -7939,6 +8584,8 @@ export type UserUpdateWithoutLikesInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -7975,6 +8622,7 @@ export type UserUpdateWithoutLikesInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLikesInput = {
@@ -7994,6 +8642,8 @@ export type UserUncheckedUpdateWithoutLikesInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -8030,6 +8680,7 @@ export type UserUncheckedUpdateWithoutLikesInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutCommentsInput = {
@@ -8049,6 +8700,8 @@ export type UserCreateWithoutCommentsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -8085,6 +8738,7 @@ export type UserCreateWithoutCommentsInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutCommentsInput = {
@@ -8104,6 +8758,8 @@ export type UserUncheckedCreateWithoutCommentsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -8140,6 +8796,7 @@ export type UserUncheckedCreateWithoutCommentsInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutCommentsInput = {
@@ -8175,6 +8832,8 @@ export type UserUpdateWithoutCommentsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -8211,6 +8870,7 @@ export type UserUpdateWithoutCommentsInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCommentsInput = {
@@ -8230,6 +8890,8 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -8266,6 +8928,7 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutConversationsInput = {
@@ -8285,6 +8948,8 @@ export type UserCreateWithoutConversationsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -8321,6 +8986,7 @@ export type UserCreateWithoutConversationsInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutConversationsInput = {
@@ -8340,6 +9006,8 @@ export type UserUncheckedCreateWithoutConversationsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -8376,6 +9044,7 @@ export type UserUncheckedCreateWithoutConversationsInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutConversationsInput = {
@@ -8411,6 +9080,8 @@ export type UserUpdateWithoutConversationsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -8447,6 +9118,7 @@ export type UserUpdateWithoutConversationsInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutConversationsInput = {
@@ -8466,6 +9138,8 @@ export type UserUncheckedUpdateWithoutConversationsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -8502,6 +9176,7 @@ export type UserUncheckedUpdateWithoutConversationsInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutMessagesInput = {
@@ -8521,6 +9196,8 @@ export type UserCreateWithoutMessagesInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -8557,6 +9234,7 @@ export type UserCreateWithoutMessagesInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutMessagesInput = {
@@ -8576,6 +9254,8 @@ export type UserUncheckedCreateWithoutMessagesInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -8612,6 +9292,7 @@ export type UserUncheckedCreateWithoutMessagesInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutMessagesInput = {
@@ -8636,6 +9317,8 @@ export type UserCreateWithoutSharedInMessagesInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -8672,6 +9355,7 @@ export type UserCreateWithoutSharedInMessagesInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutSharedInMessagesInput = {
@@ -8691,6 +9375,8 @@ export type UserUncheckedCreateWithoutSharedInMessagesInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -8727,6 +9413,7 @@ export type UserUncheckedCreateWithoutSharedInMessagesInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutSharedInMessagesInput = {
@@ -8762,6 +9449,8 @@ export type UserUpdateWithoutMessagesInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -8798,6 +9487,7 @@ export type UserUpdateWithoutMessagesInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMessagesInput = {
@@ -8817,6 +9507,8 @@ export type UserUncheckedUpdateWithoutMessagesInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -8853,6 +9545,7 @@ export type UserUncheckedUpdateWithoutMessagesInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUpsertWithoutSharedInMessagesInput = {
@@ -8883,6 +9576,8 @@ export type UserUpdateWithoutSharedInMessagesInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -8919,6 +9614,7 @@ export type UserUpdateWithoutSharedInMessagesInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSharedInMessagesInput = {
@@ -8938,6 +9634,8 @@ export type UserUncheckedUpdateWithoutSharedInMessagesInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -8974,6 +9672,7 @@ export type UserUncheckedUpdateWithoutSharedInMessagesInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutNotificationsInput = {
@@ -8993,6 +9692,8 @@ export type UserCreateWithoutNotificationsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -9029,6 +9730,7 @@ export type UserCreateWithoutNotificationsInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -9048,6 +9750,8 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -9084,6 +9788,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -9108,6 +9813,8 @@ export type UserCreateWithoutNotificationsCausedInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -9144,6 +9851,7 @@ export type UserCreateWithoutNotificationsCausedInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsCausedInput = {
@@ -9163,6 +9871,8 @@ export type UserUncheckedCreateWithoutNotificationsCausedInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -9199,6 +9909,7 @@ export type UserUncheckedCreateWithoutNotificationsCausedInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsCausedInput = {
@@ -9234,6 +9945,8 @@ export type UserUpdateWithoutNotificationsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -9270,6 +9983,7 @@ export type UserUpdateWithoutNotificationsInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -9289,6 +10003,8 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -9325,6 +10041,7 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUpsertWithoutNotificationsCausedInput = {
@@ -9355,6 +10072,8 @@ export type UserUpdateWithoutNotificationsCausedInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -9391,6 +10110,7 @@ export type UserUpdateWithoutNotificationsCausedInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsCausedInput = {
@@ -9410,6 +10130,8 @@ export type UserUncheckedUpdateWithoutNotificationsCausedInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -9446,6 +10168,7 @@ export type UserUncheckedUpdateWithoutNotificationsCausedInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutSubscriptionsInput = {
@@ -9465,6 +10188,8 @@ export type UserCreateWithoutSubscriptionsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -9501,6 +10226,7 @@ export type UserCreateWithoutSubscriptionsInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutSubscriptionsInput = {
@@ -9520,6 +10246,8 @@ export type UserUncheckedCreateWithoutSubscriptionsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -9556,6 +10284,7 @@ export type UserUncheckedCreateWithoutSubscriptionsInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutSubscriptionsInput = {
@@ -9591,6 +10320,8 @@ export type UserUpdateWithoutSubscriptionsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -9627,6 +10358,7 @@ export type UserUpdateWithoutSubscriptionsInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSubscriptionsInput = {
@@ -9646,6 +10378,8 @@ export type UserUncheckedUpdateWithoutSubscriptionsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -9682,6 +10416,7 @@ export type UserUncheckedUpdateWithoutSubscriptionsInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutPaymentsInput = {
@@ -9701,6 +10436,8 @@ export type UserCreateWithoutPaymentsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -9737,6 +10474,7 @@ export type UserCreateWithoutPaymentsInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutPaymentsInput = {
@@ -9756,6 +10494,8 @@ export type UserUncheckedCreateWithoutPaymentsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -9792,6 +10532,7 @@ export type UserUncheckedCreateWithoutPaymentsInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutPaymentsInput = {
@@ -9827,6 +10568,8 @@ export type UserUpdateWithoutPaymentsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -9863,6 +10606,7 @@ export type UserUpdateWithoutPaymentsInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPaymentsInput = {
@@ -9882,6 +10626,8 @@ export type UserUncheckedUpdateWithoutPaymentsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -9918,6 +10664,7 @@ export type UserUncheckedUpdateWithoutPaymentsInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutBoostsInput = {
@@ -9937,6 +10684,8 @@ export type UserCreateWithoutBoostsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
@@ -9973,6 +10722,7 @@ export type UserCreateWithoutBoostsInput = {
   blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutBoostsInput = {
@@ -9992,6 +10742,8 @@ export type UserUncheckedCreateWithoutBoostsInput = {
   paddleCustomerId?: string | null
   priorityCredits?: number
   lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
@@ -10028,6 +10780,7 @@ export type UserUncheckedCreateWithoutBoostsInput = {
   blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutBoostsInput = {
@@ -10063,6 +10816,8 @@ export type UserUpdateWithoutBoostsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
@@ -10099,6 +10854,7 @@ export type UserUpdateWithoutBoostsInput = {
   blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBoostsInput = {
@@ -10118,6 +10874,8 @@ export type UserUncheckedUpdateWithoutBoostsInput = {
   paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
   lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -10154,6 +10912,7 @@ export type UserUncheckedUpdateWithoutBoostsInput = {
   blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 
@@ -10197,6 +10956,7 @@ export type UserCountOutputType = {
   blocksMade: number
   blocksReceived: number
   jobReports: number
+  postReports: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -10235,6 +10995,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   blocksMade?: boolean | UserCountOutputTypeCountBlocksMadeArgs
   blocksReceived?: boolean | UserCountOutputTypeCountBlocksReceivedArgs
   jobReports?: boolean | UserCountOutputTypeCountJobReportsArgs
+  postReports?: boolean | UserCountOutputTypeCountPostReportsArgs
 }
 
 /**
@@ -10492,6 +11253,13 @@ export type UserCountOutputTypeCountJobReportsArgs<ExtArgs extends runtime.Types
   where?: Prisma.JobReportWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPostReportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PostReportWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -10510,6 +11278,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   paddleCustomerId?: boolean
   priorityCredits?: boolean
   lastFreeBoostClaimedAt?: boolean
+  bannedAt?: boolean
+  bannedReason?: boolean
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   profile?: boolean | Prisma.User$profileArgs<ExtArgs>
@@ -10547,6 +11317,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   blocksMade?: boolean | Prisma.User$blocksMadeArgs<ExtArgs>
   blocksReceived?: boolean | Prisma.User$blocksReceivedArgs<ExtArgs>
   jobReports?: boolean | Prisma.User$jobReportsArgs<ExtArgs>
+  postReports?: boolean | Prisma.User$postReportsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -10567,6 +11338,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   paddleCustomerId?: boolean
   priorityCredits?: boolean
   lastFreeBoostClaimedAt?: boolean
+  bannedAt?: boolean
+  bannedReason?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -10586,6 +11359,8 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   paddleCustomerId?: boolean
   priorityCredits?: boolean
   lastFreeBoostClaimedAt?: boolean
+  bannedAt?: boolean
+  bannedReason?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -10605,9 +11380,11 @@ export type UserSelectScalar = {
   paddleCustomerId?: boolean
   priorityCredits?: boolean
   lastFreeBoostClaimedAt?: boolean
+  bannedAt?: boolean
+  bannedReason?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "username" | "intent" | "platformRole" | "onboardedAt" | "lastSeenAt" | "stripeCustomerId" | "paddleCustomerId" | "priorityCredits" | "lastFreeBoostClaimedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "username" | "intent" | "platformRole" | "onboardedAt" | "lastSeenAt" | "stripeCustomerId" | "paddleCustomerId" | "priorityCredits" | "lastFreeBoostClaimedAt" | "bannedAt" | "bannedReason", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
@@ -10646,6 +11423,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   blocksMade?: boolean | Prisma.User$blocksMadeArgs<ExtArgs>
   blocksReceived?: boolean | Prisma.User$blocksReceivedArgs<ExtArgs>
   jobReports?: boolean | Prisma.User$jobReportsArgs<ExtArgs>
+  postReports?: boolean | Prisma.User$postReportsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -10691,6 +11469,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     blocksMade: Prisma.$BlockPayload<ExtArgs>[]
     blocksReceived: Prisma.$BlockPayload<ExtArgs>[]
     jobReports: Prisma.$JobReportPayload<ExtArgs>[]
+    postReports: Prisma.$PostReportPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -10709,6 +11488,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     paddleCustomerId: string | null
     priorityCredits: number
     lastFreeBoostClaimedAt: Date | null
+    bannedAt: Date | null
+    bannedReason: string | null
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -11140,6 +11921,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   blocksMade<T extends Prisma.User$blocksMadeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$blocksMadeArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   blocksReceived<T extends Prisma.User$blocksReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$blocksReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   jobReports<T extends Prisma.User$jobReportsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$jobReportsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$JobReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  postReports<T extends Prisma.User$postReportsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$postReportsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PostReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11185,6 +11967,8 @@ export interface UserFieldRefs {
   readonly paddleCustomerId: Prisma.FieldRef<"User", 'String'>
   readonly priorityCredits: Prisma.FieldRef<"User", 'Int'>
   readonly lastFreeBoostClaimedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly bannedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly bannedReason: Prisma.FieldRef<"User", 'String'>
 }
     
 
@@ -12462,6 +13246,30 @@ export type User$jobReportsArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.JobReportScalarFieldEnum | Prisma.JobReportScalarFieldEnum[]
+}
+
+/**
+ * User.postReports
+ */
+export type User$postReportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PostReport
+   */
+  select?: Prisma.PostReportSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PostReport
+   */
+  omit?: Prisma.PostReportOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PostReportInclude<ExtArgs> | null
+  where?: Prisma.PostReportWhereInput
+  orderBy?: Prisma.PostReportOrderByWithRelationInput | Prisma.PostReportOrderByWithRelationInput[]
+  cursor?: Prisma.PostReportWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PostReportScalarFieldEnum | Prisma.PostReportScalarFieldEnum[]
 }
 
 /**

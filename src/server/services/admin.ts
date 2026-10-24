@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/server/db";
 import { ActionError } from "@/server/action";
 import { refreshSitemap } from "@/server/sitemap";
+import { deleteStored } from "@/server/storage";
 import { k } from "@/i18n/message";
 
 // Admin changes, shared by the website's admin actions and the mobile API. Callers check that the member is an
@@ -72,4 +73,48 @@ export async function deleteCompanyAsAdmin(companyId: string) {
   if (!count) throw new ActionError(k("admin.msg.companyNotFound"));
   revalidatePath("/admin/companies");
   return k("admin.msg.companyDeleted");
+}
+
+/**
+ * Bans a member: they are signed out everywhere at once (all sessions deleted) and can't sign in again — the
+ * sign-in hook in server/auth refuses banned accounts. Admins must lose their role first; nobody can ban themselves.
+ * Their profile and posts stay.
+ */
+export async function banUserAsAdmin(adminId: string, userId: string, reason: string | null) {
+  if (userId === adminId) throw new ActionError(k("admin.msg.banSelf"));
+  const user = await db.user.findUnique({ where: { id: userId }, select: { platformRole: true } });
+  if (!user) throw new ActionError(k("admin.msg.userNotFound"));
+  if (user.platformRole === "ADMIN") throw new ActionError(k("admin.msg.banAdmin"));
+  await db.$transaction([
+    db.user.update({ where: { id: userId }, data: { bannedAt: new Date(), bannedReason: reason } }),
+    db.session.deleteMany({ where: { userId } }),
+  ]);
+  revalidatePath("/admin/users");
+  return k("admin.msg.userBanned");
+}
+
+export async function unbanUserAsAdmin(userId: string) {
+  const { count } = await db.user.updateMany({ where: { id: userId }, data: { bannedAt: null, bannedReason: null } });
+  if (!count) throw new ActionError(k("admin.msg.userNotFound"));
+  revalidatePath("/admin/users");
+  return k("admin.msg.userUnbanned");
+}
+
+/**
+ * Settles every open report on a post: deletes the post (the reports were right — its comments, likes and photos
+ * go with it) or just dismisses the reports (the post is fine).
+ */
+export async function resolvePostReportsAsAdmin(postId: string, deletePost: boolean) {
+  if (deletePost) {
+    const post = await db.post.findUnique({ where: { id: postId }, select: { id: true, mediaUrls: true } });
+    if (post) {
+      await db.post.delete({ where: { id: post.id } }); // its reports are deleted with it
+      await deleteStored(post.mediaUrls);
+      revalidatePath("/feed");
+    }
+  } else {
+    await db.postReport.updateMany({ where: { postId, status: "OPEN" }, data: { status: "RESOLVED", resolvedAt: new Date() } });
+  }
+  revalidatePath("/admin/reports");
+  return k(deletePost ? "admin.msg.reportPostDeleted" : "admin.msg.reportsDismissed");
 }

@@ -8,13 +8,16 @@ import { LIMITS } from "@/server/rate-limit";
 import { k } from "@/i18n/message";
 import type { Viewer } from "@/server/session";
 import {
+  banUserAsAdmin,
   closeJobAsAdmin,
   deleteCompanyAsAdmin,
   deleteJobAsAdmin,
   publishJobAsAdmin,
   resolveJobReportsAsAdmin,
+  resolvePostReportsAsAdmin,
   setCompanyVerifiedAsAdmin,
   setUserRoleAsAdmin,
+  unbanUserAsAdmin,
 } from "@/server/services/admin";
 
 // Admin-only mutations. Each one re-checks the role from the database (getViewer) —
@@ -88,4 +91,19 @@ export async function revalidatePathAction(path: string) {
     revalidatePath(target);
     return { ok: true, message: k("admin.msg.revalidated", { path: target }) };
   });
+}
+
+const banReason = z.string().trim().max(300).optional().nullable().transform((v) => v || null);
+
+/** Bans a member (signed out everywhere, can't sign in) or lifts the ban. */
+export async function setUserBanned(userId: string, banned: boolean, reason?: string | null) {
+  return asAdmin(async (admin) => ({
+    ok: true,
+    message: z.boolean().parse(banned) ? await banUserAsAdmin(admin.id, Id.parse(userId), banReason.parse(reason)) : await unbanUserAsAdmin(Id.parse(userId)),
+  }));
+}
+
+/** Settles every open report on a post: deletes the post, or just dismisses the reports. */
+export async function resolvePostReports(postId: string, deletePost: boolean) {
+  return asAdmin(async () => ({ ok: true, message: await resolvePostReportsAsAdmin(Id.parse(postId), z.boolean().parse(deletePost)) }));
 }

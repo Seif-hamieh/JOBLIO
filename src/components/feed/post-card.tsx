@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState, useTransition } from "react";
 import { AnimatePresence, m } from "motion/react";
-import { Award, Briefcase, FolderGit2, Globe2, Heart, Link2, MessageCircle, MoreHorizontal, Repeat2, Send, Share2, Trash2, Users } from "lucide-react";
+import { Award, Briefcase, Flag, FolderGit2, Globe2, Heart, Link2, MessageCircle, MoreHorizontal, Repeat2, Send, Share2, Trash2, Users } from "lucide-react";
 import type { FeedComment, FeedPost } from "@/server/services/feed";
 import { addCommentAction, deleteCommentAction, deletePostAction, loadCommentsAction, sharePostAction, toggleLikeAction } from "@/server/actions/feed";
 import { Avatar, CompanyLogo } from "@/components/ui/avatar";
@@ -14,6 +14,7 @@ import { Textarea } from "@/components/ui/field";
 import { Menu, MenuContent, MenuItem, MenuTrigger } from "@/components/ui/menu";
 import { toast } from "@/components/ui/toast";
 import { copyText } from "@/lib/share";
+import { ReportPostDialog } from "@/components/feed/report-post-dialog";
 import { RichText } from "@/components/feed/rich-text";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/i18n/client";
@@ -163,6 +164,7 @@ export function PostCard({ post, viewer }: { post: FeedPost; viewer: { id: strin
   const [shareOpen, setShareOpen] = useState(false);
   const [shareText, setShareText] = useState("");
   const [deleted, setDeleted] = useState(false);
+  const [reportOpen, setReportOpen] = useState(false);
   const [pending, start] = useTransition();
   const badge = post.type !== "UPDATE" ? TYPE_BADGE[post.type] : null;
   const asCompany = post.company;
@@ -197,12 +199,12 @@ export function PostCard({ post, viewer }: { post: FeedPost; viewer: { id: strin
             {f.shortTimeAgo(post.createdAt)} · {post.visibility === "PUBLIC" ? <Globe2 className="size-3" aria-label={t("feed.anyone")} /> : <Users className="size-3" aria-label={t("feed.connectionsOnly")} />}
           </div>
         </div>
-        {post.authorId === viewer.id && (
-          <Menu>
-            <MenuTrigger className="rounded-full p-1.5 text-fg-subtle hover:bg-surface-2" aria-label={t("common.more")}>
-              <MoreHorizontal className="size-4" />
-            </MenuTrigger>
-            <MenuContent>
+        <Menu>
+          <MenuTrigger className="rounded-full p-1.5 text-fg-subtle hover:bg-surface-2" aria-label={t("common.more")}>
+            <MoreHorizontal className="size-4" />
+          </MenuTrigger>
+          <MenuContent>
+            {post.authorId === viewer.id ? (
               <MenuItem
                 danger
                 icon={<Trash2 />}
@@ -218,9 +220,14 @@ export function PostCard({ post, viewer }: { post: FeedPost; viewer: { id: strin
               >
                 {t("feed.deletePost")}
               </MenuItem>
-            </MenuContent>
-          </Menu>
-        )}
+            ) : (
+              <MenuItem danger icon={<Flag />} onSelect={() => setReportOpen(true)}>
+                {t("feed.reportPost")}
+              </MenuItem>
+            )}
+          </MenuContent>
+        </Menu>
+        {post.authorId !== viewer.id && <ReportPostDialog postId={post.id} open={reportOpen} onOpenChange={setReportOpen} />}
       </header>
 
       {post.content && <RichText text={post.content} className="px-5 pt-3" />}

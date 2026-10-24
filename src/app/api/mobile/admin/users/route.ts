@@ -4,7 +4,7 @@ import { ADMIN_PAGE, getMobileAdmin, listParams, noStore } from "@/server/mobile
 
 export const dynamic = "force-dynamic";
 
-// GET /api/mobile/admin/users?q=&filter=admins|recruiters|seekers&page=  →  { users, total, page, pageCount }
+// GET /api/mobile/admin/users?q=&filter=admins|recruiters|seekers|banned&page=  →  { users, total, page, pageCount }
 // Every member, newest first, 30 a page. Search by name, email or username (as on the website). Recruiters are
 // members of a company; job seekers are everyone else.
 export async function GET(req: Request) {
@@ -17,6 +17,7 @@ export async function GET(req: Request) {
     ...(filter === "admins" && { platformRole: "ADMIN" }),
     ...(filter === "recruiters" && { companyMemberships: { some: {} } }),
     ...(filter === "seekers" && { companyMemberships: { none: {} } }),
+    ...(filter === "banned" && { bannedAt: { not: null } }),
   };
   const [users, total] = await Promise.all([
     db.user.findMany({
@@ -33,6 +34,8 @@ export async function GET(req: Request) {
         platformRole: true,
         intent: true,
         emailVerified: true,
+        bannedAt: true,
+        bannedReason: true,
         createdAt: true,
         companyMemberships: { take: 1, select: { company: { select: { name: true } } } },
       },
@@ -52,6 +55,9 @@ export async function GET(req: Request) {
         verified: u.emailVerified,
         company: u.companyMemberships[0]?.company.name ?? null,
         joinedAt: u.createdAt.toISOString(),
+        banned: !!u.bannedAt,
+        bannedAt: u.bannedAt?.toISOString() ?? null,
+        bannedReason: u.bannedReason,
         self: u.id === a.adminId,
       })),
       total,

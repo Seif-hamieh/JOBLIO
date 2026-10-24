@@ -429,6 +429,7 @@ export const ModelName = {
   JobDailyStat: 'JobDailyStat',
   JobView: 'JobView',
   JobReport: 'JobReport',
+  PostReport: 'PostReport',
   SavedJob: 'SavedJob',
   SavedSearch: 'SavedSearch',
   Application: 'Application',
@@ -464,7 +465,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification" | "rateLimit" | "userSettings" | "block" | "profile" | "skill" | "userSkill" | "endorsement" | "experience" | "education" | "project" | "certificate" | "userLanguage" | "portfolioItem" | "socialLink" | "profileView" | "userAchievement" | "industry" | "company" | "companyMember" | "companyFollower" | "companyMedia" | "job" | "jobSkill" | "jobLanguage" | "jobPromotion" | "jobDailyStat" | "jobView" | "jobReport" | "savedJob" | "savedSearch" | "application" | "applicationEvent" | "recruiterNote" | "interview" | "savedCandidate" | "connection" | "follow" | "post" | "postLike" | "comment" | "conversation" | "conversationParticipant" | "message" | "notification" | "subscription" | "payment" | "profileBoost" | "webhookEvent"
+    modelProps: "user" | "session" | "account" | "verification" | "rateLimit" | "userSettings" | "block" | "profile" | "skill" | "userSkill" | "endorsement" | "experience" | "education" | "project" | "certificate" | "userLanguage" | "portfolioItem" | "socialLink" | "profileView" | "userAchievement" | "industry" | "company" | "companyMember" | "companyFollower" | "companyMedia" | "job" | "jobSkill" | "jobLanguage" | "jobPromotion" | "jobDailyStat" | "jobView" | "jobReport" | "postReport" | "savedJob" | "savedSearch" | "application" | "applicationEvent" | "recruiterNote" | "interview" | "savedCandidate" | "connection" | "follow" | "post" | "postLike" | "comment" | "conversation" | "conversationParticipant" | "message" | "notification" | "subscription" | "payment" | "profileBoost" | "webhookEvent"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2836,6 +2837,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PostReport: {
+      payload: Prisma.$PostReportPayload<ExtArgs>
+      fields: Prisma.PostReportFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PostReportFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostReportPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PostReportFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostReportPayload>
+        }
+        findFirst: {
+          args: Prisma.PostReportFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostReportPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PostReportFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostReportPayload>
+        }
+        findMany: {
+          args: Prisma.PostReportFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostReportPayload>[]
+        }
+        create: {
+          args: Prisma.PostReportCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostReportPayload>
+        }
+        createMany: {
+          args: Prisma.PostReportCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PostReportCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostReportPayload>[]
+        }
+        delete: {
+          args: Prisma.PostReportDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostReportPayload>
+        }
+        update: {
+          args: Prisma.PostReportUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostReportPayload>
+        }
+        deleteMany: {
+          args: Prisma.PostReportDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PostReportUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PostReportUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostReportPayload>[]
+        }
+        upsert: {
+          args: Prisma.PostReportUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostReportPayload>
+        }
+        aggregate: {
+          args: Prisma.PostReportAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePostReport>
+        }
+        groupBy: {
+          args: Prisma.PostReportGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PostReportGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PostReportCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PostReportCountAggregateOutputType> | number
+        }
+      }
+    }
     SavedJob: {
       payload: Prisma.$SavedJobPayload<ExtArgs>
       fields: Prisma.SavedJobFieldRefs
@@ -4371,7 +4446,9 @@ export const UserScalarFieldEnum = {
   stripeCustomerId: 'stripeCustomerId',
   paddleCustomerId: 'paddleCustomerId',
   priorityCredits: 'priorityCredits',
-  lastFreeBoostClaimedAt: 'lastFreeBoostClaimedAt'
+  lastFreeBoostClaimedAt: 'lastFreeBoostClaimedAt',
+  bannedAt: 'bannedAt',
+  bannedReason: 'bannedReason'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -4848,6 +4925,20 @@ export const JobReportScalarFieldEnum = {
 } as const
 
 export type JobReportScalarFieldEnum = (typeof JobReportScalarFieldEnum)[keyof typeof JobReportScalarFieldEnum]
+
+
+export const PostReportScalarFieldEnum = {
+  id: 'id',
+  postId: 'postId',
+  reporterId: 'reporterId',
+  reason: 'reason',
+  details: 'details',
+  status: 'status',
+  createdAt: 'createdAt',
+  resolvedAt: 'resolvedAt'
+} as const
+
+export type PostReportScalarFieldEnum = (typeof PostReportScalarFieldEnum)[keyof typeof PostReportScalarFieldEnum]
 
 
 export const SavedJobScalarFieldEnum = {
@@ -5558,6 +5649,34 @@ export type ListEnumJobReportStatusFieldRefInput<$PrismaModel> = FieldRefInputTy
 
 
 /**
+ * Reference to a field of type 'PostReportReason'
+ */
+export type EnumPostReportReasonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PostReportReason'>
+    
+
+
+/**
+ * Reference to a field of type 'PostReportReason[]'
+ */
+export type ListEnumPostReportReasonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PostReportReason[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PostReportStatus'
+ */
+export type EnumPostReportStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PostReportStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'PostReportStatus[]'
+ */
+export type ListEnumPostReportStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PostReportStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'SavedSearchKind'
  */
 export type EnumSavedSearchKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SavedSearchKind'>
@@ -5949,6 +6068,7 @@ export type GlobalOmitConfig = {
   jobDailyStat?: Prisma.JobDailyStatOmit
   jobView?: Prisma.JobViewOmit
   jobReport?: Prisma.JobReportOmit
+  postReport?: Prisma.PostReportOmit
   savedJob?: Prisma.SavedJobOmit
   savedSearch?: Prisma.SavedSearchOmit
   application?: Prisma.ApplicationOmit

@@ -90,6 +90,17 @@ export const auth = betterAuth({
         },
       },
     },
+    session: {
+      create: {
+        // Every way in (password, Google / GitHub, the link in a verification email, the app) creates a session —
+        // banned members are refused here. Banning also deletes their existing sessions.
+        before: async (session) => {
+          const user = await db.user.findUnique({ where: { id: session.userId }, select: { bannedAt: true } });
+          if (user?.bannedAt) throw new APIError("FORBIDDEN", { message: "This account has been suspended.", code: "ACCOUNT_BANNED" });
+          return { data: session };
+        },
+      },
+    },
   },
 
   hooks: {

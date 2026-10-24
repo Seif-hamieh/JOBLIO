@@ -83,6 +83,7 @@ export const ModelName = {
   JobDailyStat: 'JobDailyStat',
   JobView: 'JobView',
   JobReport: 'JobReport',
+  PostReport: 'PostReport',
   SavedJob: 'SavedJob',
   SavedSearch: 'SavedSearch',
   Application: 'Application',
@@ -137,7 +138,9 @@ export const UserScalarFieldEnum = {
   stripeCustomerId: 'stripeCustomerId',
   paddleCustomerId: 'paddleCustomerId',
   priorityCredits: 'priorityCredits',
-  lastFreeBoostClaimedAt: 'lastFreeBoostClaimedAt'
+  lastFreeBoostClaimedAt: 'lastFreeBoostClaimedAt',
+  bannedAt: 'bannedAt',
+  bannedReason: 'bannedReason'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -614,6 +617,20 @@ export const JobReportScalarFieldEnum = {
 } as const
 
 export type JobReportScalarFieldEnum = (typeof JobReportScalarFieldEnum)[keyof typeof JobReportScalarFieldEnum]
+
+
+export const PostReportScalarFieldEnum = {
+  id: 'id',
+  postId: 'postId',
+  reporterId: 'reporterId',
+  reason: 'reason',
+  details: 'details',
+  status: 'status',
+  createdAt: 'createdAt',
+  resolvedAt: 'resolvedAt'
+} as const
+
+export type PostReportScalarFieldEnum = (typeof PostReportScalarFieldEnum)[keyof typeof PostReportScalarFieldEnum]
 
 
 export const SavedJobScalarFieldEnum = {

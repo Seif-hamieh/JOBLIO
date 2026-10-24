@@ -52,6 +52,7 @@ export const getViewer = cache(async (): Promise<Viewer | null> => {
       username: true,
       intent: true,
       platformRole: true,
+      bannedAt: true,
       onboardedAt: true,
       profile: { select: { id: true, headline: true, openToWork: true, featuredUntil: true } },
       companyMemberships: {
@@ -66,7 +67,8 @@ export const getViewer = cache(async (): Promise<Viewer | null> => {
       },
     },
   });
-  if (!user || !user.profile || !user.username) return null;
+  // A banned member counts as signed out, even while a cached session cookie lasts (up to 5 minutes).
+  if (!user || user.bannedAt || !user.profile || !user.username) return null;
   const membership = user.companyMemberships[0];
   return {
     id: user.id,

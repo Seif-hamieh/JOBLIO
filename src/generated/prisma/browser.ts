@@ -180,6 +180,11 @@ export type JobView = Prisma.JobViewModel
  */
 export type JobReport = Prisma.JobReportModel
 /**
+ * Model PostReport
+ * 
+ */
+export type PostReport = Prisma.PostReportModel
+/**
  * Model SavedJob
  * 
  */
