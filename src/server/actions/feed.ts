@@ -9,7 +9,7 @@ import { notify } from "@/server/services/notifications";
 import { k } from "@/i18n/message";
 import { getComments, getFeed, type FeedComment, type FeedPost } from "@/server/services/feed";
 import { deleteStored, storeUpload, UploadError } from "@/server/storage";
-import { isBlockedEitherWay, isConnected } from "@/server/services/profile";
+import { addPostComment, canSeePost, setPostLike } from "@/server/services/post-interactions";
 import { canManageCompany } from "@/server/session";
 
 const id = z.string().min(1).max(40);
@@ -80,32 +80,13 @@ export async function createPostAction(_prev: ActionState, form: FormData): Prom
   });
 }
 
-async function canSeePost(viewerId: string, postId: string) {
-  const post = await db.post.findUnique({ where: { id: postId }, select: { id: true, authorId: true, visibility: true, content: true } });
-  if (!post) return null;
-  if (await isBlockedEitherWay(viewerId, post.authorId)) return null;
-  if (post.visibility === "CONNECTIONS" && !(await isConnected(viewerId, post.authorId))) return null;
-  return post;
-}
-
 export async function toggleLikeAction(postId: string): Promise<ActionState<{ liked: boolean; count: number }>> {
   return withViewer<{ liked: boolean; count: number }>({ limit: LIMITS.like }, async (viewer) => {
-    const post = await canSeePost(viewer.id, id.parse(postId));
-    if (!post) return fail("@msg.postNotFound");
-    const key = { postId_userId: { postId: post.id, userId: viewer.id } };
-    const existing = await db.postLike.findUnique({ where: key });
-    const [, updated] = await db.$transaction([
-      existing ? db.postLike.delete({ where: key }) : db.postLike.create({ data: { postId: post.id, userId: viewer.id } }),
-      db.post.update({ where: { id: post.id }, data: { likeCount: { [existing ? "decrement" : "increment"]: 1 } }, select: { likeCount: true } }),
-    ]);
-    if (!existing) {
-      // Coalesce: one unread like notification per post.
-      const pendingLike = await db.notification.findFirst({ where: { userId: post.authorId, type: "POST_LIKE", readAt: null, href: `/feed/${post.id}` } });
-      if (!pendingLike) {
-        await notify({ userId: post.authorId, actorId: viewer.id, type: "POST_LIKE", title: k("notif.postLike", { name: viewer.name }), body: post.content.slice(0, 80), href: `/feed/${post.id}` });
-      }
-    }
-    return { ok: true, data: { liked: !existing, count: updated.likeCount } };
+    const pid = id.parse(postId);
+    const existing = await db.postLike.findUnique({ where: { postId_userId: { postId: pid, userId: viewer.id } }, select: { postId: true } });
+    const result = await setPostLike(viewer, pid, !existing);
+    if (!result) return fail("@msg.postNotFound");
+    return { ok: true, data: result };
   });
 }
 
@@ -113,16 +94,8 @@ export async function addCommentAction(postId: string, content: string): Promise
   return withViewer<{ comment: FeedComment }>({ limit: LIMITS.comment }, async (viewer) => {
     const text = z.string().trim().min(1, "@v.writeComment").max(1500).safeParse(content);
     if (!text.success) return fail(text.error.issues[0]?.message ?? "@v.writeComment");
-    const post = await canSeePost(viewer.id, id.parse(postId));
-    if (!post) return fail("@msg.postNotFound");
-    const [comment] = await db.$transaction([
-      db.comment.create({
-        data: { postId: post.id, authorId: viewer.id, content: text.data },
-        select: { id: true, content: true, createdAt: true, author: { select: { id: true, name: true, image: true, username: true, profile: { select: { headline: true } } } } },
-      }),
-      db.post.update({ where: { id: post.id }, data: { commentCount: { increment: 1 } } }),
-    ]);
-    await notify({ userId: post.authorId, actorId: viewer.id, type: "POST_COMMENT", title: k("notif.postComment", { name: viewer.name }), body: text.data.slice(0, 120), href: `/feed/${post.id}` });
+    const comment = await addPostComment(viewer, id.parse(postId), text.data);
+    if (!comment) return fail("@msg.postNotFound");
     return { ok: true, data: { comment } };
   });
 }
