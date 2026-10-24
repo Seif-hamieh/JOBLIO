@@ -186,3 +186,9 @@ export const companyProfileSchema = z.object({
   cultureText: optionalText(3000),
   brandColor: hexColor,
 });
+
+export const skillUpdateSchema = z.object({
+  level: z.enum(SKILL_LEVELS).optional(),
+  years: z.coerce.number().min(0).max(60).nullable().optional(),
+  isTop: z.boolean().optional(),
+});

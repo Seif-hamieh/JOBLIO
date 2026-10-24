@@ -2,7 +2,8 @@ import "server-only";
 import { NextResponse } from "next/server";
 import { auth } from "@/server/auth";
 import { db } from "@/server/db";
-import { ActionError } from "@/server/action";
+import type { z } from "zod";
+import { ActionError, parse } from "@/server/action";
 import { createT } from "@/i18n/translate";
 import { resolveMessage } from "@/i18n/message";
 
@@ -70,6 +71,34 @@ export async function getMobileRecruiter(req: Request): Promise<{ userId: string
   const m = await db.companyMember.findFirst({ where: { userId: session.user.id }, orderBy: { createdAt: "asc" }, select: { companyId: true } });
   if (!m) return { error: mobileError(403, "NO_COMPANY", "Create your company first.") };
   return { userId: session.user.id, companyId: m.companyId };
+}
+
+/**
+ * For "my profile" endpoints: the signed-in member with their profile id and username (what the profile-editing
+ * service needs), or a ready error response (401 not signed in, 409 no profile yet — onboarding not finished).
+ */
+export async function getMobileOwner(req: Request): Promise<{ owner: { id: string; name: string; profileId: string; username: string } } | { error: NextResponse }> {
+  const session = await getMobileSession(req);
+  if (!session) return { error: mobileError(401, "UNAUTHORIZED", "Sign in first.") };
+  const profile = await db.profile.findUnique({ where: { userId: session.user.id }, select: { id: true } });
+  if (!profile || !session.user.username) return { error: mobileError(409, "NO_PROFILE", "Finish setting up your profile on the website first.") };
+  return { owner: { id: session.user.id, name: session.user.name, profileId: profile.id, username: session.user.username } };
+}
+
+/**
+ * Validates a request body with one of the website's form schemas (same rules, same limits). On failure, a 400
+ * INVALID_FIELDS response naming the rejected fields, with the first problem in the website's English wording.
+ */
+export function parseMobile<S extends z.ZodType>(schema: S, input: unknown): { data: z.infer<S> } | { error: NextResponse } {
+  const parsed = parse(schema, input);
+  if (parsed.success) return { data: parsed.data };
+  const fields = Object.keys(parsed.state.fieldErrors ?? {});
+  return {
+    error: NextResponse.json(
+      { error: { code: "INVALID_FIELDS", message: resolveMessage(createT("en"), parsed.state.error), fields } },
+      { status: 400, headers: { "Cache-Control": "no-store" } },
+    ),
+  };
 }
 
 /** A website rule that refused the request (an ActionError) as a 409 (404 for "not found") in the website's English wording. */

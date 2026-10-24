@@ -7,6 +7,23 @@ import { fail, parse, withViewer, type ActionState } from "@/server/action";
 import { LIMITS } from "@/server/rate-limit";
 import type { Viewer } from "@/server/session";
 import { refreshProfileDerived } from "@/server/services/profile";
+import {
+  addSkill,
+  deleteCertificate,
+  deleteEducation,
+  deleteExperience,
+  deleteProject,
+  removeProfileImage,
+  removeSkill,
+  saveBasics,
+  saveCertificate,
+  saveEducation,
+  saveExperience,
+  saveProject,
+  setProfileImage,
+  storeProjectImage,
+  updateSkill,
+} from "@/server/services/profile-editing";
 import { deleteStored, storeUpload, UploadError } from "@/server/storage";
 import {
   basicsSchema,
@@ -18,9 +35,12 @@ import {
   privacySchema,
   projectSchema,
   skillEntrySchema,
+  skillUpdateSchema,
   socialLinkSchema,
 } from "@/lib/validation/profile";
-import { SKILL_LEVELS } from "@/lib/constants";
+
+// The saving rules live in services/profile-editing (shared with the mobile API); these actions validate the
+// form and turn the result into a message.
 
 const id = z.string().min(1).max(40);
 
@@ -38,9 +58,8 @@ export async function updateBasicsAction(input: z.input<typeof basicsSchema>): P
   return withViewer({ limit: LIMITS.write }, async (viewer) => {
     const parsed = parse(basicsSchema, input);
     if (!parsed.success) return parsed.state;
-    const { name, ...rest } = parsed.data;
-    await db.$transaction([db.user.update({ where: { id: viewer.id }, data: { name } }), db.profile.update({ where: { id: viewer.profileId }, data: rest })]);
-    return done(viewer, "@msg.profileUpdated");
+    await saveBasics(viewer, parsed.data);
+    return { ok: true, message: "@msg.profileUpdated" };
   });
 }
 
@@ -50,13 +69,8 @@ export async function uploadProfileImageAction(form: FormData): Promise<ActionSt
     const file = form.get("file");
     if (!(file instanceof File)) return fail("@msg.chooseImage");
     try {
-      const old = await currentProfileImage(viewer, kind);
-      const stored = await storeUpload(file, kind, viewer.id);
-      if (kind === "avatar") await db.user.update({ where: { id: viewer.id }, data: { image: stored.url } });
-      else await db.profile.update({ where: { id: viewer.profileId }, data: { coverUrl: stored.url } });
-      await deleteStored([old]);
-      const res = await done(viewer, kind === "avatar" ? "@msg.photoUpdated" : "@msg.coverUpdated");
-      return { ...res, data: { url: stored.url } };
+      const url = await setProfileImage(viewer, kind, file);
+      return { ok: true, message: kind === "avatar" ? "@msg.photoUpdated" : "@msg.coverUpdated", data: { url } };
     } catch (e) {
       if (e instanceof UploadError) return fail(e.message);
       throw e;
@@ -64,18 +78,10 @@ export async function uploadProfileImageAction(form: FormData): Promise<ActionSt
   });
 }
 
-async function currentProfileImage(viewer: Viewer, kind: "avatar" | "cover") {
-  if (kind === "avatar") return (await db.user.findUnique({ where: { id: viewer.id }, select: { image: true } }))?.image;
-  return (await db.profile.findUnique({ where: { id: viewer.profileId }, select: { coverUrl: true } }))?.coverUrl;
-}
-
 export async function removeProfileImageAction(kind: "avatar" | "cover"): Promise<ActionState> {
   return withViewer({ limit: LIMITS.write }, async (viewer) => {
-    const old = await currentProfileImage(viewer, kind);
-    if (kind === "avatar") await db.user.update({ where: { id: viewer.id }, data: { image: null } });
-    else await db.profile.update({ where: { id: viewer.profileId }, data: { coverUrl: null } });
-    await deleteStored([old]);
-    return done(viewer, "@msg.removed");
+    await removeProfileImage(viewer, z.enum(["avatar", "cover"]).parse(kind));
+    return { ok: true, message: "@msg.removed" };
   });
 }
 
@@ -138,25 +144,15 @@ export async function upsertExperienceAction(input: z.input<typeof experienceSch
   return withViewer({ limit: LIMITS.write }, async (viewer) => {
     const parsed = parse(experienceSchema, input);
     if (!parsed.success) return parsed.state;
-    const { id: expId, ...data } = parsed.data;
-    // Link to a JOBLIO company page when the name matches exactly.
-    const company = await db.company.findFirst({ where: { name: { equals: data.companyName, mode: "insensitive" }, importSource: null }, select: { id: true } });
-    const row = { ...data, endDate: data.isCurrent ? null : data.endDate, companyId: company?.id ?? null };
-    if (expId) {
-      const updated = await db.experience.updateMany({ where: { id: expId, profileId: viewer.profileId }, data: row });
-      if (!updated.count) return fail("@msg.expNotFound");
-    } else {
-      if ((await db.experience.count({ where: { profileId: viewer.profileId } })) >= 40) return fail("@msg.maxRoles");
-      await db.experience.create({ data: { ...row, profileId: viewer.profileId } });
-    }
-    return done(viewer);
+    await saveExperience(viewer, parsed.data);
+    return { ok: true, message: "@msg.saved" };
   });
 }
 
 export async function deleteExperienceAction(expId: string): Promise<ActionState> {
   return withViewer({ limit: LIMITS.write }, async (viewer) => {
-    await db.experience.deleteMany({ where: { id: id.parse(expId), profileId: viewer.profileId } });
-    return done(viewer, "@msg.removed");
+    await deleteExperience(viewer, id.parse(expId));
+    return { ok: true, message: "@msg.removed" };
   });
 }
 
@@ -164,22 +160,15 @@ export async function upsertEducationAction(input: z.input<typeof educationSchem
   return withViewer({ limit: LIMITS.write }, async (viewer) => {
     const parsed = parse(educationSchema, input);
     if (!parsed.success) return parsed.state;
-    const { id: eduId, ...data } = parsed.data;
-    if (eduId) {
-      const updated = await db.education.updateMany({ where: { id: eduId, profileId: viewer.profileId }, data });
-      if (!updated.count) return fail("@msg.eduNotFound");
-    } else {
-      if ((await db.education.count({ where: { profileId: viewer.profileId } })) >= 20) return fail("@msg.maxEdu");
-      await db.education.create({ data: { ...data, profileId: viewer.profileId } });
-    }
-    return done(viewer);
+    await saveEducation(viewer, parsed.data);
+    return { ok: true, message: "@msg.saved" };
   });
 }
 
 export async function deleteEducationAction(eduId: string): Promise<ActionState> {
   return withViewer({ limit: LIMITS.write }, async (viewer) => {
-    await db.education.deleteMany({ where: { id: id.parse(eduId), profileId: viewer.profileId } });
-    return done(viewer, "@msg.removed");
+    await deleteEducation(viewer, id.parse(eduId));
+    return { ok: true, message: "@msg.removed" };
   });
 }
 
@@ -187,22 +176,15 @@ export async function upsertCertificateAction(input: z.input<typeof certificateS
   return withViewer({ limit: LIMITS.write }, async (viewer) => {
     const parsed = parse(certificateSchema, input);
     if (!parsed.success) return parsed.state;
-    const { id: certId, ...data } = parsed.data;
-    if (certId) {
-      const updated = await db.certificate.updateMany({ where: { id: certId, profileId: viewer.profileId }, data });
-      if (!updated.count) return fail("@msg.certNotFound");
-    } else {
-      if ((await db.certificate.count({ where: { profileId: viewer.profileId } })) >= 30) return fail("@msg.maxCerts");
-      await db.certificate.create({ data: { ...data, profileId: viewer.profileId } });
-    }
-    return done(viewer);
+    await saveCertificate(viewer, parsed.data);
+    return { ok: true, message: "@msg.saved" };
   });
 }
 
 export async function deleteCertificateAction(certId: string): Promise<ActionState> {
   return withViewer({ limit: LIMITS.write }, async (viewer) => {
-    await db.certificate.deleteMany({ where: { id: id.parse(certId), profileId: viewer.profileId } });
-    return done(viewer, "@msg.removed");
+    await deleteCertificate(viewer, id.parse(certId));
+    return { ok: true, message: "@msg.removed" };
   });
 }
 
@@ -232,51 +214,31 @@ export async function setSocialLinksAction(list: z.input<typeof socialLinkSchema
   });
 }
 
+
 // ── Skills ───────────────────────────────────────────────────────────────
 
 export async function addSkillAction(input: z.input<typeof skillEntrySchema>): Promise<ActionState<{ userSkillId: string }>> {
   return withViewer<{ userSkillId: string }>({ limit: LIMITS.write }, async (viewer) => {
     const parsed = parse(skillEntrySchema, input);
     if (!parsed.success) return parsed.state;
-    const skill = await db.skill.findUnique({ where: { id: parsed.data.skillId }, select: { id: true } });
-    if (!skill) return fail("@msg.unknownSkill");
-    const count = await db.userSkill.count({ where: { profileId: viewer.profileId } });
-    if (count >= 50) return fail("@msg.maxSkills");
-    const us = await db.userSkill.upsert({
-      where: { profileId_skillId: { profileId: viewer.profileId, skillId: skill.id } },
-      create: { profileId: viewer.profileId, skillId: skill.id, level: parsed.data.level, position: count },
-      update: { level: parsed.data.level },
-    });
-    await db.skill.update({ where: { id: skill.id }, data: { usageCount: { increment: 1 } } });
-    const res = await done(viewer, "@msg.skillAdded");
-    return { ...res, data: { userSkillId: us.id } };
+    const userSkillId = await addSkill(viewer, parsed.data);
+    return { ok: true, message: "@msg.skillAdded", data: { userSkillId } };
   });
 }
-
-const skillUpdateSchema = z.object({
-  level: z.enum(SKILL_LEVELS).optional(),
-  years: z.coerce.number().min(0).max(60).nullable().optional(),
-  isTop: z.boolean().optional(),
-});
 
 export async function updateSkillAction(userSkillId: string, input: z.input<typeof skillUpdateSchema>): Promise<ActionState> {
   return withViewer({ limit: LIMITS.write }, async (viewer) => {
     const parsed = parse(skillUpdateSchema, input);
     if (!parsed.success) return parsed.state;
-    if (parsed.data.isTop) {
-      const tops = await db.userSkill.count({ where: { profileId: viewer.profileId, isTop: true, id: { not: id.parse(userSkillId) } } });
-      if (tops >= 3) return fail("@msg.maxTop");
-    }
-    const updated = await db.userSkill.updateMany({ where: { id: id.parse(userSkillId), profileId: viewer.profileId }, data: parsed.data });
-    if (!updated.count) return fail("@msg.skillNotFound");
-    return done(viewer);
+    await updateSkill(viewer, id.parse(userSkillId), parsed.data);
+    return { ok: true, message: "@msg.saved" };
   });
 }
 
 export async function removeSkillAction(userSkillId: string): Promise<ActionState> {
   return withViewer({ limit: LIMITS.write }, async (viewer) => {
-    await db.userSkill.deleteMany({ where: { id: id.parse(userSkillId), profileId: viewer.profileId } });
-    return done(viewer, "@msg.skillRemoved");
+    await removeSkill(viewer, id.parse(userSkillId));
+    return { ok: true, message: "@msg.skillRemoved" };
   });
 }
 
@@ -295,32 +257,15 @@ export async function upsertProjectAction(input: z.input<typeof projectSchema>):
   return withViewer({ limit: LIMITS.write }, async (viewer) => {
     const parsed = parse(projectSchema, input);
     if (!parsed.success) return parsed.state;
-    const { id: projectId, skillIds, imageUrl, ...data } = parsed.data;
-    // Only accept images uploaded through our own storage.
-    const image = imageUrl && (imageUrl.startsWith("/api/v1/files/public/project/") || imageUrl.startsWith("/media/")) ? imageUrl : null;
-    const skills = (await db.skill.findMany({ where: { id: { in: skillIds } }, select: { id: true } })).map((s) => ({ id: s.id }));
-    if (projectId) {
-      const existing = await db.project.findFirst({ where: { id: projectId, profileId: viewer.profileId }, select: { id: true, imageUrl: true } });
-      if (!existing) return fail("@msg.projectNotFound");
-      await db.project.update({ where: { id: projectId }, data: { ...data, featured: !!data.featured, imageUrl: image, skills: { set: skills } } });
-      if (existing.imageUrl !== image) await deleteStored([existing.imageUrl]);
-    } else {
-      const count = await db.project.count({ where: { profileId: viewer.profileId } });
-      if (count >= 30) return fail("@msg.maxProjects");
-      await db.project.create({ data: { ...data, featured: !!data.featured, imageUrl: image, profileId: viewer.profileId, position: count, skills: { connect: skills } } });
-    }
-    return done(viewer, "@msg.projectSaved");
+    await saveProject(viewer, parsed.data);
+    return { ok: true, message: "@msg.projectSaved" };
   });
 }
 
 export async function deleteProjectAction(projectId: string): Promise<ActionState> {
   return withViewer({ limit: LIMITS.write }, async (viewer) => {
-    const project = await db.project.findFirst({ where: { id: id.parse(projectId), profileId: viewer.profileId }, select: { id: true, imageUrl: true } });
-    if (project) {
-      await db.project.delete({ where: { id: project.id } });
-      await deleteStored([project.imageUrl]);
-    }
-    return done(viewer, "@msg.projectRemoved");
+    await deleteProject(viewer, id.parse(projectId));
+    return { ok: true, message: "@msg.projectRemoved" };
   });
 }
 
@@ -329,8 +274,7 @@ export async function uploadProjectImageAction(form: FormData): Promise<ActionSt
     const file = form.get("file");
     if (!(file instanceof File)) return fail("@msg.chooseImage");
     try {
-      const stored = await storeUpload(file, "project", viewer.id);
-      return { ok: true, data: { url: stored.url } };
+      return { ok: true, data: { url: await storeProjectImage(viewer, file) } };
     } catch (e) {
       if (e instanceof UploadError) return fail(e.message);
       throw e;
