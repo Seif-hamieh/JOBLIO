@@ -34,7 +34,8 @@ export function LanguageToggle({ className }: { className?: string }) {
       aria-label={`${t("common.language")}: ${LOCALE_META[other].label}`}
     >
       <Languages className="size-[18px]" />
-      <span className={other === "ar" ? "font-arabic" : ""}>{other === "ar" ? "عربي" : "EN"}</span>
+      {/* Icon only on the narrowest phones, so the header fits 360px (the button keeps its aria-label). */}
+      <span className={cn("max-[400px]:hidden", other === "ar" && "font-arabic")}>{other === "ar" ? "عربي" : "EN"}</span>
     </button>
   );
 }

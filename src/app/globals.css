@@ -237,6 +237,11 @@
 }
 
 @layer components {
+  /* A grid with no column count of its own (e.g. only md:grid-cols-2) is one column that can never grow past
+     the screen: by default that column sizes to its content, so a long word made the whole page wider on phones.
+     Any grid-cols-* utility (base or responsive) overrides this. */
+  .grid { grid-template-columns: minmax(0, 1fr); }
+
   /* Card surface used across the app: solid, a hairline border, a barely-there shadow. */
   .surface {
     background: var(--surface);
