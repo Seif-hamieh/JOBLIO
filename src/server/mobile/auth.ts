@@ -72,7 +72,7 @@ export async function getMobileRecruiter(req: Request): Promise<{ userId: string
   return { userId: session.user.id, companyId: m.companyId };
 }
 
-/** A website rule that refused the request (ActionError "@msg.x") as a 409 with the website's English wording. */
+/** A website rule that refused the request (an ActionError) as a 409 (404 for "not found") in the website's English wording. */
 export function actionErrorResponse(e: unknown) {
   if (!(e instanceof ActionError)) return null;
   const code = e.message.replace(/^@msg\./, "").replace(/([a-z])([A-Z])/g, "$1_$2").toUpperCase(); // @msg.alreadyApplied → ALREADY_APPLIED
