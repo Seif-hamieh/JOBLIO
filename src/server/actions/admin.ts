@@ -7,10 +7,18 @@ import { fail, withViewer, type ActionState } from "@/server/action";
 import { LIMITS } from "@/server/rate-limit";
 import { k } from "@/i18n/message";
 import type { Viewer } from "@/server/session";
-import { refreshSitemap } from "@/server/sitemap";
+import {
+  closeJobAsAdmin,
+  deleteCompanyAsAdmin,
+  deleteJobAsAdmin,
+  publishJobAsAdmin,
+  resolveJobReportsAsAdmin,
+  setCompanyVerifiedAsAdmin,
+  setUserRoleAsAdmin,
+} from "@/server/services/admin";
 
 // Admin-only mutations. Each one re-checks the role from the database (getViewer) —
-// hiding buttons in the UI is not a security boundary.
+// hiding buttons in the UI is not a security boundary. The rules live in services/admin (shared with the app).
 
 function asAdmin<R>(fn: (admin: Viewer) => Promise<ActionState<R>>): Promise<ActionState<R>> {
   return withViewer({ limit: LIMITS.write }, async (viewer) => {
@@ -22,92 +30,35 @@ function asAdmin<R>(fn: (admin: Viewer) => Promise<ActionState<R>>): Promise<Act
 const Id = z.string().min(1).max(64);
 
 export async function setUserRole(userId: string, role: "USER" | "ADMIN") {
-  return asAdmin(async (admin) => {
-    const id = Id.parse(userId);
-    const next = z.enum(["USER", "ADMIN"]).parse(role);
-    if (id === admin.id) return fail(k("admin.msg.notSelf"));
-    const { count } = await db.user.updateMany({ where: { id }, data: { platformRole: next } });
-    if (!count) return fail(k("admin.msg.userNotFound"));
-    revalidatePath("/admin/users");
-    return { ok: true, message: k(next === "ADMIN" ? "admin.msg.adminGranted" : "admin.msg.adminRevoked") };
-  });
+  return asAdmin(async (admin) => ({ ok: true, message: await setUserRoleAsAdmin(admin.id, Id.parse(userId), z.enum(["USER", "ADMIN"]).parse(role)) }));
 }
 
-/** Publishes a draft (e.g. an imported job after review): it goes live in search, the sitemap and — for an imported company — makes the company page public. */
+/** Publishes a draft (e.g. an imported job after review). */
 export async function publishJob(jobId: string) {
-  return asAdmin(async () => {
-    const id = Id.parse(jobId);
-    const job = await db.job.findUnique({ where: { id }, select: { status: true, publishedAt: true } });
-    if (!job) return fail(k("admin.msg.jobNotFound"));
-    if (job.status !== "DRAFT") return fail(k("admin.msg.jobNotDraft"));
-    await db.job.update({ where: { id }, data: { status: "OPEN", publishedAt: job.publishedAt ?? new Date() } });
-    refreshSitemap();
-    revalidatePath("/admin/jobs");
-    revalidatePath("/jobs");
-    return { ok: true, message: k("admin.msg.jobPublished") };
-  });
+  return asAdmin(async () => ({ ok: true, message: await publishJobAsAdmin(Id.parse(jobId)) }));
 }
 
-/**
- * Settles every open report on a job: either closes the job too (the reports were right),
- * or just dismisses them (the job is fine). Either way it leaves Admin → Reports.
- */
+/** Settles every open report on a job: closes the job too, or just dismisses the reports. */
 export async function resolveJobReports(jobId: string, alsoCloseJob: boolean) {
-  return asAdmin(async () => {
-    const id = Id.parse(jobId);
-    const close = z.boolean().parse(alsoCloseJob);
-    await db.$transaction([
-      ...(close ? [db.job.updateMany({ where: { id, status: "OPEN" }, data: { status: "CLOSED" } })] : []),
-      db.jobReport.updateMany({ where: { jobId: id, status: "OPEN" }, data: { status: "RESOLVED", resolvedAt: new Date() } }),
-    ]);
-    if (close) refreshSitemap();
-    revalidatePath("/admin/reports");
-    revalidatePath("/admin/jobs");
-    return { ok: true, message: k(close ? "admin.msg.reportJobClosed" : "admin.msg.reportsDismissed") };
-  });
+  return asAdmin(async () => ({ ok: true, message: await resolveJobReportsAsAdmin(Id.parse(jobId), z.boolean().parse(alsoCloseJob)) }));
 }
 
 export async function closeJob(jobId: string) {
-  return asAdmin(async () => {
-    const id = Id.parse(jobId);
-    const { count } = await db.job.updateMany({ where: { id }, data: { status: "CLOSED" } });
-    if (!count) return fail(k("admin.msg.jobNotFound"));
-    revalidatePath("/admin/jobs");
-    return { ok: true, message: k("admin.msg.jobClosed") };
-  });
+  return asAdmin(async () => ({ ok: true, message: await closeJobAsAdmin(Id.parse(jobId)) }));
 }
 
 /** Permanent: the job's applications, saves and stats are deleted with it (cascade). */
 export async function deleteJob(jobId: string) {
-  return asAdmin(async () => {
-    const id = Id.parse(jobId);
-    const { count } = await db.job.deleteMany({ where: { id } });
-    if (!count) return fail(k("admin.msg.jobNotFound"));
-    revalidatePath("/admin/jobs");
-    return { ok: true, message: k("admin.msg.jobDeleted") };
-  });
+  return asAdmin(async () => ({ ok: true, message: await deleteJobAsAdmin(Id.parse(jobId)) }));
 }
 
 export async function setCompanyVerified(companyId: string, verified: boolean) {
-  return asAdmin(async () => {
-    const id = Id.parse(companyId);
-    const next = z.boolean().parse(verified);
-    const { count } = await db.company.updateMany({ where: { id }, data: { verified: next } });
-    if (!count) return fail(k("admin.msg.companyNotFound"));
-    revalidatePath("/admin/companies");
-    return { ok: true, message: k(next ? "admin.msg.companyVerified" : "admin.msg.companyUnverified") };
-  });
+  return asAdmin(async () => ({ ok: true, message: await setCompanyVerifiedAsAdmin(Id.parse(companyId), z.boolean().parse(verified)) }));
 }
 
 /** Permanent: the company's jobs (with their applications), members, posts and media are deleted with it (cascade). */
 export async function deleteCompany(companyId: string) {
-  return asAdmin(async () => {
-    const id = Id.parse(companyId);
-    const { count } = await db.company.deleteMany({ where: { id } });
-    if (!count) return fail(k("admin.msg.companyNotFound"));
-    revalidatePath("/admin/companies");
-    return { ok: true, message: k("admin.msg.companyDeleted") };
-  });
+  return asAdmin(async () => ({ ok: true, message: await deleteCompanyAsAdmin(Id.parse(companyId)) }));
 }
 
 /**

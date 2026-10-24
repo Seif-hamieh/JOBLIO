@@ -104,7 +104,9 @@ export function parseMobile<S extends z.ZodType>(schema: S, input: unknown): { d
 /** A website rule that refused the request (an ActionError) as a 409 (404 for "not found") in the website's English wording. */
 export function actionErrorResponse(e: unknown) {
   if (!(e instanceof ActionError)) return null;
-  const code = e.message.replace(/^@msg\./, "").replace(/([a-z])([A-Z])/g, "$1_$2").toUpperCase(); // @msg.alreadyApplied → ALREADY_APPLIED
+  // @msg.alreadyApplied → ALREADY_APPLIED, @admin.msg.notSelf → NOT_SELF (the last part of the key, without its values)
+  const key = e.message.replace(/^@/, "").split("?")[0]!;
+  const code = key.slice(key.lastIndexOf(".") + 1).replace(/([a-z])([A-Z])/g, "$1_$2").toUpperCase();
   // "Not found" also covers another company's application: no hint that it exists.
   return mobileError(code.endsWith("NOT_FOUND") ? 404 : 409, code, resolveMessage(createT("en"), e.message));
 }
