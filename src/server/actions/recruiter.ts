@@ -7,55 +7,19 @@ import { fail, parse, withRecruiter, type ActionState } from "@/server/action";
 import { LIMITS } from "@/server/rate-limit";
 import { refreshSitemap } from "@/server/sitemap";
 import { startOfTodayUtc } from "@/lib/validation/job";
-import { publish } from "@/server/realtime";
 import { getApplicationDetail, type ApplicationDetail } from "@/server/services/recruiter";
 import { getManagedApplication, markViewed, transitionApplication } from "@/server/services/applications";
 import { jobSchema, type JobInput } from "@/lib/validation/job";
+import { createJobForCompany, jobData, notifyFollowersOfNewJob } from "@/server/services/job-posting";
 import { PIPELINE_STAGES } from "@/lib/constants";
-import { createT } from "@/i18n/translate";
-import { k } from "@/i18n/message";
 
 const id = z.string().min(1).max(40);
-
-async function notifyFollowersOfNewJob(job: { id: string; title: string; companyId: string }, actorId: string) {
-  const company = await db.company.findUniqueOrThrow({ where: { id: job.companyId }, select: { name: true } });
-  const followers = await db.companyFollower.findMany({ where: { companyId: job.companyId }, select: { userId: true } });
-  if (!followers.length) return;
-  const settings = await db.userSettings.findMany({ where: { userId: { in: followers.map((f) => f.userId) }, notifyJobAlerts: false }, select: { userId: true } });
-  const optedOut = new Set(settings.map((s) => s.userId));
-  const recipients = followers.map((f) => f.userId).filter((u) => !optedOut.has(u) && u !== actorId);
-  const vars = { company: company.name, companyId: job.companyId, job: job.title };
-  const title = createT("en")("notif.newJob", vars);
-  // Bulk insert keeps fan-out cheap even for large follower counts.
-  await db.notification.createMany({ data: recipients.map((userId) => ({ userId, actorId, type: "NEW_JOB_FROM_FOLLOWED_COMPANY" as const, title, titleKey: "notif.newJob", vars, href: `/jobs/${job.id}` })) });
-  // Encoded so each browser shows it in its own language.
-  for (const u of recipients) publish(u, { type: "notification", id: job.id, title: k("notif.newJob", vars), href: `/jobs/${job.id}` });
-}
-
-function jobData(d: ReturnType<typeof jobSchema.parse>) {
-  const { skills, languages, publish: _publish, ...rest } = d;
-  void _publish;
-  return { rest, skills, languages };
-}
 
 export async function createJobAction(input: JobInput): Promise<ActionState<{ id: string }>> {
   return withRecruiter<{ id: string }>({ limit: LIMITS.write }, async (viewer) => {
     const parsed = parse(jobSchema, input);
     if (!parsed.success) return parsed.state;
-    const { rest, skills, languages } = jobData(parsed.data);
-    const validSkills = new Set((await db.skill.findMany({ where: { id: { in: skills.map((s) => s.skillId) } }, select: { id: true } })).map((s) => s.id));
-    const job = await db.job.create({
-      data: {
-        ...rest,
-        companyId: viewer.company.id,
-        postedById: viewer.id,
-        status: parsed.data.publish ? "OPEN" : "DRAFT",
-        publishedAt: parsed.data.publish ? new Date() : null,
-        skills: { create: skills.filter((s, i, a) => validSkills.has(s.skillId) && a.findIndex((x) => x.skillId === s.skillId) === i) },
-        languages: { create: languages.filter((l, i, a) => a.findIndex((x) => x.languageCode === l.languageCode) === i) },
-      },
-    });
-    if (parsed.data.publish) await notifyFollowersOfNewJob(job, viewer.id);
+    const job = await createJobForCompany({ userId: viewer.id, companyId: viewer.company.id }, parsed.data);
     revalidatePath("/recruiter");
     refreshSitemap();
     return { ok: true, message: parsed.data.publish ? "@msg.jobPublished" : "@msg.draftSaved", data: { id: job.id } };

@@ -6,7 +6,7 @@ import { db } from "@/server/db";
 import { fail, parse, withViewer, type ActionState } from "@/server/action";
 import { LIMITS } from "@/server/rate-limit";
 import { applyToJob, withdrawApplication } from "@/server/services/applications";
-import { checkAchievements } from "@/server/services/achievements";
+import { setSavedJob } from "@/server/services/saved-jobs";
 import { copyStored, deleteStored, storeUpload, UploadError } from "@/server/storage";
 
 const idSchema = z.string().min(1).max(40);
@@ -14,21 +14,11 @@ const idSchema = z.string().min(1).max(40);
 export async function toggleSaveJob(jobId: string): Promise<ActionState<{ saved: boolean }>> {
   return withViewer<{ saved: boolean }>({ limit: LIMITS.write }, async (viewer) => {
     const id = idSchema.parse(jobId);
-    const existing = await db.savedJob.findUnique({ where: { userId_jobId: { userId: viewer.id, jobId: id } } });
-    if (existing) {
-      await db.$transaction([
-        db.savedJob.delete({ where: { userId_jobId: { userId: viewer.id, jobId: id } } }),
-        db.job.update({ where: { id }, data: { saveCount: { decrement: 1 } } }),
-      ]);
-      revalidatePath("/jobs/saved");
-      return { ok: true, data: { saved: false } };
-    }
-    const job = await db.job.findUnique({ where: { id }, select: { id: true } });
-    if (!job) return fail("@msg.jobNotFound");
-    await db.$transaction([db.savedJob.create({ data: { userId: viewer.id, jobId: id } }), db.job.update({ where: { id }, data: { saveCount: { increment: 1 } } })]);
-    await checkAchievements(viewer.id, ["CAREER_EXPLORER"]);
+    const existing = await db.savedJob.findUnique({ where: { userId_jobId: { userId: viewer.id, jobId: id } }, select: { jobId: true } });
+    const result = await setSavedJob(viewer.id, id, !existing);
+    if (!result) return fail("@msg.jobNotFound");
     revalidatePath("/jobs/saved");
-    return { ok: true, data: { saved: true } };
+    return { ok: true, data: result };
   });
 }
 
