@@ -1,10 +1,13 @@
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { db, type Prisma } from "@/server/db";
 import { COMPANY_SIZES, type CompanySize } from "@/lib/constants";
 import { resolveCountryCode } from "@/lib/geo";
-import { companyCardSelect, publicCompanyWhere } from "@/server/services/companies";
-import { cacheHeaders, getMobileSession } from "@/server/mobile/auth";
-import { toCompanyCard } from "@/server/mobile/dto";
+import { companyCreateSchema } from "@/lib/validation/profile";
+import { LIMITS, rateLimit } from "@/server/rate-limit";
+import { companyCardSelect, createCompanyForUser, publicCompanyWhere } from "@/server/services/companies";
+import { cacheHeaders, getMobileSession, mobileError } from "@/server/mobile/auth";
+import { memberCompany, toCompanyCard } from "@/server/mobile/dto";
 
 export const dynamic = "force-dynamic";
 
@@ -56,4 +59,39 @@ export async function GET(req: Request) {
     },
     { headers: cacheHeaders(!!session) },
   );
+}
+
+// POST /api/mobile/companies  (Authorization: Bearer <token>)
+//   { name, size, website?, city?, countryCode?, tagline?, title? }  ->  201 { company }
+// Creates the member's hiring company, exactly like the website's "Set up your company" step: one company per
+// member, they become its OWNER, and a job seeker becomes "both" (seeker and recruiter).
+export async function POST(req: Request) {
+  const session = await getMobileSession(req);
+  if (!session) return mobileError(401, "UNAUTHORIZED", "Sign in first.");
+  const userId = session.user.id;
+  const limit = rateLimit(`${LIMITS.write.key}:${userId}`, LIMITS.write.max, LIMITS.write.windowMs);
+  if (!limit.ok) return mobileError(429, "RATE_LIMITED", `Too many requests. Try again in ${limit.retryAfterSeconds} s.`);
+  if (await memberCompany(userId)) return mobileError(409, "ALREADY_IN_COMPANY", "You already belong to a company.");
+
+  // The website's form always sends `website` (possibly empty) and the shared schema expects the key; the app may omit it.
+  const input = (await req.json().catch(() => null)) as Record<string, unknown> | null;
+  const parsed = companyCreateSchema.safeParse(input && typeof input === "object" ? { website: null, ...input } : input);
+  if (!parsed.success) {
+    const fields = [...new Set(parsed.error.issues.map((i) => String(i.path[0] ?? "body")))];
+    return NextResponse.json(
+      { error: { code: "INVALID_FIELDS", message: "Check the highlighted fields.", fields } },
+      { status: 400, headers: { "Cache-Control": "no-store" } },
+    );
+  }
+
+  await db.$transaction(async (tx) => {
+    await createCompanyForUser(userId, parsed.data, tx);
+    const user = await tx.user.findUniqueOrThrow({ where: { id: userId }, select: { intent: true, onboardedAt: true } });
+    await tx.user.update({
+      where: { id: userId },
+      data: { intent: user.intent === "SEEKER" ? "BOTH" : user.intent, onboardedAt: user.onboardedAt ?? new Date() },
+    });
+  });
+  revalidatePath("/", "layout");
+  return NextResponse.json({ company: await memberCompany(userId) }, { status: 201, headers: { "Cache-Control": "no-store" } });
 }
