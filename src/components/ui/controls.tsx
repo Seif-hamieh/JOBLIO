@@ -4,7 +4,7 @@ import { Switch as RSwitch, Tooltip as RTooltip } from "radix-ui";
 import { m } from "motion/react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useId, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 export function Switch({
@@ -75,8 +75,32 @@ export function NavTabs({ tabs, className, layoutId = "nav-tabs" }: { tabs: { hr
   const pathname = usePathname();
   const search = useSearchParams().toString();
   const current = search ? `${pathname}?${search}` : pathname;
+  const ref = useRef<HTMLElement>(null);
+  // On a narrow screen the tabs scroll sideways: the current one is brought into view, and while more tabs
+  // sit past the end edge it fades out to show there is more.
+  const [more, setMore] = useState(false);
+  useEffect(() => {
+    const nav = ref.current;
+    if (!nav) return;
+    nav.querySelector<HTMLElement>("[aria-current=page]")?.scrollIntoView({ block: "nearest", inline: "nearest" });
+    const update = () => setMore(Math.ceil(Math.abs(nav.scrollLeft) + nav.clientWidth) < nav.scrollWidth - 1);
+    update();
+    nav.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      nav.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [pathname]);
   return (
-    <nav className={cn("scrollbar-none -mx-1 flex gap-1 overflow-x-auto px-1", className)}>
+    <nav
+      ref={ref}
+      className={cn(
+        "scrollbar-none -mx-1 flex gap-1 overflow-x-auto px-1",
+        more && "[mask-image:linear-gradient(to_right,#000_calc(100%-48px),transparent)] rtl:[mask-image:linear-gradient(to_left,#000_calc(100%-48px),transparent)]",
+        className,
+      )}
+    >
       {tabs.map((t) => {
         // Exact tabs with a query string must match it; plain exact tabs match the path alone.
         const active = t.exact
@@ -88,6 +112,7 @@ export function NavTabs({ tabs, className, layoutId = "nav-tabs" }: { tabs: { hr
           <Link
             key={t.href}
             href={t.href}
+            aria-current={active ? "page" : undefined}
             className={cn(
               "relative flex h-9 shrink-0 items-center gap-1.5 rounded-full px-3.5 text-sm font-medium transition-colors",
               active ? "text-fg" : "text-fg-muted hover:text-fg",

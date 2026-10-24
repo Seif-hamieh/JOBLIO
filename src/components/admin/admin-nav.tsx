@@ -32,7 +32,8 @@ export function AdminNav() {
       aria-label={t("admin.title")}
       className="glass sticky top-[calc(4rem+env(safe-area-inset-top))] z-30 -mx-4 min-w-0 border-b border-border px-4 py-2 sm:-mx-6 sm:px-6 md:top-24 md:z-auto md:mx-0 md:self-start md:border-0 md:bg-transparent md:p-0 md:backdrop-blur-none"
     >
-      <ul className="scrollbar-none flex gap-1 overflow-x-auto md:flex-col md:overflow-visible">
+      {/* Phones: the strip scrolls sideways; its end fades so it is clear more links follow (the end padding lets the last one scroll clear of the fade). */}
+      <ul className="scrollbar-none flex gap-1 overflow-x-auto pe-10 [mask-image:linear-gradient(to_right,#000_calc(100%-40px),transparent)] rtl:[mask-image:linear-gradient(to_left,#000_calc(100%-40px),transparent)] md:flex-col md:overflow-visible md:pe-0 md:[mask-image:none]">
         {ITEMS.map(({ href, key, icon: Icon, ready, ...rest }) => {
           const active = "exact" in rest ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
           return (

@@ -186,6 +186,8 @@
     border-color: var(--border);
   }
   html {
+    /* Safety net: nothing can make a page scroll sideways on a phone (clip keeps sticky headers working). */
+    overflow-x: clip;
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;

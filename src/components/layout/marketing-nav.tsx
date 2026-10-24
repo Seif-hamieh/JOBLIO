@@ -52,7 +52,7 @@ export function MarketingNav() {
 
   return (
     <header className={cn("sticky top-0 z-40 pt-[env(safe-area-inset-top)] transition-all duration-300", scrolled ? "glass border-b border-border" : "border-b border-transparent")}>
-      <div className="mx-auto flex h-16 max-w-7xl items-center gap-6 px-4 sm:px-6">
+      <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 sm:gap-6 sm:px-6">
         <Logo />
         <nav className="hidden items-center gap-1 lg:flex">
           {LINKS.map((l) => (
@@ -61,7 +61,7 @@ export function MarketingNav() {
             </Link>
           ))}
         </nav>
-        <div className="ms-auto flex items-center gap-1.5">
+        <div className="ms-auto flex items-center gap-1 sm:gap-1.5">
           <LanguageToggle />
           <ThemeToggle />
           <Link href="/login" className={buttonClasses({ variant: "ghost", size: "sm", className: "hidden sm:inline-flex" })}>

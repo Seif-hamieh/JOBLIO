@@ -51,12 +51,13 @@ export default async function RecruiterDashboardPage() {
 
       <Card className="p-6">
         <CardHeader title={t("recruiter.pipelineTitle")} description={t("recruiter.pipelineSub")} />
-        <div className="mt-5 grid grid-cols-5 gap-2">
+        {/* Three columns on phones: five would squeeze each stage name into its count. */}
+        <div className="mt-5 grid grid-cols-3 gap-x-5 gap-y-4 sm:grid-cols-5 sm:gap-x-3">
           {PIPELINE_STAGES.map((s) => (
-            <div key={s}>
-              <div className="flex items-baseline justify-between">
-                <span className="text-xs font-medium text-fg-muted">{t(`enums.pipelineStage.${s}`)}</span>
-                <span className="font-display text-lg font-semibold">{d.byStage[s] ?? 0}</span>
+            <div key={s} className="min-w-0">
+              <div className="flex items-baseline justify-between gap-2">
+                <span className="min-w-0 truncate text-xs font-medium text-fg-muted">{t(`enums.pipelineStage.${s}`)}</span>
+                <span className="shrink-0 font-display text-lg font-semibold tabular-nums">{d.byStage[s] ?? 0}</span>
               </div>
               <ProgressBar value={inPipeline ? ((d.byStage[s] ?? 0) / inPipeline) * 100 : 0} tone={s === "HIRED" ? "mint" : "brand"} className="mt-2 h-1.5" />
             </div>

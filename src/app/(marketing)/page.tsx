@@ -356,7 +356,7 @@ export default async function LandingPage() {
               {t("landing.browseAll")} <ArrowRight className="transition-transform duration-200 group-hover:translate-x-0.5" />
             </Link>
           </div>
-          <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {latestJobs.map((j, i) => (
               <Reveal key={j.id} delay={i * 0.05}>
                 <Link href={`/jobs/${j.id}`} className="surface surface-hover group flex h-full flex-col p-6">

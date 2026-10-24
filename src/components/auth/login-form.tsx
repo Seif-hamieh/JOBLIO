@@ -49,7 +49,7 @@ export function LoginForm({ next, providers }: { next: string; providers: ("goog
       </div>
 
       <form onSubmit={onSubmit} className="space-y-4" noValidate={false}>
-        <Field label={t("auth.email")}>{(p) => <Input {...p} name="email" type="email" autoComplete="email" required placeholder="you@example.com" />}</Field>
+        <Field label={t("auth.email")}>{(p) => <Input {...p} name="email" type="email" autoComplete="email" autoCapitalize="none" autoCorrect="off" spellCheck={false} required placeholder="you@example.com" />}</Field>
         <Field
           label={
             <span className="flex w-full items-center justify-between">
@@ -62,7 +62,7 @@ export function LoginForm({ next, providers }: { next: string; providers: ("goog
         >
           {(p) => (
             <div className="relative">
-              <Input {...p} name="password" type={show ? "text" : "password"} autoComplete="current-password" required className="pe-11" />
+              <Input {...p} name="password" type={show ? "text" : "password"} autoComplete="current-password" autoCapitalize="none" autoCorrect="off" spellCheck={false} required className="pe-11" />
               <button type="button" onClick={() => setShow((s) => !s)} className="absolute end-3 top-1/2 -translate-y-1/2 text-fg-subtle hover:text-fg" aria-label={show ? t("auth.hidePassword") : t("auth.showPassword")}>
                 {show ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
               </button>
