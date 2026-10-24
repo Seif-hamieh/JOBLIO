@@ -158,24 +158,42 @@ export function HeroVisual() {
   const mx = useSpring(rawX, { stiffness: 60, damping: 18 });
   const my = useSpring(rawY, { stiffness: 60, damping: 18 });
 
+  // Depth: the floating cards follow the pointer (FloatCard), while the network and the rings behind them
+  // drift the other way, more slowly the further back they sit. Off for touch and for reduced motion.
+  const netX = useTransform(mx, (v) => Math.round(v * -10));
+  const netY = useTransform(my, (v) => Math.round(v * -7));
+  const ringX = useTransform(mx, (v) => Math.round(v * -4));
+  const ringY = useTransform(my, (v) => Math.round(v * -3));
+
   useEffect(() => {
+    if (reducedMotion) {
+      rawX.set(0);
+      rawY.set(0);
+      return;
+    }
     const onMove = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return;
       rawX.set((e.clientX / window.innerWidth) * 2 - 1);
       rawY.set((e.clientY / window.innerHeight) * 2 - 1);
     };
     window.addEventListener("pointermove", onMove, { passive: true });
     return () => window.removeEventListener("pointermove", onMove);
-  }, [rawX, rawY]);
+  }, [rawX, rawY, reducedMotion]);
 
   return (
     <div className="relative mx-auto aspect-square w-full max-w-[640px]">
-      {/* Soft orbit rings */}
-      <div className="absolute inset-[6%] rounded-full border border-brand/10" />
-      <div className="absolute inset-[18%] rounded-full border border-dashed border-brand/10" />
-      <div className="absolute inset-[22%] rounded-full bg-[radial-gradient(circle,color-mix(in_oklch,var(--brand)_16%,transparent),transparent_70%)]" />
+      {/* Soft orbit rings (back layer) */}
+      <m.div className="absolute inset-0" style={{ x: ringX, y: ringY }}>
+        <div className="absolute inset-[6%] rounded-full border border-brand/10" />
+        <div className="absolute inset-[18%] rounded-full border border-dashed border-brand/10" />
+        <div className="absolute inset-[22%] rounded-full bg-[radial-gradient(circle,color-mix(in_oklch,var(--brand)_16%,transparent),transparent_70%)]" />
+      </m.div>
 
-      <NetworkFallback className={cn("absolute inset-0 size-full transition-opacity duration-700", can3D ? "opacity-0" : "opacity-100")} />
-      {can3D && <NetworkScene palette={palette} className="absolute inset-0 animate-[fade-in_1.2s_ease-out]" />}
+      {/* Network (middle layer) */}
+      <m.div className="absolute inset-0" style={{ x: netX, y: netY }}>
+        <NetworkFallback className={cn("absolute inset-0 size-full transition-opacity duration-700", can3D ? "opacity-0" : "opacity-100")} />
+        {can3D && <NetworkScene palette={palette} className="absolute inset-0 animate-[fade-in_1.2s_ease-out]" />}
+      </m.div>
 
       {/* Profile card */}
       <FloatCard className="start-0 top-[8%] w-[230px] max-sm:start-[-4%] max-sm:w-[200px]" delay={0.3} depth={1.4} mx={mx} my={my}>

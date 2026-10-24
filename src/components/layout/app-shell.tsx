@@ -212,7 +212,7 @@ function DesktopNav({ viewer }: { viewer: ShellViewer }) {
           <Link
             key={item.href}
             href={item.href}
-            className={cn("relative flex w-[72px] flex-col items-center gap-0.5 rounded-xl py-1.5 text-[11px] font-medium transition-colors", active ? "text-fg" : "text-fg-muted hover:text-fg")}
+            className={cn("nav-glow relative flex w-[72px] flex-col items-center gap-0.5 rounded-xl py-1.5 text-[11px] font-medium transition-colors", active ? "text-fg" : "text-fg-muted hover:text-fg")}
           >
             <span className="relative">
               <item.icon className="size-5" strokeWidth={active ? 2.3 : 1.9} />
@@ -227,7 +227,7 @@ function DesktopNav({ viewer }: { viewer: ShellViewer }) {
         <Link
           href="/recruiter"
           className={cn(
-            "relative flex w-[72px] flex-col items-center gap-0.5 rounded-xl py-1.5 text-[11px] font-medium transition-colors",
+            "nav-glow relative flex w-[72px] flex-col items-center gap-0.5 rounded-xl py-1.5 text-[11px] font-medium transition-colors",
             pathname.startsWith("/recruiter") || pathname.startsWith("/company") ? "text-fg" : "text-fg-muted hover:text-fg",
           )}
         >

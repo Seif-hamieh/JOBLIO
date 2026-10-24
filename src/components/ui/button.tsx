@@ -5,7 +5,8 @@ import { Spinner } from "@/components/ui/spinner";
 
 const VARIANTS = {
   // A crisp inner highlight and a hairline shadow instead of a coloured glow.
-  primary: "bg-brand text-brand-fg shadow-[inset_0_1px_0_rgb(255_255_255/0.16),0_1px_2px_rgb(9_9_11/0.12)] hover:bg-brand-hover",
+  // spotlight-btn: a highlight follows the cursor and the button glows on hover (globals.css).
+  primary: "spotlight-btn bg-brand text-brand-fg shadow-[inset_0_1px_0_rgb(255_255_255/0.16),0_1px_2px_rgb(9_9_11/0.12)] hover:bg-brand-hover",
   secondary: "bg-fg text-bg hover:bg-fg/90",
   outline: "border border-border bg-surface text-fg shadow-[0_1px_2px_rgb(9_9_11/0.04)] hover:bg-surface-2 hover:border-border-strong",
   soft: "bg-brand-soft text-brand-soft-fg hover:bg-brand-soft/70",

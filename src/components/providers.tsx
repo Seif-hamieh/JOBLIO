@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme";
 import { Toaster } from "@/components/ui/toast";
 import { TooltipProvider } from "@/components/ui/controls";
 import { ServiceWorkerRegistration } from "@/components/pwa/pwa";
+import { SpotlightTracker } from "@/components/ui/spotlight-tracker";
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
@@ -16,6 +17,7 @@ export function Providers({ children }: { children: ReactNode }) {
             {children}
             <Toaster />
             <ServiceWorkerRegistration />
+            <SpotlightTracker />
           </TooltipProvider>
         </MotionConfig>
       </LazyMotion>

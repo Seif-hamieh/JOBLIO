@@ -304,6 +304,85 @@
   }
 }
 
+/* ── Hover glow and tilt ──────────────────────────────────────────────────
+   --mx/--my (pointer position) and --rx/--ry (tilt) are set by SpotlightTracker, one
+   document-level listener — no per-card JavaScript. Effects run only for a mouse
+   (hover + fine pointer); without the tracker the glow simply sits in the centre. */
+@media (hover: hover) and (pointer: fine) {
+  /* Cards: a soft brand light under the cursor, and the border lit where the cursor is. */
+  .spotlight { isolation: isolate; }
+  .spotlight::before,
+  .spotlight::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .spotlight::before {
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), color-mix(in oklch, var(--brand) 11%, transparent), transparent 45%);
+  }
+  .spotlight::after {
+    inset: -1px;
+    padding: 1px;
+    background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), color-mix(in oklch, var(--brand) 75%, var(--aurora)), transparent 70%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+  .spotlight:hover::before,
+  .spotlight:hover::after { opacity: 1; }
+  .spotlight.surface-hover:hover {
+    box-shadow: var(--shadow-md), 0 18px 48px -18px color-mix(in oklch, var(--brand) 45%, transparent);
+  }
+
+  /* Primary buttons: a light highlight follows the cursor and the button glows. */
+  .spotlight-btn { isolation: isolate; }
+  .spotlight-btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    background: radial-gradient(90px circle at var(--mx, 50%) var(--my, 50%), rgb(255 255 255 / 0.28), transparent 70%);
+  }
+  .spotlight-btn:hover::before { opacity: 1; }
+  .spotlight-btn:hover {
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.16), 0 8px 26px -6px color-mix(in oklch, var(--brand) 60%, transparent);
+  }
+
+  /* Navigation links: an ambient glow behind the link. */
+  .nav-glow { isolation: isolate; }
+  .nav-glow::before {
+    content: "";
+    position: absolute;
+    inset: -2px -4px;
+    z-index: -1;
+    border-radius: 999px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    background: radial-gradient(closest-side, color-mix(in oklch, var(--brand) 20%, transparent), transparent);
+  }
+  .nav-glow:hover::before { opacity: 1; }
+
+  /* Job cards lean (at most 5°) towards the cursor; the lift from .surface-hover is kept. */
+  .tilt:hover {
+    transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(-2px);
+    transition: transform 0.12s ease-out, box-shadow 0.25s var(--ease-out-expo), border-color 0.25s ease;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tilt:hover { transform: none; }
+  .spotlight::before, .spotlight::after, .spotlight-btn::before { display: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

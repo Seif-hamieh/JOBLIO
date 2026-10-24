@@ -32,7 +32,7 @@ export function JobCard({
   return (
     <article
       className={cn(
-        "surface surface-hover group relative p-5 sm:p-6",
+        "surface surface-hover spotlight tilt group relative p-5 sm:p-6",
         placement === "sponsored" && "ring-1 ring-aurora/25",
         featured && placement !== "sponsored" && "ring-1 ring-ember/30",
         urgent && "ring-1 ring-danger/25",

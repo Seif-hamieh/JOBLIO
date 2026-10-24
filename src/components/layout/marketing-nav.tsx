@@ -56,7 +56,7 @@ export function MarketingNav() {
         <Logo />
         <nav className="hidden items-center gap-1 lg:flex">
           {LINKS.map((l) => (
-            <Link key={l.href} href={l.href} className="rounded-full px-3.5 py-2 text-sm text-fg-muted transition hover:bg-surface-2 hover:text-fg">
+            <Link key={l.href} href={l.href} className="nav-glow relative rounded-full px-3.5 py-2 text-sm text-fg-muted transition hover:text-fg">
               {t(l.label)}
             </Link>
           ))}
