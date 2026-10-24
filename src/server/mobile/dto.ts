@@ -1,7 +1,7 @@
 import "server-only";
 import type { MatchResult } from "@/lib/matching/engine";
 import type { JobCardWithMatch, JobDetail } from "@/server/services/jobs";
-import type { Prisma } from "@/server/db";
+import { db, type Prisma } from "@/server/db";
 import type { companyCardSelect } from "@/server/services/companies";
 
 // What the mobile API returns. Every field is listed explicitly, so a new database column never leaks into the app
@@ -101,8 +101,24 @@ export function toCompanyCard(c: CompanyCard, following: boolean | null, now = D
   };
 }
 
+/**
+ * The company the member hires for (the same one the website uses: their first membership), or null — the app
+ * then offers to create one before showing the recruiter tabs' content.
+ */
+export async function memberCompany(userId: string) {
+  const m = await db.companyMember.findFirst({
+    where: { userId },
+    orderBy: { createdAt: "asc" },
+    select: { role: true, company: { select: { slug: true, name: true, logoUrl: true } } },
+  });
+  return m ? { ...m.company, role: m.role } : null;
+}
+
 /** The signed-in member's own account. Their own email is fine to return; nothing else private is. */
-export function toMe(u: { id: string; name: string; email: string; image?: string | null; username?: string | null; intent?: string | null; onboardedAt?: Date | null; emailVerified: boolean }) {
+export function toMe(
+  u: { id: string; name: string; email: string; image?: string | null; username?: string | null; intent?: string | null; onboardedAt?: Date | null; emailVerified: boolean },
+  company: Awaited<ReturnType<typeof memberCompany>>,
+) {
   return {
     id: u.id,
     name: u.name,
@@ -112,5 +128,6 @@ export function toMe(u: { id: string; name: string; email: string; image?: strin
     username: u.username ?? null,
     intent: u.intent ?? null,
     onboarded: !!u.onboardedAt,
+    company,
   };
 }

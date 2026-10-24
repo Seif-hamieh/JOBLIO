@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { auth } from "@/server/auth";
 import { mobileError, tokenFromSetCookie } from "@/server/mobile/auth";
-import { toMe } from "@/server/mobile/dto";
+import { memberCompany, toMe } from "@/server/mobile/dto";
 
 export const dynamic = "force-dynamic";
 
@@ -42,5 +42,5 @@ export async function POST(req: Request) {
   const token = await tokenFromSetCookie(res);
   const data = (await res.json()) as { user: Parameters<typeof toMe>[0] };
   if (!token) return mobileError(502, "NO_SESSION", "Sign-in succeeded but no session was created.");
-  return NextResponse.json({ token, user: toMe(data.user) }, { headers: { "Cache-Control": "no-store" } });
+  return NextResponse.json({ token, user: toMe(data.user, await memberCompany(data.user.id)) }, { headers: { "Cache-Control": "no-store" } });
 }

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getMobileSession, mobileError } from "@/server/mobile/auth";
-import { toMe } from "@/server/mobile/dto";
+import { memberCompany, toMe } from "@/server/mobile/dto";
 
 export const dynamic = "force-dynamic";
 
@@ -9,5 +9,5 @@ export const dynamic = "force-dynamic";
 export async function GET(req: Request) {
   const session = await getMobileSession(req);
   if (!session) return mobileError(401, "UNAUTHORIZED", "Sign in first.");
-  return NextResponse.json({ user: toMe(session.user) }, { headers: { "Cache-Control": "private, no-store" } });
+  return NextResponse.json({ user: toMe(session.user, await memberCompany(session.user.id)) }, { headers: { "Cache-Control": "private, no-store" } });
 }
