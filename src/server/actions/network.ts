@@ -9,6 +9,7 @@ import { notify } from "@/server/services/notifications";
 import { k } from "@/i18n/message";
 import { checkAchievements } from "@/server/services/achievements";
 import { isBlockedEitherWay } from "@/server/services/profile";
+import { removeConnection, requestConnection, respondToConnection } from "@/server/services/connections";
 
 const id = z.string().min(1).max(64);
 
@@ -19,68 +20,23 @@ function refresh() {
 
 export async function connectAction(userId: string, message?: string): Promise<ActionState> {
   return withViewer({ limit: LIMITS.connect }, async (viewer) => {
-    const other = id.parse(userId);
-    if (other === viewer.id) return fail("@msg.connectSelf");
     const note = z.string().trim().max(300).optional().parse(message) || null;
-    if (await isBlockedEitherWay(viewer.id, other)) return fail("@msg.connectBlocked");
-    const target = await db.user.findUnique({ where: { id: other }, select: { id: true } });
-    if (!target) return fail("@msg.memberNotFound");
-
-    const existing = await db.connection.findFirst({
-      where: { OR: [{ requesterId: viewer.id, addresseeId: other }, { requesterId: other, addresseeId: viewer.id }] },
-    });
-    if (existing?.status === "ACCEPTED") return fail("@msg.alreadyConnected");
-    if (existing?.status === "PENDING" && existing.requesterId === other) {
-      // They already asked us — accept instead of creating a second request.
-      return respond(viewer, existing.id, true);
-    }
-    if (existing?.status === "PENDING") return fail("@msg.requestAlready");
-    if (existing) await db.connection.delete({ where: { id: existing.id } });
-
-    await db.connection.create({ data: { requesterId: viewer.id, addresseeId: other, message: note } });
-    await notify({
-      userId: other,
-      actorId: viewer.id,
-      type: "CONNECTION_REQUEST",
-      title: k("notif.connectionRequest", { name: viewer.name }),
-      body: note ?? viewer.headline ?? undefined,
-      href: "/network",
-    });
-    refresh();
-    return { ok: true, message: "@msg.requestSent" };
+    const result = await requestConnection(viewer, id.parse(userId), note);
+    return { ok: true, message: result === "connected" ? "@msg.connected" : "@msg.requestSent" };
   });
 }
 
-async function respond(viewer: { id: string; name: string; username: string }, connectionId: string, accept: boolean): Promise<ActionState> {
-  const c = await db.connection.findUnique({ where: { id: connectionId } });
-  if (!c || c.addresseeId !== viewer.id || c.status !== "PENDING") return fail("@msg.requestNotFound");
-  await db.connection.update({ where: { id: c.id }, data: { status: accept ? "ACCEPTED" : "DECLINED", respondedAt: new Date() } });
-  if (accept) {
-    await notify({
-      userId: c.requesterId,
-      actorId: viewer.id,
-      type: "CONNECTION_ACCEPTED",
-      title: k("notif.connectionAccepted", { name: viewer.name }),
-      href: `/in/${viewer.username}`,
-    });
-    await Promise.all([checkAchievements(viewer.id, ["NETWORK_BUILDER"]), checkAchievements(c.requesterId, ["NETWORK_BUILDER"])]);
-  }
-  refresh();
-  return { ok: true, message: accept ? "@msg.connected" : "@msg.ignored" };
-}
-
 export async function respondConnectionAction(connectionId: string, accept: boolean): Promise<ActionState> {
-  return withViewer({ limit: LIMITS.write }, async (viewer) => respond(viewer, id.parse(connectionId), !!accept));
+  return withViewer({ limit: LIMITS.write }, async (viewer) => {
+    await respondToConnection(viewer, id.parse(connectionId), !!accept);
+    return { ok: true, message: accept ? "@msg.connected" : "@msg.ignored" };
+  });
 }
 
 /** Cancels an outgoing request or removes an existing connection. */
 export async function removeConnectionAction(userId: string): Promise<ActionState> {
   return withViewer({ limit: LIMITS.write }, async (viewer) => {
-    const other = id.parse(userId);
-    await db.connection.deleteMany({
-      where: { OR: [{ requesterId: viewer.id, addresseeId: other }, { requesterId: other, addresseeId: viewer.id, status: "ACCEPTED" }] },
-    });
-    refresh();
+    await removeConnection(viewer.id, id.parse(userId));
     return { ok: true };
   });
 }
