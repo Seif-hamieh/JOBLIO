@@ -86,8 +86,8 @@
 <script>
   // id, label, headline ('quoted' words are purple), subtitle, screen (shots/<screen>.png)
   const POSTS = [
-    ["post1", "For professionals", "Your 'career' and 'network' in one place", "Find your dream job, build your profile, and connect with top companies.", "home"],
-    ["post2", "For recruiters", "Your 'applicants' and 'hiring pipeline' at a glance", "See new candidates, manage interviews, and post jobs in seconds.", "recruiters"],
+    ["post1", "For professionals", "Your <span class='text-purple-400'>career</span> and <span class='text-purple-400'>network</span> in one place", "Find your dream job, build your profile, and connect with top companies.", "home"],
+    ["post2", "For recruiters", "Your <span class='text-purple-400'>applicants</span> and <span class='text-purple-400'>hiring pipeline</span> at a glance", "See new candidates, manage interviews, and post jobs in seconds.", "recruiters"],
   ];
   // The 10 newest open jobs on getjoblio.app/jobs?sort=newest when the shots were taken.
   const JOBS = [
@@ -109,11 +109,14 @@
 
   const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
   // 'quoted' → purple. An apostrophe inside a word (you'll) isn't a quote.
-  const headline = (s) => esc(s).replace(/(^|[\s(])'([^']+?)'(?=$|[\s.,!?)])/g, '$1<span class="v">$2</span>');
+  // A headline written with <span class='text-purple-400'>…</span> is used as-is (only those spans are kept).
+  const headline = (s) => /<span\b/.test(s)
+    ? esc(s).replace(/&lt;span class=['"]text-purple-400['"]&gt;(.*?)&lt;\/span&gt;/g, '<span class="v">$1</span>')
+    : esc(s).replace(/(^|[\s(])'([^']+?)'(?=$|[\s.,!?)])/g, '$1<span class="v">$2</span>');
   const now = "9:41";
 
   document.getElementById("grid").innerHTML = POSTS.map(([id, label, title, sub, screen]) => {
-    const len = title.replace(/'/g, "").length;
+    const len = title.replace(/<[^>]+>|'/g, "").length; // visible characters only
     // Long job titles get a smaller headline. The phone is placed under the text once it is laid out.
     const hs = len > 52 ? 54 : len > 36 ? 62 : 70;
     return `
