@@ -1,30 +1,20 @@
 import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
-import { db } from "@/server/db";
 import { jobSchema } from "@/lib/validation/job";
 import { LIMITS, rateLimit } from "@/server/rate-limit";
 import { refreshSitemap } from "@/server/sitemap";
 import { recruiterDashboard } from "@/server/services/recruiter";
 import { createJobForCompany } from "@/server/services/job-posting";
-import { getMobileSession, mobileError } from "@/server/mobile/auth";
+import { getMobileRecruiter, mobileError } from "@/server/mobile/auth";
 
 export const dynamic = "force-dynamic";
-
-/** The signed-in member's company id (the website uses their first membership too), or a ready error response. */
-async function recruiter(req: Request) {
-  const session = await getMobileSession(req);
-  if (!session) return { error: mobileError(401, "UNAUTHORIZED", "Sign in first.") };
-  const m = await db.companyMember.findFirst({ where: { userId: session.user.id }, orderBy: { createdAt: "asc" }, select: { companyId: true } });
-  if (!m) return { error: mobileError(403, "NO_COMPANY", "Create your company first.") };
-  return { userId: session.user.id, companyId: m.companyId };
-}
 
 const iso = (d: Date | null) => (d ? d.toISOString() : null);
 
 // GET /api/mobile/recruiter/jobs  →  { jobs, pipeline, newApplicants7d }
 // The company's jobs (all statuses) with views and applicants, plus how many candidates sit in each stage.
 export async function GET(req: Request) {
-  const r = await recruiter(req);
+  const r = await getMobileRecruiter(req);
   if ("error" in r) return r.error;
   const d = await recruiterDashboard(r.companyId);
   return NextResponse.json(
@@ -52,7 +42,7 @@ export async function GET(req: Request) {
 // Optional website fields the app's short form leaves out get the website form's defaults. `skills` may be plain
 // skill ids. Same validation, same rate limit and same follower notifications as posting on the website.
 export async function POST(req: Request) {
-  const r = await recruiter(req);
+  const r = await getMobileRecruiter(req);
   if ("error" in r) return r.error;
   const limit = rateLimit(`${LIMITS.write.key}:${r.userId}`, LIMITS.write.max, LIMITS.write.windowMs);
   if (!limit.ok) return mobileError(429, "RATE_LIMITED", `Too many requests. Try again in ${limit.retryAfterSeconds} s.`);

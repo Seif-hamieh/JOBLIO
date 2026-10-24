@@ -1,6 +1,10 @@
 import "server-only";
 import { NextResponse } from "next/server";
 import { auth } from "@/server/auth";
+import { db } from "@/server/db";
+import { ActionError } from "@/server/action";
+import { createT } from "@/i18n/translate";
+import { resolveMessage } from "@/i18n/message";
 
 // Authentication for the mobile app's JSON API (/api/mobile/*). The app has no cookies: it sends the session token
 // it got from /api/mobile/auth/login as "Authorization: Bearer <token>". Better Auth's bearer plugin is not used —
@@ -54,4 +58,24 @@ export function cacheHeaders(personal: boolean): HeadersInit {
   return personal
     ? { "Cache-Control": "private, no-store", Vary: "Authorization" }
     : { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300", Vary: "Authorization" };
+}
+
+/**
+ * For recruiter endpoints: the signed-in member and the company they hire for (their first membership, as on the
+ * website), or a ready error response (401 not signed in, 403 no company yet).
+ */
+export async function getMobileRecruiter(req: Request): Promise<{ userId: string; companyId: string } | { error: NextResponse }> {
+  const session = await getMobileSession(req);
+  if (!session) return { error: mobileError(401, "UNAUTHORIZED", "Sign in first.") };
+  const m = await db.companyMember.findFirst({ where: { userId: session.user.id }, orderBy: { createdAt: "asc" }, select: { companyId: true } });
+  if (!m) return { error: mobileError(403, "NO_COMPANY", "Create your company first.") };
+  return { userId: session.user.id, companyId: m.companyId };
+}
+
+/** A website rule that refused the request (ActionError "@msg.x") as a 409 with the website's English wording. */
+export function actionErrorResponse(e: unknown) {
+  if (!(e instanceof ActionError)) return null;
+  const code = e.message.replace(/^@msg\./, "").replace(/([a-z])([A-Z])/g, "$1_$2").toUpperCase(); // @msg.alreadyApplied → ALREADY_APPLIED
+  // "Not found" also covers another company's application: no hint that it exists.
+  return mobileError(code.endsWith("NOT_FOUND") ? 404 : 409, code, resolveMessage(createT("en"), e.message));
 }

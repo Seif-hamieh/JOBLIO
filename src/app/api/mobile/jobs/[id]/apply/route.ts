@@ -2,13 +2,10 @@ import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/server/db";
-import { ActionError } from "@/server/action";
 import { LIMITS, rateLimit } from "@/server/rate-limit";
 import { applyToJob } from "@/server/services/applications";
 import { copyStored, deleteStored } from "@/server/storage";
-import { getMobileSession, mobileError } from "@/server/mobile/auth";
-import { createT } from "@/i18n/translate";
-import { resolveMessage } from "@/i18n/message";
+import { actionErrorResponse, getMobileSession, mobileError } from "@/server/mobile/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -44,10 +41,8 @@ export async function POST(req: Request, { params }: RouteContext<"/api/mobile/j
     return NextResponse.json({ applied: true, score: match.score, resumeAttached: !!resumeUrl }, { status: 201, headers: { "Cache-Control": "no-store" } });
   } catch (e) {
     await deleteStored([resumeUrl]);
-    if (e instanceof ActionError) {
-      const code = e.message.replace(/^@msg\./, "").replace(/([a-z])([A-Z])/g, "$1_$2").toUpperCase(); // @msg.alreadyApplied → ALREADY_APPLIED
-      return mobileError(409, code, resolveMessage(createT("en"), e.message));
-    }
+    const refused = actionErrorResponse(e);
+    if (refused) return refused;
     throw e;
   }
 }
