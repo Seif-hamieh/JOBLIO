@@ -46,3 +46,6 @@ next-env.d.ts
 paddle-products-output.json
 # Intermediate 2x renders
 scripts/social/mockups/out/
+
+# self-hosting (scripts/sync-jobs.ps1)
+sync-jobs.log
