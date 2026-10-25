@@ -58,7 +58,8 @@ try {
   foreach ($f in Get-ChildItem $BackupDir -Filter 'joblio-backup-*.dump') {
     $target = Join-Path $DriveDir $f.Name
     $existing = Get-Item $target -ErrorAction SilentlyContinue
-    if (-not $existing -or $existing.Length -ne $f.Length -or $existing.LastWriteTime -ne $f.LastWriteTime) {
+    # Google Drive keeps times to the millisecond only, so allow a small difference.
+    if (-not $existing -or $existing.Length -ne $f.Length -or [math]::Abs(($existing.LastWriteTime - $f.LastWriteTime).TotalSeconds) -gt 2) {
       Copy-Item $f.FullName $target -Force -ErrorAction Stop
       $copied++
     }
