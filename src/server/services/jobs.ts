@@ -112,7 +112,8 @@ const ORDER: Record<Exclude<JobSearchParams["sort"], "match">, Prisma.JobOrderBy
   salary: [{ salaryMax: { sort: "desc", nulls: "last" } }, { publishedAt: "desc" }],
 };
 
-async function annotateForViewer(jobs: JobCardData[], viewerId: string | null, matches?: Map<string, MatchResult>) {
+/** Adds the member's match score and whether they saved / applied to each job (used by every job list). */
+export async function annotateForViewer(jobs: JobCardData[], viewerId: string | null, matches?: Map<string, MatchResult>) {
   if (!viewerId || jobs.length === 0) return jobs as JobCardWithMatch[];
   const ids = jobs.map((j) => j.id);
   const [saved, applied, facts] = await Promise.all([

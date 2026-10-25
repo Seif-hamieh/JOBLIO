@@ -6,6 +6,7 @@ import { db } from "@/server/db";
 import { fail, parse, withRecruiter, withViewer, type ActionState } from "@/server/action";
 import { LIMITS } from "@/server/rate-limit";
 import { notify } from "@/server/services/notifications";
+import { respondToInterview } from "@/server/services/interviews";
 import { getManagedApplication, transitionApplication } from "@/server/services/applications";
 import { INTERVIEW_TYPES } from "@/lib/constants";
 import { k } from "@/i18n/message";
@@ -66,23 +67,9 @@ export async function scheduleInterviewAction(input: z.input<typeof scheduleSche
 
 export async function respondToInterviewAction(interviewId: string, response: "ACCEPTED" | "DECLINED"): Promise<ActionState> {
   return withViewer({ limit: LIMITS.write }, async (viewer) => {
-    const interview = await db.interview.findUnique({
-      where: { id: z.string().max(40).parse(interviewId) },
-      select: { id: true, status: true, scheduledById: true, startsAt: true, application: { select: { applicantId: true, job: { select: { title: true } } } } },
-    });
-    if (!interview || interview.application.applicantId !== viewer.id) return fail("@msg.interviewNotFound");
-    if (interview.status !== "SCHEDULED") return fail("@msg.interviewNotScheduled");
-    const r = z.enum(["ACCEPTED", "DECLINED"]).parse(response);
-    await db.interview.update({ where: { id: interview.id }, data: { candidateResponse: r } });
-    await notify({
-      userId: interview.scheduledById,
-      actorId: viewer.id,
-      type: "INTERVIEW_RESPONSE",
-      title: k(r === "ACCEPTED" ? "notif.interviewResponseAccepted" : "notif.interviewResponseDeclined", { name: viewer.name, job: interview.application.job.title }),
-      href: "/interviews",
-    });
-    revalidatePath("/interviews");
-    return { ok: true, message: r === "ACCEPTED" ? "@msg.interviewConfirmed" : "@msg.interviewDeclined" };
+    // The rules live in services/interviews (shared with the app).
+    const message = await respondToInterview(viewer, z.string().max(40).parse(interviewId), z.enum(["ACCEPTED", "DECLINED"]).parse(response));
+    return { ok: true, message };
   });
 }
 

@@ -7,7 +7,7 @@ import { fail, parse, withRecruiter, withViewer, type ActionState } from "@/serv
 import { LIMITS } from "@/server/rate-limit";
 import { refreshSitemap } from "@/server/sitemap";
 import { canManageCompany } from "@/server/session";
-import { checkAchievements } from "@/server/services/achievements";
+import { setCompanyFollow } from "@/server/services/company-follow";
 import { createCompanyForUser } from "@/server/services/companies";
 import { deleteStored, storeUpload, UploadError } from "@/server/storage";
 import { companyCreateSchema, companyProfileSchema } from "@/lib/validation/profile";
@@ -18,18 +18,9 @@ const id = z.string().min(1).max(40);
 export async function toggleFollowCompany(companyId: string): Promise<ActionState<{ following: boolean }>> {
   return withViewer({ limit: LIMITS.write }, async (viewer) => {
     const cid = id.parse(companyId);
-    const key = { userId_companyId: { userId: viewer.id, companyId: cid } };
-    const existing = await db.companyFollower.findUnique({ where: key });
-    if (existing) {
-      await db.$transaction([db.companyFollower.delete({ where: key }), db.company.update({ where: { id: cid }, data: { followerCount: { decrement: 1 } } })]);
-    } else {
-      const company = await db.company.findUnique({ where: { id: cid }, select: { id: true } });
-      if (!company) return fail("@msg.companyNotFound");
-      await db.$transaction([db.companyFollower.create({ data: { userId: viewer.id, companyId: cid } }), db.company.update({ where: { id: cid }, data: { followerCount: { increment: 1 } } })]);
-      await checkAchievements(viewer.id, ["CAREER_EXPLORER"]);
-    }
-    revalidatePath("/companies");
-    return { ok: true, data: { following: !existing } };
+    const existing = await db.companyFollower.findUnique({ where: { userId_companyId: { userId: viewer.id, companyId: cid } }, select: { userId: true } });
+    // The rules live in services/company-follow (shared with the app).
+    return { ok: true, data: { following: await setCompanyFollow(viewer.id, cid, !existing) } };
   });
 }
 
