@@ -5,6 +5,7 @@
 #
 # Off-site copy: every backup the Google Drive folder does not have yet is copied there (so days missed while
 # G: was not connected are caught up on the next run), and Drive copies older than $DriveKeepDays are removed.
+# The uploaded files in ./storage are mirrored to <DriveDir>\storage as well.
 # If Google Drive is not available the local backup still counts as a success; the log says WARN.
 #
 # Restore a backup (into an empty database):
@@ -70,3 +71,20 @@ try {
 } catch {
   Write-Log "WARN  Google Drive copy skipped: $($_.Exception.Message)"
 }
+
+# Uploaded files (profile pictures, CVs, attachments) in ./storage, mirrored to Google Drive\storage.
+# New and changed files are copied; files deleted on the site are kept on Drive (so a mistake can be undone).
+# /FFT allows Google Drive's coarser timestamps, so unchanged files are not copied again.
+try {
+  $storage = Join-Path $root 'storage'
+  if (-not (Test-Path $storage)) { throw 'the storage folder does not exist yet' }
+  if (-not (Test-Path (Split-Path -Qualifier $DriveDir))) { throw "$(Split-Path -Qualifier $DriveDir) is not connected" }
+  $out = robocopy $storage (Join-Path $DriveDir 'storage') /E /FFT /R:2 /W:5 /NP /NJH /NDL /NFL /BYTES
+  if ($LASTEXITCODE -ge 8) { throw "robocopy exited with code $LASTEXITCODE" }
+  $files = ($out | Select-String '^\s*Files\s*:' | Select-Object -First 1).Line -split '\s+' | Where-Object { $_ -match '^\d+$' }
+  Write-Log "OK  Google Drive storage: $($files[1]) copied of $($files[0]) files"
+} catch {
+  Write-Log "WARN  Google Drive storage copy skipped: $($_.Exception.Message)"
+}
+# The local backup succeeded; don't let robocopy's "files were copied" code (1) look like a failure.
+exit 0
