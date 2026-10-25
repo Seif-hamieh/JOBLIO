@@ -36,6 +36,20 @@ export async function getMobileSession(req: Request) {
   return auth.api.getSession({ headers: await sessionHeaders(token), query: { disableCookieCache: true } }).catch(() => null);
 }
 
+/**
+ * Sends an app request through one of Better Auth's own endpoints (sign-in, sign-up, password reset…), so the app
+ * gets exactly the website's checks and rate limits. The client's address and browser headers are passed on, since
+ * Better Auth limits attempts per client address.
+ */
+export async function forwardToAuth(req: Request, path: string, body: unknown) {
+  const headers = new Headers({ "content-type": "application/json" });
+  for (const h of ["x-forwarded-for", "x-real-ip", "user-agent", "accept-language"]) {
+    const v = req.headers.get(h);
+    if (v) headers.set(h, v);
+  }
+  return auth.handler(new Request(new URL(`/api/auth${path}`, process.env.BETTER_AUTH_URL), { method: "POST", headers, body: JSON.stringify(body) }));
+}
+
 /** Reads the session token from a Better Auth response's Set-Cookie headers. */
 export async function tokenFromSetCookie(res: Response) {
   const name = await sessionCookieName();

@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { auth } from "@/server/auth";
-import { mobileError, tokenFromSetCookie } from "@/server/mobile/auth";
+import { forwardToAuth, mobileError, tokenFromSetCookie } from "@/server/mobile/auth";
 import { memberCompany, toMe } from "@/server/mobile/dto";
 
 export const dynamic = "force-dynamic";
@@ -18,18 +17,7 @@ export async function POST(req: Request) {
   const parsed = body.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return mobileError(400, "INVALID_BODY", "Send a JSON body with email and password.");
 
-  const forward = new Headers({ "content-type": "application/json" });
-  for (const h of ["x-forwarded-for", "x-real-ip", "user-agent", "accept-language"]) {
-    const v = req.headers.get(h);
-    if (v) forward.set(h, v); // rate limiting is per client address
-  }
-  const res = await auth.handler(
-    new Request(new URL("/api/auth/sign-in/email", process.env.BETTER_AUTH_URL), {
-      method: "POST",
-      headers: forward,
-      body: JSON.stringify({ email: parsed.data.email, password: parsed.data.password, rememberMe: true }),
-    }),
-  );
+  const res = await forwardToAuth(req, "/sign-in/email", { email: parsed.data.email, password: parsed.data.password, rememberMe: true });
 
   if (!res.ok) {
     const err = (await res.json().catch(() => ({}))) as { code?: string };
