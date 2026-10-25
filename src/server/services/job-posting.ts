@@ -7,7 +7,7 @@ import { k } from "@/i18n/message";
 
 // Posting a job, shared by the website's job form (createJobAction) and the mobile API.
 
-type ParsedJob = ReturnType<typeof jobSchema.parse>;
+export type ParsedJob = ReturnType<typeof jobSchema.parse>;
 
 export async function notifyFollowersOfNewJob(job: { id: string; title: string; companyId: string }, actorId: string) {
   const company = await db.company.findUniqueOrThrow({ where: { id: job.companyId }, select: { name: true } });

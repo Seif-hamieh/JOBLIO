@@ -5,8 +5,8 @@ import { z } from "zod";
 import { db } from "@/server/db";
 import { fail, parse, withRecruiter, withViewer, type ActionState } from "@/server/action";
 import { LIMITS } from "@/server/rate-limit";
-import { refreshSitemap } from "@/server/sitemap";
 import { canManageCompany } from "@/server/session";
+import { setCompanyImage, updateCompanyPage } from "@/server/services/company-editing";
 import { setCompanyFollow } from "@/server/services/company-follow";
 import { createCompanyForUser } from "@/server/services/companies";
 import { deleteStored, storeUpload, UploadError } from "@/server/storage";
@@ -44,18 +44,8 @@ export async function updateCompanyAction(companyId: string, input: z.input<type
     if (!canManageCompany(viewer, companyId)) return fail("@msg.adminsOnlyEdit");
     const parsed = parse(companyProfileSchema, input);
     if (!parsed.success) return parsed.state;
-    const company = await db.company.findUniqueOrThrow({ where: { id: companyId }, select: { premiumUntil: true, slug: true } });
-    const premium = !!company.premiumUntil && company.premiumUntil > new Date();
-    const { brandColor, ...rest } = parsed.data;
-    await db.company.update({
-      where: { id: companyId },
-      // Brand colour customisation is a Premium Company Page feature.
-      data: { ...rest, industryId: rest.industryId || null, ...(premium ? { brandColor } : {}) },
-    });
-    revalidatePath(`/companies/${company.slug}`);
-    revalidatePath("/company/dashboard");
-    refreshSitemap();
-    return { ok: true, message: premium || !brandColor ? "@msg.pageUpdated" : "@msg.brandNeedsPremium" };
+    // The rules live in services/company-editing (shared with the app).
+    return { ok: true, message: await updateCompanyPage(companyId, parsed.data) };
   });
 }
 
@@ -66,25 +56,23 @@ export async function uploadCompanyImageAction(form: FormData): Promise<ActionSt
     const file = form.get("file");
     if (!(file instanceof File)) return fail("@msg.chooseImage");
     try {
-      const stored = await storeUpload(file, "company", viewer.company.id);
       const companyId = viewer.company.id;
       if (kind === "logo" || kind === "cover") {
-        const old = await db.company.findUniqueOrThrow({ where: { id: companyId }, select: { logoUrl: true, coverUrl: true } });
-        await db.company.update({ where: { id: companyId }, data: kind === "logo" ? { logoUrl: stored.url } : { coverUrl: stored.url } });
-        await deleteStored([kind === "logo" ? old.logoUrl : old.coverUrl]);
-      } else {
-        const company = await db.company.findUniqueOrThrow({ where: { id: companyId }, select: { premiumUntil: true, _count: { select: { media: true } } } });
-        const limit = company.premiumUntil && company.premiumUntil > new Date() ? 30 : 6;
-        if (company._count.media >= limit) {
-          await deleteStored([stored.url]);
-          return fail(`@msg.photoLimit?{"n":${limit}}`);
-        }
-        await db.companyMedia.create({ data: { companyId, type: "PHOTO", url: stored.url, caption: String(form.get("caption") ?? "").slice(0, 120) || null, position: company._count.media } });
+        const url = await setCompanyImage(companyId, kind, file);
+        return { ok: true, message: kind === "logo" ? "@msg.logoUpdated" : "@msg.companyCoverUpdated", data: { url } };
       }
+      // A photo for the "Life at" gallery.
+      const stored = await storeUpload(file, "company", companyId);
+      const company = await db.company.findUniqueOrThrow({ where: { id: companyId }, select: { premiumUntil: true, _count: { select: { media: true } } } });
+      const limit = company.premiumUntil && company.premiumUntil > new Date() ? 30 : 6;
+      if (company._count.media >= limit) {
+        await deleteStored([stored.url]);
+        return fail(`@msg.photoLimit?{"n":${limit}}`);
+      }
+      await db.companyMedia.create({ data: { companyId, type: "PHOTO", url: stored.url, caption: String(form.get("caption") ?? "").slice(0, 120) || null, position: company._count.media } });
       revalidatePath("/company/dashboard");
       revalidatePath(`/companies/${viewer.company.slug}`);
-      const message = kind === "logo" ? "@msg.logoUpdated" : kind === "cover" ? "@msg.companyCoverUpdated" : "@msg.photoAdded";
-      return { ok: true, message, data: { url: stored.url } };
+      return { ok: true, message: "@msg.photoAdded", data: { url: stored.url } };
     } catch (e) {
       if (e instanceof UploadError) return fail(e.message);
       throw e;

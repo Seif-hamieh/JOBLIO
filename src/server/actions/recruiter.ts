@@ -6,11 +6,12 @@ import { db } from "@/server/db";
 import { fail, parse, withRecruiter, type ActionState } from "@/server/action";
 import { LIMITS } from "@/server/rate-limit";
 import { refreshSitemap } from "@/server/sitemap";
-import { startOfTodayUtc } from "@/lib/validation/job";
 import { getApplicationDetail, type ApplicationDetail } from "@/server/services/recruiter";
 import { getManagedApplication, markViewed, transitionApplication } from "@/server/services/applications";
 import { jobSchema, type JobInput } from "@/lib/validation/job";
-import { createJobForCompany, jobData, notifyFollowersOfNewJob } from "@/server/services/job-posting";
+import { createJobForCompany } from "@/server/services/job-posting";
+import { deleteJobForCompany, setJobStatusForCompany, updateJobForCompany } from "@/server/services/job-editing";
+import { setCandidateSaved } from "@/server/services/saved-candidates";
 import { PIPELINE_STAGES } from "@/lib/constants";
 
 const id = z.string().min(1).max(40);
@@ -26,67 +27,33 @@ export async function createJobAction(input: JobInput): Promise<ActionState<{ id
   });
 }
 
+// Editing, opening / pausing / closing and deleting jobs: the rules live in services/job-editing (shared with the app).
+
 export async function updateJobAction(jobId: string, input: JobInput): Promise<ActionState<{ id: string }>> {
   return withRecruiter<{ id: string }>({ limit: LIMITS.write }, async (viewer) => {
-    const existing = await db.job.findFirst({ where: { id: id.parse(jobId), companyId: viewer.company.id }, select: { id: true, status: true, publishedAt: true } });
-    if (!existing) return fail("@msg.jobNotFound");
+    const jid = id.parse(jobId);
+    const owned = await db.job.findFirst({ where: { id: jid, companyId: viewer.company.id }, select: { id: true } });
+    if (!owned) return fail("@msg.jobNotFound");
     const parsed = parse(jobSchema, input);
     if (!parsed.success) return parsed.state;
-    const { rest, skills, languages } = jobData(parsed.data);
-    const validSkills = new Set((await db.skill.findMany({ where: { id: { in: skills.map((s) => s.skillId) } }, select: { id: true } })).map((s) => s.id));
-    const publishNow = parsed.data.publish && existing.status === "DRAFT";
-    await db.$transaction([
-      db.jobSkill.deleteMany({ where: { jobId: existing.id } }),
-      db.jobLanguage.deleteMany({ where: { jobId: existing.id } }),
-      db.job.update({
-        where: { id: existing.id },
-        data: {
-          ...rest,
-          ...(publishNow && { status: "OPEN", publishedAt: existing.publishedAt ?? new Date() }),
-          skills: { create: skills.filter((s, i, a) => validSkills.has(s.skillId) && a.findIndex((x) => x.skillId === s.skillId) === i) },
-          languages: { create: languages.filter((l, i, a) => a.findIndex((x) => x.languageCode === l.languageCode) === i) },
-        },
-      }),
-    ]);
-    if (publishNow && !existing.publishedAt) await notifyFollowersOfNewJob({ id: existing.id, title: parsed.data.title, companyId: viewer.company.id }, viewer.id);
-    revalidatePath("/recruiter");
-    revalidatePath(`/jobs/${existing.id}`);
-    refreshSitemap();
-    return { ok: true, message: "@msg.jobUpdated", data: { id: existing.id } };
+    const message = await updateJobForCompany({ userId: viewer.id, companyId: viewer.company.id }, jid, parsed.data);
+    return { ok: true, message, data: { id: jid } };
   });
 }
 
 export async function setJobStatusAction(jobId: string, status: "OPEN" | "PAUSED" | "CLOSED"): Promise<ActionState> {
-  return withRecruiter({ limit: LIMITS.write }, async (viewer) => {
-    const job = await db.job.findFirst({ where: { id: id.parse(jobId), companyId: viewer.company.id }, select: { id: true, title: true, publishedAt: true, closesAt: true } });
-    if (!job) return fail("@msg.jobNotFound");
-    const s = z.enum(["OPEN", "PAUSED", "CLOSED"]).parse(status);
-    if (s === "OPEN" && job.closesAt && job.closesAt.getTime() < startOfTodayUtc()) return fail("@v.closesPast");
-    await db.job.update({ where: { id: job.id }, data: { status: s, ...(s === "OPEN" && !job.publishedAt && { publishedAt: new Date() }) } });
-    if (s === "OPEN" && !job.publishedAt) await notifyFollowersOfNewJob({ id: job.id, title: job.title, companyId: viewer.company.id }, viewer.id);
-    revalidatePath("/recruiter");
-    revalidatePath(`/jobs/${job.id}`);
-    refreshSitemap();
-    return { ok: true, message: s === "OPEN" ? "@msg.jobLive" : s === "PAUSED" ? "@msg.jobPaused" : "@msg.jobClosedMsg" };
-  });
+  return withRecruiter({ limit: LIMITS.write }, async (viewer) => ({
+    ok: true,
+    message: await setJobStatusForCompany({ userId: viewer.id, companyId: viewer.company.id }, id.parse(jobId), z.enum(["OPEN", "PAUSED", "CLOSED"]).parse(status)),
+  }));
 }
 
+/** Jobs with applicants are closed instead of deleted, so candidates' application history stays intact. */
 export async function deleteJobAction(jobId: string): Promise<ActionState> {
-  return withRecruiter({ limit: LIMITS.write }, async (viewer) => {
-    const job = await db.job.findFirst({ where: { id: id.parse(jobId), companyId: viewer.company.id }, select: { id: true, _count: { select: { applications: true } } } });
-    if (!job) return fail("@msg.jobNotFound");
-    // Keep candidates' application history intact: jobs with applicants are closed, not deleted.
-    if (job._count.applications > 0) {
-      await db.job.update({ where: { id: job.id }, data: { status: "CLOSED" } });
-      revalidatePath("/recruiter");
-      refreshSitemap();
-      return { ok: true, message: "@msg.jobClosedInstead" };
-    }
-    await db.job.delete({ where: { id: job.id } });
-    revalidatePath("/recruiter");
-    refreshSitemap();
-    return { ok: true, message: "@msg.jobDeleted" };
-  });
+  return withRecruiter({ limit: LIMITS.write }, async (viewer) => ({
+    ok: true,
+    message: await deleteJobForCompany({ userId: viewer.id, companyId: viewer.company.id }, id.parse(jobId)),
+  }));
 }
 
 export async function moveApplicationAction(applicationId: string, stage: string, position: number, opts?: { leaveHired?: boolean }): Promise<ActionState> {
@@ -145,16 +112,9 @@ export async function openApplicationAction(applicationId: string): Promise<Appl
 export async function toggleSaveCandidateAction(candidateId: string, note?: string): Promise<ActionState<{ saved: boolean }>> {
   return withRecruiter<{ saved: boolean }>({ limit: LIMITS.write }, async (viewer) => {
     const cid = id.parse(candidateId);
-    const key = { recruiterId_candidateId: { recruiterId: viewer.id, candidateId: cid } };
-    const existing = await db.savedCandidate.findUnique({ where: key });
-    if (existing) await db.savedCandidate.delete({ where: key });
-    else {
-      if (!viewer.recruiterPro && (await db.savedCandidate.count({ where: { recruiterId: viewer.id } })) >= 10) {
-        return fail("@msg.savedLimit");
-      }
-      await db.savedCandidate.create({ data: { recruiterId: viewer.id, candidateId: cid, note: z.string().trim().max(500).optional().parse(note) || null } });
-    }
-    revalidatePath("/recruiter/saved");
-    return { ok: true, data: { saved: !existing }, message: existing ? "@msg.candidateUnsaved" : "@msg.candidateSaved" };
+    const existing = await db.savedCandidate.findUnique({ where: { recruiterId_candidateId: { recruiterId: viewer.id, candidateId: cid } }, select: { id: true } });
+    // The rules (the free limit of 10) live in services/saved-candidates (shared with the app).
+    const message = await setCandidateSaved({ id: viewer.id, pro: viewer.recruiterPro }, cid, !existing, z.string().trim().max(500).optional().parse(note) || null);
+    return { ok: true, data: { saved: !existing }, message };
   });
 }
