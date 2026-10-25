@@ -57,7 +57,8 @@ try {
   $copied = 0
   foreach ($f in Get-ChildItem $BackupDir -Filter 'joblio-backup-*.dump') {
     $target = Join-Path $DriveDir $f.Name
-    if (-not (Test-Path $target) -or (Get-Item $target).Length -ne $f.Length) {
+    $existing = Get-Item $target -ErrorAction SilentlyContinue
+    if (-not $existing -or $existing.Length -ne $f.Length -or $existing.LastWriteTime -ne $f.LastWriteTime) {
       Copy-Item $f.FullName $target -Force -ErrorAction Stop
       $copied++
     }
