@@ -372,6 +372,8 @@ model User {
   blocksReceived       Block[]             @relation("Blocked")
   jobReports           JobReport[]
   postReports          PostReport[]
+  stories              Story[]
+  storyViews           StoryView[]
 
   @@map("users")
 }
@@ -997,6 +999,38 @@ model PostReport {
   @@map("post_reports")
 }
 
+// A story: one photo (and an optional caption) shown to your connections and followers for 24 hours. Expired
+// stories stay in the table (hidden by expiresAt) until they are cleaned up.
+model Story {
+  id        String      @id @default(cuid())
+  userId    String
+  mediaUrl  String
+  text      String?     @db.VarChar(250)
+  createdAt DateTime    @default(now())
+  // 24 hours after posting; the API sets it too, this default covers rows created any other way.
+  expiresAt DateTime    @default(dbgenerated("(now() + '24:00:00'::interval)"))
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  views     StoryView[]
+
+  @@index([userId, expiresAt])
+  @@index([expiresAt])
+  @@map("stories")
+}
+
+// Who has seen which story: one row per viewer and story (seeing it again changes nothing). Drives the "unseen"
+// ring in the app and the owner's view count.
+model StoryView {
+  id        String   @id @default(cuid())
+  storyId   String
+  viewerId  String
+  createdAt DateTime @default(now())
+  story     Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  viewer    User     @relation(fields: [viewerId], references: [id], onDelete: Cascade)
+
+  @@unique([storyId, viewerId])
+  @@index([viewerId])
+  @@map("story_views")
+}
 model SavedJob {
   userId    String
   jobId     String

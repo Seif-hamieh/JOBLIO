@@ -84,6 +84,8 @@ export const ModelName = {
   JobView: 'JobView',
   JobReport: 'JobReport',
   PostReport: 'PostReport',
+  Story: 'Story',
+  StoryView: 'StoryView',
   SavedJob: 'SavedJob',
   SavedSearch: 'SavedSearch',
   Application: 'Application',
@@ -631,6 +633,28 @@ export const PostReportScalarFieldEnum = {
 } as const
 
 export type PostReportScalarFieldEnum = (typeof PostReportScalarFieldEnum)[keyof typeof PostReportScalarFieldEnum]
+
+
+export const StoryScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  mediaUrl: 'mediaUrl',
+  text: 'text',
+  createdAt: 'createdAt',
+  expiresAt: 'expiresAt'
+} as const
+
+export type StoryScalarFieldEnum = (typeof StoryScalarFieldEnum)[keyof typeof StoryScalarFieldEnum]
+
+
+export const StoryViewScalarFieldEnum = {
+  id: 'id',
+  storyId: 'storyId',
+  viewerId: 'viewerId',
+  createdAt: 'createdAt'
+} as const
+
+export type StoryViewScalarFieldEnum = (typeof StoryViewScalarFieldEnum)[keyof typeof StoryViewScalarFieldEnum]
 
 
 export const SavedJobScalarFieldEnum = {

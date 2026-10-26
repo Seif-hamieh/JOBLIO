@@ -185,6 +185,16 @@ export type JobReport = Prisma.JobReportModel
  */
 export type PostReport = Prisma.PostReportModel
 /**
+ * Model Story
+ * 
+ */
+export type Story = Prisma.StoryModel
+/**
+ * Model StoryView
+ * 
+ */
+export type StoryView = Prisma.StoryViewModel
+/**
  * Model SavedJob
  * 
  */

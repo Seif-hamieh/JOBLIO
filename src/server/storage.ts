@@ -17,7 +17,7 @@ const FILES_PREFIX = "/api/v1/files/";
 // 4 MB by default: Vercel rejects request bodies over 4.5 MB (see src/lib/upload-check.ts).
 const MAX_BYTES = Number(process.env.UPLOAD_MAX_BYTES ?? 4 * 1024 * 1024);
 
-export type UploadScope = "avatar" | "cover" | "company" | "post" | "project" | "resume" | "message";
+export type UploadScope = "avatar" | "cover" | "company" | "post" | "project" | "resume" | "message" | "story";
 
 const IMAGE = ["image/png", "image/jpeg", "image/webp", "image/gif"] as const;
 const WORD = ["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/msword"] as const;
@@ -29,6 +29,7 @@ const ALLOWED: Record<UploadScope, readonly string[]> = {
   company: IMAGE,
   post: IMAGE,
   project: IMAGE,
+  story: IMAGE,
   resume: WORD,
   message: [...IMAGE, ...DOCS],
 };

@@ -32,6 +32,7 @@ export function rateLimit(key: string, max: number, windowMs: number) {
 
 export const LIMITS = {
   post: { key: "post", max: 10, windowMs: 60 * 60_000 },
+  story: { key: "story", max: 20, windowMs: 24 * 60 * 60_000 },
   comment: { key: "comment", max: 30, windowMs: 10 * 60_000 },
   like: { key: "like", max: 120, windowMs: 60_000 },
   message: { key: "message", max: 40, windowMs: 60_000 },
