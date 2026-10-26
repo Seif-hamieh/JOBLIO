@@ -195,6 +195,11 @@ export type Story = Prisma.StoryModel
  */
 export type StoryView = Prisma.StoryViewModel
 /**
+ * Model PushDevice
+ * 
+ */
+export type PushDevice = Prisma.PushDeviceModel
+/**
  * Model SavedJob
  * 
  */

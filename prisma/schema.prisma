@@ -374,6 +374,7 @@ model User {
   postReports          PostReport[]
   stories              Story[]
   storyViews           StoryView[]
+  pushDevices          PushDevice[]
 
   @@map("users")
 }
@@ -446,6 +447,8 @@ model UserSettings {
   notifyJobAlerts    Boolean  @default(true)
   notifyPosts        Boolean  @default(true)
   notifyProfileViews Boolean  @default(true)
+  // Phone push notifications from the app (on top of the switches above, which also apply to push).
+  pushNotifications  Boolean  @default(true)
   // Preferred UI language ("en" | "ar"); used for emails sent to this member.
   locale             String   @default("en") @db.VarChar(8)
   updatedAt          DateTime @updatedAt
@@ -1030,6 +1033,22 @@ model StoryView {
   @@unique([storyId, viewerId])
   @@index([viewerId])
   @@map("story_views")
+}
+
+// A phone that can receive push notifications: one row per device (a member can have several), holding the Expo
+// push token the app registered after sign-in. A token moves to whoever signed in on that phone last; tokens Expo
+// reports as no longer registered (app uninstalled) are deleted.
+model PushDevice {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique @db.VarChar(255)
+  platform  String   @db.VarChar(16)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("push_devices")
 }
 model SavedJob {
   userId    String

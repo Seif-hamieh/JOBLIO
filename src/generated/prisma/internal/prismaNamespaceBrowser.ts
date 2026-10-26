@@ -86,6 +86,7 @@ export const ModelName = {
   PostReport: 'PostReport',
   Story: 'Story',
   StoryView: 'StoryView',
+  PushDevice: 'PushDevice',
   SavedJob: 'SavedJob',
   SavedSearch: 'SavedSearch',
   Application: 'Application',
@@ -220,6 +221,7 @@ export const UserSettingsScalarFieldEnum = {
   notifyJobAlerts: 'notifyJobAlerts',
   notifyPosts: 'notifyPosts',
   notifyProfileViews: 'notifyProfileViews',
+  pushNotifications: 'pushNotifications',
   locale: 'locale',
   updatedAt: 'updatedAt'
 } as const
@@ -655,6 +657,18 @@ export const StoryViewScalarFieldEnum = {
 } as const
 
 export type StoryViewScalarFieldEnum = (typeof StoryViewScalarFieldEnum)[keyof typeof StoryViewScalarFieldEnum]
+
+
+export const PushDeviceScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  token: 'token',
+  platform: 'platform',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PushDeviceScalarFieldEnum = (typeof PushDeviceScalarFieldEnum)[keyof typeof PushDeviceScalarFieldEnum]
 
 
 export const SavedJobScalarFieldEnum = {

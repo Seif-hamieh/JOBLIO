@@ -7,7 +7,7 @@ const db = {
 };
 vi.mock("@/server/db", () => ({ db }));
 
-const { getNotificationSettings, revokeOtherSessions, revokeSession } = await import("./settings");
+const { getNotificationSettings, revokeOtherSessions, revokeSession, updateNotificationSettings } = await import("./settings");
 
 beforeEach(() => vi.clearAllMocks());
 
@@ -31,6 +31,14 @@ describe("notification settings", () => {
   it("are all on until the member changes them", async () => {
     db.userSettings.findUnique.mockResolvedValue(null);
     expect(Object.values(await getNotificationSettings("u1")).every(Boolean)).toBe(true);
+  });
+
+  it("leave the phone switch alone when the website's form (which doesn't have it) saves", async () => {
+    const web = { emailNotifications: true, notifyMessages: true, notifyApplications: true, notifyNetwork: false, notifyJobAlerts: true, notifyPosts: true, notifyProfileViews: true };
+    await updateNotificationSettings("u1", web);
+    expect(db.userSettings.upsert.mock.calls[0]![0].update).not.toHaveProperty("pushNotifications");
+    await updateNotificationSettings("u1", { ...web, pushNotifications: false });
+    expect(db.userSettings.upsert.mock.calls[1]![0].update).toMatchObject({ pushNotifications: false });
   });
 
   it("keep what the member saved", async () => {

@@ -14,6 +14,8 @@ export const notificationSchema = z.object({
   notifyJobAlerts: z.boolean(),
   notifyPosts: z.boolean(),
   notifyProfileViews: z.boolean(),
+  // Only the app has this switch; the website's form leaves it out, which keeps the saved value.
+  pushNotifications: z.boolean().optional(),
 });
 export type NotificationSettings = z.infer<typeof notificationSchema>;
 
@@ -28,11 +30,15 @@ export async function getNotificationSettings(userId: string): Promise<Notificat
     notifyJobAlerts: s?.notifyJobAlerts ?? true,
     notifyPosts: s?.notifyPosts ?? true,
     notifyProfileViews: s?.notifyProfileViews ?? true,
+    pushNotifications: s?.pushNotifications ?? true,
   };
 }
 
 export async function updateNotificationSettings(userId: string, data: NotificationSettings) {
-  await db.userSettings.upsert({ where: { userId }, create: { userId, ...data }, update: data });
+  // A missing pushNotifications (the website's form) means "leave it as it is".
+  const { pushNotifications, ...rest } = data;
+  const update = pushNotifications === undefined ? rest : data;
+  await db.userSettings.upsert({ where: { userId }, create: { userId, ...update }, update });
 }
 
 const privacySelect = { visibility: true, messagePermission: true, searchableByRecruiters: true, privateBrowsing: true, showConnections: true } as const;

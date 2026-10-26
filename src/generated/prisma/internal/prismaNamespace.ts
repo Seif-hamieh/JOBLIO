@@ -432,6 +432,7 @@ export const ModelName = {
   PostReport: 'PostReport',
   Story: 'Story',
   StoryView: 'StoryView',
+  PushDevice: 'PushDevice',
   SavedJob: 'SavedJob',
   SavedSearch: 'SavedSearch',
   Application: 'Application',
@@ -467,7 +468,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification" | "rateLimit" | "userSettings" | "block" | "profile" | "skill" | "userSkill" | "endorsement" | "experience" | "education" | "project" | "certificate" | "userLanguage" | "portfolioItem" | "socialLink" | "profileView" | "userAchievement" | "industry" | "company" | "companyMember" | "companyFollower" | "companyMedia" | "job" | "jobSkill" | "jobLanguage" | "jobPromotion" | "jobDailyStat" | "jobView" | "jobReport" | "postReport" | "story" | "storyView" | "savedJob" | "savedSearch" | "application" | "applicationEvent" | "recruiterNote" | "interview" | "savedCandidate" | "connection" | "follow" | "post" | "postLike" | "comment" | "conversation" | "conversationParticipant" | "message" | "notification" | "subscription" | "payment" | "profileBoost" | "webhookEvent"
+    modelProps: "user" | "session" | "account" | "verification" | "rateLimit" | "userSettings" | "block" | "profile" | "skill" | "userSkill" | "endorsement" | "experience" | "education" | "project" | "certificate" | "userLanguage" | "portfolioItem" | "socialLink" | "profileView" | "userAchievement" | "industry" | "company" | "companyMember" | "companyFollower" | "companyMedia" | "job" | "jobSkill" | "jobLanguage" | "jobPromotion" | "jobDailyStat" | "jobView" | "jobReport" | "postReport" | "story" | "storyView" | "pushDevice" | "savedJob" | "savedSearch" | "application" | "applicationEvent" | "recruiterNote" | "interview" | "savedCandidate" | "connection" | "follow" | "post" | "postLike" | "comment" | "conversation" | "conversationParticipant" | "message" | "notification" | "subscription" | "payment" | "profileBoost" | "webhookEvent"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3061,6 +3062,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PushDevice: {
+      payload: Prisma.$PushDevicePayload<ExtArgs>
+      fields: Prisma.PushDeviceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PushDeviceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushDevicePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PushDeviceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushDevicePayload>
+        }
+        findFirst: {
+          args: Prisma.PushDeviceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushDevicePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PushDeviceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushDevicePayload>
+        }
+        findMany: {
+          args: Prisma.PushDeviceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushDevicePayload>[]
+        }
+        create: {
+          args: Prisma.PushDeviceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushDevicePayload>
+        }
+        createMany: {
+          args: Prisma.PushDeviceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PushDeviceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushDevicePayload>[]
+        }
+        delete: {
+          args: Prisma.PushDeviceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushDevicePayload>
+        }
+        update: {
+          args: Prisma.PushDeviceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushDevicePayload>
+        }
+        deleteMany: {
+          args: Prisma.PushDeviceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PushDeviceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PushDeviceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushDevicePayload>[]
+        }
+        upsert: {
+          args: Prisma.PushDeviceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushDevicePayload>
+        }
+        aggregate: {
+          args: Prisma.PushDeviceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePushDevice>
+        }
+        groupBy: {
+          args: Prisma.PushDeviceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PushDeviceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PushDeviceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PushDeviceCountAggregateOutputType> | number
+        }
+      }
+    }
     SavedJob: {
       payload: Prisma.$SavedJobPayload<ExtArgs>
       fields: Prisma.SavedJobFieldRefs
@@ -4676,6 +4751,7 @@ export const UserSettingsScalarFieldEnum = {
   notifyJobAlerts: 'notifyJobAlerts',
   notifyPosts: 'notifyPosts',
   notifyProfileViews: 'notifyProfileViews',
+  pushNotifications: 'pushNotifications',
   locale: 'locale',
   updatedAt: 'updatedAt'
 } as const
@@ -5111,6 +5187,18 @@ export const StoryViewScalarFieldEnum = {
 } as const
 
 export type StoryViewScalarFieldEnum = (typeof StoryViewScalarFieldEnum)[keyof typeof StoryViewScalarFieldEnum]
+
+
+export const PushDeviceScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  token: 'token',
+  platform: 'platform',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PushDeviceScalarFieldEnum = (typeof PushDeviceScalarFieldEnum)[keyof typeof PushDeviceScalarFieldEnum]
 
 
 export const SavedJobScalarFieldEnum = {
@@ -6243,6 +6331,7 @@ export type GlobalOmitConfig = {
   postReport?: Prisma.PostReportOmit
   story?: Prisma.StoryOmit
   storyView?: Prisma.StoryViewOmit
+  pushDevice?: Prisma.PushDeviceOmit
   savedJob?: Prisma.SavedJobOmit
   savedSearch?: Prisma.SavedSearchOmit
   application?: Prisma.ApplicationOmit

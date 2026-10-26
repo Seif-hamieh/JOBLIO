@@ -2,6 +2,7 @@ import "server-only";
 import { db } from "@/server/db";
 import { publish, isOnline } from "@/server/realtime";
 import { escapeHtml, sendEmail } from "@/server/mail";
+import { sendPush } from "@/server/push";
 import { absoluteUrl } from "@/lib/utils";
 import { decodeMessage, k, translateKey } from "@/i18n/message";
 import { createT } from "@/i18n/translate";
@@ -37,6 +38,20 @@ const SETTING_FOR: Record<NotificationType, SettingKey | null> = {
 
 /** Notification types important enough to also email (when email notifications are on). */
 const EMAILED: NotificationType[] = ["APPLICATION_UPDATE", "INTERVIEW_INVITATION"];
+
+/**
+ * Notification types also sent to the member's phone (when push notifications are on): messages, connections and
+ * hiring news. Likes, comments, profile views and the rest stay in the app's Alerts tab, so phones don't buzz all day.
+ */
+const PUSHED: NotificationType[] = [
+  "NEW_MESSAGE",
+  "CONNECTION_REQUEST",
+  "CONNECTION_ACCEPTED",
+  "NEW_APPLICANT",
+  "APPLICATION_UPDATE",
+  "INTERVIEW_INVITATION",
+  "INTERVIEW_RESPONSE",
+];
 
 const enT = createT("en");
 
@@ -123,6 +138,11 @@ export async function notify(input: NotifyInput) {
   const t = createT(locale);
   const text = renderNotification(t, { ...stored, body: stored.body ?? null, vars: stored.vars ?? null });
   publish(input.userId, { type: "notification", id: n.id, title: text.title, href: n.href });
+
+  // The same text, in the member's language, on their phone. Not awaited: a slow push service never delays the action.
+  if (PUSHED.includes(input.type) && (settings?.pushNotifications ?? true)) {
+    void sendPush(input.userId, { title: text.title, body: text.body, data: { notificationId: n.id, type: input.type, href: n.href ?? "" } });
+  }
 
   if (EMAILED.includes(input.type) && (settings?.emailNotifications ?? true)) {
     const user = await db.user.findUnique({ where: { id: input.userId }, select: { email: true, name: true } });

@@ -33,6 +33,7 @@ export type UserSettingsMinAggregateOutputType = {
   notifyJobAlerts: boolean | null
   notifyPosts: boolean | null
   notifyProfileViews: boolean | null
+  pushNotifications: boolean | null
   locale: string | null
   updatedAt: Date | null
 }
@@ -46,6 +47,7 @@ export type UserSettingsMaxAggregateOutputType = {
   notifyJobAlerts: boolean | null
   notifyPosts: boolean | null
   notifyProfileViews: boolean | null
+  pushNotifications: boolean | null
   locale: string | null
   updatedAt: Date | null
 }
@@ -59,6 +61,7 @@ export type UserSettingsCountAggregateOutputType = {
   notifyJobAlerts: number
   notifyPosts: number
   notifyProfileViews: number
+  pushNotifications: number
   locale: number
   updatedAt: number
   _all: number
@@ -74,6 +77,7 @@ export type UserSettingsMinAggregateInputType = {
   notifyJobAlerts?: true
   notifyPosts?: true
   notifyProfileViews?: true
+  pushNotifications?: true
   locale?: true
   updatedAt?: true
 }
@@ -87,6 +91,7 @@ export type UserSettingsMaxAggregateInputType = {
   notifyJobAlerts?: true
   notifyPosts?: true
   notifyProfileViews?: true
+  pushNotifications?: true
   locale?: true
   updatedAt?: true
 }
@@ -100,6 +105,7 @@ export type UserSettingsCountAggregateInputType = {
   notifyJobAlerts?: true
   notifyPosts?: true
   notifyProfileViews?: true
+  pushNotifications?: true
   locale?: true
   updatedAt?: true
   _all?: true
@@ -186,6 +192,7 @@ export type UserSettingsGroupByOutputType = {
   notifyJobAlerts: boolean
   notifyPosts: boolean
   notifyProfileViews: boolean
+  pushNotifications: boolean
   locale: string
   updatedAt: Date
   _count: UserSettingsCountAggregateOutputType | null
@@ -220,6 +227,7 @@ export type UserSettingsWhereInput = {
   notifyJobAlerts?: Prisma.BoolFilter<"UserSettings"> | boolean
   notifyPosts?: Prisma.BoolFilter<"UserSettings"> | boolean
   notifyProfileViews?: Prisma.BoolFilter<"UserSettings"> | boolean
+  pushNotifications?: Prisma.BoolFilter<"UserSettings"> | boolean
   locale?: Prisma.StringFilter<"UserSettings"> | string
   updatedAt?: Prisma.DateTimeFilter<"UserSettings"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -234,6 +242,7 @@ export type UserSettingsOrderByWithRelationInput = {
   notifyJobAlerts?: Prisma.SortOrder
   notifyPosts?: Prisma.SortOrder
   notifyProfileViews?: Prisma.SortOrder
+  pushNotifications?: Prisma.SortOrder
   locale?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
@@ -251,6 +260,7 @@ export type UserSettingsWhereUniqueInput = Prisma.AtLeast<{
   notifyJobAlerts?: Prisma.BoolFilter<"UserSettings"> | boolean
   notifyPosts?: Prisma.BoolFilter<"UserSettings"> | boolean
   notifyProfileViews?: Prisma.BoolFilter<"UserSettings"> | boolean
+  pushNotifications?: Prisma.BoolFilter<"UserSettings"> | boolean
   locale?: Prisma.StringFilter<"UserSettings"> | string
   updatedAt?: Prisma.DateTimeFilter<"UserSettings"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -265,6 +275,7 @@ export type UserSettingsOrderByWithAggregationInput = {
   notifyJobAlerts?: Prisma.SortOrder
   notifyPosts?: Prisma.SortOrder
   notifyProfileViews?: Prisma.SortOrder
+  pushNotifications?: Prisma.SortOrder
   locale?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserSettingsCountOrderByAggregateInput
@@ -284,6 +295,7 @@ export type UserSettingsScalarWhereWithAggregatesInput = {
   notifyJobAlerts?: Prisma.BoolWithAggregatesFilter<"UserSettings"> | boolean
   notifyPosts?: Prisma.BoolWithAggregatesFilter<"UserSettings"> | boolean
   notifyProfileViews?: Prisma.BoolWithAggregatesFilter<"UserSettings"> | boolean
+  pushNotifications?: Prisma.BoolWithAggregatesFilter<"UserSettings"> | boolean
   locale?: Prisma.StringWithAggregatesFilter<"UserSettings"> | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"UserSettings"> | Date | string
 }
@@ -296,6 +308,7 @@ export type UserSettingsCreateInput = {
   notifyJobAlerts?: boolean
   notifyPosts?: boolean
   notifyProfileViews?: boolean
+  pushNotifications?: boolean
   locale?: string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutSettingsInput
@@ -310,6 +323,7 @@ export type UserSettingsUncheckedCreateInput = {
   notifyJobAlerts?: boolean
   notifyPosts?: boolean
   notifyProfileViews?: boolean
+  pushNotifications?: boolean
   locale?: string
   updatedAt?: Date | string
 }
@@ -322,6 +336,7 @@ export type UserSettingsUpdateInput = {
   notifyJobAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notifyPosts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notifyProfileViews?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pushNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutSettingsNestedInput
@@ -336,6 +351,7 @@ export type UserSettingsUncheckedUpdateInput = {
   notifyJobAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notifyPosts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notifyProfileViews?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pushNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -349,6 +365,7 @@ export type UserSettingsCreateManyInput = {
   notifyJobAlerts?: boolean
   notifyPosts?: boolean
   notifyProfileViews?: boolean
+  pushNotifications?: boolean
   locale?: string
   updatedAt?: Date | string
 }
@@ -361,6 +378,7 @@ export type UserSettingsUpdateManyMutationInput = {
   notifyJobAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notifyPosts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notifyProfileViews?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pushNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -374,6 +392,7 @@ export type UserSettingsUncheckedUpdateManyInput = {
   notifyJobAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notifyPosts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notifyProfileViews?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pushNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -392,6 +411,7 @@ export type UserSettingsCountOrderByAggregateInput = {
   notifyJobAlerts?: Prisma.SortOrder
   notifyPosts?: Prisma.SortOrder
   notifyProfileViews?: Prisma.SortOrder
+  pushNotifications?: Prisma.SortOrder
   locale?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -405,6 +425,7 @@ export type UserSettingsMaxOrderByAggregateInput = {
   notifyJobAlerts?: Prisma.SortOrder
   notifyPosts?: Prisma.SortOrder
   notifyProfileViews?: Prisma.SortOrder
+  pushNotifications?: Prisma.SortOrder
   locale?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -418,6 +439,7 @@ export type UserSettingsMinOrderByAggregateInput = {
   notifyJobAlerts?: Prisma.SortOrder
   notifyPosts?: Prisma.SortOrder
   notifyProfileViews?: Prisma.SortOrder
+  pushNotifications?: Prisma.SortOrder
   locale?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -462,6 +484,7 @@ export type UserSettingsCreateWithoutUserInput = {
   notifyJobAlerts?: boolean
   notifyPosts?: boolean
   notifyProfileViews?: boolean
+  pushNotifications?: boolean
   locale?: string
   updatedAt?: Date | string
 }
@@ -474,6 +497,7 @@ export type UserSettingsUncheckedCreateWithoutUserInput = {
   notifyJobAlerts?: boolean
   notifyPosts?: boolean
   notifyProfileViews?: boolean
+  pushNotifications?: boolean
   locale?: string
   updatedAt?: Date | string
 }
@@ -502,6 +526,7 @@ export type UserSettingsUpdateWithoutUserInput = {
   notifyJobAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notifyPosts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notifyProfileViews?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pushNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -514,6 +539,7 @@ export type UserSettingsUncheckedUpdateWithoutUserInput = {
   notifyJobAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notifyPosts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notifyProfileViews?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pushNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -529,6 +555,7 @@ export type UserSettingsSelect<ExtArgs extends runtime.Types.Extensions.Internal
   notifyJobAlerts?: boolean
   notifyPosts?: boolean
   notifyProfileViews?: boolean
+  pushNotifications?: boolean
   locale?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -543,6 +570,7 @@ export type UserSettingsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   notifyJobAlerts?: boolean
   notifyPosts?: boolean
   notifyProfileViews?: boolean
+  pushNotifications?: boolean
   locale?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -557,6 +585,7 @@ export type UserSettingsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   notifyJobAlerts?: boolean
   notifyPosts?: boolean
   notifyProfileViews?: boolean
+  pushNotifications?: boolean
   locale?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -571,11 +600,12 @@ export type UserSettingsSelectScalar = {
   notifyJobAlerts?: boolean
   notifyPosts?: boolean
   notifyProfileViews?: boolean
+  pushNotifications?: boolean
   locale?: boolean
   updatedAt?: boolean
 }
 
-export type UserSettingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"userId" | "emailNotifications" | "notifyMessages" | "notifyApplications" | "notifyNetwork" | "notifyJobAlerts" | "notifyPosts" | "notifyProfileViews" | "locale" | "updatedAt", ExtArgs["result"]["userSettings"]>
+export type UserSettingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"userId" | "emailNotifications" | "notifyMessages" | "notifyApplications" | "notifyNetwork" | "notifyJobAlerts" | "notifyPosts" | "notifyProfileViews" | "pushNotifications" | "locale" | "updatedAt", ExtArgs["result"]["userSettings"]>
 export type UserSettingsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -600,6 +630,7 @@ export type $UserSettingsPayload<ExtArgs extends runtime.Types.Extensions.Intern
     notifyJobAlerts: boolean
     notifyPosts: boolean
     notifyProfileViews: boolean
+    pushNotifications: boolean
     locale: string
     updatedAt: Date
   }, ExtArgs["result"]["userSettings"]>
@@ -1034,6 +1065,7 @@ export interface UserSettingsFieldRefs {
   readonly notifyJobAlerts: Prisma.FieldRef<"UserSettings", 'Boolean'>
   readonly notifyPosts: Prisma.FieldRef<"UserSettings", 'Boolean'>
   readonly notifyProfileViews: Prisma.FieldRef<"UserSettings", 'Boolean'>
+  readonly pushNotifications: Prisma.FieldRef<"UserSettings", 'Boolean'>
   readonly locale: Prisma.FieldRef<"UserSettings", 'String'>
   readonly updatedAt: Prisma.FieldRef<"UserSettings", 'DateTime'>
 }
