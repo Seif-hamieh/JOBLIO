@@ -9,22 +9,13 @@ import { auth } from "@/server/auth";
 import { db } from "@/server/db";
 import { fail, parse, withViewer, type ActionState } from "@/server/action";
 import { LIMITS } from "@/server/rate-limit";
-
-const notificationSchema = z.object({
-  emailNotifications: z.boolean(),
-  notifyMessages: z.boolean(),
-  notifyApplications: z.boolean(),
-  notifyNetwork: z.boolean(),
-  notifyJobAlerts: z.boolean(),
-  notifyPosts: z.boolean(),
-  notifyProfileViews: z.boolean(),
-});
+import { notificationSchema, updateNotificationSettings } from "@/server/services/settings";
 
 export async function updateNotificationSettingsAction(input: z.input<typeof notificationSchema>): Promise<ActionState> {
   return withViewer({ limit: LIMITS.write }, async (viewer) => {
     const parsed = parse(notificationSchema, input);
     if (!parsed.success) return parsed.state;
-    await db.userSettings.upsert({ where: { userId: viewer.id }, create: { userId: viewer.id, ...parsed.data }, update: parsed.data });
+    await updateNotificationSettings(viewer.id, parsed.data);
     revalidatePath("/settings");
     return { ok: true, message: "@msg.settingsSaved" };
   });

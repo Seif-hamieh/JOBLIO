@@ -60,6 +60,9 @@ export const auth = betterAuth({
       platformRole: { type: "string", required: false, defaultValue: "USER", input: false },
     },
     deleteUser: { enabled: true },
+    // Changing the email address (the app's Account settings): the confirmation link goes to the NEW address, and the
+    // email only changes once it is opened — nobody can move an account to an address they don't own.
+    changeEmail: { enabled: true },
   },
 
   session: {

@@ -41,11 +41,17 @@ export async function getMobileSession(req: Request) {
  * gets exactly the website's checks and rate limits. The client's address and browser headers are passed on, since
  * Better Auth limits attempts per client address.
  */
-export async function forwardToAuth(req: Request, path: string, body: unknown) {
+export async function forwardToAuth(req: Request, path: string, body: unknown, sessionToken?: string) {
   const headers = new Headers({ "content-type": "application/json" });
   for (const h of ["x-forwarded-for", "x-real-ip", "user-agent", "accept-language"]) {
     const v = req.headers.get(h);
     if (v) headers.set(h, v);
+  }
+  // Signed-in endpoints (change password / email): the app's bearer token becomes the session cookie, and the request
+  // is marked as coming from the site itself, which Better Auth's cross-site check expects alongside a cookie.
+  if (sessionToken) {
+    headers.set("cookie", (await sessionHeaders(sessionToken)).get("cookie")!);
+    headers.set("origin", new URL(process.env.BETTER_AUTH_URL!).origin);
   }
   return auth.handler(new Request(new URL(`/api/auth${path}`, process.env.BETTER_AUTH_URL), { method: "POST", headers, body: JSON.stringify(body) }));
 }
