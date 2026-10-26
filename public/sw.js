@@ -145,7 +145,8 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
   const path = url.pathname;
-  if (path.startsWith("/api/") || path.startsWith("/_vercel/") || path === "/sw.js") return;
+  // /app/ is the Android APK download (~100 MB): straight to the network, never through the worker.
+  if (path.startsWith("/api/") || path.startsWith("/_vercel/") || path.startsWith("/app/") || path === "/sw.js") return;
 
   if (request.mode === "navigate") {
     if (isRsc(request, url)) return;

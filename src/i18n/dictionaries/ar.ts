@@ -1865,6 +1865,9 @@ export const ar: Dictionary = {
     installBtn: "تثبيت",
     iosStepShare: "مشاركة",
     iosStepAdd: "إضافة إلى الشاشة الرئيسية",
+    appBannerTitle: "حمّل تطبيق JOBLIO",
+    appBannerText: "قدّم على الوظائف أينما كنت!",
+    appBannerDownload: "تحميل APK",
   },
   portfolio: {
     contact: "تواصل",

@@ -52,3 +52,6 @@ sync-jobs.log
 
 .vercel
 .env*
+
+# The Android app download (~100 MB, too big for GitHub): copied in by hand, served from /app/getjoblio.apk
+/public/app/*.apk

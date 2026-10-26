@@ -1865,6 +1865,9 @@ export const en = {
     installBtn: "Install",
     iosStepShare: "Share",
     iosStepAdd: "Add to Home Screen",
+    appBannerTitle: "Get the JOBLIO App",
+    appBannerText: "Apply on the go!",
+    appBannerDownload: "Download APK",
   },
   portfolio: {
     contact: "Contact",

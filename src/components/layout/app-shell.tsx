@@ -252,7 +252,7 @@ function MobileNav({ viewer }: { viewer: ShellViewer }) {
     { href: `/in/${viewer.username}`, label: "nav.profile", icon: User, match: [`/in/${viewer.username}`, "/profile", "/settings"], avatar: true },
   ];
   return (
-    <nav className="glass fixed inset-x-0 bottom-0 z-40 border-t border-border pb-[env(safe-area-inset-bottom)] md:hidden" aria-label={t("nav.menu")}>
+    <nav data-mobile-nav className="glass fixed inset-x-0 bottom-0 z-40 border-t border-border pb-[env(safe-area-inset-bottom)] md:hidden" aria-label={t("nav.menu")}>
       <div className="grid grid-cols-5">
         {items.map((item) => {
           const active = isActive(pathname, item);

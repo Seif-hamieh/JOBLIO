@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
 import localFont from "next/font/local";
 import { Providers } from "@/components/providers";
+import { MobileAppBanner } from "@/components/pwa/mobile-app-banner";
 import { I18nProvider } from "@/i18n/client";
 import { displayNames, getI18n } from "@/i18n/server";
 import { APP_URL } from "@/lib/utils";
@@ -88,6 +89,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         </a>
         <I18nProvider locale={locale} names={displayNames(locale)}>
           <Providers>{children}</Providers>
+          {/* "Get the JOBLIO App" on Android phones, on every page (closing it is remembered). */}
+          <MobileAppBanner />
         </I18nProvider>
         <Analytics />
       </body>

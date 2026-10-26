@@ -47,6 +47,17 @@ const nextConfig: NextConfig = {
           { key: "Service-Worker-Allowed", value: "/" },
         ],
       },
+      {
+        // The Android app (public/app, ~100 MB). Downloaded as a file with Android's type, and cacheable for a week so
+        // Cloudflare serves the downloads: from this home server one takes minutes (public files default to
+        // max-age=0). After replacing the APK, purge it in Cloudflare (Caching → Configuration → Custom purge).
+        source: "/app/:file*.apk",
+        headers: [
+          { key: "Content-Type", value: "application/vnd.android.package-archive" },
+          { key: "Content-Disposition", value: 'attachment; filename="JOBLIO.apk"' },
+          { key: "Cache-Control", value: "public, max-age=604800" },
+        ],
+      },
     ];
   },
 };
