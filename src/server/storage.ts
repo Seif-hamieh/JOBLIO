@@ -1,9 +1,10 @@
 import "server-only";
-import { randomUUID } from "node:crypto";
+import { createHmac, randomUUID, timingSafeEqual } from "node:crypto";
 import { mkdir, readFile, stat, unlink, writeFile } from "node:fs/promises";
 import { dirname, join, normalize, sep } from "node:path";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { k } from "@/i18n/message";
+import { APP_URL } from "@/lib/utils";
 
 // Storage abstraction with two drivers, chosen by STORAGE_DRIVER:
 //   local    — files under ./storage (development; not for serverless hosts)
@@ -158,6 +159,34 @@ export async function signedFileUrl(key: string, expiresIn = 300) {
     .storage.from(supabaseConfig().privateBucket)
     .createSignedUrl(key, expiresIn, inline ? undefined : { download: true });
   return error || !data ? null : data.signedUrl;
+}
+
+// ── Signed links for the local driver ───────────────────────────────────────
+// The app can't send the website's session cookie with a link it opens in the browser, so private files (CVs) are
+// opened through a short-lived signed link instead, like Supabase's: /api/v1/files/<key>?exp=<unix>&sig=<hmac>.
+// The signature covers the key and the expiry, so a link can't be changed, reused for another file or extended.
+
+function linkSignature(key: string, exp: number) {
+  return createHmac("sha256", `file-link:${process.env.BETTER_AUTH_SECRET ?? ""}`).update(`${key}\n${exp}`).digest("base64url");
+}
+
+/** True for an unexpired, untampered signed link to `key`. */
+export function verifyFileLink(key: string, exp: string | null, sig: string | null) {
+  if (!exp || !sig || !/^\d{1,12}$/.test(exp) || Number(exp) * 1000 < Date.now()) return false;
+  const expected = Buffer.from(linkSignature(key, Number(exp)));
+  const given = Buffer.from(sig);
+  return given.length === expected.length && timingSafeEqual(given, expected);
+}
+
+/**
+ * A link that opens a private file for `expiresIn` seconds without signing in: Supabase's signed URL, or our own
+ * signed /api/v1/files link for local storage. Only hand it to someone already allowed to see the file.
+ */
+export async function privateFileLink(key: string, expiresIn = 300) {
+  if (storageDriver() === "supabase") return signedFileUrl(key, expiresIn);
+  if (!(await readStored(key))) return null;
+  const exp = Math.floor(Date.now() / 1000) + expiresIn;
+  return new URL(`${FILES_PREFIX}${key}?exp=${exp}&sig=${linkSignature(key, exp)}`, APP_URL).toString();
 }
 
 // ── Public API ──────────────────────────────────────────────────────────────

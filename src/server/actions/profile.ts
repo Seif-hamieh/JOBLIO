@@ -24,7 +24,8 @@ import {
   storeProjectImage,
   updateSkill,
 } from "@/server/services/profile-editing";
-import { deleteStored, storeUpload, UploadError } from "@/server/storage";
+import { UploadError } from "@/server/storage";
+import { removeResume, saveResume } from "@/server/services/resume";
 import {
   basicsSchema,
   certificateSchema,
@@ -92,10 +93,7 @@ export async function uploadResumeAction(form: FormData): Promise<ActionState> {
     const file = form.get("file");
     if (!(file instanceof File)) return fail("@msg.uploadChoose");
     try {
-      const old = (await db.profile.findUnique({ where: { id: viewer.profileId }, select: { resumeUrl: true } }))?.resumeUrl;
-      const stored = await storeUpload(file, "resume", viewer.id);
-      await db.profile.update({ where: { id: viewer.profileId }, data: { resumeUrl: stored.url, resumeName: stored.name, resumeUpdatedAt: new Date() } });
-      await deleteStored([old]);
+      await saveResume(viewer.id, file);
       return done(viewer, "@msg.cvSaved");
     } catch (e) {
       if (e instanceof UploadError) return fail(e.message);
@@ -106,9 +104,7 @@ export async function uploadResumeAction(form: FormData): Promise<ActionState> {
 
 export async function removeResumeAction(): Promise<ActionState> {
   return withViewer({ limit: LIMITS.write }, async (viewer) => {
-    const old = (await db.profile.findUnique({ where: { id: viewer.profileId }, select: { resumeUrl: true } }))?.resumeUrl;
-    await db.profile.update({ where: { id: viewer.profileId }, data: { resumeUrl: null, resumeName: null, resumeUpdatedAt: null } });
-    await deleteStored([old]);
+    await removeResume(viewer.id);
     return done(viewer, "@msg.cvRemoved");
   });
 }

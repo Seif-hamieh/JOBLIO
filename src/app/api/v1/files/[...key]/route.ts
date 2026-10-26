@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/server/auth";
 import { db } from "@/server/db";
 import { canViewProfile } from "@/server/services/profile";
-import { publicFileUrl, readStored, signedFileUrl, storageDriver } from "@/server/storage";
+import { publicFileUrl, readStored, signedFileUrl, storageDriver, verifyFileLink } from "@/server/storage";
 
 /**
  * The CV saved on a profile is visible to recruiters under the same rule as the
@@ -27,7 +27,11 @@ export async function GET(req: Request, ctx: RouteContext<"/api/v1/files/[...key
     return new NextResponse("Not found", { status: 404 });
   }
 
-  if (key.startsWith("private/")) {
+  // A signed link (privateFileLink: the app opening a CV) already proves access, for a few minutes.
+  const query = new URL(req.url).searchParams;
+  const signedLink = key.startsWith("private/") && storageDriver() === "local" && verifyFileLink(key, query.get("exp"), query.get("sig"));
+
+  if (key.startsWith("private/") && !signedLink) {
     const session = await auth.api.getSession({ headers: req.headers });
     if (!session) return new NextResponse("Not found", { status: 404 });
     const [, scope, owner] = key.split("/");

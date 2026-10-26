@@ -73,3 +73,40 @@ describe("storage", () => {
     expect(storage.storageDriver()).toBe("supabase");
   });
 });
+
+describe("signed links to private files (local storage)", () => {
+  const PDF = Buffer.from("%PDF-1.4\n%test\n");
+
+  it("open the file for a few minutes, and can't be changed or reused for another file", async () => {
+    vi.stubEnv("STORAGE_DRIVER", "local");
+    vi.stubEnv("BETTER_AUTH_SECRET", "test-secret");
+    const stored = await storage.storeUpload(new File([PDF], "cv.pdf"), "resume", "u1");
+    const key = stored.key;
+    const link = new URL((await storage.privateFileLink(key, 300))!);
+    const exp = link.searchParams.get("exp");
+    const sig = link.searchParams.get("sig");
+    expect(link.pathname).toBe(`/api/v1/files/${key}`);
+    expect(storage.verifyFileLink(key, exp, sig)).toBe(true);
+    // Another file, a later expiry or a forged signature: refused.
+    expect(storage.verifyFileLink(key.replace("u1", "u2"), exp, sig)).toBe(false);
+    expect(storage.verifyFileLink(key, String(Number(exp) + 3600), sig)).toBe(false);
+    expect(storage.verifyFileLink(key, exp, sig!.slice(0, -2) + "xx")).toBe(false);
+    expect(storage.verifyFileLink(key, null, sig)).toBe(false);
+    // A different site secret signs differently.
+    vi.stubEnv("BETTER_AUTH_SECRET", "another-secret");
+    expect(storage.verifyFileLink(key, exp, sig)).toBe(false);
+  });
+
+  it("stop working once they expire", async () => {
+    vi.stubEnv("STORAGE_DRIVER", "local");
+    vi.stubEnv("BETTER_AUTH_SECRET", "test-secret");
+    const stored = await storage.storeUpload(new File([PDF], "cv.pdf"), "resume", "u1");
+    const link = new URL((await storage.privateFileLink(stored.key, -1))!);
+    expect(storage.verifyFileLink(stored.key, link.searchParams.get("exp"), link.searchParams.get("sig"))).toBe(false);
+  });
+
+  it("aren't made for a file that doesn't exist", async () => {
+    vi.stubEnv("STORAGE_DRIVER", "local");
+    expect(await storage.privateFileLink("private/resume/u1/missing.pdf")).toBeNull();
+  });
+});
