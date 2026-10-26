@@ -39,6 +39,18 @@ describe("POST /api/mobile/auth/google", () => {
     expect(forwardToAuth).toHaveBeenCalledWith(expect.any(Request), "/sign-in/social", expect.objectContaining({ provider: "google", idToken: { token: ID_TOKEN } }));
   });
 
+  it("retries once when the token is refused, and signs in if the second check passes", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    forwardToAuth.mockResolvedValueOnce(authAnswer(401, { code: "INVALID_TOKEN" })).mockResolvedValueOnce(authAnswer(200, { user: { id: "u1" } }));
+    tokenFromSetCookie.mockResolvedValue("session-token");
+    memberCompany.mockResolvedValue(null);
+    const res = await call({ idToken: ID_TOKEN });
+    expect(res.status).toBe(200);
+    expect(forwardToAuth).toHaveBeenCalledTimes(2);
+    expect(warn).toHaveBeenCalledOnce();
+    warn.mockRestore();
+  });
+
   it.each([
     ["INVALID_TOKEN", 401, 401],
     ["ACCOUNT_BANNED", 403, 403],
