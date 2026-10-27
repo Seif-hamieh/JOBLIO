@@ -7,6 +7,7 @@ import { fail, parse, withViewer, type ActionState } from "@/server/action";
 import { LIMITS } from "@/server/rate-limit";
 import { applyToJob, withdrawApplication } from "@/server/services/applications";
 import { setSavedJob } from "@/server/services/saved-jobs";
+import { setJobAlertEnabled } from "@/server/services/job-alerts";
 import { copyStored, deleteStored, storeUpload, UploadError } from "@/server/storage";
 
 const idSchema = z.string().min(1).max(40);
@@ -88,6 +89,16 @@ export async function saveSearchAction(input: z.input<typeof savedSearchSchema>)
     await db.savedSearch.create({ data: { userId: viewer.id, ...parsed.data, params: parsed.data.params } });
     revalidatePath("/jobs");
     return { ok: true, message: "@msg.searchSaved" };
+  });
+}
+
+/** Turns a saved job search's alerts on or off (Job alerts in Settings, Saved jobs). */
+export async function toggleJobAlertAction(id: string, enabled: boolean): Promise<ActionState> {
+  return withViewer({ limit: LIMITS.write }, async (viewer) => {
+    await setJobAlertEnabled(viewer.id, idSchema.parse(id), enabled);
+    revalidatePath("/jobs/saved");
+    revalidatePath("/settings");
+    return { ok: true, message: enabled ? "@msg.alertOn" : "@msg.alertOff" };
   });
 }
 

@@ -1,10 +1,13 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-const { findFirst, syncAllSources } = vi.hoisted(() => ({ findFirst: vi.fn(), syncAllSources: vi.fn() }));
+const { findFirst, syncAllSources, runJobAlerts } = vi.hoisted(() => ({ findFirst: vi.fn(), syncAllSources: vi.fn(), runJobAlerts: vi.fn() }));
 vi.mock("@/server/db", () => ({ db: { user: { findFirst } } }));
 vi.mock("@/server/job-import/import", () => ({ syncAllSources }));
+vi.mock("@/server/services/job-alerts", () => ({ runJobAlerts }));
 
 import { GET } from "./route";
+
+beforeEach(() => runJobAlerts.mockResolvedValue({ checked: 0, notified: 0 }));
 
 const call = (auth?: string) => GET(new Request("https://getjoblio.app/api/cron/sync-jobs", { headers: auth ? { authorization: auth } : {} }));
 
@@ -45,5 +48,14 @@ describe("GET /api/cron/sync-jobs", () => {
     expect(res.status).toBe(200);
     expect(syncAllSources).toHaveBeenCalledWith("u1");
     expect(await res.json()).toMatchObject({ ok: true, created: 2 });
+  });
+
+  it("runs job alerts after the import and reports how many had new jobs", async () => {
+    vi.stubEnv("CRON_SECRET", "s3cret-value");
+    vi.stubEnv("IMPORT_USER_EMAIL", "admin@example.com");
+    findFirst.mockResolvedValue({ id: "u1" });
+    syncAllSources.mockResolvedValue([]);
+    runJobAlerts.mockResolvedValue({ checked: 4, notified: 1 });
+    expect(await (await call("Bearer s3cret-value")).json()).toMatchObject({ ok: true, alerts: { checked: 4, notified: 1 } });
   });
 });

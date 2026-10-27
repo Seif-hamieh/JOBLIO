@@ -687,6 +687,7 @@ export const SavedSearchScalarFieldEnum = {
   name: 'name',
   params: 'params',
   alertsEnabled: 'alertsEnabled',
+  lastAlertedAt: 'lastAlertedAt',
   createdAt: 'createdAt'
 } as const
 

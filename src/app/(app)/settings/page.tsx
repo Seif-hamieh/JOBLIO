@@ -1,4 +1,7 @@
+import Link from "next/link";
 import { getI18n, pageTitle } from "@/i18n/server";
+import { JobAlertList } from "@/components/jobs/job-alert-list";
+import { listJobAlerts } from "@/server/services/job-alerts";
 import { requireViewer } from "@/server/session";
 import { db } from "@/server/db";
 import { Card, PageHeader } from "@/components/ui/misc";
@@ -23,7 +26,7 @@ function Section({ id, title, description, children }: { id: string; title: stri
 
 export default async function SettingsPage() {
   const [viewer, { t, f }] = await Promise.all([requireViewer(), getI18n()]);
-  const [user, settings, credential, profile, portfolioSub] = await Promise.all([
+  const [user, settings, credential, profile, portfolioSub, jobAlerts] = await Promise.all([
     db.user.findUniqueOrThrow({ where: { id: viewer.id }, select: { email: true, createdAt: true } }),
     db.userSettings.findUnique({ where: { userId: viewer.id } }),
     db.account.findFirst({ where: { userId: viewer.id, providerId: "credential" }, select: { id: true } }),
@@ -32,6 +35,7 @@ export default async function SettingsPage() {
       where: { userId: viewer.id, product: "PREMIUM_PORTFOLIO", status: { in: ["ACTIVE", "TRIALING"] }, currentPeriodEnd: { gt: new Date() } },
       select: { id: true },
     }),
+    listJobAlerts(viewer.id),
   ]);
 
   return (
@@ -88,6 +92,19 @@ export default async function SettingsPage() {
             notifyProfileViews: settings?.notifyProfileViews ?? true,
           }}
         />
+      </Section>
+
+      <Section id="job-alerts" title={t("settings.jobAlerts")} description={t("settings.jobAlertsSub")}>
+        {jobAlerts.length ? (
+          <JobAlertList alerts={jobAlerts} />
+        ) : (
+          <p className="text-sm text-fg-muted">
+            {t("settings.noJobAlerts")}{" "}
+            <Link href="/jobs" className="font-medium text-brand-soft-fg hover:underline">
+              {t("settings.findJobs")}
+            </Link>
+          </p>
+        )}
       </Section>
 
       <Section id="password" title={t("settings.password")}>

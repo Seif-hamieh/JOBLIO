@@ -2,6 +2,7 @@ import { timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 import { db } from "@/server/db";
 import { syncAllSources } from "@/server/job-import/import";
+import { runJobAlerts } from "@/server/services/job-alerts";
 
 export const dynamic = "force-dynamic";
 // Three feeds plus up to 300 inserts; well under a minute in practice.
@@ -34,5 +35,12 @@ export async function GET(req: Request) {
   const results = await syncAllSources(poster.id);
   const created = results.reduce((n, r) => n + r.created, 0);
   console.log(`[job-import] ${created} new draft jobs in ${Date.now() - started} ms`, JSON.stringify(results));
-  return NextResponse.json({ ok: true, created, results, ms: Date.now() - started });
+  // Then job alerts: every job published since each alert's last check (by anyone), once a day. A failure here never
+  // fails the import.
+  const alerts = await runJobAlerts().catch((e) => {
+    console.error("[job-alerts] run failed:", e);
+    return null;
+  });
+  if (alerts) console.log(`[job-alerts] ${alerts.notified} of ${alerts.checked} alerts had new jobs`);
+  return NextResponse.json({ ok: true, created, results, alerts, ms: Date.now() - started });
 }

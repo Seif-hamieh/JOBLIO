@@ -34,6 +34,7 @@ const SETTING_FOR: Record<NotificationType, SettingKey | null> = {
   POST_SHARE: "notifyPosts",
   ACHIEVEMENT_UNLOCKED: null,
   BILLING: null,
+  JOB_ALERT: "notifyJobAlerts",
 };
 
 /** Notification types important enough to also email (when email notifications are on). */
@@ -51,6 +52,7 @@ const PUSHED: NotificationType[] = [
   "APPLICATION_UPDATE",
   "INTERVIEW_INVITATION",
   "INTERVIEW_RESPONSE",
+  "JOB_ALERT",
 ];
 
 const enT = createT("en");

@@ -217,6 +217,7 @@ enum NotificationType {
   POST_SHARE
   ACHIEVEMENT_UNLOCKED
   BILLING
+  JOB_ALERT
 }
 
 enum SavedSearchKind {
@@ -1070,6 +1071,8 @@ model SavedSearch {
   name          String          @db.VarChar(80)
   params        Json
   alertsEnabled Boolean         @default(false)
+  // Job alerts: jobs published after this were not announced yet (null = since the search was saved).
+  lastAlertedAt DateTime?
   createdAt     DateTime        @default(now())
   user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
 

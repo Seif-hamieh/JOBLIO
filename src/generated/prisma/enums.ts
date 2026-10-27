@@ -267,7 +267,8 @@ export const NotificationType = {
   POST_COMMENT: 'POST_COMMENT',
   POST_SHARE: 'POST_SHARE',
   ACHIEVEMENT_UNLOCKED: 'ACHIEVEMENT_UNLOCKED',
-  BILLING: 'BILLING'
+  BILLING: 'BILLING',
+  JOB_ALERT: 'JOB_ALERT'
 } as const
 
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]

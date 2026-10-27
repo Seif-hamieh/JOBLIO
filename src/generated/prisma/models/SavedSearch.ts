@@ -30,6 +30,7 @@ export type SavedSearchMinAggregateOutputType = {
   kind: $Enums.SavedSearchKind | null
   name: string | null
   alertsEnabled: boolean | null
+  lastAlertedAt: Date | null
   createdAt: Date | null
 }
 
@@ -39,6 +40,7 @@ export type SavedSearchMaxAggregateOutputType = {
   kind: $Enums.SavedSearchKind | null
   name: string | null
   alertsEnabled: boolean | null
+  lastAlertedAt: Date | null
   createdAt: Date | null
 }
 
@@ -49,6 +51,7 @@ export type SavedSearchCountAggregateOutputType = {
   name: number
   params: number
   alertsEnabled: number
+  lastAlertedAt: number
   createdAt: number
   _all: number
 }
@@ -60,6 +63,7 @@ export type SavedSearchMinAggregateInputType = {
   kind?: true
   name?: true
   alertsEnabled?: true
+  lastAlertedAt?: true
   createdAt?: true
 }
 
@@ -69,6 +73,7 @@ export type SavedSearchMaxAggregateInputType = {
   kind?: true
   name?: true
   alertsEnabled?: true
+  lastAlertedAt?: true
   createdAt?: true
 }
 
@@ -79,6 +84,7 @@ export type SavedSearchCountAggregateInputType = {
   name?: true
   params?: true
   alertsEnabled?: true
+  lastAlertedAt?: true
   createdAt?: true
   _all?: true
 }
@@ -162,6 +168,7 @@ export type SavedSearchGroupByOutputType = {
   name: string
   params: runtime.JsonValue
   alertsEnabled: boolean
+  lastAlertedAt: Date | null
   createdAt: Date
   _count: SavedSearchCountAggregateOutputType | null
   _min: SavedSearchMinAggregateOutputType | null
@@ -193,6 +200,7 @@ export type SavedSearchWhereInput = {
   name?: Prisma.StringFilter<"SavedSearch"> | string
   params?: Prisma.JsonFilter<"SavedSearch">
   alertsEnabled?: Prisma.BoolFilter<"SavedSearch"> | boolean
+  lastAlertedAt?: Prisma.DateTimeNullableFilter<"SavedSearch"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"SavedSearch"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
@@ -204,6 +212,7 @@ export type SavedSearchOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   params?: Prisma.SortOrder
   alertsEnabled?: Prisma.SortOrder
+  lastAlertedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
@@ -218,6 +227,7 @@ export type SavedSearchWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"SavedSearch"> | string
   params?: Prisma.JsonFilter<"SavedSearch">
   alertsEnabled?: Prisma.BoolFilter<"SavedSearch"> | boolean
+  lastAlertedAt?: Prisma.DateTimeNullableFilter<"SavedSearch"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"SavedSearch"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id">
@@ -229,6 +239,7 @@ export type SavedSearchOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   params?: Prisma.SortOrder
   alertsEnabled?: Prisma.SortOrder
+  lastAlertedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.SavedSearchCountOrderByAggregateInput
   _max?: Prisma.SavedSearchMaxOrderByAggregateInput
@@ -245,6 +256,7 @@ export type SavedSearchScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"SavedSearch"> | string
   params?: Prisma.JsonWithAggregatesFilter<"SavedSearch">
   alertsEnabled?: Prisma.BoolWithAggregatesFilter<"SavedSearch"> | boolean
+  lastAlertedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"SavedSearch"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"SavedSearch"> | Date | string
 }
 
@@ -254,6 +266,7 @@ export type SavedSearchCreateInput = {
   name: string
   params: Prisma.JsonNullValueInput | runtime.InputJsonValue
   alertsEnabled?: boolean
+  lastAlertedAt?: Date | string | null
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutSavedSearchesInput
 }
@@ -265,6 +278,7 @@ export type SavedSearchUncheckedCreateInput = {
   name: string
   params: Prisma.JsonNullValueInput | runtime.InputJsonValue
   alertsEnabled?: boolean
+  lastAlertedAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -274,6 +288,7 @@ export type SavedSearchUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   params?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   alertsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastAlertedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutSavedSearchesNestedInput
 }
@@ -285,6 +300,7 @@ export type SavedSearchUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   params?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   alertsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastAlertedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -295,6 +311,7 @@ export type SavedSearchCreateManyInput = {
   name: string
   params: Prisma.JsonNullValueInput | runtime.InputJsonValue
   alertsEnabled?: boolean
+  lastAlertedAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -304,6 +321,7 @@ export type SavedSearchUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   params?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   alertsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastAlertedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -314,6 +332,7 @@ export type SavedSearchUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   params?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   alertsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastAlertedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -334,6 +353,7 @@ export type SavedSearchCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   params?: Prisma.SortOrder
   alertsEnabled?: Prisma.SortOrder
+  lastAlertedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -343,6 +363,7 @@ export type SavedSearchMaxOrderByAggregateInput = {
   kind?: Prisma.SortOrder
   name?: Prisma.SortOrder
   alertsEnabled?: Prisma.SortOrder
+  lastAlertedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -352,6 +373,7 @@ export type SavedSearchMinOrderByAggregateInput = {
   kind?: Prisma.SortOrder
   name?: Prisma.SortOrder
   alertsEnabled?: Prisma.SortOrder
+  lastAlertedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -407,6 +429,7 @@ export type SavedSearchCreateWithoutUserInput = {
   name: string
   params: Prisma.JsonNullValueInput | runtime.InputJsonValue
   alertsEnabled?: boolean
+  lastAlertedAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -416,6 +439,7 @@ export type SavedSearchUncheckedCreateWithoutUserInput = {
   name: string
   params: Prisma.JsonNullValueInput | runtime.InputJsonValue
   alertsEnabled?: boolean
+  lastAlertedAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -455,6 +479,7 @@ export type SavedSearchScalarWhereInput = {
   name?: Prisma.StringFilter<"SavedSearch"> | string
   params?: Prisma.JsonFilter<"SavedSearch">
   alertsEnabled?: Prisma.BoolFilter<"SavedSearch"> | boolean
+  lastAlertedAt?: Prisma.DateTimeNullableFilter<"SavedSearch"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"SavedSearch"> | Date | string
 }
 
@@ -464,6 +489,7 @@ export type SavedSearchCreateManyUserInput = {
   name: string
   params: Prisma.JsonNullValueInput | runtime.InputJsonValue
   alertsEnabled?: boolean
+  lastAlertedAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -473,6 +499,7 @@ export type SavedSearchUpdateWithoutUserInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   params?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   alertsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastAlertedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -482,6 +509,7 @@ export type SavedSearchUncheckedUpdateWithoutUserInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   params?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   alertsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastAlertedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -491,6 +519,7 @@ export type SavedSearchUncheckedUpdateManyWithoutUserInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   params?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   alertsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastAlertedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -503,6 +532,7 @@ export type SavedSearchSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   name?: boolean
   params?: boolean
   alertsEnabled?: boolean
+  lastAlertedAt?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["savedSearch"]>
@@ -514,6 +544,7 @@ export type SavedSearchSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   name?: boolean
   params?: boolean
   alertsEnabled?: boolean
+  lastAlertedAt?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["savedSearch"]>
@@ -525,6 +556,7 @@ export type SavedSearchSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   name?: boolean
   params?: boolean
   alertsEnabled?: boolean
+  lastAlertedAt?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["savedSearch"]>
@@ -536,10 +568,11 @@ export type SavedSearchSelectScalar = {
   name?: boolean
   params?: boolean
   alertsEnabled?: boolean
+  lastAlertedAt?: boolean
   createdAt?: boolean
 }
 
-export type SavedSearchOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "kind" | "name" | "params" | "alertsEnabled" | "createdAt", ExtArgs["result"]["savedSearch"]>
+export type SavedSearchOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "kind" | "name" | "params" | "alertsEnabled" | "lastAlertedAt" | "createdAt", ExtArgs["result"]["savedSearch"]>
 export type SavedSearchInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -562,6 +595,7 @@ export type $SavedSearchPayload<ExtArgs extends runtime.Types.Extensions.Interna
     name: string
     params: runtime.JsonValue
     alertsEnabled: boolean
+    lastAlertedAt: Date | null
     createdAt: Date
   }, ExtArgs["result"]["savedSearch"]>
   composites: {}
@@ -993,6 +1027,7 @@ export interface SavedSearchFieldRefs {
   readonly name: Prisma.FieldRef<"SavedSearch", 'String'>
   readonly params: Prisma.FieldRef<"SavedSearch", 'Json'>
   readonly alertsEnabled: Prisma.FieldRef<"SavedSearch", 'Boolean'>
+  readonly lastAlertedAt: Prisma.FieldRef<"SavedSearch", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"SavedSearch", 'DateTime'>
 }
     
