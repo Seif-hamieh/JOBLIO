@@ -432,6 +432,7 @@ export const ModelName = {
   PostReport: 'PostReport',
   Story: 'Story',
   StoryView: 'StoryView',
+  PostDraft: 'PostDraft',
   PushDevice: 'PushDevice',
   SavedJob: 'SavedJob',
   SavedSearch: 'SavedSearch',
@@ -468,7 +469,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification" | "rateLimit" | "userSettings" | "block" | "profile" | "skill" | "userSkill" | "endorsement" | "experience" | "education" | "project" | "certificate" | "userLanguage" | "portfolioItem" | "socialLink" | "profileView" | "userAchievement" | "industry" | "company" | "companyMember" | "companyFollower" | "companyMedia" | "job" | "jobSkill" | "jobLanguage" | "jobPromotion" | "jobDailyStat" | "jobView" | "jobReport" | "postReport" | "story" | "storyView" | "pushDevice" | "savedJob" | "savedSearch" | "application" | "applicationEvent" | "recruiterNote" | "interview" | "savedCandidate" | "connection" | "follow" | "post" | "postLike" | "comment" | "conversation" | "conversationParticipant" | "message" | "notification" | "subscription" | "payment" | "profileBoost" | "webhookEvent"
+    modelProps: "user" | "session" | "account" | "verification" | "rateLimit" | "userSettings" | "block" | "profile" | "skill" | "userSkill" | "endorsement" | "experience" | "education" | "project" | "certificate" | "userLanguage" | "portfolioItem" | "socialLink" | "profileView" | "userAchievement" | "industry" | "company" | "companyMember" | "companyFollower" | "companyMedia" | "job" | "jobSkill" | "jobLanguage" | "jobPromotion" | "jobDailyStat" | "jobView" | "jobReport" | "postReport" | "story" | "storyView" | "postDraft" | "pushDevice" | "savedJob" | "savedSearch" | "application" | "applicationEvent" | "recruiterNote" | "interview" | "savedCandidate" | "connection" | "follow" | "post" | "postLike" | "comment" | "conversation" | "conversationParticipant" | "message" | "notification" | "subscription" | "payment" | "profileBoost" | "webhookEvent"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3062,6 +3063,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PostDraft: {
+      payload: Prisma.$PostDraftPayload<ExtArgs>
+      fields: Prisma.PostDraftFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PostDraftFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostDraftPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PostDraftFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostDraftPayload>
+        }
+        findFirst: {
+          args: Prisma.PostDraftFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostDraftPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PostDraftFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostDraftPayload>
+        }
+        findMany: {
+          args: Prisma.PostDraftFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostDraftPayload>[]
+        }
+        create: {
+          args: Prisma.PostDraftCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostDraftPayload>
+        }
+        createMany: {
+          args: Prisma.PostDraftCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PostDraftCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostDraftPayload>[]
+        }
+        delete: {
+          args: Prisma.PostDraftDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostDraftPayload>
+        }
+        update: {
+          args: Prisma.PostDraftUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostDraftPayload>
+        }
+        deleteMany: {
+          args: Prisma.PostDraftDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PostDraftUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PostDraftUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostDraftPayload>[]
+        }
+        upsert: {
+          args: Prisma.PostDraftUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostDraftPayload>
+        }
+        aggregate: {
+          args: Prisma.PostDraftAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePostDraft>
+        }
+        groupBy: {
+          args: Prisma.PostDraftGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PostDraftGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PostDraftCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PostDraftCountAggregateOutputType> | number
+        }
+      }
+    }
     PushDevice: {
       payload: Prisma.$PushDevicePayload<ExtArgs>
       fields: Prisma.PushDeviceFieldRefs
@@ -5189,6 +5264,23 @@ export const StoryViewScalarFieldEnum = {
 export type StoryViewScalarFieldEnum = (typeof StoryViewScalarFieldEnum)[keyof typeof StoryViewScalarFieldEnum]
 
 
+export const PostDraftScalarFieldEnum = {
+  id: 'id',
+  authorId: 'authorId',
+  content: 'content',
+  type: 'type',
+  visibility: 'visibility',
+  asCompany: 'asCompany',
+  jobId: 'jobId',
+  projectId: 'projectId',
+  mediaUrls: 'mediaUrls',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PostDraftScalarFieldEnum = (typeof PostDraftScalarFieldEnum)[keyof typeof PostDraftScalarFieldEnum]
+
+
 export const PushDeviceScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -5938,6 +6030,34 @@ export type ListEnumPostReportStatusFieldRefInput<$PrismaModel> = FieldRefInputT
 
 
 /**
+ * Reference to a field of type 'PostType'
+ */
+export type EnumPostTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PostType'>
+    
+
+
+/**
+ * Reference to a field of type 'PostType[]'
+ */
+export type ListEnumPostTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PostType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PostVisibility'
+ */
+export type EnumPostVisibilityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PostVisibility'>
+    
+
+
+/**
+ * Reference to a field of type 'PostVisibility[]'
+ */
+export type ListEnumPostVisibilityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PostVisibility[]'>
+    
+
+
+/**
  * Reference to a field of type 'SavedSearchKind'
  */
 export type EnumSavedSearchKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SavedSearchKind'>
@@ -6046,34 +6166,6 @@ export type EnumConnectionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<
  * Reference to a field of type 'ConnectionStatus[]'
  */
 export type ListEnumConnectionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ConnectionStatus[]'>
-    
-
-
-/**
- * Reference to a field of type 'PostType'
- */
-export type EnumPostTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PostType'>
-    
-
-
-/**
- * Reference to a field of type 'PostType[]'
- */
-export type ListEnumPostTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PostType[]'>
-    
-
-
-/**
- * Reference to a field of type 'PostVisibility'
- */
-export type EnumPostVisibilityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PostVisibility'>
-    
-
-
-/**
- * Reference to a field of type 'PostVisibility[]'
- */
-export type ListEnumPostVisibilityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PostVisibility[]'>
     
 
 
@@ -6332,6 +6424,7 @@ export type GlobalOmitConfig = {
   postReport?: Prisma.PostReportOmit
   story?: Prisma.StoryOmit
   storyView?: Prisma.StoryViewOmit
+  postDraft?: Prisma.PostDraftOmit
   pushDevice?: Prisma.PushDeviceOmit
   savedJob?: Prisma.SavedJobOmit
   savedSearch?: Prisma.SavedSearchOmit

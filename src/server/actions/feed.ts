@@ -3,80 +3,101 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { db } from "@/server/db";
-import { fail, parse, withViewer, type ActionState } from "@/server/action";
+import { fail, parse, withViewer, type ActionFailure, type ActionState } from "@/server/action";
 import { LIMITS } from "@/server/rate-limit";
 import { notify } from "@/server/services/notifications";
 import { k } from "@/i18n/message";
 import { getComments, getFeed, type FeedComment, type FeedPost } from "@/server/services/feed";
 import { deleteStored, storeUpload, UploadError } from "@/server/storage";
 import { addPostComment, canSeePost, setPostLike } from "@/server/services/post-interactions";
-import { canManageCompany } from "@/server/session";
+import { createPost, postingProblem, postSchema } from "@/server/services/posting";
+import { deleteDraft, draftSchema, MAX_DRAFT_MEDIA, publishDraft, saveDraft } from "@/server/services/post-drafts";
 
 const id = z.string().min(1).max(40);
 
-const postSchema = z.object({
-  content: z.string().trim().min(1, "@v.writeSomething").max(3000, "@v.postLength"),
-  type: z.enum(["UPDATE", "PROJECT", "ACHIEVEMENT", "JOB"]),
-  visibility: z.enum(["PUBLIC", "CONNECTIONS"]),
-  asCompany: z.enum(["1", "0"]).optional(),
-  jobId: z.string().max(40).optional().transform((v) => v || null),
-  projectId: z.string().max(40).optional().transform((v) => v || null),
+const postFields = (form: FormData) => ({
+  content: form.get("content") ?? "",
+  type: form.get("type") ?? "UPDATE",
+  visibility: form.get("visibility") ?? "PUBLIC",
+  asCompany: form.get("asCompany") ?? undefined,
+  jobId: form.get("jobId") ?? undefined,
+  projectId: form.get("projectId") ?? undefined,
 });
 
+/** Stores the newly picked images (form "media"), at most `room` of them. */
+async function uploadMedia(form: FormData, userId: string, room: number): Promise<string[] | ActionFailure> {
+  const files = form.getAll("media").filter((f): f is File => f instanceof File && f.size > 0).slice(0, Math.max(0, room));
+  const urls: string[] = [];
+  try {
+    for (const f of files) urls.push((await storeUpload(f, "post", userId)).url);
+  } catch (e) {
+    await deleteStored(urls);
+    if (e instanceof UploadError) return fail(e.message);
+    throw e;
+  }
+  return urls;
+}
+
+const keptMedia = (form: FormData) => form.getAll("keepMedia").filter((v): v is string => typeof v === "string");
+const draftIdOf = (form: FormData) => {
+  const v = form.get("draftId");
+  return typeof v === "string" && v ? id.parse(v) : null;
+};
+
+/** Posts from the composer; with a "draftId" it publishes that draft (its kept images plus new ones). */
 export async function createPostAction(_prev: ActionState, form: FormData): Promise<ActionState> {
   return withViewer({ limit: LIMITS.post }, async (viewer) => {
-    const parsed = parse(postSchema, {
-      content: form.get("content"),
-      type: form.get("type") ?? "UPDATE",
-      visibility: form.get("visibility") ?? "PUBLIC",
-      asCompany: form.get("asCompany") ?? undefined,
-      jobId: form.get("jobId") ?? undefined,
-      projectId: form.get("projectId") ?? undefined,
-    });
+    const parsed = parse(postSchema, postFields(form));
     if (!parsed.success) return parsed.state;
     const d = parsed.data;
+    const problem = await postingProblem(viewer, d);
+    if (problem) return fail(problem);
 
-    // Attached entities must belong to the author.
-    if (d.jobId) {
-      const job = await db.job.findUnique({ where: { id: d.jobId }, select: { companyId: true, status: true } });
-      if (!job || job.companyId !== viewer.company?.id || job.status !== "OPEN") return fail("@msg.shareOwnJobs");
-    }
-    if (d.projectId) {
-      const project = await db.project.findUnique({ where: { id: d.projectId }, select: { profileId: true } });
-      if (!project || project.profileId !== viewer.profileId) return fail("@msg.projectNotFound");
-    }
-    // Only the company's owners and admins may speak for it; the composer hides the option for others,
-    // and a crafted request is refused here rather than silently posted under the member's own name.
-    let asCompany: string | null = null;
-    if (d.asCompany === "1") {
-      if (!viewer.company || !canManageCompany(viewer, viewer.company.id)) return fail("@msg.companyPostAdminsOnly");
-      asCompany = viewer.company.id;
-    }
+    const draftId = draftIdOf(form);
+    const kept = keptMedia(form);
+    const added = await uploadMedia(form, viewer.id, MAX_DRAFT_MEDIA - (draftId ? kept.length : 0));
+    if (!Array.isArray(added)) return added;
 
-    const files = form.getAll("media").filter((f): f is File => f instanceof File && f.size > 0).slice(0, 4);
-    const mediaUrls: string[] = [];
-    try {
-      for (const f of files) mediaUrls.push((await storeUpload(f, "post", viewer.id)).url);
-    } catch (e) {
-      if (e instanceof UploadError) return fail(e.message);
-      throw e;
+    if (draftId) {
+      const result = await publishDraft(viewer, draftId, d, kept, added);
+      if ("problem" in result) {
+        await deleteStored(added);
+        return fail(result.problem);
+      }
+      revalidatePath("/feed/drafts");
+    } else {
+      await createPost(viewer, d, added);
     }
-
-    await db.post.create({
-      data: {
-        authorId: viewer.id,
-        companyId: asCompany,
-        content: d.content,
-        type: d.jobId ? "JOB" : d.projectId ? "PROJECT" : d.type === "JOB" ? "UPDATE" : d.type,
-        visibility: d.visibility,
-        jobId: d.jobId,
-        projectId: d.projectId,
-        mediaUrls,
-      },
-    });
     revalidatePath("/feed");
     revalidatePath("/home");
     return { ok: true, message: "@msg.posted" };
+  });
+}
+
+/** Saves the composer as a draft (new, or the one in "draftId"). */
+export async function saveDraftAction(_prev: ActionState<{ id: string }>, form: FormData): Promise<ActionState<{ id: string }>> {
+  return withViewer<{ id: string }>({ limit: LIMITS.post }, async (viewer) => {
+    const parsed = parse(draftSchema, postFields(form));
+    if (!parsed.success) return parsed.state;
+    const draftId = draftIdOf(form);
+    const kept = keptMedia(form);
+    const added = await uploadMedia(form, viewer.id, MAX_DRAFT_MEDIA - (draftId ? kept.length : 0));
+    if (!Array.isArray(added)) return added;
+    const saved = await saveDraft(viewer.id, draftId, parsed.data, kept, added);
+    if (!saved) {
+      await deleteStored(added);
+      return fail(draftId ? "@msg.draftNotFound" : "@msg.tooManyDrafts");
+    }
+    revalidatePath("/feed/drafts");
+    return { ok: true, message: "@msg.draftSaved", data: { id: saved.id } };
+  });
+}
+
+export async function deleteDraftAction(draftId: string): Promise<ActionState> {
+  return withViewer({ limit: LIMITS.post }, async (viewer) => {
+    if (!(await deleteDraft(viewer.id, id.parse(draftId)))) return fail("@msg.draftNotFound");
+    revalidatePath("/feed/drafts");
+    return { ok: true, message: "@msg.draftDeleted" };
   });
 }
 

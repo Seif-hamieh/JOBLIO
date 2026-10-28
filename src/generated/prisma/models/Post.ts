@@ -839,17 +839,9 @@ export type PostUncheckedCreateNestedManyWithoutSharedPostInput = {
   connect?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
 }
 
-export type EnumPostTypeFieldUpdateOperationsInput = {
-  set?: $Enums.PostType
-}
-
 export type PostUpdatemediaUrlsInput = {
   set?: string[]
   push?: string | string[]
-}
-
-export type EnumPostVisibilityFieldUpdateOperationsInput = {
-  set?: $Enums.PostVisibility
 }
 
 export type PostUpdateOneWithoutSharesNestedInput = {

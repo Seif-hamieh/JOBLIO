@@ -376,6 +376,7 @@ model User {
   stories              Story[]
   storyViews           StoryView[]
   pushDevices          PushDevice[]
+  postDrafts           PostDraft[]
 
   @@map("users")
 }
@@ -1034,6 +1035,27 @@ model StoryView {
   @@unique([storyId, viewerId])
   @@index([viewerId])
   @@map("story_views")
+}
+
+// An unpublished post. Kept apart from posts so a draft can never appear in a feed, profile, count or search:
+// publishing creates the post (the same checks as posting directly) and deletes the draft. Its images move to the
+// post. A job or project picked in the composer is only checked when publishing.
+model PostDraft {
+  id         String         @id @default(cuid())
+  authorId   String
+  content    String         @default("")
+  type       PostType       @default(UPDATE)
+  visibility PostVisibility @default(PUBLIC)
+  asCompany  Boolean        @default(false)
+  jobId      String?
+  projectId  String?
+  mediaUrls  String[]
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  author     User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([authorId, updatedAt(sort: Desc)])
+  @@map("post_drafts")
 }
 
 // A phone that can receive push notifications: one row per device (a member can have several), holding the Expo

@@ -2,9 +2,11 @@
 
 import { useI18n } from "@/i18n/client";
 import { useActionState, useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { AnimatePresence, m } from "motion/react";
-import { Award, Briefcase, FolderGit2, Globe2, ImagePlus, PenLine, Users, X } from "lucide-react";
-import { createPostAction } from "@/server/actions/feed";
+import { Award, Briefcase, FileText, FolderGit2, Globe2, ImagePlus, PenLine, Users, X } from "lucide-react";
+import { createPostAction, saveDraftAction } from "@/server/actions/feed";
 import { Avatar, CompanyLogo } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
@@ -14,6 +16,17 @@ import { acceptFor, checkUpload } from "@/lib/upload-check";
 import type { ActionState } from "@/server/action";
 
 type Option = { id: string; title: string };
+
+export type ComposerDraft = {
+  id: string;
+  content: string;
+  type: "UPDATE" | "PROJECT" | "ACHIEVEMENT" | "JOB";
+  visibility: "PUBLIC" | "CONNECTIONS";
+  asCompany: boolean;
+  jobId: string | null;
+  projectId: string | null;
+  mediaUrls: string[];
+};
 
 const TYPES = [
   { value: "UPDATE", label: "feed.typeUpdate", icon: PenLine },
@@ -29,6 +42,7 @@ export function Composer({
   company,
   defaultOpen = false,
   inline = true,
+  draft,
 }: {
   viewer: { name: string; image: string | null };
   projects: Option[];
@@ -36,20 +50,29 @@ export function Composer({
   company: { name: string; logoUrl: string | null } | null;
   defaultOpen?: boolean;
   inline?: boolean;
+  /** Editing a saved draft: the composer starts from it, and posting publishes it. */
+  draft?: ComposerDraft;
 }) {
   const { t } = useI18n();
+  const router = useRouter();
   const [open, setOpen] = useState(defaultOpen);
-  const [type, setType] = useState<(typeof TYPES)[number]["value"]>("UPDATE");
-  const [visibility, setVisibility] = useState<"PUBLIC" | "CONNECTIONS">("PUBLIC");
-  const [asCompany, setAsCompany] = useState(false);
-  const [content, setContent] = useState("");
+  const [type, setType] = useState<(typeof TYPES)[number]["value"]>(draft?.type ?? "UPDATE");
+  const [visibility, setVisibility] = useState<"PUBLIC" | "CONNECTIONS">(draft?.visibility ?? "PUBLIC");
+  const [asCompany, setAsCompany] = useState(draft?.asCompany ?? false);
+  const [content, setContent] = useState(draft?.content ?? "");
   const [files, setFiles] = useState<File[]>([]);
+  // The draft's images still attached (the server keeps only these, and deletes the rest).
+  const [kept, setKept] = useState<string[]>(draft?.mediaUrls ?? []);
   const [state, action, pending] = useActionState<ActionState, FormData>(
     (prev, form) => createPostAction(prev, form).catch(() => ({ ok: false as const, error: t("msg.uploadFailed") })),
     null,
   );
+  const [draftState, saveAction, saving] = useActionState<ActionState<{ id: string }>, FormData>(
+    (prev, form) => saveDraftAction(prev, form).catch(() => ({ ok: false as const, error: t("msg.uploadFailed") })),
+    null,
+  );
   const addFiles = (input: HTMLInputElement) => {
-    const next = [...files, ...Array.from(input.files ?? [])].slice(0, 4);
+    const next = [...files, ...Array.from(input.files ?? [])].slice(0, 4 - kept.length);
     input.value = "";
     // All images go up in one request, so they share the size limit.
     const problem = checkUpload(next, "image", t);
@@ -66,8 +89,17 @@ export function Composer({
       setContent("");
       setFiles([]);
       setType("UPDATE");
+      setKept([]);
+      if (draft) router.push("/feed");
     } else if (state && !state.ok) toast.error(state.error);
-  }, [state, t]);
+  }, [state, t, draft, router]);
+
+  useEffect(() => {
+    if (draftState?.ok) {
+      toast.success(t("msg.draftSaved"));
+      router.push("/feed/drafts");
+    } else if (draftState && !draftState.ok) toast.error(draftState.error);
+  }, [draftState, t, router]);
 
   const previews = useMemo(() => files.map((f) => ({ name: f.name, url: URL.createObjectURL(f) })), [files]);
   useEffect(() => () => previews.forEach((p) => URL.revokeObjectURL(p.url)), [previews]);
@@ -100,8 +132,12 @@ export function Composer({
         </div>
       )}
 
-      <Dialog open={open} onOpenChange={setOpen} title={t("feed.createPost")} size="lg">
+      <Dialog open={open} onOpenChange={setOpen} title={draft ? t("feed.editingDraft") : t("feed.createPost")} size="lg">
         <form ref={formRef} action={action} className="space-y-4">
+          {draft && <input type="hidden" name="draftId" value={draft.id} />}
+          {kept.map((u) => (
+            <input key={u} type="hidden" name="keepMedia" value={u} />
+          ))}
           <div className="flex items-center gap-3">
             {asCompany && company ? <CompanyLogo name={company.name} src={company.logoUrl} /> : <Avatar name={viewer.name} src={viewer.image} size="md" />}
             <div>
@@ -163,7 +199,7 @@ export function Composer({
 
           <AnimatePresence initial={false}>
             {type === "PROJECT" && (
-              <m.select key="p" name="projectId" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="h-11 w-full rounded-xl border border-border bg-surface px-3 text-sm" required>
+              <m.select key="p" name="projectId" defaultValue={draft?.projectId ?? undefined} initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="h-11 w-full rounded-xl border border-border bg-surface px-3 text-sm" required>
                 {projects.map((p) => (
                   <option key={p.id} value={p.id}>
                     {p.title}
@@ -172,7 +208,7 @@ export function Composer({
               </m.select>
             )}
             {type === "JOB" && (
-              <m.select key="j" name="jobId" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="h-11 w-full rounded-xl border border-border bg-surface px-3 text-sm" required>
+              <m.select key="j" name="jobId" defaultValue={draft?.jobId ?? undefined} initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="h-11 w-full rounded-xl border border-border bg-surface px-3 text-sm" required>
                 {jobs.map((j) => (
                   <option key={j.id} value={j.id}>
                     {j.title}
@@ -194,8 +230,17 @@ export function Composer({
             className="min-h-40 w-full resize-none bg-transparent text-[15px] leading-relaxed outline-none placeholder:text-fg-subtle"
           />
 
-          {previews.length > 0 && (
+          {kept.length + previews.length > 0 && (
             <div className="grid grid-cols-4 gap-2">
+              {kept.map((u) => (
+                <div key={u} className="group relative aspect-square overflow-hidden rounded-xl">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={u} alt="" className="size-full object-cover" />
+                  <button type="button" onClick={() => setKept((k) => k.filter((x) => x !== u))} className="absolute end-1 top-1 rounded-full bg-black/60 p-1 text-white" aria-label={t("common.remove")}>
+                    <X className="size-3" />
+                  </button>
+                </div>
+              ))}
               {previews.map((p, i) => (
                 <div key={p.url} className="group relative aspect-square overflow-hidden rounded-xl">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -220,12 +265,20 @@ export function Composer({
           <FilesBridge files={files} formRef={formRef} />
 
           <div className="flex items-center justify-between border-t border-border pt-3">
-            <button type="button" onClick={() => fileRef.current?.click()} className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm text-fg-muted hover:bg-surface-2 hover:text-fg" disabled={files.length >= 4}>
-              <ImagePlus className="size-4" /> {t("feed.photo")}
-            </button>
+            <div className="flex items-center gap-1">
+              <button type="button" onClick={() => fileRef.current?.click()} className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm text-fg-muted hover:bg-surface-2 hover:text-fg" disabled={kept.length + files.length >= 4}>
+                <ImagePlus className="size-4" /> {t("feed.photo")}
+              </button>
+              <Link href="/feed/drafts" className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm text-fg-muted hover:bg-surface-2 hover:text-fg">
+                <FileText className="size-4" /> <span className="hidden sm:inline">{t("feed.drafts")}</span>
+              </Link>
+            </div>
             <div className="flex items-center gap-3">
               <span className={cn("text-xs tabular-nums", content.length > 2800 ? "text-danger-fg" : "text-fg-subtle")}>{content.length}/3000</span>
-              <Button type="submit" loading={pending} disabled={!content.trim()} pill>
+              <Button type="submit" variant="outline" formAction={saveAction} formNoValidate loading={saving} disabled={pending} pill>
+                {t("feed.saveDraft")}
+              </Button>
+              <Button type="submit" loading={pending} disabled={!content.trim() || saving} pill>
                 {t("feed.post")}
               </Button>
             </div>
