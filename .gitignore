@@ -55,3 +55,7 @@ sync-jobs.log
 
 # The Android app download (~100 MB, too big for GitHub): copied in by hand, served from /app/getjoblio.apk
 /public/app/*.apk
+
+# tunnel watchdog (scripts/tunnel-watchdog.ps1)
+tunnel-watchdog.log
+tunnel-watchdog.last-restart
