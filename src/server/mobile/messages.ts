@@ -31,7 +31,9 @@ export function toMessage(m: ChatMessage, userId: string) {
     body: m.body,
     at: m.createdAt.toISOString(),
     // Files, and jobs / people / companies shared from the website, shown as simple cards in the app.
-    attachment: m.attachmentName ? { name: m.attachmentName, size: m.attachmentSize, mime: m.attachmentMime } : null,
+    // url: GET it with the app's Authorization header (images, voice messages, documents).
+    attachment: m.attachmentName ? { url: m.attachmentUrl, name: m.attachmentName, size: m.attachmentSize, mime: m.attachmentMime } : null,
+    location: m.latitude !== null && m.longitude !== null ? { latitude: m.latitude, longitude: m.longitude } : null,
     job: m.sharedJob ? { id: m.sharedJob.id, title: m.sharedJob.title, company: m.sharedJob.company.name } : null,
     person: m.sharedUser ? { name: m.sharedUser.name, username: m.sharedUser.username, headline: m.sharedUser.profile?.headline ?? null } : null,
     company: m.sharedCompany ? { slug: m.sharedCompany.slug, name: m.sharedCompany.name } : null,

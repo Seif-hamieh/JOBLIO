@@ -196,6 +196,9 @@ enum PostVisibility {
 enum MessageKind {
   TEXT
   FILE
+  IMAGE
+  AUDIO
+  LOCATION
   JOB
   PROFILE
   COMPANY
@@ -1338,6 +1341,9 @@ model Message {
   attachmentName  String?
   attachmentSize  Int?
   attachmentMime  String?
+  // LOCATION messages: the shared spot.
+  latitude        Float?
+  longitude       Float?
   sharedJobId     String?
   sharedUserId    String?
   sharedCompanyId String?

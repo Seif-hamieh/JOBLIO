@@ -1,9 +1,11 @@
 import "server-only";
+import { z } from "zod";
 import { db, type Prisma } from "@/server/db";
 import { isOnline, publish } from "@/server/realtime";
 import { ActionError } from "@/server/action";
 import { canMessageUser, isConnected } from "@/server/services/profile";
 import { notifyNewMessage } from "@/server/services/notifications";
+import { chatKindForMime, safeFileName, statChatFile } from "@/server/storage";
 
 export const directKey = (a: string, b: string) => [a, b].sort().join(":");
 
@@ -19,6 +21,8 @@ export const messageSelect = {
   attachmentName: true,
   attachmentSize: true,
   attachmentMime: true,
+  latitude: true,
+  longitude: true,
   createdAt: true,
   sharedJob: { select: { id: true, title: true, workMode: true, status: true, company: { select: { name: true, logoUrl: true, brandColor: true } } } },
   sharedUser: { select: { id: true, name: true, image: true, username: true, profile: { select: { headline: true, openToWork: true } } } },
@@ -81,8 +85,9 @@ export async function getThread(conversationId: string, userId: string, opts: { 
 
 export type SendInput = {
   body: string;
-  kind: "TEXT" | "FILE" | "JOB" | "PROFILE" | "COMPANY";
+  kind: "TEXT" | "FILE" | "IMAGE" | "AUDIO" | "LOCATION" | "JOB" | "PROFILE" | "COMPANY";
   attachment?: { url: string; name: string; size: number; mime: string } | null;
+  location?: { latitude: number; longitude: number } | null;
   sharedJobId?: string | null;
   sharedUserId?: string | null;
   sharedCompanyId?: string | null;
@@ -153,6 +158,8 @@ export async function sendMessage(sender: { id: string; name: string }, conversa
         attachmentName: input.attachment?.name,
         attachmentSize: input.attachment?.size,
         attachmentMime: input.attachment?.mime,
+        latitude: input.location?.latitude ?? null,
+        longitude: input.location?.longitude ?? null,
         sharedJobId: input.sharedJobId ?? null,
         sharedUserId: input.sharedUserId ?? null,
         sharedCompanyId: input.sharedCompanyId ?? null,
@@ -179,4 +186,31 @@ export async function markConversationRead(conversationId: string, userId: strin
   await db.notification.updateMany({ where: { userId, type: "NEW_MESSAGE", href: `/messages?c=${conversationId}`, readAt: null }, data: { readAt: now } });
   const others = await db.conversationParticipant.findMany({ where: { conversationId, userId: { not: userId } }, select: { userId: true } });
   for (const o of others) publish(o.userId, { type: "read", conversationId, userId, at: now.toISOString() });
+}
+
+/** What a member can attach to a chat message, besides text and shared jobs / people / companies. */
+export const chatMediaSchema = z.object({
+  // A file sent first to /api/v1/chat-upload (its url and the name it had on the sender's device)…
+  attachmentUrl: z.string().max(300).optional(),
+  attachmentName: z.string().trim().max(200).optional(),
+  // …or a place on the map.
+  latitude: z.coerce.number().min(-90).max(90).optional(),
+  longitude: z.coerce.number().min(-180).max(180).optional(),
+});
+
+/**
+ * Turns an uploaded chat file or a location into what sendMessage stores. The file must have been uploaded to this
+ * same conversation; its type and size come from the stored file, never from the sender.
+ */
+export async function chatMedia(conversationId: string, input: z.output<typeof chatMediaSchema>) {
+  if (input.attachmentUrl) {
+    const file = await statChatFile(input.attachmentUrl, conversationId);
+    if (!file) throw new ActionError("@msg.chatFileMissing");
+    const name = safeFileName(input.attachmentName || input.attachmentUrl.split("/").pop()!);
+    return { kind: chatKindForMime(file.mime), attachment: { url: input.attachmentUrl, name, size: file.size, mime: file.mime }, location: null };
+  }
+  if (input.latitude !== undefined && input.longitude !== undefined) {
+    return { kind: "LOCATION" as const, attachment: null, location: { latitude: input.latitude, longitude: input.longitude } };
+  }
+  return null;
 }

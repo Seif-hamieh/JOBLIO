@@ -885,6 +885,8 @@ export const MessageScalarFieldEnum = {
   attachmentName: 'attachmentName',
   attachmentSize: 'attachmentSize',
   attachmentMime: 'attachmentMime',
+  latitude: 'latitude',
+  longitude: 'longitude',
   sharedJobId: 'sharedJobId',
   sharedUserId: 'sharedUserId',
   sharedCompanyId: 'sharedCompanyId',

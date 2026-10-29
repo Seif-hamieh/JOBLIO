@@ -244,6 +244,9 @@ export type PostVisibility = (typeof PostVisibility)[keyof typeof PostVisibility
 export const MessageKind = {
   TEXT: 'TEXT',
   FILE: 'FILE',
+  IMAGE: 'IMAGE',
+  AUDIO: 'AUDIO',
+  LOCATION: 'LOCATION',
   JOB: 'JOB',
   PROFILE: 'PROFILE',
   COMPANY: 'COMPANY'

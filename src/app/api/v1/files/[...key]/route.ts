@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { auth } from "@/server/auth";
 import { db } from "@/server/db";
 import { canViewProfile } from "@/server/services/profile";
-import { publicFileUrl, readStored, signedFileUrl, storageDriver, verifyFileLink } from "@/server/storage";
+import { openStored, publicFileUrl, signedFileUrl, storageDriver, verifyFileLink } from "@/server/storage";
+import { getMobileSession } from "@/server/mobile/auth";
 
 /**
  * The CV saved on a profile is visible to recruiters under the same rule as the
@@ -32,7 +33,8 @@ export async function GET(req: Request, ctx: RouteContext<"/api/v1/files/[...key
   const signedLink = key.startsWith("private/") && storageDriver() === "local" && verifyFileLink(key, query.get("exp"), query.get("sig"));
 
   if (key.startsWith("private/") && !signedLink) {
-    const session = await auth.api.getSession({ headers: req.headers });
+    // The website sends its session cookie; the app sends its sign-in token (chat images and voice messages).
+    const session = (await auth.api.getSession({ headers: req.headers })) ?? (await getMobileSession(req));
     if (!session) return new NextResponse("Not found", { status: 404 });
     const [, scope, owner] = key.split("/");
     const userId = session.user.id;
@@ -67,16 +69,21 @@ export async function GET(req: Request, ctx: RouteContext<"/api/v1/files/[...key
     return NextResponse.redirect(signed, { status: 302, headers: { "Cache-Control": "private, no-store" } });
   }
 
-  const file = await readStored(key);
+  // Streamed from disk, never loaded whole (chat files can be 100 MB). Audio players ask for byte ranges to seek.
+  const asked = req.headers.get("range")?.match(/^bytes=(d+)-(d*)$/);
+  const file = await openStored(key, asked ? { start: Number(asked[1]), end: asked[2] ? Number(asked[2]) : undefined } : undefined);
   if (!file) return new NextResponse("Not found", { status: 404 });
-  const isImage = file.mime.startsWith("image/");
-  return new NextResponse(new Uint8Array(file.data), {
+  const inline = file.mime.startsWith("image/") || file.mime.startsWith("audio/") || file.mime === "application/pdf";
+  return new NextResponse(file.stream, {
+    status: asked ? 206 : 200,
     headers: {
       "Content-Type": file.mime,
-      "Content-Length": String(file.size),
+      "Content-Length": String(file.end - file.start + 1),
+      ...(asked && { "Content-Range": `bytes ${file.start}-${file.end}/${file.size}` }),
+      "Accept-Ranges": "bytes",
       "X-Content-Type-Options": "nosniff",
-      "Content-Security-Policy": "default-src 'none'; img-src 'self'; style-src 'unsafe-inline'; sandbox",
-      "Content-Disposition": isImage || file.mime === "application/pdf" ? "inline" : "attachment",
+      "Content-Security-Policy": "default-src 'none'; img-src 'self'; media-src 'self'; style-src 'unsafe-inline'; sandbox",
+      "Content-Disposition": inline ? "inline" : "attachment",
       "Cache-Control": key.startsWith("public/") ? "public, max-age=31536000, immutable" : "private, max-age=300",
     },
   });

@@ -1,6 +1,9 @@
 import "server-only";
 import { createHmac, randomUUID, timingSafeEqual } from "node:crypto";
-import { mkdir, readFile, stat, unlink, writeFile } from "node:fs/promises";
+import { createReadStream, createWriteStream } from "node:fs";
+import { mkdir, open, readFile, rename, stat, unlink, writeFile } from "node:fs/promises";
+import { once } from "node:events";
+import { Readable } from "node:stream";
 import { dirname, join, normalize, sep } from "node:path";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { k } from "@/i18n/message";
@@ -223,6 +226,118 @@ export async function storeUpload(file: File, scope: UploadScope, owner: string)
 
   const displayName = file.name.replace(/[^\w.\- ()]/g, "_").slice(0, 120) || name;
   return { key, url: `${FILES_PREFIX}${key}`, name: displayName, size: file.size, mime };
+}
+
+// ── Chat media (large files, streamed) ──────────────────────────────────────
+// Voice messages, images and documents sent in chat may be up to 100 MB (Cloudflare's own upload limit is 100 MB).
+// The body is written to disk piece by piece as it arrives, so a big upload never sits in the server's memory.
+
+/** 100 MB (decimal, so it stays under Cloudflare's limit however that is counted). */
+export const CHAT_MAX_BYTES = 100 * 1000 * 1000;
+
+const CHAT_EXT: Record<string, string> = {
+  ...EXT,
+  "application/zip": "zip",
+  "audio/webm": "webm",
+  "audio/mp4": "m4a",
+  "audio/ogg": "ogg",
+  "audio/mpeg": "mp3",
+};
+const CHAT_MIME_BY_EXT: Record<string, string> = Object.fromEntries(Object.entries(CHAT_EXT).map(([mime, ext]) => [ext, mime]));
+
+/**
+ * The real type of a chat upload from its first bytes. A ZIP header is also how Word (.docx) files start, so the
+ * file's own name decides between the two; either way it is only ever downloaded, never run.
+ */
+export function sniffChatMime(head: Buffer, fileName: string): string | null {
+  const hex = head.subarray(0, 12).toString("hex");
+  if (hex.startsWith("504b0304")) return /\.docx$/i.test(fileName) ? "application/vnd.openxmlformats-officedocument.wordprocessingml.document" : "application/zip";
+  if (hex.startsWith("1a45dfa3")) return "audio/webm"; // WebM (browser recordings)
+  if (head.subarray(4, 8).toString("ascii") === "ftyp") return "audio/mp4"; // M4A (phone recordings)
+  if (hex.startsWith("4f676753")) return "audio/ogg"; // Ogg/Opus (Firefox recordings)
+  if (hex.startsWith("494433") || /^fff[2345ab]/.test(hex)) return "audio/mpeg"; // MP3
+  const mime = sniffMime(head);
+  return mime === "text/plain" ? null : mime;
+}
+
+export const chatKindForMime = (mime: string) => (mime.startsWith("image/") ? "IMAGE" : mime.startsWith("audio/") ? "AUDIO" : "FILE") as "IMAGE" | "AUDIO" | "FILE";
+
+/** A file name safe to show and to send back as a download name (Latin and Arabic letters kept). */
+export const safeFileName = (name: string) => name.replace(/[^\w.\- ()؀-ۿ]/g, "_").slice(0, 120);
+
+/** Saves a streamed chat upload under the conversation's private folder. Local storage only. */
+export async function storeChatStream(body: ReadableStream<Uint8Array>, fileName: string, conversationId: string): Promise<StoredFile> {
+  if (storageDriver() !== "local") throw new Error("Chat uploads need STORAGE_DRIVER=local.");
+  const safeOwner = conversationId.replace(/[^a-zA-Z0-9_-]/g, "");
+  const dir = join(ROOT, "private", "message", safeOwner);
+  await mkdir(dir, { recursive: true });
+  const id = randomUUID();
+  const tmp = join(dir, `${id}.part`);
+  const out = createWriteStream(tmp);
+  let size = 0;
+  let head = Buffer.alloc(0);
+  try {
+    const reader = body.getReader();
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      size += value.byteLength;
+      if (size > CHAT_MAX_BYTES) {
+        await reader.cancel().catch(() => {});
+        throw new UploadError(k("msg.uploadTooBig", { mb: CHAT_MAX_BYTES / 1000 / 1000 }));
+      }
+      if (head.length < 64) head = Buffer.concat([head, Buffer.from(value.subarray(0, 64))]);
+      // Wait when the disk falls behind, so unwritten pieces don't pile up in memory.
+      if (!out.write(value)) await once(out, "drain");
+    }
+    out.end();
+    await once(out, "finish");
+    if (!size) throw new UploadError("@msg.uploadChoose");
+    const mime = sniffChatMime(head, fileName);
+    if (!mime) throw new UploadError("@msg.uploadType_chat");
+    const name = `${id}.${CHAT_EXT[mime]}`;
+    await rename(tmp, join(dir, name));
+    const key = `private/message/${safeOwner}/${name}`;
+    const displayName = safeFileName(fileName) || name;
+    return { key, url: `${FILES_PREFIX}${key}`, name: displayName, size, mime };
+  } catch (e) {
+    out.destroy();
+    await unlink(tmp).catch(() => {});
+    throw e;
+  }
+}
+
+/** Size and type of a chat file already stored for this conversation, or null (someone else's or missing). */
+export async function statChatFile(url: string, conversationId: string) {
+  const key = keyFromUrl(url);
+  if (!key || !key.startsWith(`private/message/${conversationId}/`)) return null;
+  const path = normalize(join(ROOT, key));
+  if (!path.startsWith(ROOT + sep)) return null;
+  const s = await stat(path).catch(() => null);
+  if (!s?.isFile()) return null;
+  const mime = CHAT_MIME_BY_EXT[key.split(".").pop()!.toLowerCase()];
+  return mime ? { size: s.size, mime } : null;
+}
+
+/**
+ * Local driver: opens a stored file for streaming (whole, or the byte range a media player asks for), so serving a
+ * 100 MB file doesn't load it into memory. Null for anything missing or outside the storage root.
+ */
+export async function openStored(key: string, range?: { start: number; end?: number }) {
+  const path = normalize(join(ROOT, key));
+  if (!path.startsWith(ROOT + sep)) return null;
+  const s = await stat(path).catch(() => null);
+  if (!s?.isFile()) return null;
+  const fh = await open(path, "r");
+  const head = Buffer.alloc(64);
+  await fh.read(head, 0, 64, 0).finally(() => fh.close());
+  const ext = key.split(".").pop()!.toLowerCase();
+  // Chat audio and ZIP files are typed by their saved extension (set from their sniffed content at upload).
+  const mime = (ext in CHAT_MIME_BY_EXT && !(ext in MIME_BY_EXT) ? CHAT_MIME_BY_EXT[ext] : sniffMime(head)) ?? "application/octet-stream";
+  const start = range ? Math.min(range.start, Math.max(s.size - 1, 0)) : 0;
+  const end = range ? Math.min(range.end ?? s.size - 1, s.size - 1) : s.size - 1;
+  const stream = Readable.toWeb(createReadStream(path, { start, end })) as ReadableStream<Uint8Array>;
+  return { stream, mime, size: s.size, start, end };
 }
 
 /** Local driver: reads a stored file; returns null for anything outside the storage root. */

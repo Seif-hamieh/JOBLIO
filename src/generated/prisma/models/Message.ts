@@ -28,10 +28,14 @@ export type AggregateMessage = {
 
 export type MessageAvgAggregateOutputType = {
   attachmentSize: number | null
+  latitude: number | null
+  longitude: number | null
 }
 
 export type MessageSumAggregateOutputType = {
   attachmentSize: number | null
+  latitude: number | null
+  longitude: number | null
 }
 
 export type MessageMinAggregateOutputType = {
@@ -44,6 +48,8 @@ export type MessageMinAggregateOutputType = {
   attachmentName: string | null
   attachmentSize: number | null
   attachmentMime: string | null
+  latitude: number | null
+  longitude: number | null
   sharedJobId: string | null
   sharedUserId: string | null
   sharedCompanyId: string | null
@@ -60,6 +66,8 @@ export type MessageMaxAggregateOutputType = {
   attachmentName: string | null
   attachmentSize: number | null
   attachmentMime: string | null
+  latitude: number | null
+  longitude: number | null
   sharedJobId: string | null
   sharedUserId: string | null
   sharedCompanyId: string | null
@@ -76,6 +84,8 @@ export type MessageCountAggregateOutputType = {
   attachmentName: number
   attachmentSize: number
   attachmentMime: number
+  latitude: number
+  longitude: number
   sharedJobId: number
   sharedUserId: number
   sharedCompanyId: number
@@ -86,10 +96,14 @@ export type MessageCountAggregateOutputType = {
 
 export type MessageAvgAggregateInputType = {
   attachmentSize?: true
+  latitude?: true
+  longitude?: true
 }
 
 export type MessageSumAggregateInputType = {
   attachmentSize?: true
+  latitude?: true
+  longitude?: true
 }
 
 export type MessageMinAggregateInputType = {
@@ -102,6 +116,8 @@ export type MessageMinAggregateInputType = {
   attachmentName?: true
   attachmentSize?: true
   attachmentMime?: true
+  latitude?: true
+  longitude?: true
   sharedJobId?: true
   sharedUserId?: true
   sharedCompanyId?: true
@@ -118,6 +134,8 @@ export type MessageMaxAggregateInputType = {
   attachmentName?: true
   attachmentSize?: true
   attachmentMime?: true
+  latitude?: true
+  longitude?: true
   sharedJobId?: true
   sharedUserId?: true
   sharedCompanyId?: true
@@ -134,6 +152,8 @@ export type MessageCountAggregateInputType = {
   attachmentName?: true
   attachmentSize?: true
   attachmentMime?: true
+  latitude?: true
+  longitude?: true
   sharedJobId?: true
   sharedUserId?: true
   sharedCompanyId?: true
@@ -237,6 +257,8 @@ export type MessageGroupByOutputType = {
   attachmentName: string | null
   attachmentSize: number | null
   attachmentMime: string | null
+  latitude: number | null
+  longitude: number | null
   sharedJobId: string | null
   sharedUserId: string | null
   sharedCompanyId: string | null
@@ -276,6 +298,8 @@ export type MessageWhereInput = {
   attachmentName?: Prisma.StringNullableFilter<"Message"> | string | null
   attachmentSize?: Prisma.IntNullableFilter<"Message"> | number | null
   attachmentMime?: Prisma.StringNullableFilter<"Message"> | string | null
+  latitude?: Prisma.FloatNullableFilter<"Message"> | number | null
+  longitude?: Prisma.FloatNullableFilter<"Message"> | number | null
   sharedJobId?: Prisma.StringNullableFilter<"Message"> | string | null
   sharedUserId?: Prisma.StringNullableFilter<"Message"> | string | null
   sharedCompanyId?: Prisma.StringNullableFilter<"Message"> | string | null
@@ -297,6 +321,8 @@ export type MessageOrderByWithRelationInput = {
   attachmentName?: Prisma.SortOrderInput | Prisma.SortOrder
   attachmentSize?: Prisma.SortOrderInput | Prisma.SortOrder
   attachmentMime?: Prisma.SortOrderInput | Prisma.SortOrder
+  latitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  longitude?: Prisma.SortOrderInput | Prisma.SortOrder
   sharedJobId?: Prisma.SortOrderInput | Prisma.SortOrder
   sharedUserId?: Prisma.SortOrderInput | Prisma.SortOrder
   sharedCompanyId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -321,6 +347,8 @@ export type MessageWhereUniqueInput = Prisma.AtLeast<{
   attachmentName?: Prisma.StringNullableFilter<"Message"> | string | null
   attachmentSize?: Prisma.IntNullableFilter<"Message"> | number | null
   attachmentMime?: Prisma.StringNullableFilter<"Message"> | string | null
+  latitude?: Prisma.FloatNullableFilter<"Message"> | number | null
+  longitude?: Prisma.FloatNullableFilter<"Message"> | number | null
   sharedJobId?: Prisma.StringNullableFilter<"Message"> | string | null
   sharedUserId?: Prisma.StringNullableFilter<"Message"> | string | null
   sharedCompanyId?: Prisma.StringNullableFilter<"Message"> | string | null
@@ -342,6 +370,8 @@ export type MessageOrderByWithAggregationInput = {
   attachmentName?: Prisma.SortOrderInput | Prisma.SortOrder
   attachmentSize?: Prisma.SortOrderInput | Prisma.SortOrder
   attachmentMime?: Prisma.SortOrderInput | Prisma.SortOrder
+  latitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  longitude?: Prisma.SortOrderInput | Prisma.SortOrder
   sharedJobId?: Prisma.SortOrderInput | Prisma.SortOrder
   sharedUserId?: Prisma.SortOrderInput | Prisma.SortOrder
   sharedCompanyId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -366,6 +396,8 @@ export type MessageScalarWhereWithAggregatesInput = {
   attachmentName?: Prisma.StringNullableWithAggregatesFilter<"Message"> | string | null
   attachmentSize?: Prisma.IntNullableWithAggregatesFilter<"Message"> | number | null
   attachmentMime?: Prisma.StringNullableWithAggregatesFilter<"Message"> | string | null
+  latitude?: Prisma.FloatNullableWithAggregatesFilter<"Message"> | number | null
+  longitude?: Prisma.FloatNullableWithAggregatesFilter<"Message"> | number | null
   sharedJobId?: Prisma.StringNullableWithAggregatesFilter<"Message"> | string | null
   sharedUserId?: Prisma.StringNullableWithAggregatesFilter<"Message"> | string | null
   sharedCompanyId?: Prisma.StringNullableWithAggregatesFilter<"Message"> | string | null
@@ -380,6 +412,8 @@ export type MessageCreateInput = {
   attachmentName?: string | null
   attachmentSize?: number | null
   attachmentMime?: string | null
+  latitude?: number | null
+  longitude?: number | null
   createdAt?: Date | string
   conversation: Prisma.ConversationCreateNestedOneWithoutMessagesInput
   sender: Prisma.UserCreateNestedOneWithoutMessagesInput
@@ -398,6 +432,8 @@ export type MessageUncheckedCreateInput = {
   attachmentName?: string | null
   attachmentSize?: number | null
   attachmentMime?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sharedJobId?: string | null
   sharedUserId?: string | null
   sharedCompanyId?: string | null
@@ -412,6 +448,8 @@ export type MessageUpdateInput = {
   attachmentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attachmentSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   attachmentMime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   conversation?: Prisma.ConversationUpdateOneRequiredWithoutMessagesNestedInput
   sender?: Prisma.UserUpdateOneRequiredWithoutMessagesNestedInput
@@ -430,6 +468,8 @@ export type MessageUncheckedUpdateInput = {
   attachmentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attachmentSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   attachmentMime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sharedJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedCompanyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -446,6 +486,8 @@ export type MessageCreateManyInput = {
   attachmentName?: string | null
   attachmentSize?: number | null
   attachmentMime?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sharedJobId?: string | null
   sharedUserId?: string | null
   sharedCompanyId?: string | null
@@ -460,6 +502,8 @@ export type MessageUpdateManyMutationInput = {
   attachmentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attachmentSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   attachmentMime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -473,6 +517,8 @@ export type MessageUncheckedUpdateManyInput = {
   attachmentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attachmentSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   attachmentMime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sharedJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedCompanyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -499,6 +545,8 @@ export type MessageCountOrderByAggregateInput = {
   attachmentName?: Prisma.SortOrder
   attachmentSize?: Prisma.SortOrder
   attachmentMime?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
   sharedJobId?: Prisma.SortOrder
   sharedUserId?: Prisma.SortOrder
   sharedCompanyId?: Prisma.SortOrder
@@ -507,6 +555,8 @@ export type MessageCountOrderByAggregateInput = {
 
 export type MessageAvgOrderByAggregateInput = {
   attachmentSize?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
 }
 
 export type MessageMaxOrderByAggregateInput = {
@@ -519,6 +569,8 @@ export type MessageMaxOrderByAggregateInput = {
   attachmentName?: Prisma.SortOrder
   attachmentSize?: Prisma.SortOrder
   attachmentMime?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
   sharedJobId?: Prisma.SortOrder
   sharedUserId?: Prisma.SortOrder
   sharedCompanyId?: Prisma.SortOrder
@@ -535,6 +587,8 @@ export type MessageMinOrderByAggregateInput = {
   attachmentName?: Prisma.SortOrder
   attachmentSize?: Prisma.SortOrder
   attachmentMime?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
   sharedJobId?: Prisma.SortOrder
   sharedUserId?: Prisma.SortOrder
   sharedCompanyId?: Prisma.SortOrder
@@ -543,6 +597,8 @@ export type MessageMinOrderByAggregateInput = {
 
 export type MessageSumOrderByAggregateInput = {
   attachmentSize?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
 }
 
 export type MessageCreateNestedManyWithoutSenderInput = {
@@ -767,6 +823,8 @@ export type MessageCreateWithoutSenderInput = {
   attachmentName?: string | null
   attachmentSize?: number | null
   attachmentMime?: string | null
+  latitude?: number | null
+  longitude?: number | null
   createdAt?: Date | string
   conversation: Prisma.ConversationCreateNestedOneWithoutMessagesInput
   sharedJob?: Prisma.JobCreateNestedOneWithoutSharedInInput
@@ -783,6 +841,8 @@ export type MessageUncheckedCreateWithoutSenderInput = {
   attachmentName?: string | null
   attachmentSize?: number | null
   attachmentMime?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sharedJobId?: string | null
   sharedUserId?: string | null
   sharedCompanyId?: string | null
@@ -807,6 +867,8 @@ export type MessageCreateWithoutSharedUserInput = {
   attachmentName?: string | null
   attachmentSize?: number | null
   attachmentMime?: string | null
+  latitude?: number | null
+  longitude?: number | null
   createdAt?: Date | string
   conversation: Prisma.ConversationCreateNestedOneWithoutMessagesInput
   sender: Prisma.UserCreateNestedOneWithoutMessagesInput
@@ -824,6 +886,8 @@ export type MessageUncheckedCreateWithoutSharedUserInput = {
   attachmentName?: string | null
   attachmentSize?: number | null
   attachmentMime?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sharedJobId?: string | null
   sharedCompanyId?: string | null
   createdAt?: Date | string
@@ -868,6 +932,8 @@ export type MessageScalarWhereInput = {
   attachmentName?: Prisma.StringNullableFilter<"Message"> | string | null
   attachmentSize?: Prisma.IntNullableFilter<"Message"> | number | null
   attachmentMime?: Prisma.StringNullableFilter<"Message"> | string | null
+  latitude?: Prisma.FloatNullableFilter<"Message"> | number | null
+  longitude?: Prisma.FloatNullableFilter<"Message"> | number | null
   sharedJobId?: Prisma.StringNullableFilter<"Message"> | string | null
   sharedUserId?: Prisma.StringNullableFilter<"Message"> | string | null
   sharedCompanyId?: Prisma.StringNullableFilter<"Message"> | string | null
@@ -898,6 +964,8 @@ export type MessageCreateWithoutSharedCompanyInput = {
   attachmentName?: string | null
   attachmentSize?: number | null
   attachmentMime?: string | null
+  latitude?: number | null
+  longitude?: number | null
   createdAt?: Date | string
   conversation: Prisma.ConversationCreateNestedOneWithoutMessagesInput
   sender: Prisma.UserCreateNestedOneWithoutMessagesInput
@@ -915,6 +983,8 @@ export type MessageUncheckedCreateWithoutSharedCompanyInput = {
   attachmentName?: string | null
   attachmentSize?: number | null
   attachmentMime?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sharedJobId?: string | null
   sharedUserId?: string | null
   createdAt?: Date | string
@@ -954,6 +1024,8 @@ export type MessageCreateWithoutSharedJobInput = {
   attachmentName?: string | null
   attachmentSize?: number | null
   attachmentMime?: string | null
+  latitude?: number | null
+  longitude?: number | null
   createdAt?: Date | string
   conversation: Prisma.ConversationCreateNestedOneWithoutMessagesInput
   sender: Prisma.UserCreateNestedOneWithoutMessagesInput
@@ -971,6 +1043,8 @@ export type MessageUncheckedCreateWithoutSharedJobInput = {
   attachmentName?: string | null
   attachmentSize?: number | null
   attachmentMime?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sharedUserId?: string | null
   sharedCompanyId?: string | null
   createdAt?: Date | string
@@ -1010,6 +1084,8 @@ export type MessageCreateWithoutConversationInput = {
   attachmentName?: string | null
   attachmentSize?: number | null
   attachmentMime?: string | null
+  latitude?: number | null
+  longitude?: number | null
   createdAt?: Date | string
   sender: Prisma.UserCreateNestedOneWithoutMessagesInput
   sharedJob?: Prisma.JobCreateNestedOneWithoutSharedInInput
@@ -1026,6 +1102,8 @@ export type MessageUncheckedCreateWithoutConversationInput = {
   attachmentName?: string | null
   attachmentSize?: number | null
   attachmentMime?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sharedJobId?: string | null
   sharedUserId?: string | null
   sharedCompanyId?: string | null
@@ -1067,6 +1145,8 @@ export type MessageCreateManySenderInput = {
   attachmentName?: string | null
   attachmentSize?: number | null
   attachmentMime?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sharedJobId?: string | null
   sharedUserId?: string | null
   sharedCompanyId?: string | null
@@ -1083,6 +1163,8 @@ export type MessageCreateManySharedUserInput = {
   attachmentName?: string | null
   attachmentSize?: number | null
   attachmentMime?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sharedJobId?: string | null
   sharedCompanyId?: string | null
   createdAt?: Date | string
@@ -1096,6 +1178,8 @@ export type MessageUpdateWithoutSenderInput = {
   attachmentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attachmentSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   attachmentMime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   conversation?: Prisma.ConversationUpdateOneRequiredWithoutMessagesNestedInput
   sharedJob?: Prisma.JobUpdateOneWithoutSharedInNestedInput
@@ -1112,6 +1196,8 @@ export type MessageUncheckedUpdateWithoutSenderInput = {
   attachmentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attachmentSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   attachmentMime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sharedJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedCompanyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1127,6 +1213,8 @@ export type MessageUncheckedUpdateManyWithoutSenderInput = {
   attachmentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attachmentSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   attachmentMime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sharedJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedCompanyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1141,6 +1229,8 @@ export type MessageUpdateWithoutSharedUserInput = {
   attachmentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attachmentSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   attachmentMime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   conversation?: Prisma.ConversationUpdateOneRequiredWithoutMessagesNestedInput
   sender?: Prisma.UserUpdateOneRequiredWithoutMessagesNestedInput
@@ -1158,6 +1248,8 @@ export type MessageUncheckedUpdateWithoutSharedUserInput = {
   attachmentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attachmentSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   attachmentMime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sharedJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedCompanyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1173,6 +1265,8 @@ export type MessageUncheckedUpdateManyWithoutSharedUserInput = {
   attachmentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attachmentSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   attachmentMime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sharedJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedCompanyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1188,6 +1282,8 @@ export type MessageCreateManySharedCompanyInput = {
   attachmentName?: string | null
   attachmentSize?: number | null
   attachmentMime?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sharedJobId?: string | null
   sharedUserId?: string | null
   createdAt?: Date | string
@@ -1201,6 +1297,8 @@ export type MessageUpdateWithoutSharedCompanyInput = {
   attachmentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attachmentSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   attachmentMime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   conversation?: Prisma.ConversationUpdateOneRequiredWithoutMessagesNestedInput
   sender?: Prisma.UserUpdateOneRequiredWithoutMessagesNestedInput
@@ -1218,6 +1316,8 @@ export type MessageUncheckedUpdateWithoutSharedCompanyInput = {
   attachmentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attachmentSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   attachmentMime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sharedJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1233,6 +1333,8 @@ export type MessageUncheckedUpdateManyWithoutSharedCompanyInput = {
   attachmentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attachmentSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   attachmentMime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sharedJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1248,6 +1350,8 @@ export type MessageCreateManySharedJobInput = {
   attachmentName?: string | null
   attachmentSize?: number | null
   attachmentMime?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sharedUserId?: string | null
   sharedCompanyId?: string | null
   createdAt?: Date | string
@@ -1261,6 +1365,8 @@ export type MessageUpdateWithoutSharedJobInput = {
   attachmentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attachmentSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   attachmentMime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   conversation?: Prisma.ConversationUpdateOneRequiredWithoutMessagesNestedInput
   sender?: Prisma.UserUpdateOneRequiredWithoutMessagesNestedInput
@@ -1278,6 +1384,8 @@ export type MessageUncheckedUpdateWithoutSharedJobInput = {
   attachmentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attachmentSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   attachmentMime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sharedUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedCompanyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1293,6 +1401,8 @@ export type MessageUncheckedUpdateManyWithoutSharedJobInput = {
   attachmentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attachmentSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   attachmentMime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sharedUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedCompanyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1307,6 +1417,8 @@ export type MessageCreateManyConversationInput = {
   attachmentName?: string | null
   attachmentSize?: number | null
   attachmentMime?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sharedJobId?: string | null
   sharedUserId?: string | null
   sharedCompanyId?: string | null
@@ -1321,6 +1433,8 @@ export type MessageUpdateWithoutConversationInput = {
   attachmentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attachmentSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   attachmentMime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sender?: Prisma.UserUpdateOneRequiredWithoutMessagesNestedInput
   sharedJob?: Prisma.JobUpdateOneWithoutSharedInNestedInput
@@ -1337,6 +1451,8 @@ export type MessageUncheckedUpdateWithoutConversationInput = {
   attachmentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attachmentSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   attachmentMime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sharedJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedCompanyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1352,6 +1468,8 @@ export type MessageUncheckedUpdateManyWithoutConversationInput = {
   attachmentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attachmentSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   attachmentMime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sharedJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedCompanyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1370,6 +1488,8 @@ export type MessageSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   attachmentName?: boolean
   attachmentSize?: boolean
   attachmentMime?: boolean
+  latitude?: boolean
+  longitude?: boolean
   sharedJobId?: boolean
   sharedUserId?: boolean
   sharedCompanyId?: boolean
@@ -1391,6 +1511,8 @@ export type MessageSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   attachmentName?: boolean
   attachmentSize?: boolean
   attachmentMime?: boolean
+  latitude?: boolean
+  longitude?: boolean
   sharedJobId?: boolean
   sharedUserId?: boolean
   sharedCompanyId?: boolean
@@ -1412,6 +1534,8 @@ export type MessageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   attachmentName?: boolean
   attachmentSize?: boolean
   attachmentMime?: boolean
+  latitude?: boolean
+  longitude?: boolean
   sharedJobId?: boolean
   sharedUserId?: boolean
   sharedCompanyId?: boolean
@@ -1433,13 +1557,15 @@ export type MessageSelectScalar = {
   attachmentName?: boolean
   attachmentSize?: boolean
   attachmentMime?: boolean
+  latitude?: boolean
+  longitude?: boolean
   sharedJobId?: boolean
   sharedUserId?: boolean
   sharedCompanyId?: boolean
   createdAt?: boolean
 }
 
-export type MessageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "conversationId" | "senderId" | "kind" | "body" | "attachmentUrl" | "attachmentName" | "attachmentSize" | "attachmentMime" | "sharedJobId" | "sharedUserId" | "sharedCompanyId" | "createdAt", ExtArgs["result"]["message"]>
+export type MessageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "conversationId" | "senderId" | "kind" | "body" | "attachmentUrl" | "attachmentName" | "attachmentSize" | "attachmentMime" | "latitude" | "longitude" | "sharedJobId" | "sharedUserId" | "sharedCompanyId" | "createdAt", ExtArgs["result"]["message"]>
 export type MessageInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   conversation?: boolean | Prisma.ConversationDefaultArgs<ExtArgs>
   sender?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1481,6 +1607,8 @@ export type $MessagePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     attachmentName: string | null
     attachmentSize: number | null
     attachmentMime: string | null
+    latitude: number | null
+    longitude: number | null
     sharedJobId: string | null
     sharedUserId: string | null
     sharedCompanyId: string | null
@@ -1922,6 +2050,8 @@ export interface MessageFieldRefs {
   readonly attachmentName: Prisma.FieldRef<"Message", 'String'>
   readonly attachmentSize: Prisma.FieldRef<"Message", 'Int'>
   readonly attachmentMime: Prisma.FieldRef<"Message", 'String'>
+  readonly latitude: Prisma.FieldRef<"Message", 'Float'>
+  readonly longitude: Prisma.FieldRef<"Message", 'Float'>
   readonly sharedJobId: Prisma.FieldRef<"Message", 'String'>
   readonly sharedUserId: Prisma.FieldRef<"Message", 'String'>
   readonly sharedCompanyId: Prisma.FieldRef<"Message", 'String'>

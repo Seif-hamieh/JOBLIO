@@ -2,10 +2,10 @@
 
 import { z } from "zod";
 import { db } from "@/server/db";
-import { fail, withViewer, type ActionState } from "@/server/action";
+import { ActionError, fail, withViewer, type ActionState } from "@/server/action";
 import { LIMITS } from "@/server/rate-limit";
 import { publish } from "@/server/realtime";
-import { ensureConversation, getThread, markConversationRead, messageSelect, sendMessage, type ChatMessage } from "@/server/services/messaging";
+import { chatMedia, chatMediaSchema, ensureConversation, getThread, markConversationRead, messageSelect, sendMessage, type ChatMessage } from "@/server/services/messaging";
 import { deleteStored, storeUpload, UploadError } from "@/server/storage";
 import { publicCompanyWhere } from "@/server/services/companies";
 
@@ -24,7 +24,16 @@ export async function sendMessageAction(form: FormData): Promise<ActionState<{ m
     };
     const file = form.get("file");
     const hasFile = file instanceof File && file.size > 0;
-    if (!body.data && !hasFile && !share.sharedJobId && !share.sharedUserId && !share.sharedCompanyId) return fail("@msg.writeMessage");
+    // A large file uploaded first to /api/v1/chat-upload, or a location.
+    const media = chatMediaSchema.safeParse({
+      attachmentUrl: form.get("attachmentUrl") || undefined,
+      attachmentName: form.get("attachmentName") || undefined,
+      latitude: form.get("latitude") || undefined,
+      longitude: form.get("longitude") || undefined,
+    });
+    if (!media.success) return fail("@msg.writeMessage");
+    const hasMedia = !!media.data.attachmentUrl || media.data.latitude !== undefined;
+    if (!body.data && !hasFile && !hasMedia && !share.sharedJobId && !share.sharedUserId && !share.sharedCompanyId) return fail("@msg.writeMessage");
 
     const conversationId = conversationIdRaw
       ? id.parse(conversationIdRaw)
@@ -43,7 +52,19 @@ export async function sendMessageAction(form: FormData): Promise<ActionState<{ m
         throw e;
       }
     }
-    const kind = attachment ? "FILE" : share.sharedJobId ? "JOB" : share.sharedUserId ? "PROFILE" : share.sharedCompanyId ? "COMPANY" : "TEXT";
+    if (!attachment && hasMedia) {
+      try {
+        const m = await chatMedia(conversationId, media.data);
+        if (m) {
+          const message = await sendMessage({ id: viewer.id, name: viewer.name }, conversationId, { body: body.data, ...m });
+          return { ok: true, data: { message, conversationId } };
+        }
+      } catch (e) {
+        if (e instanceof ActionError) return fail(e.message);
+        throw e;
+      }
+    }
+    const kind = attachment ? (attachment.mime.startsWith("image/") ? "IMAGE" : "FILE") : share.sharedJobId ? "JOB" : share.sharedUserId ? "PROFILE" : share.sharedCompanyId ? "COMPANY" : "TEXT";
     const message = await sendMessage({ id: viewer.id, name: viewer.name }, conversationId, { body: body.data, kind, attachment, ...share });
     return { ok: true, data: { message, conversationId } };
   });

@@ -110,3 +110,36 @@ describe("signed links to private files (local storage)", () => {
     expect(await storage.privateFileLink("private/resume/u1/missing.pdf")).toBeNull();
   });
 });
+
+describe("chat uploads", () => {
+  const stream = (...parts: Buffer[]) => new ReadableStream<Uint8Array>({ start(c) { for (const p of parts) c.enqueue(new Uint8Array(p)); c.close(); } });
+  const WEBM = Buffer.from("1a45dfa39f4286810142f7810142f2", "hex");
+
+  it("streams a voice message to disk, types it from its bytes and serves byte ranges", async () => {
+    vi.stubEnv("STORAGE_DRIVER", "local");
+    const f = await storage.storeChatStream(stream(WEBM, Buffer.alloc(1000, 1)), "voice.webm", "conv1");
+    expect(f).toMatchObject({ mime: "audio/webm", size: WEBM.length + 1000, name: "voice.webm" });
+    expect(f.key).toMatch(/^private\/message\/conv1\/[\w-]+\.webm$/);
+    expect(await storage.statChatFile(f.url, "conv1")).toEqual({ size: f.size, mime: "audio/webm" });
+    expect(await storage.statChatFile(f.url, "other")).toBeNull();
+    const part = await storage.openStored(f.key, { start: 2, end: 5 });
+    expect(part).toMatchObject({ mime: "audio/webm", start: 2, end: 5 });
+    expect(Buffer.from(await new Response(part!.stream).arrayBuffer())).toEqual(WEBM.subarray(2, 6));
+  });
+
+  it("tells ZIP from Word by name and refuses unknown types without leaving files behind", async () => {
+    vi.stubEnv("STORAGE_DRIVER", "local");
+    const PK = Buffer.from("504b030414000000", "hex");
+    expect((await storage.storeChatStream(stream(PK), "a.zip", "conv2")).mime).toBe("application/zip");
+    expect((await storage.storeChatStream(stream(PK), "cv.docx", "conv2")).mime).toContain("wordprocessingml");
+    await expect(storage.storeChatStream(stream(Buffer.from([0, 1, 2, 0])), "x.exe", "conv2")).rejects.toThrow("uploadType_chat");
+    expect((await readdir(join(cwd, "storage/private/message/conv2"))).some((n) => n.endsWith(".part"))).toBe(false);
+  });
+
+  it("stops reading past the size limit", async () => {
+    vi.stubEnv("STORAGE_DRIVER", "local");
+    const big = Buffer.alloc(30 * 1000 * 1000);
+    await expect(storage.storeChatStream(stream(WEBM, big, big, big, big), "v.webm", "conv3")).rejects.toThrow("uploadTooBig");
+    expect(await readdir(join(cwd, "storage/private/message/conv3"))).toEqual([]);
+  });
+});

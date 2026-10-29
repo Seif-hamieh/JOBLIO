@@ -1696,6 +1696,8 @@ export const ar: Dictionary = {
     uploadType_image: "اختر صورة بصيغة PNG أو JPG أو WebP أو GIF.",
     uploadType_cv: "اختر ملف PDF أو Word (PDF أو DOCX أو DOC).",
     uploadType_attachment: "اختر صورة أو ملف PDF أو Word أو ملفًا نصيًا.",
+    uploadType_chat: "أرسل صورة أو رسالة صوتية أو ملف PDF أو Word أو ZIP أو ملفًا نصيًا.",
+    chatFileMissing: "هذا الملف لم يعد متاحًا. أرفقه مرة أخرى.",
     uploadTooBigSize: "الحد الأقصى {max} ميغابايت — حجم ملفك {size} ميغابايت.",
     uploadFailed: "لم يكتمل الرفع. تحقّق من حجم الملف واتصالك ثم حاول مرة أخرى.",
     cvSaved: "تم حفظ السيرة الذاتية.",

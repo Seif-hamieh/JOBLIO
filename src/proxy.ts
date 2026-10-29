@@ -61,7 +61,10 @@ async function detailState(kind: string, key: string): Promise<"ok" | "missing" 
   return (await db.user.findUnique({ where: { username: key }, select: { id: true } })) ? "ok" : "missing";
 }
 
-/** Largest request body the site accepts (uploads are 4 MB at most; website forms 12 MB, see next.config). */
+/**
+ * Largest request body the site accepts (uploads are 4 MB at most; website forms 12 MB, see next.config). Chat files
+ * (up to 100 MB) go to /api/v1/chat-upload, which this proxy skips and which enforces its own limit.
+ */
 const MAX_API_BODY = 10 * 1024 * 1024;
 
 export async function proxy(request: NextRequest) {
@@ -126,6 +129,7 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!monitoring|_next/static|_next/image|media|icon.svg|favicon.ico|robots.txt|sitemap.xml|opengraph-image|twitter-image|sw.js|offline.html|manifest.webmanifest|icon-|apple-touch-icon|apple-icon|social/|screenshots/|.*\\.(?:png|jpe?g|gif|webp|avif|svg|ico|txt|xml|json|webmanifest|js|css|map|woff2?|apk)$).*)",
+    // api/v1/chat-upload: chat files of up to 100 MB, streamed to disk by the route itself (never held here).
+    "/((?!api/v1/chat-upload|monitoring|_next/static|_next/image|media|icon.svg|favicon.ico|robots.txt|sitemap.xml|opengraph-image|twitter-image|sw.js|offline.html|manifest.webmanifest|icon-|apple-touch-icon|apple-icon|social/|screenshots/|.*\\.(?:png|jpe?g|gif|webp|avif|svg|ico|txt|xml|json|webmanifest|js|css|map|woff2?|apk)$).*)",
   ],
 };
