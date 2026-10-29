@@ -148,7 +148,7 @@ function Comments({ post, viewer, onAdded }: { post: FeedPost; viewer: { id: str
                   </button>
                 )}
               </div>
-              <p dir="auto" className="mt-0.5 whitespace-pre-line break-words text-sm">{c.content}</p>
+              <RichText text={c.content} clamp={600} className="mt-0.5 text-sm" />
             </div>
           </m.li>
         ))}
