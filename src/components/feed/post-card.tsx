@@ -299,12 +299,16 @@ export function PostCard({ post, viewer }: { post: FeedPost; viewer: { id: strin
       <div className="mt-2 flex gap-1 border-t border-border px-3 py-1.5">
         <LikeButton post={post} />
         <button type="button" onClick={() => setShowComments((s) => !s)} className="flex flex-1 items-center justify-center gap-2 rounded-xl py-2 text-sm font-medium text-fg-muted transition hover:bg-surface-2" aria-expanded={showComments}>
-          <MessageCircle className="size-[18px]" /> {t("feed.comment")}
+          <MessageCircle className="size-[18px]" /> <span className="hidden sm:inline">{t("feed.comment")}</span>
         </button>
-        {/* Share: copy a link to the post, or repost it to your own feed. */}
+        {/* Repost: share it to your own feed, with optional words of your own. */}
+        <button type="button" onClick={() => setShareOpen(true)} className="flex flex-1 items-center justify-center gap-2 rounded-xl py-2 text-sm font-medium text-fg-muted transition hover:bg-surface-2">
+          <Repeat2 className="size-[18px]" /> <span className="hidden sm:inline">{t("feed.repost")}</span>
+        </button>
+        {/* Share: copy a link to the post, or repost it. */}
         <Menu>
           <MenuTrigger className="flex flex-1 items-center justify-center gap-2 rounded-xl py-2 text-sm font-medium text-fg-muted outline-none transition hover:bg-surface-2 focus-visible:ring-2 focus-visible:ring-[var(--ring)]">
-            <Share2 className="size-[18px]" /> {t("feed.share")}
+            <Share2 className="size-[18px]" /> <span className="hidden sm:inline">{t("feed.share")}</span>
           </MenuTrigger>
           <MenuContent align="end">
             <MenuItem

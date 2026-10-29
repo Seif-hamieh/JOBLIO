@@ -5,11 +5,9 @@ import { z } from "zod";
 import { db } from "@/server/db";
 import { fail, parse, withViewer, type ActionFailure, type ActionState } from "@/server/action";
 import { LIMITS } from "@/server/rate-limit";
-import { notify } from "@/server/services/notifications";
-import { k } from "@/i18n/message";
 import { getComments, getFeed, type FeedComment, type FeedPost } from "@/server/services/feed";
 import { deleteStored, storeUpload, UploadError } from "@/server/storage";
-import { addPostComment, canSeePost, setPostLike } from "@/server/services/post-interactions";
+import { addPostComment, canSeePost, repostPost, setPostLike } from "@/server/services/post-interactions";
 import { createPost, postingProblem, postSchema } from "@/server/services/posting";
 import { deleteDraft, draftSchema, MAX_DRAFT_MEDIA, publishDraft, saveDraft } from "@/server/services/post-drafts";
 
@@ -141,14 +139,8 @@ export async function deleteCommentAction(commentId: string): Promise<ActionStat
 
 export async function sharePostAction(postId: string, content: string): Promise<ActionState> {
   return withViewer({ limit: LIMITS.post }, async (viewer) => {
-    const post = await canSeePost(viewer.id, id.parse(postId));
-    if (!post) return fail("@msg.postNotFound");
-    const text = z.string().trim().max(3000).parse(content ?? "");
-    await db.$transaction([
-      db.post.create({ data: { authorId: viewer.id, content: text, sharedPostId: post.id, visibility: "PUBLIC" } }),
-      db.post.update({ where: { id: post.id }, data: { shareCount: { increment: 1 } } }),
-    ]);
-    await notify({ userId: post.authorId, actorId: viewer.id, type: "POST_SHARE", title: k("notif.postShare", { name: viewer.name }), href: `/feed/${post.id}` });
+    const text = z.string().max(3000).parse(content ?? "");
+    if (!(await repostPost(viewer, id.parse(postId), text))) return fail("@msg.postNotFound");
     revalidatePath("/feed");
     return { ok: true, message: "@msg.shared" };
   });

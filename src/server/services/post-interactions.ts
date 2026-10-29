@@ -4,7 +4,7 @@ import { notify } from "@/server/services/notifications";
 import { isBlockedEitherWay, isConnected } from "@/server/services/profile";
 import { k } from "@/i18n/message";
 
-// Likes and comments on feed posts, shared by the website's feed (server actions) and the mobile API.
+// Likes, comments and reposts of feed posts, shared by the website's feed (server actions) and the mobile API.
 
 const commentSelect = {
   id: true,
@@ -15,7 +15,7 @@ const commentSelect = {
 
 /** The post if this member may see it (not blocked either way; connections-only posts need a connection). */
 export async function canSeePost(viewerId: string, postId: string) {
-  const post = await db.post.findUnique({ where: { id: postId }, select: { id: true, authorId: true, visibility: true, content: true } });
+  const post = await db.post.findUnique({ where: { id: postId }, select: { id: true, authorId: true, visibility: true, content: true, sharedPostId: true } });
   if (!post) return null;
   if (await isBlockedEitherWay(viewerId, post.authorId)) return null;
   if (post.visibility === "CONNECTIONS" && !(await isConnected(viewerId, post.authorId))) return null;
@@ -59,4 +59,23 @@ export async function addPostComment(viewer: { id: string; name: string }, postI
   ]);
   await notify({ userId: post.authorId, actorId: viewer.id, type: "POST_COMMENT", title: k("notif.postComment", { name: viewer.name }), body: content.slice(0, 120), href: `/feed/${post.id}` });
   return comment;
+}
+
+/**
+ * Reposts a post to the member's own feed (a new public post pointing at it, with optional words of their own).
+ * Reposting a repost shares the original. The original's author is told, unless it's the member themselves.
+ * Null when the post is gone or hidden from this member.
+ */
+export async function repostPost(viewer: { id: string; name: string }, postId: string, content: string) {
+  const seen = await canSeePost(viewer.id, postId);
+  const original = seen?.sharedPostId ? await canSeePost(viewer.id, seen.sharedPostId) : seen;
+  if (!original) return null;
+  const [repost] = await db.$transaction([
+    db.post.create({ data: { authorId: viewer.id, content: content.trim().slice(0, 3000), sharedPostId: original.id, visibility: "PUBLIC" }, select: { id: true } }),
+    db.post.update({ where: { id: original.id }, data: { shareCount: { increment: 1 } } }),
+  ]);
+  if (original.authorId !== viewer.id) {
+    await notify({ userId: original.authorId, actorId: viewer.id, type: "POST_SHARE", title: k("notif.postShare", { name: viewer.name }), href: `/feed/${original.id}` });
+  }
+  return repost;
 }
