@@ -1,6 +1,7 @@
 import "server-only";
 import { db } from "@/server/db";
 import { connectionIds } from "@/server/services/network";
+import { deleteStored } from "@/server/storage";
 
 /** How long a story stays up. */
 export const STORY_TTL_MS = 24 * 60 * 60_000;
@@ -101,5 +102,14 @@ export async function markStoryViewed(viewerId: string, storyId: string) {
   if (story.userId === viewerId) return true;
   if (!(await storyAudience(viewerId)).includes(story.userId)) return false;
   await db.storyView.createMany({ data: [{ storyId, viewerId }], skipDuplicates: true });
+  return true;
+}
+
+/** Deletes one of the member's own stories (live or expired) and its photo or video and still frame. False if not theirs. */
+export async function deleteOwnStory(userId: string, storyId: string) {
+  const story = await db.story.findFirst({ where: { id: storyId, userId }, select: { id: true, mediaUrl: true, thumbnailUrl: true } });
+  if (!story) return false;
+  await db.story.delete({ where: { id: story.id } });
+  await deleteStored([story.mediaUrl, story.thumbnailUrl]);
   return true;
 }

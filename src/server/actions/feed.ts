@@ -8,7 +8,7 @@ import { LIMITS } from "@/server/rate-limit";
 import { getComments, getFeed, type FeedComment, type FeedPost } from "@/server/services/feed";
 import { deleteStored, storeUpload, UploadError } from "@/server/storage";
 import { addPostComment, canSeePost, repostPost, setPostLike } from "@/server/services/post-interactions";
-import { createPost, postingProblem, postSchema } from "@/server/services/posting";
+import { createPost, deleteOwnPost, postingProblem, postSchema } from "@/server/services/posting";
 import { videoMedia } from "@/server/services/video-media";
 import { deleteDraft, draftSchema, MAX_DRAFT_MEDIA, publishDraft, saveDraft } from "@/server/services/post-drafts";
 
@@ -163,10 +163,7 @@ export async function sharePostAction(postId: string, content: string): Promise<
 
 export async function deletePostAction(postId: string): Promise<ActionState> {
   return withViewer({ limit: LIMITS.write }, async (viewer) => {
-    const post = await db.post.findFirst({ where: { id: id.parse(postId), authorId: viewer.id }, select: { id: true, mediaUrls: true, thumbnailUrl: true } });
-    if (!post) return fail("@msg.postNotFound");
-    await db.post.delete({ where: { id: post.id } });
-    await deleteStored([...post.mediaUrls, post.thumbnailUrl]);
+    if (!(await deleteOwnPost(viewer.id, id.parse(postId)))) return fail("@msg.postNotFound");
     revalidatePath("/feed");
     return { ok: true, message: "@msg.postDeleted" };
   });

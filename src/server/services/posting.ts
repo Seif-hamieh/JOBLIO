@@ -1,6 +1,7 @@
 import "server-only";
 import { z } from "zod";
 import { db } from "@/server/db";
+import { deleteStored } from "@/server/storage";
 
 // Writing a post: the fields, the checks on what's attached, and creating it. Shared by the website's composer,
 // publishing a draft (website and app) and the app, so every way of posting follows the same rules.
@@ -44,6 +45,18 @@ export async function postingProblem(author: Author, d: Pick<PostFields, "asComp
     return "@msg.companyPostAdminsOnly";
   }
   return null;
+}
+
+/**
+ * Deletes one of the member's own posts, then its photos or video and still frame from storage. False when it isn't
+ * theirs or no longer exists. Reposts of it stay, without the original (they point to nothing).
+ */
+export async function deleteOwnPost(userId: string, postId: string) {
+  const post = await db.post.findFirst({ where: { id: postId, authorId: userId }, select: { id: true, mediaUrls: true, thumbnailUrl: true } });
+  if (!post) return false;
+  await db.post.delete({ where: { id: post.id } });
+  await deleteStored([...post.mediaUrls, post.thumbnailUrl]);
+  return true;
 }
 
 /** Creates the post (after postingProblem said yes). With `video` (checked by videoMedia), mediaUrls is just the video. */
