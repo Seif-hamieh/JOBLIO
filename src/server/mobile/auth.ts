@@ -43,7 +43,7 @@ export async function getMobileSession(req: Request) {
  */
 export async function forwardToAuth(req: Request, path: string, body: unknown, sessionToken?: string) {
   const headers = new Headers({ "content-type": "application/json" });
-  for (const h of ["x-forwarded-for", "x-real-ip", "user-agent", "accept-language"]) {
+  for (const h of ["cf-connecting-ip", "user-agent", "accept-language"]) {
     const v = req.headers.get(h);
     if (v) headers.set(h, v);
   }

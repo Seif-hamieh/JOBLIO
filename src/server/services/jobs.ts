@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import { cache } from "react";
 import { isBot } from "@/lib/bots";
 import { db, type Prisma } from "@/server/db";
+import { clientIp } from "@/server/client-ip";
 import { resolveCountryCode } from "@/lib/geo";
 import type { JobSearchParams } from "@/lib/validation/search";
 import type { MatchResult } from "@/lib/matching/engine";
@@ -251,7 +252,7 @@ const VIEW_WINDOW_MS = 24 * 3600 * 1000;
 /** A stable, non-reversible key for a signed-out visitor (network address + browser). */
 export async function anonymousViewerKey() {
   const h = await headers();
-  const ip = h.get("x-forwarded-for")?.split(",")[0]?.trim() ?? h.get("x-real-ip") ?? "";
+  const ip = clientIp(h);
   return "a:" + createHash("sha256").update(`${ip}|${h.get("user-agent") ?? ""}`).digest("hex").slice(0, 40);
 }
 

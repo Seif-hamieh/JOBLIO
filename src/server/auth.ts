@@ -72,6 +72,10 @@ export const auth = betterAuth({
     cookieCache: { enabled: true, maxAge: 5 * 60 },
   },
 
+  // Attempts are counted per visitor address: Cloudflare's CF-Connecting-IP, which visitors can't fake (the
+  // default X-Forwarded-For can be padded by the visitor, which made Better Auth fall back to one shared counter).
+  advanced: { ipAddress: { ipAddressHeaders: ["cf-connecting-ip"] } },
+
   rateLimit: {
     // Better Auth applies stricter built-in rules to sign-in, sign-up,
     // password reset and verification endpoints on top of this default.

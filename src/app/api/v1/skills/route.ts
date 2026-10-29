@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { clientIp } from "@/server/client-ip";
 import { unstable_cache } from "next/cache";
 import { db } from "@/server/db";
 import { rateLimit } from "@/server/rate-limit";
@@ -19,7 +20,7 @@ const allSkills = unstable_cache(
 
 // GET /api/v1/skills?q=rea — skill taxonomy autocomplete (public, cacheable).
 export async function GET(req: NextRequest) {
-  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
+  const ip = clientIp(req.headers);
   // 30 lookups per minute per address (the search box debounces typing).
   if (!rateLimit(`skills:${ip}`, 30, 60_000).ok) {
     return NextResponse.json({ error: "Too many requests" }, { status: 429, headers: { "Retry-After": "60" } });

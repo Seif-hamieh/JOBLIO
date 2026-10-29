@@ -61,8 +61,19 @@ async function detailState(kind: string, key: string): Promise<"ok" | "missing" 
   return (await db.user.findUnique({ where: { username: key }, select: { id: true } })) ? "ok" : "missing";
 }
 
+/** Largest request body the site accepts (uploads are 4 MB at most; website forms 12 MB, see next.config). */
+const MAX_API_BODY = 10 * 1024 * 1024;
+
 export async function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
+  // API requests: only the size check. A declared body over the limit is refused before anything reads it; a body
+  // sent without a declared size is buffered only up to the same limit (proxyClientMaxBodySize in next.config), so a
+  // huge upload can't fill the server's memory.
+  if (pathname.startsWith("/api/")) {
+    const length = Number(request.headers.get("content-length") ?? 0);
+    if (length > MAX_API_BODY) return NextResponse.json({ error: "PAYLOAD_TOO_LARGE", message: "The request is too large (10 MB at most)." }, { status: 413 });
+    return NextResponse.next();
+  }
   // AI-training and SEO scrapers: turned away before any page renders (they cost CPU and bring no visitors).
   if (isBlockedBot(request.headers.get("user-agent"))) return new NextResponse("Forbidden", { status: 403 });
   const hasSession = !!getSessionCookie(request);
@@ -115,6 +126,6 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!api|monitoring|_next/static|_next/image|media|icon.svg|favicon.ico|robots.txt|sitemap.xml|opengraph-image|twitter-image|sw.js|offline.html|manifest.webmanifest|icon-|apple-touch-icon|apple-icon|social/|screenshots/|.*\\.(?:png|jpe?g|gif|webp|avif|svg|ico|txt|xml|json|webmanifest|js|css|map|woff2?|apk)$).*)",
+    "/((?!monitoring|_next/static|_next/image|media|icon.svg|favicon.ico|robots.txt|sitemap.xml|opengraph-image|twitter-image|sw.js|offline.html|manifest.webmanifest|icon-|apple-touch-icon|apple-icon|social/|screenshots/|.*\\.(?:png|jpe?g|gif|webp|avif|svg|ico|txt|xml|json|webmanifest|js|css|map|woff2?|apk)$).*)",
   ],
 };

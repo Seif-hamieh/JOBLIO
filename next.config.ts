@@ -30,6 +30,9 @@ const nextConfig: NextConfig = {
   experimental: {
     // Uploads go through server actions; allow files up to the configured limit.
     serverActions: { bodySizeLimit: "12mb" },
+    // Request bodies the proxy holds in memory are capped (API requests: 10 MB, see src/proxy.ts); website forms are
+    // server actions, allowed up to 12 MB above, so the cap sits just over that.
+    proxyClientMaxBodySize: "13mb",
   },
   async redirects() {
     // /professionals has no list of its own yet: send people to Featured Professionals.
