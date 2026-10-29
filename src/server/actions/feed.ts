@@ -74,7 +74,7 @@ export async function createPostAction(_prev: ActionState, form: FormData): Prom
 
 /** Saves the composer as a draft (new, or the one in "draftId"). */
 export async function saveDraftAction(_prev: ActionState<{ id: string }>, form: FormData): Promise<ActionState<{ id: string }>> {
-  return withViewer<{ id: string }>({ limit: LIMITS.post }, async (viewer) => {
+  return withViewer<{ id: string }>({ limit: LIMITS.write }, async (viewer) => {
     const parsed = parse(draftSchema, postFields(form));
     if (!parsed.success) return parsed.state;
     const draftId = draftIdOf(form);
@@ -92,7 +92,7 @@ export async function saveDraftAction(_prev: ActionState<{ id: string }>, form: 
 }
 
 export async function deleteDraftAction(draftId: string): Promise<ActionState> {
-  return withViewer({ limit: LIMITS.post }, async (viewer) => {
+  return withViewer({ limit: LIMITS.write }, async (viewer) => {
     if (!(await deleteDraft(viewer.id, id.parse(draftId)))) return fail("@msg.draftNotFound");
     revalidatePath("/feed/drafts");
     return { ok: true, message: "@msg.draftDeleted" };

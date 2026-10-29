@@ -20,7 +20,7 @@ export async function POST(req: Request) {
   const session = await getMobileSession(req);
   if (!session) return mobileError(401, "UNAUTHORIZED", "Sign in first.");
   const userId = session.user.id;
-  if (!rateLimit(`${LIMITS.post.key}:${userId}`, LIMITS.post.max, LIMITS.post.windowMs).ok) return mobileError(429, "RATE_LIMITED", "Slow down a little.");
+  if (!rateLimit(`${LIMITS.write.key}:${userId}`, LIMITS.write.max, LIMITS.write.windowMs).ok) return mobileError(429, "RATE_LIMITED", "Slow down a little.");
   const r = await readDraftForm(req, userId, null);
   if ("error" in r) return r.error;
   const draft = await saveDraft(userId, null, r.d, [], r.added);

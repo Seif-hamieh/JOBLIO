@@ -23,7 +23,7 @@ export async function PUT(req: Request, { params }: RouteContext<"/api/mobile/dr
   const session = await getMobileSession(req);
   if (!session) return mobileError(401, "UNAUTHORIZED", "Sign in first.");
   const userId = session.user.id;
-  if (!rateLimit(`${LIMITS.post.key}:${userId}`, LIMITS.post.max, LIMITS.post.windowMs).ok) return mobileError(429, "RATE_LIMITED", "Slow down a little.");
+  if (!rateLimit(`${LIMITS.write.key}:${userId}`, LIMITS.write.max, LIMITS.write.windowMs).ok) return mobileError(429, "RATE_LIMITED", "Slow down a little.");
   const id = (await params).id.slice(0, 40);
   const existing = await getDraft(userId, id);
   if (!existing) return notFound();

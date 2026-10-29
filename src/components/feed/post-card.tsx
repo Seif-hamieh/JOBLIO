@@ -236,7 +236,7 @@ export function PostCard({ post, viewer }: { post: FeedPost; viewer: { id: strin
         <div className={cn("mt-3 grid gap-0.5", post.mediaUrls.length > 1 && "grid-cols-2")}>
           {post.mediaUrls.map((url, i) => (
             // eslint-disable-next-line @next/next/no-img-element
-            <img key={url} src={url} alt="" loading="lazy" className={cn("w-full object-cover", post.mediaUrls.length === 1 ? "max-h-[440px]" : "aspect-square", post.mediaUrls.length === 3 && i === 0 && "row-span-2 h-full")} />
+            <img key={url} src={url} alt="" loading="lazy" className={cn("w-full", post.mediaUrls.length === 1 ? "max-h-[640px] bg-surface-2 object-contain" : "aspect-square object-cover", post.mediaUrls.length === 3 && i === 0 && "row-span-2 h-full")} />
           ))}
         </div>
       )}
