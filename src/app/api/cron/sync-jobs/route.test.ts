@@ -4,6 +4,7 @@ const { findFirst, syncAllSources, runJobAlerts } = vi.hoisted(() => ({ findFirs
 vi.mock("@/server/db", () => ({ db: { user: { findFirst } } }));
 vi.mock("@/server/job-import/import", () => ({ syncAllSources }));
 vi.mock("@/server/services/job-alerts", () => ({ runJobAlerts }));
+vi.mock("@/server/services/storage-cleanup", () => ({ cleanupStorage: async () => ({ expiredStories: 0, orphans: 0, bytes: 0 }) }));
 
 import { GET } from "./route";
 

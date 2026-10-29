@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/server/db";
 import { syncAllSources } from "@/server/job-import/import";
 import { runJobAlerts } from "@/server/services/job-alerts";
+import { cleanupStorage } from "@/server/services/storage-cleanup";
 
 export const dynamic = "force-dynamic";
 // Three feeds plus up to 300 inserts; well under a minute in practice.
@@ -42,5 +43,11 @@ export async function GET(req: Request) {
     return null;
   });
   if (alerts) console.log(`[job-alerts] ${alerts.notified} of ${alerts.checked} alerts had new jobs`);
-  return NextResponse.json({ ok: true, created, results, alerts, ms: Date.now() - started });
+  // Last, the disk: expired stories and left-over upload files (see storage-cleanup.ts). Never fails the run.
+  const cleanup = await cleanupStorage().catch((e) => {
+    console.error("[cleanup] run failed:", e);
+    return null;
+  });
+  if (cleanup) console.log(`[cleanup] ${cleanup.expiredStories} expired stories, ${cleanup.orphans} left-over files (${Math.round(cleanup.bytes / 1e6)} MB)`);
+  return NextResponse.json({ ok: true, created, results, alerts, cleanup, ms: Date.now() - started });
 }
