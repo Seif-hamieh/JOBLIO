@@ -17,6 +17,7 @@ import {
   Languages,
   Link2,
   Lock,
+  Newspaper,
   MapPin,
   Sparkles,
   Target,
@@ -42,6 +43,8 @@ import { Badge, OpenToWorkBadge } from "@/components/ui/badge";
 import { Card, CardHeader } from "@/components/ui/misc";
 import { Reveal } from "@/components/ui/motion";
 import { RichText } from "@/components/feed/rich-text";
+import { ArticleCard } from "@/components/articles/article-card";
+import { listArticles } from "@/server/services/articles";
 import type { AchievementCode } from "@/lib/achievements";
 import { APP_URL, hostname, safeExternalUrl } from "@/lib/utils";
 import { jsonLdScript } from "@/lib/job-posting-ld";
@@ -105,6 +108,8 @@ export default async function ProfilePage({ params }: PageProps<"/in/[username]"
       ? db.job.findMany({ where: { companyId: viewer.company.id, status: "OPEN" }, select: { id: true, title: true, ...jobMatchSelect }, take: 20 })
       : [],
   ]);
+  const articles = await listArticles(viewer?.id ?? null, user.id, self ? 50 : 6);
+  const shownArticles = (self ? articles.filter((a) => a.status === "PUBLISHED") : articles).slice(0, 6);
   const relation = relations?.get(user.id) ?? { state: "none" as const };
   const endorsedSet = new Set(endorsed.map((e) => e.userSkillId));
 
@@ -229,6 +234,36 @@ export default async function ProfilePage({ params }: PageProps<"/in/[username]"
         {p.about && (
           <Section id="about" title={t("profile.about")} icon={Sparkles}>
             <RichText text={p.about} clamp={600} className="text-fg-muted" />
+          </Section>
+        )}
+
+        {(shownArticles.length > 0 || self) && (
+          <Section
+            id="articles"
+            title={t("articles.articles")}
+            icon={Newspaper}
+            action={
+              self ? (
+                <Link href="/articles" className="text-sm font-medium text-brand-soft-fg hover:underline">
+                  {t("articles.myArticles")}
+                </Link>
+              ) : undefined
+            }
+          >
+            {shownArticles.length > 0 ? (
+              <div className="space-y-3">
+                {shownArticles.map((a) => (
+                  <ArticleCard key={a.id} article={a} />
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-fg-muted">
+                {t("articles.noneSelf")}{" "}
+                <Link href="/articles/new" className="font-medium text-brand-soft-fg hover:underline">
+                  {t("articles.write")}
+                </Link>
+              </p>
+            )}
           </Section>
         )}
 

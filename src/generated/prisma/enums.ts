@@ -395,3 +395,11 @@ export const PromotionKind = {
 } as const
 
 export type PromotionKind = (typeof PromotionKind)[keyof typeof PromotionKind]
+
+
+export const ArticleStatus = {
+  DRAFT: 'DRAFT',
+  PUBLISHED: 'PUBLISHED'
+} as const
+
+export type ArticleStatus = (typeof ArticleStatus)[keyof typeof ArticleStatus]

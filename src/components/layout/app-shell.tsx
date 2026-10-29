@@ -25,6 +25,7 @@ import {
   Trophy,
   User,
   Users,
+  Newspaper,
 } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
 import { Avatar } from "@/components/ui/avatar";
@@ -114,6 +115,9 @@ function UserMenu({ viewer }: { viewer: ShellViewer }) {
         <MenuSeparator />
         <MenuItem icon={<User />} onSelect={() => router.push(`/in/${viewer.username}`)}>
           {t("nav.myProfile")}
+        </MenuItem>
+        <MenuItem icon={<Newspaper />} onSelect={() => router.push("/articles")}>
+          {t("articles.myArticles")}
         </MenuItem>
         <MenuItem icon={<Trophy />} onSelect={() => router.push("/profile/achievements")}>
           {t("nav.achievements")}

@@ -328,3 +328,8 @@ export type ProfileBoost = Prisma.ProfileBoostModel
  * 
  */
 export type WebhookEvent = Prisma.WebhookEventModel
+/**
+ * Model Article
+ * 
+ */
+export type Article = Prisma.ArticleModel

@@ -12,8 +12,8 @@
 //   denormalised onto the promoted row so ranking is a single indexed sort.
 
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider        = "prisma-client"
+  output          = "../src/generated/prisma"
   // Load nested relations (include/select) in one SQL query with joins instead
   // of one round trip per level — the app and the database are in different
   // data centres, so round trips dominate page time.
@@ -322,61 +322,62 @@ model User {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  username         String?      @unique
-  intent           UserIntent   @default(SEEKER)
-  platformRole     PlatformRole @default(USER)
-  onboardedAt      DateTime?
-  lastSeenAt       DateTime?
-  stripeCustomerId String?      @unique
-  paddleCustomerId String?      @unique
-  priorityCredits  Int          @default(0)
+  username               String?      @unique
+  intent                 UserIntent   @default(SEEKER)
+  platformRole           PlatformRole @default(USER)
+  onboardedAt            DateTime?
+  lastSeenAt             DateTime?
+  stripeCustomerId       String?      @unique
+  paddleCustomerId       String?      @unique
+  priorityCredits        Int          @default(0)
   lastFreeBoostClaimedAt DateTime?
   // Banned by an admin: can no longer sign in (website or app); their sessions are ended at once.
-  bannedAt         DateTime?
-  bannedReason     String?      @db.VarChar(300)
+  bannedAt               DateTime?
+  bannedReason           String?      @db.VarChar(300)
 
   sessions             Session[]
   accounts             Account[]
   profile              Profile?
   settings             UserSettings?
   companyMemberships   CompanyMember[]
-  postedJobs           Job[]               @relation("JobPoster")
+  postedJobs           Job[]                     @relation("JobPoster")
   applications         Application[]
   savedJobs            SavedJob[]
   savedSearches        SavedSearch[]
-  savedCandidates      SavedCandidate[]    @relation("SavedBy")
-  savedByRecruiters    SavedCandidate[]    @relation("SavedCandidate")
-  sentConnections      Connection[]        @relation("ConnectionRequester")
-  receivedConnections  Connection[]        @relation("ConnectionAddressee")
-  following            Follow[]            @relation("Follower")
-  followers            Follow[]            @relation("Following")
+  savedCandidates      SavedCandidate[]          @relation("SavedBy")
+  savedByRecruiters    SavedCandidate[]          @relation("SavedCandidate")
+  sentConnections      Connection[]              @relation("ConnectionRequester")
+  receivedConnections  Connection[]              @relation("ConnectionAddressee")
+  following            Follow[]                  @relation("Follower")
+  followers            Follow[]                  @relation("Following")
   companyFollows       CompanyFollower[]
   posts                Post[]
   comments             Comment[]
   likes                PostLike[]
   endorsementsGiven    Endorsement[]
   conversations        ConversationParticipant[]
-  messages             Message[]           @relation("MessageSender")
-  sharedInMessages     Message[]           @relation("MessageSharedProfile")
-  notifications        Notification[]      @relation("NotificationRecipient")
-  notificationsCaused  Notification[]      @relation("NotificationActor")
+  messages             Message[]                 @relation("MessageSender")
+  sharedInMessages     Message[]                 @relation("MessageSharedProfile")
+  notifications        Notification[]            @relation("NotificationRecipient")
+  notificationsCaused  Notification[]            @relation("NotificationActor")
   achievements         UserAchievement[]
-  profileViewsMade     ProfileView[]       @relation("ProfileViewer")
-  profileViewsReceived ProfileView[]       @relation("ProfileViewed")
-  interviewsScheduled  Interview[]         @relation("InterviewScheduler")
+  profileViewsMade     ProfileView[]             @relation("ProfileViewer")
+  profileViewsReceived ProfileView[]             @relation("ProfileViewed")
+  interviewsScheduled  Interview[]               @relation("InterviewScheduler")
   applicationEvents    ApplicationEvent[]
   recruiterNotes       RecruiterNote[]
   subscriptions        Subscription[]
   payments             Payment[]
   boosts               ProfileBoost[]
-  blocksMade           Block[]             @relation("Blocker")
-  blocksReceived       Block[]             @relation("Blocked")
+  blocksMade           Block[]                   @relation("Blocker")
+  blocksReceived       Block[]                   @relation("Blocked")
   jobReports           JobReport[]
   postReports          PostReport[]
   stories              Story[]
   storyViews           StoryView[]
   pushDevices          PushDevice[]
   postDrafts           PostDraft[]
+  articles             Article[]
 
   @@map("users")
 }
@@ -475,16 +476,16 @@ model Block {
 // ─────────────────────────────────────────────────────────────────────────────
 
 model Profile {
-  id          String   @id @default(cuid())
-  userId      String   @unique
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  headline    String?  @db.VarChar(160)
+  id          String  @id @default(cuid())
+  userId      String  @unique
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  headline    String? @db.VarChar(160)
   about       String?
   coverUrl    String?
   city        String?
-  countryCode String?  @db.Char(2)
+  countryCode String? @db.Char(2)
   website     String?
-  pronouns    String?  @db.VarChar(30)
+  pronouns    String? @db.VarChar(30)
 
   // Saved CV (private storage; reused when applying, visible to recruiters if searchable)
   resumeUrl       String?
@@ -492,8 +493,8 @@ model Profile {
   resumeUpdatedAt DateTime?
 
   // Job-seeking signals
-  openToWork      Boolean      @default(false)
-  availability    Availability @default(NOT_LOOKING)
+  openToWork      Boolean        @default(false)
+  availability    Availability   @default(NOT_LOOKING)
   // Derived from experiences/educations on every change (see profile service).
   yearsExperience Float          @default(0)
   educationLevel  EducationLevel @default(NONE)
@@ -740,12 +741,12 @@ model UserAchievement {
 // ─────────────────────────────────────────────────────────────────────────────
 
 model Industry {
-  id                  String    @id @default(cuid())
-  name                String    @unique
-  slug                String    @unique
-  companies           Company[]
-  jobs                Job[]
-  interestedProfiles  Profile[] @relation("PreferredIndustries")
+  id                 String    @id @default(cuid())
+  name               String    @unique
+  slug               String    @unique
+  companies          Company[]
+  jobs               Job[]
+  interestedProfiles Profile[] @relation("PreferredIndustries")
 
   @@map("industries")
 }
@@ -785,7 +786,7 @@ model Company {
   experiences   Experience[]
   subscriptions Subscription[]
   payments      Payment[]
-  sharedIn      Message[]       @relation("MessageSharedCompany")
+  sharedIn      Message[]         @relation("MessageSharedCompany")
 
   @@index([industryId])
   @@index([countryCode, city])
@@ -885,6 +886,8 @@ model Job {
   posts        Post[]
   sharedIn     Message[]      @relation("MessageSharedJob")
 
+  // One row per imported listing: the import skips anything already stored.
+  @@unique([externalSource, externalId])
   @@index([status, publishedAt(sort: Desc)])
   @@index([companyId, status])
   @@index([status, workMode])
@@ -895,8 +898,6 @@ model Job {
   @@index([featuredUntil])
   @@index([sponsoredUntil])
   @@index([urgentUntil])
-  // One row per imported listing: the import skips anything already stored.
-  @@unique([externalSource, externalId])
   @@map("jobs")
 }
 
@@ -1073,6 +1074,7 @@ model PushDevice {
   @@index([userId])
   @@map("push_devices")
 }
+
 model SavedJob {
   userId    String
   jobId     String
@@ -1449,4 +1451,29 @@ model WebhookEvent {
   processedAt DateTime @default(now())
 
   @@map("webhook_events")
+}
+
+enum ArticleStatus {
+  DRAFT
+  PUBLISHED
+}
+
+// Long-form articles: a title, an optional cover image and the text (paragraphs, with simple Markdown: ## headings,
+// **bold**, *italic*, - lists, > quotes, links). Drafts are seen only by the author; published ones on their profile.
+model Article {
+  id          String        @id @default(cuid())
+  authorId    String
+  title       String
+  content     String
+  coverImage  String?
+  status      ArticleStatus @default(DRAFT)
+  publishedAt DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([authorId, status, publishedAt(sort: Desc)])
+  @@index([status, publishedAt(sort: Desc)])
+  @@map("articles")
 }

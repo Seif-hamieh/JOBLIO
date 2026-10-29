@@ -5,7 +5,7 @@ import { useActionState, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, m } from "motion/react";
-import { Award, Briefcase, FileText, FolderGit2, Globe2, ImagePlus, PenLine, Users, X } from "lucide-react";
+import { Award, Briefcase, FileText, FolderGit2, Globe2, ImagePlus, Newspaper, PenLine, Users, X } from "lucide-react";
 import { createPostAction, saveDraftAction } from "@/server/actions/feed";
 import { Avatar, CompanyLogo } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -128,6 +128,9 @@ export function Composer({
                 <o.icon className="size-4" /> <span className="hidden sm:inline">{t(o.label)}</span>
               </button>
             ))}
+            <Link href="/articles/new" className="flex flex-1 items-center justify-center gap-1.5 rounded-xl py-2 text-xs font-medium text-fg-muted transition hover:bg-surface-2 hover:text-fg sm:text-sm">
+              <Newspaper className="size-4" /> <span className="hidden sm:inline">{t("articles.write")}</span>
+            </Link>
           </div>
         </div>
       )}
