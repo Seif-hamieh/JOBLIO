@@ -4,9 +4,33 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Fragment, useEffect, useLayoutEffect, useRef, useState, useTransition } from "react";
 import { AnimatePresence, m } from "motion/react";
-import { ArrowLeft, Briefcase, Building2, CheckCheck, Check, FileText, MoreHorizontal, Paperclip, Plus, SendHorizontal, Trash2, UserRound, X } from "lucide-react";
+import {
+  ArrowLeft,
+  Briefcase,
+  Building2,
+  CheckCheck,
+  Check,
+  MapPin,
+  Mic,
+  MoreHorizontal,
+  Paperclip,
+  Plus,
+  SendHorizontal,
+  Trash2,
+  UserRound,
+  X,
+} from "lucide-react";
 import type { ChatMessage } from "@/server/services/messaging";
-import { deleteMessageAction, fetchMessageAction, loadOlderMessagesAction, markReadAction, sendMessageAction, shareSearchAction, typingAction } from "@/server/actions/messages";
+import {
+  deleteMessageAction,
+  fetchMessageAction,
+  loadOlderMessagesAction,
+  markReadAction,
+  openConversationAction,
+  sendMessageAction,
+  shareSearchAction,
+  typingAction,
+} from "@/server/actions/messages";
 import { useRealtime, useRealtimeEvent } from "@/components/realtime/realtime-provider";
 import { Avatar, CompanyLogo } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -17,7 +41,18 @@ import { OpenToWorkBadge } from "@/components/ui/badge";
 import { toast } from "@/components/ui/toast";
 import { LocalTime } from "@/components/ui/local-time";
 import { cn } from "@/lib/utils";
-import { acceptFor, checkUpload } from "@/lib/upload-check";
+import { resolveMessage } from "@/i18n/message";
+import {
+  CHAT_ACCEPT,
+  CHAT_MAX_BYTES,
+  currentLocation,
+  FileCard,
+  formatDuration,
+  LocationCard,
+  uploadChatFile,
+  useVoiceRecorder,
+  VoiceMessage,
+} from "@/components/messages/chat-media";
 import { useI18n } from "@/i18n/client";
 import type { Format } from "@/i18n/format";
 import type { T } from "@/i18n/translate";
@@ -33,67 +68,72 @@ function dayLabel(d: Date, t: T, f: Format) {
   return f.date(d, { weekday: "long", month: "short", day: "numeric" });
 }
 
-function formatBytes(n: number | null) {
-  if (!n) return "";
-  return n > 1024 * 1024 ? `${(n / 1024 / 1024).toFixed(1)} MB` : `${Math.round(n / 1024)} KB`;
-}
-
 function Bubble({ m: msg, mine, onDelete }: { m: ChatMessage; mine: boolean; onDelete?: () => void }) {
   const { t } = useI18n();
   const isImage = msg.attachmentMime?.startsWith("image/");
   return (
     <div className={cn("group/bubble flex max-w-[78%] items-start gap-1", mine ? "flex-row-reverse self-end" : "self-start")}>
       <div className={cn("flex min-w-0 flex-col gap-1.5", mine ? "items-end" : "items-start")}>
-      {msg.attachmentUrl &&
-        (isImage ? (
-          <a href={msg.attachmentUrl} target="_blank" rel="noopener noreferrer" className="overflow-hidden rounded-2xl border border-border">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={msg.attachmentUrl} alt={msg.attachmentName ?? ""} className="max-h-72 object-cover" loading="lazy" />
-          </a>
-        ) : (
-          <a href={msg.attachmentUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 rounded-2xl border border-border bg-surface p-3 hover:border-brand/40">
-            <span className="grid size-10 place-items-center rounded-xl bg-brand-soft text-brand-soft-fg">
-              <FileText className="size-5" />
-            </span>
+        {msg.attachmentUrl &&
+          (msg.kind === "AUDIO" ? (
+            <VoiceMessage src={msg.attachmentUrl} mine={mine} />
+          ) : isImage ? (
+            <a href={msg.attachmentUrl} target="_blank" rel="noopener noreferrer" className="overflow-hidden rounded-2xl border border-border">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={msg.attachmentUrl} alt={msg.attachmentName ?? ""} className="max-h-72 object-cover" loading="lazy" />
+            </a>
+          ) : (
+            <FileCard href={msg.attachmentUrl} name={msg.attachmentName ?? ""} size={msg.attachmentSize} mime={msg.attachmentMime} />
+          ))}
+        {msg.latitude !== null && msg.longitude !== null && <LocationCard latitude={msg.latitude} longitude={msg.longitude} />}
+        {msg.sharedJob && (
+          <Link
+            href={`/jobs/${msg.sharedJob.id}`}
+            className="flex w-72 items-center gap-3 rounded-2xl border border-border bg-surface p-3 hover:border-brand/40"
+          >
+            <CompanyLogo name={msg.sharedJob.company.name} src={msg.sharedJob.company.logoUrl} color={msg.sharedJob.company.brandColor} size="sm" />
             <span className="min-w-0">
-              <span className="block max-w-[220px] truncate text-sm font-medium">{msg.attachmentName}</span>
-              <span className="text-xs text-fg-subtle">{formatBytes(msg.attachmentSize)}</span>
+              <span className="block truncate text-sm font-semibold">{msg.sharedJob.title}</span>
+              <span className="block truncate text-xs text-fg-muted">{msg.sharedJob.company.name}</span>
             </span>
-          </a>
-        ))}
-      {msg.sharedJob && (
-        <Link href={`/jobs/${msg.sharedJob.id}`} className="flex w-72 items-center gap-3 rounded-2xl border border-border bg-surface p-3 hover:border-brand/40">
-          <CompanyLogo name={msg.sharedJob.company.name} src={msg.sharedJob.company.logoUrl} color={msg.sharedJob.company.brandColor} size="sm" />
-          <span className="min-w-0">
-            <span className="block truncate text-sm font-semibold">{msg.sharedJob.title}</span>
-            <span className="block truncate text-xs text-fg-muted">{msg.sharedJob.company.name}</span>
-          </span>
-        </Link>
-      )}
-      {msg.sharedUser && (
-        <Link href={`/in/${msg.sharedUser.username}`} className="flex w-72 items-center gap-3 rounded-2xl border border-border bg-surface p-3 hover:border-brand/40">
-          <Avatar name={msg.sharedUser.name} src={msg.sharedUser.image} size="md" />
-          <span className="min-w-0">
-            <span className="block truncate text-sm font-semibold">{msg.sharedUser.name}</span>
-            <span className="block truncate text-xs text-fg-muted">{msg.sharedUser.profile?.headline}</span>
-            {msg.sharedUser.profile?.openToWork && <OpenToWorkBadge className="mt-1 scale-90 origin-[inline-start]" />}
-          </span>
-        </Link>
-      )}
-      {msg.sharedCompany && (
-        <Link href={`/companies/${msg.sharedCompany.slug}`} className="flex w-72 items-center gap-3 rounded-2xl border border-border bg-surface p-3 hover:border-brand/40">
-          <CompanyLogo name={msg.sharedCompany.name} src={msg.sharedCompany.logoUrl} color={msg.sharedCompany.brandColor} size="sm" />
-          <span className="min-w-0">
-            <span className="block truncate text-sm font-semibold">{msg.sharedCompany.name}</span>
-            <span className="block truncate text-xs text-fg-muted">{msg.sharedCompany.tagline}</span>
-          </span>
-        </Link>
-      )}
-      {msg.body && (
-        <div dir="auto" className={cn("whitespace-pre-line break-words rounded-3xl px-4 py-2.5 text-[14.5px] leading-relaxed", mine ? "rounded-ee-lg bg-brand text-brand-fg" : "rounded-es-lg bg-surface-2")}>
-          {msg.body}
-        </div>
-      )}
+          </Link>
+        )}
+        {msg.sharedUser && (
+          <Link
+            href={`/in/${msg.sharedUser.username}`}
+            className="flex w-72 items-center gap-3 rounded-2xl border border-border bg-surface p-3 hover:border-brand/40"
+          >
+            <Avatar name={msg.sharedUser.name} src={msg.sharedUser.image} size="md" />
+            <span className="min-w-0">
+              <span className="block truncate text-sm font-semibold">{msg.sharedUser.name}</span>
+              <span className="block truncate text-xs text-fg-muted">{msg.sharedUser.profile?.headline}</span>
+              {msg.sharedUser.profile?.openToWork && <OpenToWorkBadge className="mt-1 scale-90 origin-[inline-start]" />}
+            </span>
+          </Link>
+        )}
+        {msg.sharedCompany && (
+          <Link
+            href={`/companies/${msg.sharedCompany.slug}`}
+            className="flex w-72 items-center gap-3 rounded-2xl border border-border bg-surface p-3 hover:border-brand/40"
+          >
+            <CompanyLogo name={msg.sharedCompany.name} src={msg.sharedCompany.logoUrl} color={msg.sharedCompany.brandColor} size="sm" />
+            <span className="min-w-0">
+              <span className="block truncate text-sm font-semibold">{msg.sharedCompany.name}</span>
+              <span className="block truncate text-xs text-fg-muted">{msg.sharedCompany.tagline}</span>
+            </span>
+          </Link>
+        )}
+        {msg.body && (
+          <div
+            dir="auto"
+            className={cn(
+              "whitespace-pre-line break-words rounded-3xl px-4 py-2.5 text-[14.5px] leading-relaxed",
+              mine ? "rounded-ee-lg bg-brand text-brand-fg" : "rounded-es-lg bg-surface-2",
+            )}
+          >
+            {msg.body}
+          </div>
+        )}
       </div>
       {onDelete && (
         <Menu>
@@ -128,12 +168,27 @@ function SharePicker({ kind, onPick, onClose }: { kind: Share["kind"] | null; on
     };
   }, [kind, q]);
   return (
-    <Dialog open={!!kind} onOpenChange={(o) => !o && onClose()} size="sm" title={kind === "job" ? t("messages.shareJob") : kind === "person" ? t("messages.shareProfile") : t("messages.shareCompany")}>
-      <input autoFocus value={q} onChange={(e) => setQ(e.target.value)} placeholder={t("common.search")} className="h-11 w-full rounded-xl border border-border bg-surface px-3.5 text-sm outline-none focus:border-brand" />
+    <Dialog
+      open={!!kind}
+      onOpenChange={(o) => !o && onClose()}
+      size="sm"
+      title={kind === "job" ? t("messages.shareJob") : kind === "person" ? t("messages.shareProfile") : t("messages.shareCompany")}
+    >
+      <input
+        autoFocus
+        value={q}
+        onChange={(e) => setQ(e.target.value)}
+        placeholder={t("common.search")}
+        className="h-11 w-full rounded-xl border border-border bg-surface px-3.5 text-sm outline-none focus:border-brand"
+      />
       <ul className="mt-3 max-h-80 space-y-1 overflow-y-auto">
         {items.map((it) => (
           <li key={it.id}>
-            <button type="button" onClick={() => onPick({ kind: kind!, id: it.id, title: it.title })} className="w-full rounded-xl p-2.5 text-start hover:bg-surface-2">
+            <button
+              type="button"
+              onClick={() => onPick({ kind: kind!, id: it.id, title: it.title })}
+              className="w-full rounded-xl p-2.5 text-start hover:bg-surface-2"
+            >
               <div className="text-sm font-medium">{it.title}</div>
               {it.subtitle && <div className="truncate text-xs text-fg-muted">{it.subtitle}</div>}
             </button>
@@ -171,6 +226,8 @@ export function Thread({
   const [typing, setTyping] = useState(false);
   const [body, setBody] = useState("");
   const [file, setFile] = useState<File | null>(null);
+  // Upload progress of the file being sent (0–100), or null.
+  const [progress, setProgress] = useState<number | null>(null);
   const [share, setShare] = useState<Share | null>(initialShare ?? null);
   const [picker, setPicker] = useState<Share["kind"] | null>(null);
   const [hasOlder, setHasOlder] = useState(initialMessages.length >= 50);
@@ -229,40 +286,90 @@ export function Thread({
   function pickAttachment(input: HTMLInputElement) {
     const picked = input.files?.[0] ?? null;
     input.value = "";
-    const problem = picked && checkUpload(picked, "attachment", t);
-    if (problem) return toast.error(problem);
+    if (picked && picked.size > CHAT_MAX_BYTES) return toast.error(t("messages.fileTooBig"));
     setFile(picked);
   }
 
   function send() {
     if (!body.trim() && !file && !share) return;
-    const fd = new FormData();
-    if (conversationId) fd.set("conversationId", conversationId);
-    else fd.set("recipientId", other.id);
-    fd.set("body", body.trim());
-    if (file) fd.set("file", file);
-    if (share?.kind === "job") fd.set("sharedJobId", share.id);
-    if (share?.kind === "person") fd.set("sharedUserId", share.id);
-    if (share?.kind === "company") fd.set("sharedCompanyId", share.id);
-    const draft = body;
-    setBody("");
-    start(async () => {
-      const res = await sendMessageAction(fd).catch(() => null);
-      if (res?.ok && res.data) {
-        setMessages((list) => [...list, res.data!.message]);
-        setFile(null);
-        setShare(null);
-        if (!conversationId) {
-          setConversationId(res.data.conversationId);
-          router.replace(`/messages?c=${res.data.conversationId}`, { scroll: false });
-        }
-        router.refresh();
-      } else {
-        setBody(draft);
-        toast.error(res && !res.ok ? res.error : t("messages.notSent"));
-      }
-    });
+    void deliver({ file, text: body.trim(), share });
   }
+
+  async function shareLocation() {
+    try {
+      const spot = await currentLocation();
+      await deliver({ fields: { latitude: String(spot.latitude), longitude: String(spot.longitude) } });
+    } catch (e) {
+      toast.error(resolveMessage(t, e instanceof Error ? e.message : "@messages.notSent"));
+    }
+  }
+
+  /**
+   * Sends one message: text, a shared job / person / company, a file (uploaded first, with a progress bar) or a
+   * location. A file needs its conversation to exist, so a first message opens the conversation before uploading.
+   */
+  function deliver({
+    file: toSend,
+    text = "",
+    share: shared,
+    fields,
+  }: {
+    file?: File | null;
+    text?: string;
+    share?: Share | null;
+    fields?: Record<string, string>;
+  }) {
+    const draft = body;
+    if (text) setBody("");
+    return new Promise<void>((done) =>
+      start(async () => {
+        try {
+          let cid = conversationId;
+          if (!cid && (toSend || fields)) {
+            const opened = await openConversationAction(other.id);
+            if (!opened?.ok || !opened.data) throw new Error(opened && !opened.ok ? opened.error : "@messages.notSent");
+            cid = opened.data.conversationId;
+          }
+          const fd = new FormData();
+          if (cid) fd.set("conversationId", cid);
+          else fd.set("recipientId", other.id);
+          fd.set("body", text);
+          if (toSend && cid) {
+            setProgress(0);
+            const up = await uploadChatFile(cid, toSend, setProgress);
+            fd.set("attachmentUrl", up.url);
+            fd.set("attachmentName", up.name);
+          }
+          if (shared?.kind === "job") fd.set("sharedJobId", shared.id);
+          if (shared?.kind === "person") fd.set("sharedUserId", shared.id);
+          if (shared?.kind === "company") fd.set("sharedCompanyId", shared.id);
+          for (const [key, v] of Object.entries(fields ?? {})) fd.set(key, v);
+          const res = await sendMessageAction(fd).catch(() => null);
+          if (!res?.ok || !res.data) throw new Error(res && !res.ok ? res.error : "@messages.notSent");
+          setMessages((list) => [...list, res.data!.message]);
+          if (toSend) setFile(null);
+          if (shared) setShare(null);
+          if (!conversationId) {
+            setConversationId(res.data.conversationId);
+            router.replace(`/messages?c=${res.data.conversationId}`, { scroll: false });
+          }
+          router.refresh();
+        } catch (e) {
+          if (text) setBody(draft);
+          toast.error(resolveMessage(t, e instanceof Error ? e.message : "@messages.notSent"));
+        } finally {
+          setProgress(null);
+          done();
+        }
+      }),
+    );
+  }
+
+  // A finished recording is sent like an attached file.
+  const voice = useVoiceRecorder(
+    (key) => toast.error(resolveMessage(t, key)),
+    (recorded) => void deliver({ file: recorded }),
+  );
 
   const lastMine = [...messages].reverse().find((x) => x.senderId === viewerId);
   const seen = !!lastMine && !!otherRead && otherRead >= new Date(lastMine.createdAt);
@@ -287,7 +394,15 @@ export function Thread({
           <div className="min-w-0">
             <div className="truncate font-semibold">{other.name}</div>
             <div className="truncate text-xs text-fg-muted" suppressHydrationWarning>
-              {typing ? <span className="text-brand-soft-fg">{t("messages.typing")}</span> : online ? t("messages.online") : other.lastSeenAt ? t("messages.activeAgo", { when: f.timeAgo(other.lastSeenAt) }) : other.profile?.headline}
+              {typing ? (
+                <span className="text-brand-soft-fg">{t("messages.typing")}</span>
+              ) : online ? (
+                t("messages.online")
+              ) : other.lastSeenAt ? (
+                t("messages.activeAgo", { when: f.timeAgo(other.lastSeenAt) })
+              ) : (
+                other.profile?.headline
+              )}
             </div>
           </div>
         </Link>
@@ -338,9 +453,19 @@ export function Thread({
         )}
         <AnimatePresence>
           {typing && (
-            <m.div initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="flex gap-1 self-start rounded-3xl bg-surface-2 px-4 py-3">
+            <m.div
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              className="flex gap-1 self-start rounded-3xl bg-surface-2 px-4 py-3"
+            >
               {[0, 1, 2].map((i) => (
-                <m.span key={i} className="size-1.5 rounded-full bg-fg-subtle" animate={{ y: [0, -3, 0] }} transition={{ repeat: Infinity, duration: 0.9, delay: i * 0.15 }} />
+                <m.span
+                  key={i}
+                  className="size-1.5 rounded-full bg-fg-subtle"
+                  animate={{ y: [0, -3, 0] }}
+                  transition={{ repeat: Infinity, duration: 0.9, delay: i * 0.15 }}
+                />
               ))}
             </m.div>
           )}
@@ -353,6 +478,7 @@ export function Thread({
             {file && (
               <span className="inline-flex items-center gap-2 rounded-xl bg-surface-2 px-3 py-1.5 text-xs">
                 <Paperclip className="size-3.5" /> {file.name}
+                {progress !== null && <span className="tabular-nums text-brand-soft-fg">{t("messages.uploading", { pct: progress })}</span>}
                 <button onClick={() => setFile(null)} aria-label={t("common.remove")}>
                   <X className="size-3.5" />
                 </button>
@@ -360,7 +486,13 @@ export function Thread({
             )}
             {share && (
               <span className="inline-flex items-center gap-2 rounded-xl bg-brand-soft px-3 py-1.5 text-xs text-brand-soft-fg">
-                {share.kind === "job" ? <Briefcase className="size-3.5" /> : share.kind === "person" ? <UserRound className="size-3.5" /> : <Building2 className="size-3.5" />}
+                {share.kind === "job" ? (
+                  <Briefcase className="size-3.5" />
+                ) : share.kind === "person" ? (
+                  <UserRound className="size-3.5" />
+                ) : (
+                  <Building2 className="size-3.5" />
+                )}
                 {share.title}
                 <button onClick={() => setShare(null)} aria-label={t("common.remove")}>
                   <X className="size-3.5" />
@@ -371,12 +503,18 @@ export function Thread({
         )}
         <div className="flex items-end gap-2">
           <Menu>
-            <MenuTrigger className="grid size-10 shrink-0 place-items-center rounded-full text-fg-muted hover:bg-surface-2" aria-label={t("messages.attachOrShare")}>
+            <MenuTrigger
+              className="grid size-10 shrink-0 place-items-center rounded-full text-fg-muted hover:bg-surface-2"
+              aria-label={t("messages.attachOrShare")}
+            >
               <Plus className="size-5" />
             </MenuTrigger>
             <MenuContent align="start" side="top">
               <MenuItem icon={<Paperclip />} onSelect={() => fileRef.current?.click()}>
-                {t("messages.attach")}
+                {t("messages.photoOrFile")}
+              </MenuItem>
+              <MenuItem icon={<MapPin />} onSelect={() => void shareLocation()}>
+                {t("messages.shareLocation")}
               </MenuItem>
               <MenuItem icon={<Briefcase />} onSelect={() => setPicker("job")}>
                 {t("messages.shareJob")}
@@ -389,31 +527,58 @@ export function Thread({
               </MenuItem>
             </MenuContent>
           </Menu>
-          <input ref={fileRef} type="file" className="sr-only" accept={acceptFor("attachment")} onChange={(e) => pickAttachment(e.target)} />
-          <textarea
-            value={body}
-            onChange={(e) => {
-              setBody(e.target.value);
-              if (conversationId && Date.now() - lastTypingSent.current > 2500) {
-                lastTypingSent.current = Date.now();
-                void typingAction(conversationId);
-              }
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                send();
-              }
-            }}
-            rows={1}
-            maxLength={5000}
-            placeholder={t("messages.placeholder")}
-            aria-label={t("common.message")}
-            className="max-h-36 min-h-10 flex-1 resize-none rounded-3xl border border-border bg-surface-2 px-4 py-2.5 text-sm outline-none [field-sizing:content] focus:border-brand focus:bg-surface"
-          />
-          <Button size="icon" pill loading={pending} onClick={send} disabled={!body.trim() && !file && !share} aria-label={t("messages.send")}>
-            <SendHorizontal />
-          </Button>
+          <input ref={fileRef} type="file" className="sr-only" accept={CHAT_ACCEPT} onChange={(e) => pickAttachment(e.target)} />
+          {voice.recording ? (
+            <div className="flex min-h-10 flex-1 items-center gap-3 rounded-3xl border border-danger/50 bg-surface-2 px-2 ps-4">
+              <span className="size-2.5 animate-pulse rounded-full bg-danger" />
+              <span className="font-semibold tabular-nums">{formatDuration(voice.seconds)}</span>
+              <span className="flex-1 text-sm text-fg-muted">{t("messages.recording")}</span>
+              <button
+                type="button"
+                onClick={voice.cancel}
+                className="grid size-8 place-items-center rounded-full text-danger hover:bg-danger/10"
+                aria-label={t("messages.deleteRecording")}
+              >
+                <Trash2 className="size-4" />
+              </button>
+            </div>
+          ) : (
+            <textarea
+              value={body}
+              onChange={(e) => {
+                setBody(e.target.value);
+                if (conversationId && Date.now() - lastTypingSent.current > 2500) {
+                  lastTypingSent.current = Date.now();
+                  void typingAction(conversationId);
+                }
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  send();
+                }
+              }}
+              rows={1}
+              maxLength={5000}
+              placeholder={t("messages.placeholder")}
+              aria-label={t("common.message")}
+              className="max-h-36 min-h-10 flex-1 resize-none rounded-3xl border border-border bg-surface-2 px-4 py-2.5 text-sm outline-none [field-sizing:content] focus:border-brand focus:bg-surface"
+            />
+          )}
+          {/* Nothing typed or attached: the microphone instead of Send. */}
+          {voice.recording ? (
+            <Button size="icon" pill onClick={voice.send} aria-label={t("messages.sendVoice")}>
+              <SendHorizontal />
+            </Button>
+          ) : !body.trim() && !file && !share && !pending ? (
+            <Button size="icon" pill onClick={() => void voice.start()} aria-label={t("messages.recordVoice")}>
+              <Mic />
+            </Button>
+          ) : (
+            <Button size="icon" pill loading={pending} onClick={send} disabled={!body.trim() && !file && !share} aria-label={t("messages.send")}>
+              <SendHorizontal />
+            </Button>
+          )}
         </div>
       </div>
       <SharePicker

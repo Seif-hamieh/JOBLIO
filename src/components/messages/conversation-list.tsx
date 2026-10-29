@@ -35,7 +35,7 @@ export function ConversationList({ conversations, activeId, viewerId }: { conver
         {list.map((c) => {
           const isOnline = presence[c.other.id] ?? (online.has(c.other.id) || c.online);
           const preview = c.lastMessage
-            ? `${c.lastMessage.senderId === viewerId ? t("messages.you") : ""}${c.lastMessage.body || (c.lastMessage.attachmentName ? `📎 ${c.lastMessage.attachmentName}` : c.lastMessage.kind === "JOB" ? t("messages.sharedJob") : c.lastMessage.kind === "PROFILE" ? t("messages.sharedProfile") : t("messages.sharedCompany"))}`
+            ? `${c.lastMessage.senderId === viewerId ? t("messages.you") : ""}${c.lastMessage.body || (c.lastMessage.kind === "IMAGE" ? `📷 ${t("messages.photo")}` : c.lastMessage.kind === "AUDIO" ? `🎤 ${t("messages.voiceMessage")}` : c.lastMessage.kind === "LOCATION" ? `📍 ${t("messages.location")}` : c.lastMessage.attachmentName ? `📎 ${c.lastMessage.attachmentName}` : c.lastMessage.kind === "JOB" ? t("messages.sharedJob") : c.lastMessage.kind === "PROFILE" ? t("messages.sharedProfile") : t("messages.sharedCompany"))}`
             : t("messages.hello");
           return (
             <li key={c.id}>
@@ -52,7 +52,7 @@ export function ConversationList({ conversations, activeId, viewerId }: { conver
                   </div>
                   <div className="flex items-center gap-2">
                     <span className={cn("truncate text-xs", c.unread ? "text-fg" : "text-fg-muted")}>
-                      {c.lastMessage?.attachmentName && <Paperclip className="me-1 inline size-3" />}
+                      {c.lastMessage?.kind === "FILE" && <Paperclip className="me-1 inline size-3" />}
                       {preview}
                     </span>
                     {c.unread && <span className="ms-auto size-2 shrink-0 rounded-full bg-brand" aria-label={t("messages.unread")} />}

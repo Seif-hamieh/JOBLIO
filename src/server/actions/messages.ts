@@ -151,3 +151,19 @@ export async function shareSearchAction(kind: "job" | "person" | "company", q: s
   });
   return res?.ok ? (res.data ?? []) : [];
 }
+
+/**
+ * Finds or starts the conversation with a member, without sending anything: a chat file is uploaded into its
+ * conversation, so a first message with a file needs the conversation to exist first.
+ */
+export async function openConversationAction(recipientId: string): Promise<ActionState<{ conversationId: string }>> {
+  return withViewer<{ conversationId: string }>({ limit: LIMITS.message }, async (viewer) => {
+    try {
+      const conversationId = await ensureConversation({ id: viewer.id, isRecruiter: !!viewer.company, recruiterPro: viewer.recruiterPro }, id.parse(recipientId));
+      return { ok: true, data: { conversationId } };
+    } catch (e) {
+      if (e instanceof ActionError) return fail(e.message);
+      throw e;
+    }
+  });
+}
