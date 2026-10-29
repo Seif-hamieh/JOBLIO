@@ -319,6 +319,81 @@ export async function statChatFile(url: string, conversationId: string) {
   return mime ? { size: s.size, mime } : null;
 }
 
+// ── Post and story media (videos, streamed) ─────────────────────────────────
+// Videos are compressed on the phone or in the browser before they are sent, so the server never re-encodes
+// anything: it only checks the type and size while writing the upload to disk. The video's still frame (a JPEG made
+// on the device) goes through the same route.
+
+/** 20 MB (decimal). Stories are up to 60 s and posts up to 3 min once compressed. */
+export const MEDIA_MAX_BYTES = 20 * 1000 * 1000;
+
+const VIDEO_EXT: Record<string, string> = { "video/mp4": "mp4", "video/quicktime": "mov" };
+const VIDEO_EXT_MIME: Record<string, string> = Object.fromEntries(Object.entries(VIDEO_EXT).map(([mime, ext]) => [ext, mime]));
+const MEDIA_EXT: Record<string, string> = { ...VIDEO_EXT, "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp" };
+const MEDIA_MIME_BY_EXT: Record<string, string> = Object.fromEntries(Object.entries(MEDIA_EXT).map(([mime, ext]) => [ext, mime]));
+
+/** MP4 or MOV from the first bytes (both start with an "ftyp" box; QuickTime's brand is "qt  "), else a still image. */
+export function sniffMediaMime(head: Buffer): string | null {
+  if (head.subarray(4, 8).toString("ascii") === "ftyp") return head.subarray(8, 12).toString("ascii") === "qt  " ? "video/quicktime" : "video/mp4";
+  const mime = sniffMime(head);
+  return mime && mime in MEDIA_EXT ? mime : null;
+}
+
+/** Saves a streamed post or story upload (a video or its still frame) in the member's media folder. Local only. */
+export async function storeMediaStream(body: ReadableStream<Uint8Array>, owner: string): Promise<StoredFile> {
+  if (storageDriver() !== "local") throw new Error("Video uploads need STORAGE_DRIVER=local.");
+  const safeOwner = owner.replace(/[^a-zA-Z0-9_-]/g, "");
+  const dir = join(ROOT, "public", "media", safeOwner);
+  await mkdir(dir, { recursive: true });
+  const id = randomUUID();
+  const tmp = join(dir, `${id}.part`);
+  const out = createWriteStream(tmp);
+  let size = 0;
+  let head = Buffer.alloc(0);
+  try {
+    const reader = body.getReader();
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      size += value.byteLength;
+      if (size > MEDIA_MAX_BYTES) {
+        await reader.cancel().catch(() => {});
+        throw new UploadError(k("msg.uploadTooBig", { mb: MEDIA_MAX_BYTES / 1000 / 1000 }));
+      }
+      if (head.length < 64) head = Buffer.concat([head, Buffer.from(value.subarray(0, 64))]);
+      if (!out.write(value)) await once(out, "drain");
+    }
+    out.end();
+    await once(out, "finish");
+    if (!size) throw new UploadError("@msg.uploadChoose");
+    const mime = sniffMediaMime(head);
+    if (!mime) throw new UploadError("@msg.uploadType_video");
+    const name = `${id}.${MEDIA_EXT[mime]}`;
+    await rename(tmp, join(dir, name));
+    const key = `public/media/${safeOwner}/${name}`;
+    return { key, url: `${FILES_PREFIX}${key}`, name, size, mime };
+  } catch (e) {
+    out.destroy();
+    await unlink(tmp).catch(() => {});
+    throw e;
+  }
+}
+
+/**
+ * Type of a media file this member uploaded (null for anyone else's, a missing file, or the wrong kind): "video"
+ * for MP4/MOV, "image" for a still frame. Used when the post or story that names it is created.
+ */
+export async function statMediaFile(url: string | null | undefined, owner: string, want: "video" | "image") {
+  const key = keyFromUrl(url);
+  if (!key || !key.startsWith(`public/media/${owner}/`)) return null;
+  const path = normalize(join(ROOT, key));
+  if (!path.startsWith(ROOT + sep)) return null;
+  const s = await stat(path).catch(() => null);
+  const mime = MEDIA_MIME_BY_EXT[key.split(".").pop()!.toLowerCase()];
+  if (!s?.isFile() || !mime || mime.startsWith("video/") !== (want === "video")) return null;
+  return { size: s.size, mime };
+}
+
 /**
  * Local driver: opens a stored file for streaming (whole, or the byte range a media player asks for), so serving a
  * 100 MB file doesn't load it into memory. Null for anything missing or outside the storage root.
@@ -332,8 +407,8 @@ export async function openStored(key: string, range?: { start: number; end?: num
   const head = Buffer.alloc(64);
   await fh.read(head, 0, 64, 0).finally(() => fh.close());
   const ext = key.split(".").pop()!.toLowerCase();
-  // Chat audio and ZIP files are typed by their saved extension (set from their sniffed content at upload).
-  const mime = (ext in CHAT_MIME_BY_EXT && !(ext in MIME_BY_EXT) ? CHAT_MIME_BY_EXT[ext] : sniffMime(head)) ?? "application/octet-stream";
+  // Videos, chat audio and ZIP files are typed by their saved extension (set from their sniffed content at upload).
+  const mime = (ext in VIDEO_EXT_MIME ? VIDEO_EXT_MIME[ext] : ext in CHAT_MIME_BY_EXT && !(ext in MIME_BY_EXT) ? CHAT_MIME_BY_EXT[ext] : sniffMime(head)) ?? "application/octet-stream";
   const start = range ? Math.min(range.start, Math.max(s.size - 1, 0)) : 0;
   const end = range ? Math.min(range.end ?? s.size - 1, s.size - 1) : s.size - 1;
   const stream = Readable.toWeb(createReadStream(path, { start, end })) as ReadableStream<Uint8Array>;

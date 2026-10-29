@@ -46,8 +46,8 @@ export async function postingProblem(author: Author, d: Pick<PostFields, "asComp
   return null;
 }
 
-/** Creates the post (after postingProblem said yes). */
-export async function createPost(author: Author, d: PostFields, mediaUrls: string[]) {
+/** Creates the post (after postingProblem said yes). With `video` (checked by videoMedia), mediaUrls is just the video. */
+export async function createPost(author: Author, d: PostFields, mediaUrls: string[], video?: { thumbnailUrl: string | null }) {
   return db.post.create({
     data: {
       authorId: author.id,
@@ -58,6 +58,7 @@ export async function createPost(author: Author, d: PostFields, mediaUrls: strin
       jobId: d.jobId,
       projectId: d.projectId,
       mediaUrls,
+      ...(video && { mediaType: "VIDEO" as const, thumbnailUrl: video.thumbnailUrl }),
     },
     select: { id: true },
   });

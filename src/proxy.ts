@@ -129,7 +129,8 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // api/v1/chat-upload: chat files of up to 100 MB, streamed to disk by the route itself (never held here).
-    "/((?!api/v1/chat-upload|monitoring|_next/static|_next/image|media|icon.svg|favicon.ico|robots.txt|sitemap.xml|opengraph-image|twitter-image|sw.js|offline.html|manifest.webmanifest|icon-|apple-touch-icon|apple-icon|social/|screenshots/|.*\\.(?:png|jpe?g|gif|webp|avif|svg|ico|txt|xml|json|webmanifest|js|css|map|woff2?|apk)$).*)",
+    // api/v1/chat-upload and api/v1/media-upload: chat files (100 MB) and videos (20 MB), streamed to disk by the
+    // routes themselves (never held here).
+    "/((?!api/v1/chat-upload|api/v1/media-upload|monitoring|_next/static|_next/image|media|icon.svg|favicon.ico|robots.txt|sitemap.xml|opengraph-image|twitter-image|sw.js|offline.html|manifest.webmanifest|icon-|apple-touch-icon|apple-icon|social/|screenshots/|.*\\.(?:png|jpe?g|gif|webp|avif|svg|ico|txt|xml|json|webmanifest|js|css|map|woff2?|apk)$).*)",
   ],
 };

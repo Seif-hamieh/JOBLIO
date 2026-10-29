@@ -1710,6 +1710,8 @@ export const en = {
     uploadType_cv: "Choose a PDF or Word file (PDF, DOCX or DOC).",
     uploadType_attachment: "Choose an image, PDF, Word or text file.",
     uploadType_chat: "Send an image, a voice message, or a PDF, Word, ZIP or text file.",
+    uploadType_video: "Send an MP4 or MOV video, or a JPG, PNG or WebP image.",
+    videoMissing: "We could not find that video. Upload it again.",
     chatFileMissing: "That file is no longer available. Attach it again.",
     uploadTooBigSize: "The maximum is {max} MB — your file is {size} MB.",
     uploadFailed: "The upload didn't go through. Check the file size and your connection, then try again.",

@@ -241,6 +241,14 @@ export const PostVisibility = {
 export type PostVisibility = (typeof PostVisibility)[keyof typeof PostVisibility]
 
 
+export const PostMediaType = {
+  IMAGE: 'IMAGE',
+  VIDEO: 'VIDEO'
+} as const
+
+export type PostMediaType = (typeof PostMediaType)[keyof typeof PostMediaType]
+
+
 export const MessageKind = {
   TEXT: 'TEXT',
   FILE: 'FILE',

@@ -25,10 +25,11 @@ async function storyAudience(viewerId: string) {
 /** Live stories from a set of members: not expired, and their author isn't banned. */
 const liveFrom = (userIds: string[], now: Date) => ({ userId: { in: userIds }, expiresAt: { gt: now }, user: { bannedAt: null } });
 
-export async function createStory(userId: string, mediaUrl: string, text: string | null) {
+/** A photo story, or a video one (`video`: its still frame, checked by videoMedia first). */
+export async function createStory(userId: string, mediaUrl: string, text: string | null, video?: { thumbnailUrl: string | null }) {
   return db.story.create({
-    data: { userId, mediaUrl, text, expiresAt: new Date(Date.now() + STORY_TTL_MS) },
-    select: { id: true, mediaUrl: true, text: true, createdAt: true, expiresAt: true },
+    data: { userId, mediaUrl, text, expiresAt: new Date(Date.now() + STORY_TTL_MS), ...(video && { mediaType: "VIDEO" as const, thumbnailUrl: video.thumbnailUrl }) },
+    select: { id: true, mediaUrl: true, mediaType: true, thumbnailUrl: true, text: true, createdAt: true, expiresAt: true },
   });
 }
 
@@ -47,6 +48,8 @@ export async function listStories(viewerId: string) {
       id: true,
       userId: true,
       mediaUrl: true,
+      mediaType: true,
+      thumbnailUrl: true,
       text: true,
       createdAt: true,
       expiresAt: true,
@@ -68,6 +71,8 @@ export async function listStories(viewerId: string) {
       const items = g.stories.map((s) => ({
         id: s.id,
         mediaUrl: s.mediaUrl,
+        mediaType: s.mediaType,
+        thumbnailUrl: s.thumbnailUrl,
         text: s.text,
         createdAt: s.createdAt,
         expiresAt: s.expiresAt,

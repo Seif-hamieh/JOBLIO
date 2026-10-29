@@ -644,6 +644,8 @@ export const StoryScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   mediaUrl: 'mediaUrl',
+  mediaType: 'mediaType',
+  thumbnailUrl: 'thumbnailUrl',
   text: 'text',
   createdAt: 'createdAt',
   expiresAt: 'expiresAt'
@@ -820,6 +822,8 @@ export const PostScalarFieldEnum = {
   type: 'type',
   content: 'content',
   mediaUrls: 'mediaUrls',
+  mediaType: 'mediaType',
+  thumbnailUrl: 'thumbnailUrl',
   jobId: 'jobId',
   projectId: 'projectId',
   sharedPostId: 'sharedPostId',

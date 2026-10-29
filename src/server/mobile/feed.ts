@@ -13,6 +13,9 @@ export function toPost(p: FeedPost, viewerId: string) {
     visibility: p.visibility,
     content: p.content,
     media: p.mediaUrls,
+    // VIDEO: media holds the one video (played by streaming it) and thumbnail its still frame.
+    mediaType: p.mediaType,
+    thumbnail: p.thumbnailUrl,
     createdAt: iso(p.createdAt),
     likeCount: p.likeCount,
     commentCount: p.commentCount,
@@ -25,7 +28,7 @@ export function toPost(p: FeedPost, viewerId: string) {
     job: p.job ? { id: p.job.id, title: p.job.title, workMode: p.job.workMode, city: p.job.city, open: p.job.status === "OPEN", company: p.job.company.name } : null,
     project: p.project ? { title: p.project.title, summary: p.project.summary, imageUrl: p.project.imageUrl, url: p.project.url } : null,
     shared: p.sharedPost
-      ? { id: p.sharedPost.id, content: p.sharedPost.content, media: p.sharedPost.mediaUrls, createdAt: iso(p.sharedPost.createdAt), author: p.sharedPost.author.name, company: p.sharedPost.company?.name ?? null }
+      ? { id: p.sharedPost.id, content: p.sharedPost.content, media: p.sharedPost.mediaUrls, mediaType: p.sharedPost.mediaType, thumbnail: p.sharedPost.thumbnailUrl, createdAt: iso(p.sharedPost.createdAt), author: p.sharedPost.author.name, company: p.sharedPost.company?.name ?? null }
       : null,
   };
 }

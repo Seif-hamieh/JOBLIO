@@ -69,17 +69,27 @@ export async function GET(req: Request, ctx: RouteContext<"/api/v1/files/[...key
     return NextResponse.redirect(signed, { status: 302, headers: { "Cache-Control": "private, no-store" } });
   }
 
-  // Streamed from disk, never loaded whole (chat files can be 100 MB). Audio players ask for byte ranges to seek.
-  const asked = req.headers.get("range")?.match(/^bytes=(d+)-(d*)$/);
-  const file = await openStored(key, asked ? { start: Number(asked[1]), end: asked[2] ? Number(asked[2]) : undefined } : undefined);
+  // Streamed from disk, never loaded whole (chat files can be 100 MB). Video and audio players ask for byte ranges
+  // ("bytes=start-end", "bytes=start-" or the last N bytes, "bytes=-N") to start playing and to seek.
+  const asked = req.headers.get("range")?.match(/^bytes=(\d*)-(\d*)$/);
+  const range = asked && (asked[1] || asked[2]) ? asked : null;
+  let file = await openStored(key, range?.[1] ? { start: Number(range[1]), end: range[2] ? Number(range[2]) : undefined } : undefined);
   if (!file) return new NextResponse("Not found", { status: 404 });
-  const inline = file.mime.startsWith("image/") || file.mime.startsWith("audio/") || file.mime === "application/pdf";
+  if (range && !range[1]) {
+    // The last N bytes: only known once the file's size is.
+    file.stream.cancel().catch(() => {});
+    file = (await openStored(key, { start: Math.max(file.size - Number(range[2]), 0) }))!;
+  } else if (range && Number(range[1]) >= file.size) {
+    file.stream.cancel().catch(() => {});
+    return new NextResponse(null, { status: 416, headers: { "Content-Range": `bytes */${file.size}` } });
+  }
+  const inline = file.mime.startsWith("image/") || file.mime.startsWith("audio/") || file.mime.startsWith("video/") || file.mime === "application/pdf";
   return new NextResponse(file.stream, {
-    status: asked ? 206 : 200,
+    status: range ? 206 : 200,
     headers: {
       "Content-Type": file.mime,
       "Content-Length": String(file.end - file.start + 1),
-      ...(asked && { "Content-Range": `bytes ${file.start}-${file.end}/${file.size}` }),
+      ...(range && { "Content-Range": `bytes ${file.start}-${file.end}/${file.size}` }),
       "Accept-Ranges": "bytes",
       "X-Content-Type-Options": "nosniff",
       "Content-Security-Policy": "default-src 'none'; img-src 'self'; media-src 'self'; style-src 'unsafe-inline'; sandbox",

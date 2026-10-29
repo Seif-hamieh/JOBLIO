@@ -44,6 +44,8 @@ export type PostMinAggregateOutputType = {
   companyId: string | null
   type: $Enums.PostType | null
   content: string | null
+  mediaType: $Enums.PostMediaType | null
+  thumbnailUrl: string | null
   jobId: string | null
   projectId: string | null
   sharedPostId: string | null
@@ -61,6 +63,8 @@ export type PostMaxAggregateOutputType = {
   companyId: string | null
   type: $Enums.PostType | null
   content: string | null
+  mediaType: $Enums.PostMediaType | null
+  thumbnailUrl: string | null
   jobId: string | null
   projectId: string | null
   sharedPostId: string | null
@@ -79,6 +83,8 @@ export type PostCountAggregateOutputType = {
   type: number
   content: number
   mediaUrls: number
+  mediaType: number
+  thumbnailUrl: number
   jobId: number
   projectId: number
   sharedPostId: number
@@ -110,6 +116,8 @@ export type PostMinAggregateInputType = {
   companyId?: true
   type?: true
   content?: true
+  mediaType?: true
+  thumbnailUrl?: true
   jobId?: true
   projectId?: true
   sharedPostId?: true
@@ -127,6 +135,8 @@ export type PostMaxAggregateInputType = {
   companyId?: true
   type?: true
   content?: true
+  mediaType?: true
+  thumbnailUrl?: true
   jobId?: true
   projectId?: true
   sharedPostId?: true
@@ -145,6 +155,8 @@ export type PostCountAggregateInputType = {
   type?: true
   content?: true
   mediaUrls?: true
+  mediaType?: true
+  thumbnailUrl?: true
   jobId?: true
   projectId?: true
   sharedPostId?: true
@@ -250,6 +262,8 @@ export type PostGroupByOutputType = {
   type: $Enums.PostType
   content: string
   mediaUrls: string[]
+  mediaType: $Enums.PostMediaType
+  thumbnailUrl: string | null
   jobId: string | null
   projectId: string | null
   sharedPostId: string | null
@@ -291,6 +305,8 @@ export type PostWhereInput = {
   type?: Prisma.EnumPostTypeFilter<"Post"> | $Enums.PostType
   content?: Prisma.StringFilter<"Post"> | string
   mediaUrls?: Prisma.StringNullableListFilter<"Post">
+  mediaType?: Prisma.EnumPostMediaTypeFilter<"Post"> | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.StringNullableFilter<"Post"> | string | null
   jobId?: Prisma.StringNullableFilter<"Post"> | string | null
   projectId?: Prisma.StringNullableFilter<"Post"> | string | null
   sharedPostId?: Prisma.StringNullableFilter<"Post"> | string | null
@@ -318,6 +334,8 @@ export type PostOrderByWithRelationInput = {
   type?: Prisma.SortOrder
   content?: Prisma.SortOrder
   mediaUrls?: Prisma.SortOrder
+  mediaType?: Prisma.SortOrder
+  thumbnailUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   jobId?: Prisma.SortOrderInput | Prisma.SortOrder
   projectId?: Prisma.SortOrderInput | Prisma.SortOrder
   sharedPostId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -348,6 +366,8 @@ export type PostWhereUniqueInput = Prisma.AtLeast<{
   type?: Prisma.EnumPostTypeFilter<"Post"> | $Enums.PostType
   content?: Prisma.StringFilter<"Post"> | string
   mediaUrls?: Prisma.StringNullableListFilter<"Post">
+  mediaType?: Prisma.EnumPostMediaTypeFilter<"Post"> | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.StringNullableFilter<"Post"> | string | null
   jobId?: Prisma.StringNullableFilter<"Post"> | string | null
   projectId?: Prisma.StringNullableFilter<"Post"> | string | null
   sharedPostId?: Prisma.StringNullableFilter<"Post"> | string | null
@@ -375,6 +395,8 @@ export type PostOrderByWithAggregationInput = {
   type?: Prisma.SortOrder
   content?: Prisma.SortOrder
   mediaUrls?: Prisma.SortOrder
+  mediaType?: Prisma.SortOrder
+  thumbnailUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   jobId?: Prisma.SortOrderInput | Prisma.SortOrder
   projectId?: Prisma.SortOrderInput | Prisma.SortOrder
   sharedPostId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -401,6 +423,8 @@ export type PostScalarWhereWithAggregatesInput = {
   type?: Prisma.EnumPostTypeWithAggregatesFilter<"Post"> | $Enums.PostType
   content?: Prisma.StringWithAggregatesFilter<"Post"> | string
   mediaUrls?: Prisma.StringNullableListFilter<"Post">
+  mediaType?: Prisma.EnumPostMediaTypeWithAggregatesFilter<"Post"> | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.StringNullableWithAggregatesFilter<"Post"> | string | null
   jobId?: Prisma.StringNullableWithAggregatesFilter<"Post"> | string | null
   projectId?: Prisma.StringNullableWithAggregatesFilter<"Post"> | string | null
   sharedPostId?: Prisma.StringNullableWithAggregatesFilter<"Post"> | string | null
@@ -417,6 +441,8 @@ export type PostCreateInput = {
   type?: $Enums.PostType
   content: string
   mediaUrls?: Prisma.PostCreatemediaUrlsInput | string[]
+  mediaType?: $Enums.PostMediaType
+  thumbnailUrl?: string | null
   visibility?: $Enums.PostVisibility
   likeCount?: number
   commentCount?: number
@@ -441,6 +467,8 @@ export type PostUncheckedCreateInput = {
   type?: $Enums.PostType
   content: string
   mediaUrls?: Prisma.PostCreatemediaUrlsInput | string[]
+  mediaType?: $Enums.PostMediaType
+  thumbnailUrl?: string | null
   jobId?: string | null
   projectId?: string | null
   sharedPostId?: string | null
@@ -461,6 +489,8 @@ export type PostUpdateInput = {
   type?: Prisma.EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
   content?: Prisma.StringFieldUpdateOperationsInput | string
   mediaUrls?: Prisma.PostUpdatemediaUrlsInput | string[]
+  mediaType?: Prisma.EnumPostMediaTypeFieldUpdateOperationsInput | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumPostVisibilityFieldUpdateOperationsInput | $Enums.PostVisibility
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
   commentCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -485,6 +515,8 @@ export type PostUncheckedUpdateInput = {
   type?: Prisma.EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
   content?: Prisma.StringFieldUpdateOperationsInput | string
   mediaUrls?: Prisma.PostUpdatemediaUrlsInput | string[]
+  mediaType?: Prisma.EnumPostMediaTypeFieldUpdateOperationsInput | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedPostId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -507,6 +539,8 @@ export type PostCreateManyInput = {
   type?: $Enums.PostType
   content: string
   mediaUrls?: Prisma.PostCreatemediaUrlsInput | string[]
+  mediaType?: $Enums.PostMediaType
+  thumbnailUrl?: string | null
   jobId?: string | null
   projectId?: string | null
   sharedPostId?: string | null
@@ -523,6 +557,8 @@ export type PostUpdateManyMutationInput = {
   type?: Prisma.EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
   content?: Prisma.StringFieldUpdateOperationsInput | string
   mediaUrls?: Prisma.PostUpdatemediaUrlsInput | string[]
+  mediaType?: Prisma.EnumPostMediaTypeFieldUpdateOperationsInput | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumPostVisibilityFieldUpdateOperationsInput | $Enums.PostVisibility
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
   commentCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -538,6 +574,8 @@ export type PostUncheckedUpdateManyInput = {
   type?: Prisma.EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
   content?: Prisma.StringFieldUpdateOperationsInput | string
   mediaUrls?: Prisma.PostUpdatemediaUrlsInput | string[]
+  mediaType?: Prisma.EnumPostMediaTypeFieldUpdateOperationsInput | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedPostId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -576,6 +614,8 @@ export type PostCountOrderByAggregateInput = {
   type?: Prisma.SortOrder
   content?: Prisma.SortOrder
   mediaUrls?: Prisma.SortOrder
+  mediaType?: Prisma.SortOrder
+  thumbnailUrl?: Prisma.SortOrder
   jobId?: Prisma.SortOrder
   projectId?: Prisma.SortOrder
   sharedPostId?: Prisma.SortOrder
@@ -599,6 +639,8 @@ export type PostMaxOrderByAggregateInput = {
   companyId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   content?: Prisma.SortOrder
+  mediaType?: Prisma.SortOrder
+  thumbnailUrl?: Prisma.SortOrder
   jobId?: Prisma.SortOrder
   projectId?: Prisma.SortOrder
   sharedPostId?: Prisma.SortOrder
@@ -616,6 +658,8 @@ export type PostMinOrderByAggregateInput = {
   companyId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   content?: Prisma.SortOrder
+  mediaType?: Prisma.SortOrder
+  thumbnailUrl?: Prisma.SortOrder
   jobId?: Prisma.SortOrder
   projectId?: Prisma.SortOrder
   sharedPostId?: Prisma.SortOrder
@@ -915,6 +959,8 @@ export type PostCreateWithoutAuthorInput = {
   type?: $Enums.PostType
   content: string
   mediaUrls?: Prisma.PostCreatemediaUrlsInput | string[]
+  mediaType?: $Enums.PostMediaType
+  thumbnailUrl?: string | null
   visibility?: $Enums.PostVisibility
   likeCount?: number
   commentCount?: number
@@ -937,6 +983,8 @@ export type PostUncheckedCreateWithoutAuthorInput = {
   type?: $Enums.PostType
   content: string
   mediaUrls?: Prisma.PostCreatemediaUrlsInput | string[]
+  mediaType?: $Enums.PostMediaType
+  thumbnailUrl?: string | null
   jobId?: string | null
   projectId?: string | null
   sharedPostId?: string | null
@@ -988,6 +1036,8 @@ export type PostScalarWhereInput = {
   type?: Prisma.EnumPostTypeFilter<"Post"> | $Enums.PostType
   content?: Prisma.StringFilter<"Post"> | string
   mediaUrls?: Prisma.StringNullableListFilter<"Post">
+  mediaType?: Prisma.EnumPostMediaTypeFilter<"Post"> | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.StringNullableFilter<"Post"> | string | null
   jobId?: Prisma.StringNullableFilter<"Post"> | string | null
   projectId?: Prisma.StringNullableFilter<"Post"> | string | null
   sharedPostId?: Prisma.StringNullableFilter<"Post"> | string | null
@@ -1004,6 +1054,8 @@ export type PostCreateWithoutProjectInput = {
   type?: $Enums.PostType
   content: string
   mediaUrls?: Prisma.PostCreatemediaUrlsInput | string[]
+  mediaType?: $Enums.PostMediaType
+  thumbnailUrl?: string | null
   visibility?: $Enums.PostVisibility
   likeCount?: number
   commentCount?: number
@@ -1027,6 +1079,8 @@ export type PostUncheckedCreateWithoutProjectInput = {
   type?: $Enums.PostType
   content: string
   mediaUrls?: Prisma.PostCreatemediaUrlsInput | string[]
+  mediaType?: $Enums.PostMediaType
+  thumbnailUrl?: string | null
   jobId?: string | null
   sharedPostId?: string | null
   visibility?: $Enums.PostVisibility
@@ -1072,6 +1126,8 @@ export type PostCreateWithoutCompanyInput = {
   type?: $Enums.PostType
   content: string
   mediaUrls?: Prisma.PostCreatemediaUrlsInput | string[]
+  mediaType?: $Enums.PostMediaType
+  thumbnailUrl?: string | null
   visibility?: $Enums.PostVisibility
   likeCount?: number
   commentCount?: number
@@ -1094,6 +1150,8 @@ export type PostUncheckedCreateWithoutCompanyInput = {
   type?: $Enums.PostType
   content: string
   mediaUrls?: Prisma.PostCreatemediaUrlsInput | string[]
+  mediaType?: $Enums.PostMediaType
+  thumbnailUrl?: string | null
   jobId?: string | null
   projectId?: string | null
   sharedPostId?: string | null
@@ -1140,6 +1198,8 @@ export type PostCreateWithoutJobInput = {
   type?: $Enums.PostType
   content: string
   mediaUrls?: Prisma.PostCreatemediaUrlsInput | string[]
+  mediaType?: $Enums.PostMediaType
+  thumbnailUrl?: string | null
   visibility?: $Enums.PostVisibility
   likeCount?: number
   commentCount?: number
@@ -1163,6 +1223,8 @@ export type PostUncheckedCreateWithoutJobInput = {
   type?: $Enums.PostType
   content: string
   mediaUrls?: Prisma.PostCreatemediaUrlsInput | string[]
+  mediaType?: $Enums.PostMediaType
+  thumbnailUrl?: string | null
   projectId?: string | null
   sharedPostId?: string | null
   visibility?: $Enums.PostVisibility
@@ -1208,6 +1270,8 @@ export type PostCreateWithoutReportsInput = {
   type?: $Enums.PostType
   content: string
   mediaUrls?: Prisma.PostCreatemediaUrlsInput | string[]
+  mediaType?: $Enums.PostMediaType
+  thumbnailUrl?: string | null
   visibility?: $Enums.PostVisibility
   likeCount?: number
   commentCount?: number
@@ -1231,6 +1295,8 @@ export type PostUncheckedCreateWithoutReportsInput = {
   type?: $Enums.PostType
   content: string
   mediaUrls?: Prisma.PostCreatemediaUrlsInput | string[]
+  mediaType?: $Enums.PostMediaType
+  thumbnailUrl?: string | null
   jobId?: string | null
   projectId?: string | null
   sharedPostId?: string | null
@@ -1266,6 +1332,8 @@ export type PostUpdateWithoutReportsInput = {
   type?: Prisma.EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
   content?: Prisma.StringFieldUpdateOperationsInput | string
   mediaUrls?: Prisma.PostUpdatemediaUrlsInput | string[]
+  mediaType?: Prisma.EnumPostMediaTypeFieldUpdateOperationsInput | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumPostVisibilityFieldUpdateOperationsInput | $Enums.PostVisibility
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
   commentCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1289,6 +1357,8 @@ export type PostUncheckedUpdateWithoutReportsInput = {
   type?: Prisma.EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
   content?: Prisma.StringFieldUpdateOperationsInput | string
   mediaUrls?: Prisma.PostUpdatemediaUrlsInput | string[]
+  mediaType?: Prisma.EnumPostMediaTypeFieldUpdateOperationsInput | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedPostId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1308,6 +1378,8 @@ export type PostCreateWithoutSharesInput = {
   type?: $Enums.PostType
   content: string
   mediaUrls?: Prisma.PostCreatemediaUrlsInput | string[]
+  mediaType?: $Enums.PostMediaType
+  thumbnailUrl?: string | null
   visibility?: $Enums.PostVisibility
   likeCount?: number
   commentCount?: number
@@ -1331,6 +1403,8 @@ export type PostUncheckedCreateWithoutSharesInput = {
   type?: $Enums.PostType
   content: string
   mediaUrls?: Prisma.PostCreatemediaUrlsInput | string[]
+  mediaType?: $Enums.PostMediaType
+  thumbnailUrl?: string | null
   jobId?: string | null
   projectId?: string | null
   sharedPostId?: string | null
@@ -1355,6 +1429,8 @@ export type PostCreateWithoutSharedPostInput = {
   type?: $Enums.PostType
   content: string
   mediaUrls?: Prisma.PostCreatemediaUrlsInput | string[]
+  mediaType?: $Enums.PostMediaType
+  thumbnailUrl?: string | null
   visibility?: $Enums.PostVisibility
   likeCount?: number
   commentCount?: number
@@ -1378,6 +1454,8 @@ export type PostUncheckedCreateWithoutSharedPostInput = {
   type?: $Enums.PostType
   content: string
   mediaUrls?: Prisma.PostCreatemediaUrlsInput | string[]
+  mediaType?: $Enums.PostMediaType
+  thumbnailUrl?: string | null
   jobId?: string | null
   projectId?: string | null
   visibility?: $Enums.PostVisibility
@@ -1418,6 +1496,8 @@ export type PostUpdateWithoutSharesInput = {
   type?: Prisma.EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
   content?: Prisma.StringFieldUpdateOperationsInput | string
   mediaUrls?: Prisma.PostUpdatemediaUrlsInput | string[]
+  mediaType?: Prisma.EnumPostMediaTypeFieldUpdateOperationsInput | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumPostVisibilityFieldUpdateOperationsInput | $Enums.PostVisibility
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
   commentCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1441,6 +1521,8 @@ export type PostUncheckedUpdateWithoutSharesInput = {
   type?: Prisma.EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
   content?: Prisma.StringFieldUpdateOperationsInput | string
   mediaUrls?: Prisma.PostUpdatemediaUrlsInput | string[]
+  mediaType?: Prisma.EnumPostMediaTypeFieldUpdateOperationsInput | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedPostId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1476,6 +1558,8 @@ export type PostCreateWithoutLikesInput = {
   type?: $Enums.PostType
   content: string
   mediaUrls?: Prisma.PostCreatemediaUrlsInput | string[]
+  mediaType?: $Enums.PostMediaType
+  thumbnailUrl?: string | null
   visibility?: $Enums.PostVisibility
   likeCount?: number
   commentCount?: number
@@ -1499,6 +1583,8 @@ export type PostUncheckedCreateWithoutLikesInput = {
   type?: $Enums.PostType
   content: string
   mediaUrls?: Prisma.PostCreatemediaUrlsInput | string[]
+  mediaType?: $Enums.PostMediaType
+  thumbnailUrl?: string | null
   jobId?: string | null
   projectId?: string | null
   sharedPostId?: string | null
@@ -1534,6 +1620,8 @@ export type PostUpdateWithoutLikesInput = {
   type?: Prisma.EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
   content?: Prisma.StringFieldUpdateOperationsInput | string
   mediaUrls?: Prisma.PostUpdatemediaUrlsInput | string[]
+  mediaType?: Prisma.EnumPostMediaTypeFieldUpdateOperationsInput | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumPostVisibilityFieldUpdateOperationsInput | $Enums.PostVisibility
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
   commentCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1557,6 +1645,8 @@ export type PostUncheckedUpdateWithoutLikesInput = {
   type?: Prisma.EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
   content?: Prisma.StringFieldUpdateOperationsInput | string
   mediaUrls?: Prisma.PostUpdatemediaUrlsInput | string[]
+  mediaType?: Prisma.EnumPostMediaTypeFieldUpdateOperationsInput | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedPostId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1576,6 +1666,8 @@ export type PostCreateWithoutCommentsInput = {
   type?: $Enums.PostType
   content: string
   mediaUrls?: Prisma.PostCreatemediaUrlsInput | string[]
+  mediaType?: $Enums.PostMediaType
+  thumbnailUrl?: string | null
   visibility?: $Enums.PostVisibility
   likeCount?: number
   commentCount?: number
@@ -1599,6 +1691,8 @@ export type PostUncheckedCreateWithoutCommentsInput = {
   type?: $Enums.PostType
   content: string
   mediaUrls?: Prisma.PostCreatemediaUrlsInput | string[]
+  mediaType?: $Enums.PostMediaType
+  thumbnailUrl?: string | null
   jobId?: string | null
   projectId?: string | null
   sharedPostId?: string | null
@@ -1634,6 +1728,8 @@ export type PostUpdateWithoutCommentsInput = {
   type?: Prisma.EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
   content?: Prisma.StringFieldUpdateOperationsInput | string
   mediaUrls?: Prisma.PostUpdatemediaUrlsInput | string[]
+  mediaType?: Prisma.EnumPostMediaTypeFieldUpdateOperationsInput | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumPostVisibilityFieldUpdateOperationsInput | $Enums.PostVisibility
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
   commentCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1657,6 +1753,8 @@ export type PostUncheckedUpdateWithoutCommentsInput = {
   type?: Prisma.EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
   content?: Prisma.StringFieldUpdateOperationsInput | string
   mediaUrls?: Prisma.PostUpdatemediaUrlsInput | string[]
+  mediaType?: Prisma.EnumPostMediaTypeFieldUpdateOperationsInput | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedPostId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1677,6 +1775,8 @@ export type PostCreateManyAuthorInput = {
   type?: $Enums.PostType
   content: string
   mediaUrls?: Prisma.PostCreatemediaUrlsInput | string[]
+  mediaType?: $Enums.PostMediaType
+  thumbnailUrl?: string | null
   jobId?: string | null
   projectId?: string | null
   sharedPostId?: string | null
@@ -1693,6 +1793,8 @@ export type PostUpdateWithoutAuthorInput = {
   type?: Prisma.EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
   content?: Prisma.StringFieldUpdateOperationsInput | string
   mediaUrls?: Prisma.PostUpdatemediaUrlsInput | string[]
+  mediaType?: Prisma.EnumPostMediaTypeFieldUpdateOperationsInput | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumPostVisibilityFieldUpdateOperationsInput | $Enums.PostVisibility
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
   commentCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1715,6 +1817,8 @@ export type PostUncheckedUpdateWithoutAuthorInput = {
   type?: Prisma.EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
   content?: Prisma.StringFieldUpdateOperationsInput | string
   mediaUrls?: Prisma.PostUpdatemediaUrlsInput | string[]
+  mediaType?: Prisma.EnumPostMediaTypeFieldUpdateOperationsInput | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedPostId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1736,6 +1840,8 @@ export type PostUncheckedUpdateManyWithoutAuthorInput = {
   type?: Prisma.EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
   content?: Prisma.StringFieldUpdateOperationsInput | string
   mediaUrls?: Prisma.PostUpdatemediaUrlsInput | string[]
+  mediaType?: Prisma.EnumPostMediaTypeFieldUpdateOperationsInput | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedPostId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1754,6 +1860,8 @@ export type PostCreateManyProjectInput = {
   type?: $Enums.PostType
   content: string
   mediaUrls?: Prisma.PostCreatemediaUrlsInput | string[]
+  mediaType?: $Enums.PostMediaType
+  thumbnailUrl?: string | null
   jobId?: string | null
   sharedPostId?: string | null
   visibility?: $Enums.PostVisibility
@@ -1769,6 +1877,8 @@ export type PostUpdateWithoutProjectInput = {
   type?: Prisma.EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
   content?: Prisma.StringFieldUpdateOperationsInput | string
   mediaUrls?: Prisma.PostUpdatemediaUrlsInput | string[]
+  mediaType?: Prisma.EnumPostMediaTypeFieldUpdateOperationsInput | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumPostVisibilityFieldUpdateOperationsInput | $Enums.PostVisibility
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
   commentCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1792,6 +1902,8 @@ export type PostUncheckedUpdateWithoutProjectInput = {
   type?: Prisma.EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
   content?: Prisma.StringFieldUpdateOperationsInput | string
   mediaUrls?: Prisma.PostUpdatemediaUrlsInput | string[]
+  mediaType?: Prisma.EnumPostMediaTypeFieldUpdateOperationsInput | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedPostId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumPostVisibilityFieldUpdateOperationsInput | $Enums.PostVisibility
@@ -1813,6 +1925,8 @@ export type PostUncheckedUpdateManyWithoutProjectInput = {
   type?: Prisma.EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
   content?: Prisma.StringFieldUpdateOperationsInput | string
   mediaUrls?: Prisma.PostUpdatemediaUrlsInput | string[]
+  mediaType?: Prisma.EnumPostMediaTypeFieldUpdateOperationsInput | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedPostId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumPostVisibilityFieldUpdateOperationsInput | $Enums.PostVisibility
@@ -1829,6 +1943,8 @@ export type PostCreateManyCompanyInput = {
   type?: $Enums.PostType
   content: string
   mediaUrls?: Prisma.PostCreatemediaUrlsInput | string[]
+  mediaType?: $Enums.PostMediaType
+  thumbnailUrl?: string | null
   jobId?: string | null
   projectId?: string | null
   sharedPostId?: string | null
@@ -1845,6 +1961,8 @@ export type PostUpdateWithoutCompanyInput = {
   type?: Prisma.EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
   content?: Prisma.StringFieldUpdateOperationsInput | string
   mediaUrls?: Prisma.PostUpdatemediaUrlsInput | string[]
+  mediaType?: Prisma.EnumPostMediaTypeFieldUpdateOperationsInput | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumPostVisibilityFieldUpdateOperationsInput | $Enums.PostVisibility
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
   commentCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1867,6 +1985,8 @@ export type PostUncheckedUpdateWithoutCompanyInput = {
   type?: Prisma.EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
   content?: Prisma.StringFieldUpdateOperationsInput | string
   mediaUrls?: Prisma.PostUpdatemediaUrlsInput | string[]
+  mediaType?: Prisma.EnumPostMediaTypeFieldUpdateOperationsInput | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedPostId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1888,6 +2008,8 @@ export type PostUncheckedUpdateManyWithoutCompanyInput = {
   type?: Prisma.EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
   content?: Prisma.StringFieldUpdateOperationsInput | string
   mediaUrls?: Prisma.PostUpdatemediaUrlsInput | string[]
+  mediaType?: Prisma.EnumPostMediaTypeFieldUpdateOperationsInput | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedPostId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1906,6 +2028,8 @@ export type PostCreateManyJobInput = {
   type?: $Enums.PostType
   content: string
   mediaUrls?: Prisma.PostCreatemediaUrlsInput | string[]
+  mediaType?: $Enums.PostMediaType
+  thumbnailUrl?: string | null
   projectId?: string | null
   sharedPostId?: string | null
   visibility?: $Enums.PostVisibility
@@ -1921,6 +2045,8 @@ export type PostUpdateWithoutJobInput = {
   type?: Prisma.EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
   content?: Prisma.StringFieldUpdateOperationsInput | string
   mediaUrls?: Prisma.PostUpdatemediaUrlsInput | string[]
+  mediaType?: Prisma.EnumPostMediaTypeFieldUpdateOperationsInput | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumPostVisibilityFieldUpdateOperationsInput | $Enums.PostVisibility
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
   commentCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1944,6 +2070,8 @@ export type PostUncheckedUpdateWithoutJobInput = {
   type?: Prisma.EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
   content?: Prisma.StringFieldUpdateOperationsInput | string
   mediaUrls?: Prisma.PostUpdatemediaUrlsInput | string[]
+  mediaType?: Prisma.EnumPostMediaTypeFieldUpdateOperationsInput | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedPostId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumPostVisibilityFieldUpdateOperationsInput | $Enums.PostVisibility
@@ -1965,6 +2093,8 @@ export type PostUncheckedUpdateManyWithoutJobInput = {
   type?: Prisma.EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
   content?: Prisma.StringFieldUpdateOperationsInput | string
   mediaUrls?: Prisma.PostUpdatemediaUrlsInput | string[]
+  mediaType?: Prisma.EnumPostMediaTypeFieldUpdateOperationsInput | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedPostId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumPostVisibilityFieldUpdateOperationsInput | $Enums.PostVisibility
@@ -1982,6 +2112,8 @@ export type PostCreateManySharedPostInput = {
   type?: $Enums.PostType
   content: string
   mediaUrls?: Prisma.PostCreatemediaUrlsInput | string[]
+  mediaType?: $Enums.PostMediaType
+  thumbnailUrl?: string | null
   jobId?: string | null
   projectId?: string | null
   visibility?: $Enums.PostVisibility
@@ -1997,6 +2129,8 @@ export type PostUpdateWithoutSharedPostInput = {
   type?: Prisma.EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
   content?: Prisma.StringFieldUpdateOperationsInput | string
   mediaUrls?: Prisma.PostUpdatemediaUrlsInput | string[]
+  mediaType?: Prisma.EnumPostMediaTypeFieldUpdateOperationsInput | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumPostVisibilityFieldUpdateOperationsInput | $Enums.PostVisibility
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
   commentCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2020,6 +2154,8 @@ export type PostUncheckedUpdateWithoutSharedPostInput = {
   type?: Prisma.EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
   content?: Prisma.StringFieldUpdateOperationsInput | string
   mediaUrls?: Prisma.PostUpdatemediaUrlsInput | string[]
+  mediaType?: Prisma.EnumPostMediaTypeFieldUpdateOperationsInput | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumPostVisibilityFieldUpdateOperationsInput | $Enums.PostVisibility
@@ -2041,6 +2177,8 @@ export type PostUncheckedUpdateManyWithoutSharedPostInput = {
   type?: Prisma.EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
   content?: Prisma.StringFieldUpdateOperationsInput | string
   mediaUrls?: Prisma.PostUpdatemediaUrlsInput | string[]
+  mediaType?: Prisma.EnumPostMediaTypeFieldUpdateOperationsInput | $Enums.PostMediaType
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumPostVisibilityFieldUpdateOperationsInput | $Enums.PostVisibility
@@ -2116,6 +2254,8 @@ export type PostSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   type?: boolean
   content?: boolean
   mediaUrls?: boolean
+  mediaType?: boolean
+  thumbnailUrl?: boolean
   jobId?: boolean
   projectId?: boolean
   sharedPostId?: boolean
@@ -2144,6 +2284,8 @@ export type PostSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   type?: boolean
   content?: boolean
   mediaUrls?: boolean
+  mediaType?: boolean
+  thumbnailUrl?: boolean
   jobId?: boolean
   projectId?: boolean
   sharedPostId?: boolean
@@ -2167,6 +2309,8 @@ export type PostSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   type?: boolean
   content?: boolean
   mediaUrls?: boolean
+  mediaType?: boolean
+  thumbnailUrl?: boolean
   jobId?: boolean
   projectId?: boolean
   sharedPostId?: boolean
@@ -2190,6 +2334,8 @@ export type PostSelectScalar = {
   type?: boolean
   content?: boolean
   mediaUrls?: boolean
+  mediaType?: boolean
+  thumbnailUrl?: boolean
   jobId?: boolean
   projectId?: boolean
   sharedPostId?: boolean
@@ -2201,7 +2347,7 @@ export type PostSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PostOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "authorId" | "companyId" | "type" | "content" | "mediaUrls" | "jobId" | "projectId" | "sharedPostId" | "visibility" | "likeCount" | "commentCount" | "shareCount" | "createdAt" | "updatedAt", ExtArgs["result"]["post"]>
+export type PostOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "authorId" | "companyId" | "type" | "content" | "mediaUrls" | "mediaType" | "thumbnailUrl" | "jobId" | "projectId" | "sharedPostId" | "visibility" | "likeCount" | "commentCount" | "shareCount" | "createdAt" | "updatedAt", ExtArgs["result"]["post"]>
 export type PostInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   company?: boolean | Prisma.Post$companyArgs<ExtArgs>
@@ -2249,6 +2395,8 @@ export type $PostPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     type: $Enums.PostType
     content: string
     mediaUrls: string[]
+    mediaType: $Enums.PostMediaType
+    thumbnailUrl: string | null
     jobId: string | null
     projectId: string | null
     sharedPostId: string | null
@@ -2696,6 +2844,8 @@ export interface PostFieldRefs {
   readonly type: Prisma.FieldRef<"Post", 'PostType'>
   readonly content: Prisma.FieldRef<"Post", 'String'>
   readonly mediaUrls: Prisma.FieldRef<"Post", 'String[]'>
+  readonly mediaType: Prisma.FieldRef<"Post", 'PostMediaType'>
+  readonly thumbnailUrl: Prisma.FieldRef<"Post", 'String'>
   readonly jobId: Prisma.FieldRef<"Post", 'String'>
   readonly projectId: Prisma.FieldRef<"Post", 'String'>
   readonly sharedPostId: Prisma.FieldRef<"Post", 'String'>

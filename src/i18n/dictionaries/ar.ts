@@ -1712,6 +1712,8 @@ export const ar: Dictionary = {
     uploadType_cv: "اختر ملف PDF أو Word (PDF أو DOCX أو DOC).",
     uploadType_attachment: "اختر صورة أو ملف PDF أو Word أو ملفًا نصيًا.",
     uploadType_chat: "أرسل صورة أو رسالة صوتية أو ملف PDF أو Word أو ZIP أو ملفًا نصيًا.",
+    uploadType_video: "أرسل فيديو MP4 أو MOV، أو صورة JPG أو PNG أو WebP.",
+    videoMissing: "لم نجد الفيديو. ارفعه مرة أخرى.",
     chatFileMissing: "هذا الملف لم يعد متاحًا. أرفقه مرة أخرى.",
     uploadTooBigSize: "الحد الأقصى {max} ميغابايت — حجم ملفك {size} ميغابايت.",
     uploadFailed: "لم يكتمل الرفع. تحقّق من حجم الملف واتصالك ثم حاول مرة أخرى.",

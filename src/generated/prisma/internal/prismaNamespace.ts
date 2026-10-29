@@ -5396,6 +5396,8 @@ export const StoryScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   mediaUrl: 'mediaUrl',
+  mediaType: 'mediaType',
+  thumbnailUrl: 'thumbnailUrl',
   text: 'text',
   createdAt: 'createdAt',
   expiresAt: 'expiresAt'
@@ -5572,6 +5574,8 @@ export const PostScalarFieldEnum = {
   type: 'type',
   content: 'content',
   mediaUrls: 'mediaUrls',
+  mediaType: 'mediaType',
+  thumbnailUrl: 'thumbnailUrl',
   jobId: 'jobId',
   projectId: 'projectId',
   sharedPostId: 'sharedPostId',
@@ -6214,6 +6218,20 @@ export type EnumPostReportStatusFieldRefInput<$PrismaModel> = FieldRefInputType<
  * Reference to a field of type 'PostReportStatus[]'
  */
 export type ListEnumPostReportStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PostReportStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PostMediaType'
+ */
+export type EnumPostMediaTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PostMediaType'>
+    
+
+
+/**
+ * Reference to a field of type 'PostMediaType[]'
+ */
+export type ListEnumPostMediaTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PostMediaType[]'>
     
 
 

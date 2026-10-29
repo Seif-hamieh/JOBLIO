@@ -24,6 +24,8 @@ const postInclude = {
       content: true,
       createdAt: true,
       mediaUrls: true,
+      mediaType: true,
+      thumbnailUrl: true,
       author: { select: { name: true, image: true, username: true } },
       company: { select: { name: true, slug: true } },
     },

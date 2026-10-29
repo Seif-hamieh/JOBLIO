@@ -106,10 +106,10 @@ export async function unbanUserAsAdmin(userId: string) {
  */
 export async function resolvePostReportsAsAdmin(postId: string, deletePost: boolean) {
   if (deletePost) {
-    const post = await db.post.findUnique({ where: { id: postId }, select: { id: true, mediaUrls: true } });
+    const post = await db.post.findUnique({ where: { id: postId }, select: { id: true, mediaUrls: true, thumbnailUrl: true } });
     if (post) {
       await db.post.delete({ where: { id: post.id } }); // its reports are deleted with it
-      await deleteStored(post.mediaUrls);
+      await deleteStored([...post.mediaUrls, post.thumbnailUrl]);
       revalidatePath("/feed");
     }
   } else {

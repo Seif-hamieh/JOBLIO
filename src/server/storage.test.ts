@@ -143,3 +143,33 @@ describe("chat uploads", () => {
     expect(await readdir(join(cwd, "storage/private/message/conv3"))).toEqual([]);
   });
 });
+
+describe("post and story videos", () => {
+  const stream = (...parts: Buffer[]) => new ReadableStream<Uint8Array>({ start(c) { for (const p of parts) c.enqueue(new Uint8Array(p)); c.close(); } });
+  const MP4 = Buffer.concat([Buffer.from("00000020", "hex"), Buffer.from("ftypisom"), Buffer.alloc(20)]);
+  const MOV = Buffer.concat([Buffer.from("00000014", "hex"), Buffer.from("ftypqt  "), Buffer.alloc(20)]);
+
+  it("streams MP4 and MOV videos into the member's folder and serves them as video", async () => {
+    vi.stubEnv("STORAGE_DRIVER", "local");
+    const f = await storage.storeMediaStream(stream(MP4, Buffer.alloc(5000, 1)), "user1");
+    expect(f.key).toMatch(/^public\/media\/user1\/[\w-]+\.mp4$/);
+    expect(f.mime).toBe("video/mp4");
+    expect((await storage.storeMediaStream(stream(MOV), "user1")).mime).toBe("video/quicktime");
+    expect(await storage.statMediaFile(f.url, "user1", "video")).toEqual({ size: f.size, mime: "video/mp4" });
+    expect(await storage.statMediaFile(f.url, "user1", "image")).toBeNull();
+    expect(await storage.statMediaFile(f.url, "someone-else", "video")).toBeNull();
+    const part = await storage.openStored(f.key, { start: 100 });
+    expect(part).toMatchObject({ mime: "video/mp4", start: 100, end: f.size - 1 });
+    part!.stream.cancel();
+  });
+
+  it("takes a still frame, but refuses other types and anything over 20 MB without leaving files behind", async () => {
+    vi.stubEnv("STORAGE_DRIVER", "local");
+    const thumb = await storage.storeMediaStream(stream(Buffer.from("ffd8ffe000104a464946", "hex")), "user2");
+    expect(await storage.statMediaFile(thumb.url, "user2", "image")).toEqual({ size: thumb.size, mime: "image/jpeg" });
+    await expect(storage.storeMediaStream(stream(Buffer.from("1a45dfa39f4286810142", "hex")), "user2")).rejects.toThrow("uploadType_video");
+    const big = Buffer.alloc(8 * 1000 * 1000);
+    await expect(storage.storeMediaStream(stream(MP4, big, big, big), "user2")).rejects.toThrow("uploadTooBig");
+    expect((await readdir(join(cwd, "storage/public/media/user2"))).filter((n) => !n.endsWith(".jpg"))).toEqual([]);
+  });
+});

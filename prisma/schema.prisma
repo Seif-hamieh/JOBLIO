@@ -193,6 +193,12 @@ enum PostVisibility {
   CONNECTIONS
 }
 
+// What a post's or story's media is.
+enum PostMediaType {
+  IMAGE
+  VIDEO
+}
+
 enum MessageKind {
   TEXT
   FILE
@@ -1012,15 +1018,19 @@ model PostReport {
 // A story: one photo (and an optional caption) shown to your connections and followers for 24 hours. Expired
 // stories stay in the table (hidden by expiresAt) until they are cleaned up.
 model Story {
-  id        String      @id @default(cuid())
-  userId    String
-  mediaUrl  String
-  text      String?     @db.VarChar(250)
-  createdAt DateTime    @default(now())
+  id           String        @id @default(cuid())
+  userId       String
+  mediaUrl     String
+  // VIDEO: mediaUrl is an MP4/MOV (compressed on the phone or in the browser, at most 20 MB) and thumbnailUrl its
+  // still frame. IMAGE: thumbnailUrl stays empty.
+  mediaType    PostMediaType @default(IMAGE)
+  thumbnailUrl String?
+  text         String?       @db.VarChar(250)
+  createdAt    DateTime      @default(now())
   // 24 hours after posting; the API sets it too, this default covers rows created any other way.
-  expiresAt DateTime    @default(dbgenerated("(now() + '24:00:00'::interval)"))
-  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  views     StoryView[]
+  expiresAt    DateTime      @default(dbgenerated("(now() + '24:00:00'::interval)"))
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  views        StoryView[]
 
   @@index([userId, expiresAt])
   @@index([expiresAt])
@@ -1250,6 +1260,9 @@ model Post {
   type         PostType       @default(UPDATE)
   content      String
   mediaUrls    String[]
+  // VIDEO: mediaUrls holds the one video and thumbnailUrl its still frame. IMAGE: images only, no thumbnail.
+  mediaType    PostMediaType  @default(IMAGE)
+  thumbnailUrl String?
   jobId        String?
   projectId    String?
   sharedPostId String?

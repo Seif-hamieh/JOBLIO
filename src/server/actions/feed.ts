@@ -9,6 +9,7 @@ import { getComments, getFeed, type FeedComment, type FeedPost } from "@/server/
 import { deleteStored, storeUpload, UploadError } from "@/server/storage";
 import { addPostComment, canSeePost, repostPost, setPostLike } from "@/server/services/post-interactions";
 import { createPost, postingProblem, postSchema } from "@/server/services/posting";
+import { videoMedia } from "@/server/services/video-media";
 import { deleteDraft, draftSchema, MAX_DRAFT_MEDIA, publishDraft, saveDraft } from "@/server/services/post-drafts";
 
 const id = z.string().min(1).max(40);
@@ -42,7 +43,11 @@ const draftIdOf = (form: FormData) => {
   return typeof v === "string" && v ? id.parse(v) : null;
 };
 
-/** Posts from the composer; with a "draftId" it publishes that draft (its kept images plus new ones). */
+/**
+ * Posts from the composer; with a "draftId" it publishes that draft (its kept images plus new ones). With "videoUrl"
+ * (and "thumbnailUrl"), already sent to /api/v1/media-upload, it posts that one video instead of images; drafts
+ * don't keep videos.
+ */
 export async function createPostAction(_prev: ActionState, form: FormData): Promise<ActionState> {
   return withViewer({ limit: LIMITS.post }, async (viewer) => {
     const parsed = parse(postSchema, postFields(form));
@@ -50,6 +55,16 @@ export async function createPostAction(_prev: ActionState, form: FormData): Prom
     const d = parsed.data;
     const problem = await postingProblem(viewer, d);
     if (problem) return fail(problem);
+
+    const videoUrl = form.get("videoUrl");
+    if (videoUrl) {
+      const video = await videoMedia(viewer.id, videoUrl, form.get("thumbnailUrl"));
+      if ("problem" in video) return fail(video.problem);
+      await createPost(viewer, d, [video.videoUrl], video);
+      revalidatePath("/feed");
+      revalidatePath("/home");
+      return { ok: true, message: "@msg.posted" };
+    }
 
     const draftId = draftIdOf(form);
     const kept = keptMedia(form);
@@ -148,10 +163,10 @@ export async function sharePostAction(postId: string, content: string): Promise<
 
 export async function deletePostAction(postId: string): Promise<ActionState> {
   return withViewer({ limit: LIMITS.write }, async (viewer) => {
-    const post = await db.post.findFirst({ where: { id: id.parse(postId), authorId: viewer.id }, select: { id: true, mediaUrls: true } });
+    const post = await db.post.findFirst({ where: { id: id.parse(postId), authorId: viewer.id }, select: { id: true, mediaUrls: true, thumbnailUrl: true } });
     if (!post) return fail("@msg.postNotFound");
     await db.post.delete({ where: { id: post.id } });
-    await deleteStored(post.mediaUrls);
+    await deleteStored([...post.mediaUrls, post.thumbnailUrl]);
     revalidatePath("/feed");
     return { ok: true, message: "@msg.postDeleted" };
   });
