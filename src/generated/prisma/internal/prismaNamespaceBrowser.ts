@@ -108,7 +108,8 @@ export const ModelName = {
   Payment: 'Payment',
   ProfileBoost: 'ProfileBoost',
   WebhookEvent: 'WebhookEvent',
-  Article: 'Article'
+  Article: 'Article',
+  ResumeData: 'ResumeData'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -986,6 +987,27 @@ export const ArticleScalarFieldEnum = {
 } as const
 
 export type ArticleScalarFieldEnum = (typeof ArticleScalarFieldEnum)[keyof typeof ArticleScalarFieldEnum]
+
+
+export const ResumeDataScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  fullName: 'fullName',
+  headline: 'headline',
+  email: 'email',
+  phone: 'phone',
+  location: 'location',
+  summary: 'summary',
+  experience: 'experience',
+  education: 'education',
+  skills: 'skills',
+  languages: 'languages',
+  links: 'links',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ResumeDataScalarFieldEnum = (typeof ResumeDataScalarFieldEnum)[keyof typeof ResumeDataScalarFieldEnum]
 
 
 export const SortOrder = {

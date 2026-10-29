@@ -378,6 +378,7 @@ model User {
   pushDevices          PushDevice[]
   postDrafts           PostDraft[]
   articles             Article[]
+  resumeData           ResumeData?
 
   @@map("users")
 }
@@ -1476,4 +1477,31 @@ model Article {
   @@index([authorId, status, publishedAt(sort: Desc)])
   @@index([status, publishedAt(sort: Desc)])
   @@map("articles")
+}
+
+// The CV builder: what goes on the member's generated CV (PDF). Filled from their profile the first time, then
+// edited freely without changing the profile. The lists are JSON (checked by services/resume-builder):
+//   experience [{ title, company, location?, start?, end?, current, description? }]
+//   education  [{ school, degree?, field?, start?, end?, description? }]
+//   languages  [{ name, level? }]      links [{ label, url }]
+model ResumeData {
+  id         String   @id @default(cuid())
+  userId     String   @unique
+  fullName   String
+  headline   String?
+  email      String?
+  phone      String?
+  location   String?
+  summary    String?
+  experience Json     @default("[]")
+  education  Json     @default("[]")
+  skills     String[]
+  languages  Json     @default("[]")
+  links      Json     @default("[]")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("resume_data")
 }

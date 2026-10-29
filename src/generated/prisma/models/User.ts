@@ -363,6 +363,7 @@ export type UserWhereInput = {
   pushDevices?: Prisma.PushDeviceListRelationFilter
   postDrafts?: Prisma.PostDraftListRelationFilter
   articles?: Prisma.ArticleListRelationFilter
+  resumeData?: Prisma.XOR<Prisma.ResumeDataNullableScalarRelationFilter, Prisma.ResumeDataWhereInput> | null
 }
 
 export type UserOrderByWithRelationInput = {
@@ -427,6 +428,7 @@ export type UserOrderByWithRelationInput = {
   pushDevices?: Prisma.PushDeviceOrderByRelationAggregateInput
   postDrafts?: Prisma.PostDraftOrderByRelationAggregateInput
   articles?: Prisma.ArticleOrderByRelationAggregateInput
+  resumeData?: Prisma.ResumeDataOrderByWithRelationInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -494,6 +496,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   pushDevices?: Prisma.PushDeviceListRelationFilter
   postDrafts?: Prisma.PostDraftListRelationFilter
   articles?: Prisma.ArticleListRelationFilter
+  resumeData?: Prisma.XOR<Prisma.ResumeDataNullableScalarRelationFilter, Prisma.ResumeDataWhereInput> | null
 }, "id" | "email" | "username" | "stripeCustomerId" | "paddleCustomerId">
 
 export type UserOrderByWithAggregationInput = {
@@ -608,6 +611,7 @@ export type UserCreateInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -672,6 +676,7 @@ export type UserUncheckedCreateInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -736,6 +741,7 @@ export type UserUpdateInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -800,6 +806,7 @@ export type UserUncheckedUpdateInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -1596,6 +1603,20 @@ export type UserUpdateOneRequiredWithoutArticlesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutArticlesInput, Prisma.UserUpdateWithoutArticlesInput>, Prisma.UserUncheckedUpdateWithoutArticlesInput>
 }
 
+export type UserCreateNestedOneWithoutResumeDataInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutResumeDataInput, Prisma.UserUncheckedCreateWithoutResumeDataInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutResumeDataInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutResumeDataNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutResumeDataInput, Prisma.UserUncheckedCreateWithoutResumeDataInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutResumeDataInput
+  upsert?: Prisma.UserUpsertWithoutResumeDataInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutResumeDataInput, Prisma.UserUpdateWithoutResumeDataInput>, Prisma.UserUncheckedUpdateWithoutResumeDataInput>
+}
+
 export type UserCreateWithoutSessionsInput = {
   id: string
   name: string
@@ -1657,6 +1678,7 @@ export type UserCreateWithoutSessionsInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -1720,6 +1742,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -1799,6 +1822,7 @@ export type UserUpdateWithoutSessionsInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -1862,6 +1886,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -1925,6 +1950,7 @@ export type UserCreateWithoutAccountsInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -1988,6 +2014,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -2067,6 +2094,7 @@ export type UserUpdateWithoutAccountsInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -2130,6 +2158,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSettingsInput = {
@@ -2193,6 +2222,7 @@ export type UserCreateWithoutSettingsInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSettingsInput = {
@@ -2256,6 +2286,7 @@ export type UserUncheckedCreateWithoutSettingsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSettingsInput = {
@@ -2335,6 +2366,7 @@ export type UserUpdateWithoutSettingsInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSettingsInput = {
@@ -2398,6 +2430,7 @@ export type UserUncheckedUpdateWithoutSettingsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutBlocksMadeInput = {
@@ -2461,6 +2494,7 @@ export type UserCreateWithoutBlocksMadeInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutBlocksMadeInput = {
@@ -2524,6 +2558,7 @@ export type UserUncheckedCreateWithoutBlocksMadeInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutBlocksMadeInput = {
@@ -2592,6 +2627,7 @@ export type UserCreateWithoutBlocksReceivedInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutBlocksReceivedInput = {
@@ -2655,6 +2691,7 @@ export type UserUncheckedCreateWithoutBlocksReceivedInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutBlocksReceivedInput = {
@@ -2734,6 +2771,7 @@ export type UserUpdateWithoutBlocksMadeInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBlocksMadeInput = {
@@ -2797,6 +2835,7 @@ export type UserUncheckedUpdateWithoutBlocksMadeInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutBlocksReceivedInput = {
@@ -2871,6 +2910,7 @@ export type UserUpdateWithoutBlocksReceivedInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBlocksReceivedInput = {
@@ -2934,6 +2974,7 @@ export type UserUncheckedUpdateWithoutBlocksReceivedInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutProfileInput = {
@@ -2997,6 +3038,7 @@ export type UserCreateWithoutProfileInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProfileInput = {
@@ -3060,6 +3102,7 @@ export type UserUncheckedCreateWithoutProfileInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProfileInput = {
@@ -3139,6 +3182,7 @@ export type UserUpdateWithoutProfileInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfileInput = {
@@ -3202,6 +3246,7 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutEndorsementsGivenInput = {
@@ -3265,6 +3310,7 @@ export type UserCreateWithoutEndorsementsGivenInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutEndorsementsGivenInput = {
@@ -3328,6 +3374,7 @@ export type UserUncheckedCreateWithoutEndorsementsGivenInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutEndorsementsGivenInput = {
@@ -3407,6 +3454,7 @@ export type UserUpdateWithoutEndorsementsGivenInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutEndorsementsGivenInput = {
@@ -3470,6 +3518,7 @@ export type UserUncheckedUpdateWithoutEndorsementsGivenInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutProfileViewsMadeInput = {
@@ -3533,6 +3582,7 @@ export type UserCreateWithoutProfileViewsMadeInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProfileViewsMadeInput = {
@@ -3596,6 +3646,7 @@ export type UserUncheckedCreateWithoutProfileViewsMadeInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProfileViewsMadeInput = {
@@ -3664,6 +3715,7 @@ export type UserCreateWithoutProfileViewsReceivedInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProfileViewsReceivedInput = {
@@ -3727,6 +3779,7 @@ export type UserUncheckedCreateWithoutProfileViewsReceivedInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProfileViewsReceivedInput = {
@@ -3806,6 +3859,7 @@ export type UserUpdateWithoutProfileViewsMadeInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfileViewsMadeInput = {
@@ -3869,6 +3923,7 @@ export type UserUncheckedUpdateWithoutProfileViewsMadeInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutProfileViewsReceivedInput = {
@@ -3943,6 +3998,7 @@ export type UserUpdateWithoutProfileViewsReceivedInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfileViewsReceivedInput = {
@@ -4006,6 +4062,7 @@ export type UserUncheckedUpdateWithoutProfileViewsReceivedInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAchievementsInput = {
@@ -4069,6 +4126,7 @@ export type UserCreateWithoutAchievementsInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAchievementsInput = {
@@ -4132,6 +4190,7 @@ export type UserUncheckedCreateWithoutAchievementsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAchievementsInput = {
@@ -4211,6 +4270,7 @@ export type UserUpdateWithoutAchievementsInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAchievementsInput = {
@@ -4274,6 +4334,7 @@ export type UserUncheckedUpdateWithoutAchievementsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCompanyMembershipsInput = {
@@ -4337,6 +4398,7 @@ export type UserCreateWithoutCompanyMembershipsInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCompanyMembershipsInput = {
@@ -4400,6 +4462,7 @@ export type UserUncheckedCreateWithoutCompanyMembershipsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCompanyMembershipsInput = {
@@ -4479,6 +4542,7 @@ export type UserUpdateWithoutCompanyMembershipsInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCompanyMembershipsInput = {
@@ -4542,6 +4606,7 @@ export type UserUncheckedUpdateWithoutCompanyMembershipsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCompanyFollowsInput = {
@@ -4605,6 +4670,7 @@ export type UserCreateWithoutCompanyFollowsInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCompanyFollowsInput = {
@@ -4668,6 +4734,7 @@ export type UserUncheckedCreateWithoutCompanyFollowsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCompanyFollowsInput = {
@@ -4747,6 +4814,7 @@ export type UserUpdateWithoutCompanyFollowsInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCompanyFollowsInput = {
@@ -4810,6 +4878,7 @@ export type UserUncheckedUpdateWithoutCompanyFollowsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPostedJobsInput = {
@@ -4873,6 +4942,7 @@ export type UserCreateWithoutPostedJobsInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPostedJobsInput = {
@@ -4936,6 +5006,7 @@ export type UserUncheckedCreateWithoutPostedJobsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPostedJobsInput = {
@@ -5015,6 +5086,7 @@ export type UserUpdateWithoutPostedJobsInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPostedJobsInput = {
@@ -5078,6 +5150,7 @@ export type UserUncheckedUpdateWithoutPostedJobsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutJobReportsInput = {
@@ -5141,6 +5214,7 @@ export type UserCreateWithoutJobReportsInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutJobReportsInput = {
@@ -5204,6 +5278,7 @@ export type UserUncheckedCreateWithoutJobReportsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutJobReportsInput = {
@@ -5283,6 +5358,7 @@ export type UserUpdateWithoutJobReportsInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutJobReportsInput = {
@@ -5346,6 +5422,7 @@ export type UserUncheckedUpdateWithoutJobReportsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPostReportsInput = {
@@ -5409,6 +5486,7 @@ export type UserCreateWithoutPostReportsInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPostReportsInput = {
@@ -5472,6 +5550,7 @@ export type UserUncheckedCreateWithoutPostReportsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPostReportsInput = {
@@ -5551,6 +5630,7 @@ export type UserUpdateWithoutPostReportsInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPostReportsInput = {
@@ -5614,6 +5694,7 @@ export type UserUncheckedUpdateWithoutPostReportsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutStoriesInput = {
@@ -5677,6 +5758,7 @@ export type UserCreateWithoutStoriesInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutStoriesInput = {
@@ -5740,6 +5822,7 @@ export type UserUncheckedCreateWithoutStoriesInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutStoriesInput = {
@@ -5819,6 +5902,7 @@ export type UserUpdateWithoutStoriesInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStoriesInput = {
@@ -5882,6 +5966,7 @@ export type UserUncheckedUpdateWithoutStoriesInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutStoryViewsInput = {
@@ -5945,6 +6030,7 @@ export type UserCreateWithoutStoryViewsInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutStoryViewsInput = {
@@ -6008,6 +6094,7 @@ export type UserUncheckedCreateWithoutStoryViewsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutStoryViewsInput = {
@@ -6087,6 +6174,7 @@ export type UserUpdateWithoutStoryViewsInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStoryViewsInput = {
@@ -6150,6 +6238,7 @@ export type UserUncheckedUpdateWithoutStoryViewsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPostDraftsInput = {
@@ -6213,6 +6302,7 @@ export type UserCreateWithoutPostDraftsInput = {
   storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPostDraftsInput = {
@@ -6276,6 +6366,7 @@ export type UserUncheckedCreateWithoutPostDraftsInput = {
   storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPostDraftsInput = {
@@ -6355,6 +6446,7 @@ export type UserUpdateWithoutPostDraftsInput = {
   storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPostDraftsInput = {
@@ -6418,6 +6510,7 @@ export type UserUncheckedUpdateWithoutPostDraftsInput = {
   storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPushDevicesInput = {
@@ -6481,6 +6574,7 @@ export type UserCreateWithoutPushDevicesInput = {
   storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPushDevicesInput = {
@@ -6544,6 +6638,7 @@ export type UserUncheckedCreateWithoutPushDevicesInput = {
   storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPushDevicesInput = {
@@ -6623,6 +6718,7 @@ export type UserUpdateWithoutPushDevicesInput = {
   storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPushDevicesInput = {
@@ -6686,6 +6782,7 @@ export type UserUncheckedUpdateWithoutPushDevicesInput = {
   storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSavedJobsInput = {
@@ -6749,6 +6846,7 @@ export type UserCreateWithoutSavedJobsInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSavedJobsInput = {
@@ -6812,6 +6910,7 @@ export type UserUncheckedCreateWithoutSavedJobsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSavedJobsInput = {
@@ -6891,6 +6990,7 @@ export type UserUpdateWithoutSavedJobsInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSavedJobsInput = {
@@ -6954,6 +7054,7 @@ export type UserUncheckedUpdateWithoutSavedJobsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSavedSearchesInput = {
@@ -7017,6 +7118,7 @@ export type UserCreateWithoutSavedSearchesInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSavedSearchesInput = {
@@ -7080,6 +7182,7 @@ export type UserUncheckedCreateWithoutSavedSearchesInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSavedSearchesInput = {
@@ -7159,6 +7262,7 @@ export type UserUpdateWithoutSavedSearchesInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSavedSearchesInput = {
@@ -7222,6 +7326,7 @@ export type UserUncheckedUpdateWithoutSavedSearchesInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutApplicationsInput = {
@@ -7285,6 +7390,7 @@ export type UserCreateWithoutApplicationsInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutApplicationsInput = {
@@ -7348,6 +7454,7 @@ export type UserUncheckedCreateWithoutApplicationsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutApplicationsInput = {
@@ -7427,6 +7534,7 @@ export type UserUpdateWithoutApplicationsInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApplicationsInput = {
@@ -7490,6 +7598,7 @@ export type UserUncheckedUpdateWithoutApplicationsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutApplicationEventsInput = {
@@ -7553,6 +7662,7 @@ export type UserCreateWithoutApplicationEventsInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutApplicationEventsInput = {
@@ -7616,6 +7726,7 @@ export type UserUncheckedCreateWithoutApplicationEventsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutApplicationEventsInput = {
@@ -7695,6 +7806,7 @@ export type UserUpdateWithoutApplicationEventsInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApplicationEventsInput = {
@@ -7758,6 +7870,7 @@ export type UserUncheckedUpdateWithoutApplicationEventsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutRecruiterNotesInput = {
@@ -7821,6 +7934,7 @@ export type UserCreateWithoutRecruiterNotesInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutRecruiterNotesInput = {
@@ -7884,6 +7998,7 @@ export type UserUncheckedCreateWithoutRecruiterNotesInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutRecruiterNotesInput = {
@@ -7963,6 +8078,7 @@ export type UserUpdateWithoutRecruiterNotesInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRecruiterNotesInput = {
@@ -8026,6 +8142,7 @@ export type UserUncheckedUpdateWithoutRecruiterNotesInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutInterviewsScheduledInput = {
@@ -8089,6 +8206,7 @@ export type UserCreateWithoutInterviewsScheduledInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutInterviewsScheduledInput = {
@@ -8152,6 +8270,7 @@ export type UserUncheckedCreateWithoutInterviewsScheduledInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutInterviewsScheduledInput = {
@@ -8231,6 +8350,7 @@ export type UserUpdateWithoutInterviewsScheduledInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutInterviewsScheduledInput = {
@@ -8294,6 +8414,7 @@ export type UserUncheckedUpdateWithoutInterviewsScheduledInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSavedCandidatesInput = {
@@ -8357,6 +8478,7 @@ export type UserCreateWithoutSavedCandidatesInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSavedCandidatesInput = {
@@ -8420,6 +8542,7 @@ export type UserUncheckedCreateWithoutSavedCandidatesInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSavedCandidatesInput = {
@@ -8488,6 +8611,7 @@ export type UserCreateWithoutSavedByRecruitersInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSavedByRecruitersInput = {
@@ -8551,6 +8675,7 @@ export type UserUncheckedCreateWithoutSavedByRecruitersInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSavedByRecruitersInput = {
@@ -8630,6 +8755,7 @@ export type UserUpdateWithoutSavedCandidatesInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSavedCandidatesInput = {
@@ -8693,6 +8819,7 @@ export type UserUncheckedUpdateWithoutSavedCandidatesInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutSavedByRecruitersInput = {
@@ -8767,6 +8894,7 @@ export type UserUpdateWithoutSavedByRecruitersInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSavedByRecruitersInput = {
@@ -8830,6 +8958,7 @@ export type UserUncheckedUpdateWithoutSavedByRecruitersInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSentConnectionsInput = {
@@ -8893,6 +9022,7 @@ export type UserCreateWithoutSentConnectionsInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSentConnectionsInput = {
@@ -8956,6 +9086,7 @@ export type UserUncheckedCreateWithoutSentConnectionsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSentConnectionsInput = {
@@ -9024,6 +9155,7 @@ export type UserCreateWithoutReceivedConnectionsInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutReceivedConnectionsInput = {
@@ -9087,6 +9219,7 @@ export type UserUncheckedCreateWithoutReceivedConnectionsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutReceivedConnectionsInput = {
@@ -9166,6 +9299,7 @@ export type UserUpdateWithoutSentConnectionsInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSentConnectionsInput = {
@@ -9229,6 +9363,7 @@ export type UserUncheckedUpdateWithoutSentConnectionsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutReceivedConnectionsInput = {
@@ -9303,6 +9438,7 @@ export type UserUpdateWithoutReceivedConnectionsInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReceivedConnectionsInput = {
@@ -9366,6 +9502,7 @@ export type UserUncheckedUpdateWithoutReceivedConnectionsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutFollowingInput = {
@@ -9429,6 +9566,7 @@ export type UserCreateWithoutFollowingInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFollowingInput = {
@@ -9492,6 +9630,7 @@ export type UserUncheckedCreateWithoutFollowingInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFollowingInput = {
@@ -9560,6 +9699,7 @@ export type UserCreateWithoutFollowersInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFollowersInput = {
@@ -9623,6 +9763,7 @@ export type UserUncheckedCreateWithoutFollowersInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFollowersInput = {
@@ -9702,6 +9843,7 @@ export type UserUpdateWithoutFollowingInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFollowingInput = {
@@ -9765,6 +9907,7 @@ export type UserUncheckedUpdateWithoutFollowingInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutFollowersInput = {
@@ -9839,6 +9982,7 @@ export type UserUpdateWithoutFollowersInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFollowersInput = {
@@ -9902,6 +10046,7 @@ export type UserUncheckedUpdateWithoutFollowersInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPostsInput = {
@@ -9965,6 +10110,7 @@ export type UserCreateWithoutPostsInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPostsInput = {
@@ -10028,6 +10174,7 @@ export type UserUncheckedCreateWithoutPostsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPostsInput = {
@@ -10107,6 +10254,7 @@ export type UserUpdateWithoutPostsInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPostsInput = {
@@ -10170,6 +10318,7 @@ export type UserUncheckedUpdateWithoutPostsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutLikesInput = {
@@ -10233,6 +10382,7 @@ export type UserCreateWithoutLikesInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutLikesInput = {
@@ -10296,6 +10446,7 @@ export type UserUncheckedCreateWithoutLikesInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutLikesInput = {
@@ -10375,6 +10526,7 @@ export type UserUpdateWithoutLikesInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLikesInput = {
@@ -10438,6 +10590,7 @@ export type UserUncheckedUpdateWithoutLikesInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCommentsInput = {
@@ -10501,6 +10654,7 @@ export type UserCreateWithoutCommentsInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCommentsInput = {
@@ -10564,6 +10718,7 @@ export type UserUncheckedCreateWithoutCommentsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCommentsInput = {
@@ -10643,6 +10798,7 @@ export type UserUpdateWithoutCommentsInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCommentsInput = {
@@ -10706,6 +10862,7 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutConversationsInput = {
@@ -10769,6 +10926,7 @@ export type UserCreateWithoutConversationsInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutConversationsInput = {
@@ -10832,6 +10990,7 @@ export type UserUncheckedCreateWithoutConversationsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutConversationsInput = {
@@ -10911,6 +11070,7 @@ export type UserUpdateWithoutConversationsInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutConversationsInput = {
@@ -10974,6 +11134,7 @@ export type UserUncheckedUpdateWithoutConversationsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutMessagesInput = {
@@ -11037,6 +11198,7 @@ export type UserCreateWithoutMessagesInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutMessagesInput = {
@@ -11100,6 +11262,7 @@ export type UserUncheckedCreateWithoutMessagesInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutMessagesInput = {
@@ -11168,6 +11331,7 @@ export type UserCreateWithoutSharedInMessagesInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSharedInMessagesInput = {
@@ -11231,6 +11395,7 @@ export type UserUncheckedCreateWithoutSharedInMessagesInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSharedInMessagesInput = {
@@ -11310,6 +11475,7 @@ export type UserUpdateWithoutMessagesInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMessagesInput = {
@@ -11373,6 +11539,7 @@ export type UserUncheckedUpdateWithoutMessagesInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutSharedInMessagesInput = {
@@ -11447,6 +11614,7 @@ export type UserUpdateWithoutSharedInMessagesInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSharedInMessagesInput = {
@@ -11510,6 +11678,7 @@ export type UserUncheckedUpdateWithoutSharedInMessagesInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutNotificationsInput = {
@@ -11573,6 +11742,7 @@ export type UserCreateWithoutNotificationsInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -11636,6 +11806,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -11704,6 +11875,7 @@ export type UserCreateWithoutNotificationsCausedInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsCausedInput = {
@@ -11767,6 +11939,7 @@ export type UserUncheckedCreateWithoutNotificationsCausedInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsCausedInput = {
@@ -11846,6 +12019,7 @@ export type UserUpdateWithoutNotificationsInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -11909,6 +12083,7 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutNotificationsCausedInput = {
@@ -11983,6 +12158,7 @@ export type UserUpdateWithoutNotificationsCausedInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsCausedInput = {
@@ -12046,6 +12222,7 @@ export type UserUncheckedUpdateWithoutNotificationsCausedInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSubscriptionsInput = {
@@ -12109,6 +12286,7 @@ export type UserCreateWithoutSubscriptionsInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSubscriptionsInput = {
@@ -12172,6 +12350,7 @@ export type UserUncheckedCreateWithoutSubscriptionsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSubscriptionsInput = {
@@ -12251,6 +12430,7 @@ export type UserUpdateWithoutSubscriptionsInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSubscriptionsInput = {
@@ -12314,6 +12494,7 @@ export type UserUncheckedUpdateWithoutSubscriptionsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPaymentsInput = {
@@ -12377,6 +12558,7 @@ export type UserCreateWithoutPaymentsInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPaymentsInput = {
@@ -12440,6 +12622,7 @@ export type UserUncheckedCreateWithoutPaymentsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPaymentsInput = {
@@ -12519,6 +12702,7 @@ export type UserUpdateWithoutPaymentsInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPaymentsInput = {
@@ -12582,6 +12766,7 @@ export type UserUncheckedUpdateWithoutPaymentsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutBoostsInput = {
@@ -12645,6 +12830,7 @@ export type UserCreateWithoutBoostsInput = {
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutBoostsInput = {
@@ -12708,6 +12894,7 @@ export type UserUncheckedCreateWithoutBoostsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
   articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutBoostsInput = {
@@ -12787,6 +12974,7 @@ export type UserUpdateWithoutBoostsInput = {
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBoostsInput = {
@@ -12850,6 +13038,7 @@ export type UserUncheckedUpdateWithoutBoostsInput = {
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
   articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutArticlesInput = {
@@ -12913,6 +13102,7 @@ export type UserCreateWithoutArticlesInput = {
   storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutArticlesInput = {
@@ -12976,6 +13166,7 @@ export type UserUncheckedCreateWithoutArticlesInput = {
   storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
   postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
+  resumeData?: Prisma.ResumeDataUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutArticlesInput = {
@@ -13055,6 +13246,7 @@ export type UserUpdateWithoutArticlesInput = {
   storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutArticlesInput = {
@@ -13118,6 +13310,279 @@ export type UserUncheckedUpdateWithoutArticlesInput = {
   storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
+  resumeData?: Prisma.ResumeDataUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutResumeDataInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  username?: string | null
+  intent?: $Enums.UserIntent
+  platformRole?: $Enums.PlatformRole
+  onboardedAt?: Date | string | null
+  lastSeenAt?: Date | string | null
+  stripeCustomerId?: string | null
+  paddleCustomerId?: string | null
+  priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  settings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
+  companyMemberships?: Prisma.CompanyMemberCreateNestedManyWithoutUserInput
+  postedJobs?: Prisma.JobCreateNestedManyWithoutPostedByInput
+  applications?: Prisma.ApplicationCreateNestedManyWithoutApplicantInput
+  savedJobs?: Prisma.SavedJobCreateNestedManyWithoutUserInput
+  savedSearches?: Prisma.SavedSearchCreateNestedManyWithoutUserInput
+  savedCandidates?: Prisma.SavedCandidateCreateNestedManyWithoutRecruiterInput
+  savedByRecruiters?: Prisma.SavedCandidateCreateNestedManyWithoutCandidateInput
+  sentConnections?: Prisma.ConnectionCreateNestedManyWithoutRequesterInput
+  receivedConnections?: Prisma.ConnectionCreateNestedManyWithoutAddresseeInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  companyFollows?: Prisma.CompanyFollowerCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
+  comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  likes?: Prisma.PostLikeCreateNestedManyWithoutUserInput
+  endorsementsGiven?: Prisma.EndorsementCreateNestedManyWithoutEndorserInput
+  conversations?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
+  messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  sharedInMessages?: Prisma.MessageCreateNestedManyWithoutSharedUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  notificationsCaused?: Prisma.NotificationCreateNestedManyWithoutActorInput
+  achievements?: Prisma.UserAchievementCreateNestedManyWithoutUserInput
+  profileViewsMade?: Prisma.ProfileViewCreateNestedManyWithoutViewerInput
+  profileViewsReceived?: Prisma.ProfileViewCreateNestedManyWithoutViewedInput
+  interviewsScheduled?: Prisma.InterviewCreateNestedManyWithoutScheduledByInput
+  applicationEvents?: Prisma.ApplicationEventCreateNestedManyWithoutActorInput
+  recruiterNotes?: Prisma.RecruiterNoteCreateNestedManyWithoutAuthorInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
+  boosts?: Prisma.ProfileBoostCreateNestedManyWithoutUserInput
+  blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportCreateNestedManyWithoutReporterInput
+  stories?: Prisma.StoryCreateNestedManyWithoutUserInput
+  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
+  pushDevices?: Prisma.PushDeviceCreateNestedManyWithoutUserInput
+  postDrafts?: Prisma.PostDraftCreateNestedManyWithoutAuthorInput
+  articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+}
+
+export type UserUncheckedCreateWithoutResumeDataInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  username?: string | null
+  intent?: $Enums.UserIntent
+  platformRole?: $Enums.PlatformRole
+  onboardedAt?: Date | string | null
+  lastSeenAt?: Date | string | null
+  stripeCustomerId?: string | null
+  paddleCustomerId?: string | null
+  priorityCredits?: number
+  lastFreeBoostClaimedAt?: Date | string | null
+  bannedAt?: Date | string | null
+  bannedReason?: string | null
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  settings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
+  companyMemberships?: Prisma.CompanyMemberUncheckedCreateNestedManyWithoutUserInput
+  postedJobs?: Prisma.JobUncheckedCreateNestedManyWithoutPostedByInput
+  applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutApplicantInput
+  savedJobs?: Prisma.SavedJobUncheckedCreateNestedManyWithoutUserInput
+  savedSearches?: Prisma.SavedSearchUncheckedCreateNestedManyWithoutUserInput
+  savedCandidates?: Prisma.SavedCandidateUncheckedCreateNestedManyWithoutRecruiterInput
+  savedByRecruiters?: Prisma.SavedCandidateUncheckedCreateNestedManyWithoutCandidateInput
+  sentConnections?: Prisma.ConnectionUncheckedCreateNestedManyWithoutRequesterInput
+  receivedConnections?: Prisma.ConnectionUncheckedCreateNestedManyWithoutAddresseeInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  companyFollows?: Prisma.CompanyFollowerUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  likes?: Prisma.PostLikeUncheckedCreateNestedManyWithoutUserInput
+  endorsementsGiven?: Prisma.EndorsementUncheckedCreateNestedManyWithoutEndorserInput
+  conversations?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  sharedInMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSharedUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  notificationsCaused?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
+  achievements?: Prisma.UserAchievementUncheckedCreateNestedManyWithoutUserInput
+  profileViewsMade?: Prisma.ProfileViewUncheckedCreateNestedManyWithoutViewerInput
+  profileViewsReceived?: Prisma.ProfileViewUncheckedCreateNestedManyWithoutViewedInput
+  interviewsScheduled?: Prisma.InterviewUncheckedCreateNestedManyWithoutScheduledByInput
+  applicationEvents?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutActorInput
+  recruiterNotes?: Prisma.RecruiterNoteUncheckedCreateNestedManyWithoutAuthorInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
+  boosts?: Prisma.ProfileBoostUncheckedCreateNestedManyWithoutUserInput
+  blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  jobReports?: Prisma.JobReportUncheckedCreateNestedManyWithoutReporterInput
+  postReports?: Prisma.PostReportUncheckedCreateNestedManyWithoutReporterInput
+  stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
+  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
+  pushDevices?: Prisma.PushDeviceUncheckedCreateNestedManyWithoutUserInput
+  postDrafts?: Prisma.PostDraftUncheckedCreateNestedManyWithoutAuthorInput
+  articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+}
+
+export type UserCreateOrConnectWithoutResumeDataInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutResumeDataInput, Prisma.UserUncheckedCreateWithoutResumeDataInput>
+}
+
+export type UserUpsertWithoutResumeDataInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutResumeDataInput, Prisma.UserUncheckedUpdateWithoutResumeDataInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutResumeDataInput, Prisma.UserUncheckedCreateWithoutResumeDataInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutResumeDataInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutResumeDataInput, Prisma.UserUncheckedUpdateWithoutResumeDataInput>
+}
+
+export type UserUpdateWithoutResumeDataInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  intent?: Prisma.EnumUserIntentFieldUpdateOperationsInput | $Enums.UserIntent
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  settings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
+  companyMemberships?: Prisma.CompanyMemberUpdateManyWithoutUserNestedInput
+  postedJobs?: Prisma.JobUpdateManyWithoutPostedByNestedInput
+  applications?: Prisma.ApplicationUpdateManyWithoutApplicantNestedInput
+  savedJobs?: Prisma.SavedJobUpdateManyWithoutUserNestedInput
+  savedSearches?: Prisma.SavedSearchUpdateManyWithoutUserNestedInput
+  savedCandidates?: Prisma.SavedCandidateUpdateManyWithoutRecruiterNestedInput
+  savedByRecruiters?: Prisma.SavedCandidateUpdateManyWithoutCandidateNestedInput
+  sentConnections?: Prisma.ConnectionUpdateManyWithoutRequesterNestedInput
+  receivedConnections?: Prisma.ConnectionUpdateManyWithoutAddresseeNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  companyFollows?: Prisma.CompanyFollowerUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  likes?: Prisma.PostLikeUpdateManyWithoutUserNestedInput
+  endorsementsGiven?: Prisma.EndorsementUpdateManyWithoutEndorserNestedInput
+  conversations?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  sharedInMessages?: Prisma.MessageUpdateManyWithoutSharedUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  notificationsCaused?: Prisma.NotificationUpdateManyWithoutActorNestedInput
+  achievements?: Prisma.UserAchievementUpdateManyWithoutUserNestedInput
+  profileViewsMade?: Prisma.ProfileViewUpdateManyWithoutViewerNestedInput
+  profileViewsReceived?: Prisma.ProfileViewUpdateManyWithoutViewedNestedInput
+  interviewsScheduled?: Prisma.InterviewUpdateManyWithoutScheduledByNestedInput
+  applicationEvents?: Prisma.ApplicationEventUpdateManyWithoutActorNestedInput
+  recruiterNotes?: Prisma.RecruiterNoteUpdateManyWithoutAuthorNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
+  boosts?: Prisma.ProfileBoostUpdateManyWithoutUserNestedInput
+  blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUpdateManyWithoutReporterNestedInput
+  stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
+  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
+  pushDevices?: Prisma.PushDeviceUpdateManyWithoutUserNestedInput
+  postDrafts?: Prisma.PostDraftUpdateManyWithoutAuthorNestedInput
+  articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutResumeDataInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  intent?: Prisma.EnumUserIntentFieldUpdateOperationsInput | $Enums.UserIntent
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paddleCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priorityCredits?: Prisma.IntFieldUpdateOperationsInput | number
+  lastFreeBoostClaimedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  settings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
+  companyMemberships?: Prisma.CompanyMemberUncheckedUpdateManyWithoutUserNestedInput
+  postedJobs?: Prisma.JobUncheckedUpdateManyWithoutPostedByNestedInput
+  applications?: Prisma.ApplicationUncheckedUpdateManyWithoutApplicantNestedInput
+  savedJobs?: Prisma.SavedJobUncheckedUpdateManyWithoutUserNestedInput
+  savedSearches?: Prisma.SavedSearchUncheckedUpdateManyWithoutUserNestedInput
+  savedCandidates?: Prisma.SavedCandidateUncheckedUpdateManyWithoutRecruiterNestedInput
+  savedByRecruiters?: Prisma.SavedCandidateUncheckedUpdateManyWithoutCandidateNestedInput
+  sentConnections?: Prisma.ConnectionUncheckedUpdateManyWithoutRequesterNestedInput
+  receivedConnections?: Prisma.ConnectionUncheckedUpdateManyWithoutAddresseeNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  companyFollows?: Prisma.CompanyFollowerUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  likes?: Prisma.PostLikeUncheckedUpdateManyWithoutUserNestedInput
+  endorsementsGiven?: Prisma.EndorsementUncheckedUpdateManyWithoutEndorserNestedInput
+  conversations?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  sharedInMessages?: Prisma.MessageUncheckedUpdateManyWithoutSharedUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  notificationsCaused?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
+  achievements?: Prisma.UserAchievementUncheckedUpdateManyWithoutUserNestedInput
+  profileViewsMade?: Prisma.ProfileViewUncheckedUpdateManyWithoutViewerNestedInput
+  profileViewsReceived?: Prisma.ProfileViewUncheckedUpdateManyWithoutViewedNestedInput
+  interviewsScheduled?: Prisma.InterviewUncheckedUpdateManyWithoutScheduledByNestedInput
+  applicationEvents?: Prisma.ApplicationEventUncheckedUpdateManyWithoutActorNestedInput
+  recruiterNotes?: Prisma.RecruiterNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
+  boosts?: Prisma.ProfileBoostUncheckedUpdateManyWithoutUserNestedInput
+  blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  jobReports?: Prisma.JobReportUncheckedUpdateManyWithoutReporterNestedInput
+  postReports?: Prisma.PostReportUncheckedUpdateManyWithoutReporterNestedInput
+  stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
+  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
+  pushDevices?: Prisma.PushDeviceUncheckedUpdateManyWithoutUserNestedInput
+  postDrafts?: Prisma.PostDraftUncheckedUpdateManyWithoutAuthorNestedInput
+  articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 
@@ -13573,6 +14038,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   pushDevices?: boolean | Prisma.User$pushDevicesArgs<ExtArgs>
   postDrafts?: boolean | Prisma.User$postDraftsArgs<ExtArgs>
   articles?: boolean | Prisma.User$articlesArgs<ExtArgs>
+  resumeData?: boolean | Prisma.User$resumeDataArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -13684,6 +14150,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   pushDevices?: boolean | Prisma.User$pushDevicesArgs<ExtArgs>
   postDrafts?: boolean | Prisma.User$postDraftsArgs<ExtArgs>
   articles?: boolean | Prisma.User$articlesArgs<ExtArgs>
+  resumeData?: boolean | Prisma.User$resumeDataArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -13735,6 +14202,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     pushDevices: Prisma.$PushDevicePayload<ExtArgs>[]
     postDrafts: Prisma.$PostDraftPayload<ExtArgs>[]
     articles: Prisma.$ArticlePayload<ExtArgs>[]
+    resumeData: Prisma.$ResumeDataPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -14192,6 +14660,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   pushDevices<T extends Prisma.User$pushDevicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$pushDevicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PushDevicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   postDrafts<T extends Prisma.User$postDraftsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$postDraftsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PostDraftPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   articles<T extends Prisma.User$articlesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$articlesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ArticlePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  resumeData<T extends Prisma.User$resumeDataArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$resumeDataArgs<ExtArgs>>): Prisma.Prisma__ResumeDataClient<runtime.Types.Result.GetResult<Prisma.$ResumeDataPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -15660,6 +16129,25 @@ export type User$articlesArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.ArticleScalarFieldEnum | Prisma.ArticleScalarFieldEnum[]
+}
+
+/**
+ * User.resumeData
+ */
+export type User$resumeDataArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ResumeData
+   */
+  select?: Prisma.ResumeDataSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ResumeData
+   */
+  omit?: Prisma.ResumeDataOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ResumeDataInclude<ExtArgs> | null
+  where?: Prisma.ResumeDataWhereInput
 }
 
 /**

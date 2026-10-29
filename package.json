@@ -43,6 +43,7 @@
     "next": "16.4.3",
     "nodemailer": "^10.0.16",
     "pg": "^8.23.1",
+    "puppeteer-core": "25.13.0",
     "radix-ui": "^1.7.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",

@@ -454,7 +454,8 @@ export const ModelName = {
   Payment: 'Payment',
   ProfileBoost: 'ProfileBoost',
   WebhookEvent: 'WebhookEvent',
-  Article: 'Article'
+  Article: 'Article',
+  ResumeData: 'ResumeData'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -470,7 +471,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification" | "rateLimit" | "userSettings" | "block" | "profile" | "skill" | "userSkill" | "endorsement" | "experience" | "education" | "project" | "certificate" | "userLanguage" | "portfolioItem" | "socialLink" | "profileView" | "userAchievement" | "industry" | "company" | "companyMember" | "companyFollower" | "companyMedia" | "job" | "jobSkill" | "jobLanguage" | "jobPromotion" | "jobDailyStat" | "jobView" | "jobReport" | "postReport" | "story" | "storyView" | "postDraft" | "pushDevice" | "savedJob" | "savedSearch" | "application" | "applicationEvent" | "recruiterNote" | "interview" | "savedCandidate" | "connection" | "follow" | "post" | "postLike" | "comment" | "conversation" | "conversationParticipant" | "message" | "notification" | "subscription" | "payment" | "profileBoost" | "webhookEvent" | "article"
+    modelProps: "user" | "session" | "account" | "verification" | "rateLimit" | "userSettings" | "block" | "profile" | "skill" | "userSkill" | "endorsement" | "experience" | "education" | "project" | "certificate" | "userLanguage" | "portfolioItem" | "socialLink" | "profileView" | "userAchievement" | "industry" | "company" | "companyMember" | "companyFollower" | "companyMedia" | "job" | "jobSkill" | "jobLanguage" | "jobPromotion" | "jobDailyStat" | "jobView" | "jobReport" | "postReport" | "story" | "storyView" | "postDraft" | "pushDevice" | "savedJob" | "savedSearch" | "application" | "applicationEvent" | "recruiterNote" | "interview" | "savedCandidate" | "connection" | "follow" | "post" | "postLike" | "comment" | "conversation" | "conversationParticipant" | "message" | "notification" | "subscription" | "payment" | "profileBoost" | "webhookEvent" | "article" | "resumeData"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -4766,6 +4767,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ResumeData: {
+      payload: Prisma.$ResumeDataPayload<ExtArgs>
+      fields: Prisma.ResumeDataFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ResumeDataFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResumeDataPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ResumeDataFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResumeDataPayload>
+        }
+        findFirst: {
+          args: Prisma.ResumeDataFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResumeDataPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ResumeDataFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResumeDataPayload>
+        }
+        findMany: {
+          args: Prisma.ResumeDataFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResumeDataPayload>[]
+        }
+        create: {
+          args: Prisma.ResumeDataCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResumeDataPayload>
+        }
+        createMany: {
+          args: Prisma.ResumeDataCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ResumeDataCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResumeDataPayload>[]
+        }
+        delete: {
+          args: Prisma.ResumeDataDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResumeDataPayload>
+        }
+        update: {
+          args: Prisma.ResumeDataUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResumeDataPayload>
+        }
+        deleteMany: {
+          args: Prisma.ResumeDataDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ResumeDataUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ResumeDataUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResumeDataPayload>[]
+        }
+        upsert: {
+          args: Prisma.ResumeDataUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResumeDataPayload>
+        }
+        aggregate: {
+          args: Prisma.ResumeDataAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateResumeData>
+        }
+        groupBy: {
+          args: Prisma.ResumeDataGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ResumeDataGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ResumeDataCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ResumeDataCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -5666,6 +5741,27 @@ export const ArticleScalarFieldEnum = {
 export type ArticleScalarFieldEnum = (typeof ArticleScalarFieldEnum)[keyof typeof ArticleScalarFieldEnum]
 
 
+export const ResumeDataScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  fullName: 'fullName',
+  headline: 'headline',
+  email: 'email',
+  phone: 'phone',
+  location: 'location',
+  summary: 'summary',
+  experience: 'experience',
+  education: 'education',
+  skills: 'skills',
+  languages: 'languages',
+  links: 'links',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ResumeDataScalarFieldEnum = (typeof ResumeDataScalarFieldEnum)[keyof typeof ResumeDataScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -6551,6 +6647,7 @@ export type GlobalOmitConfig = {
   profileBoost?: Prisma.ProfileBoostOmit
   webhookEvent?: Prisma.WebhookEventOmit
   article?: Prisma.ArticleOmit
+  resumeData?: Prisma.ResumeDataOmit
 }
 
 /* Types for Logging */

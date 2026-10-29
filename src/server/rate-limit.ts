@@ -43,4 +43,5 @@ export const LIMITS = {
   search: { key: "search", max: 120, windowMs: 60_000 },
   checkout: { key: "checkout", max: 10, windowMs: 10 * 60_000 },
   sensitive: { key: "sensitive", max: 5, windowMs: 15 * 60_000 },
+  pdf: { key: "pdf", max: 20, windowMs: 10 * 60_000 },
 } as const;

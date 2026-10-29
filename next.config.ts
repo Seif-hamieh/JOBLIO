@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
   // a missing job/company/profile answers with a real 404 status and the title/og tags are in <head>.
   htmlLimitedBots: /.*/,
   // The generated Prisma client and pg are server-only; keep them out of the bundler.
-  serverExternalPackages: ["pg", "@prisma/adapter-pg", "nodemailer"],
+  serverExternalPackages: ["pg", "@prisma/adapter-pg", "nodemailer", "puppeteer-core"],
   turbopack: {
     rules: {
       "*.css": {

@@ -26,6 +26,7 @@ import {
   User,
   Users,
   Newspaper,
+  FileUser,
 } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
 import { Avatar } from "@/components/ui/avatar";
@@ -115,6 +116,9 @@ function UserMenu({ viewer }: { viewer: ShellViewer }) {
         <MenuSeparator />
         <MenuItem icon={<User />} onSelect={() => router.push(`/in/${viewer.username}`)}>
           {t("nav.myProfile")}
+        </MenuItem>
+        <MenuItem icon={<FileUser />} onSelect={() => router.push("/resume-builder")}>
+          {t("cvb.menu")}
         </MenuItem>
         <MenuItem icon={<Newspaper />} onSelect={() => router.push("/articles")}>
           {t("articles.myArticles")}

@@ -19,6 +19,7 @@ const PROTECTED = [
   "/applications",
   "/interviews",
   "/settings",
+  "/resume-builder",
   "/recruiter",
   "/company",
   "/jobs/for-you",

@@ -333,3 +333,8 @@ export type WebhookEvent = Prisma.WebhookEventModel
  * 
  */
 export type Article = Prisma.ArticleModel
+/**
+ * Model ResumeData
+ * 
+ */
+export type ResumeData = Prisma.ResumeDataModel
