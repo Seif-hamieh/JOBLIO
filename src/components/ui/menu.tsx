@@ -19,8 +19,12 @@ export function MenuContent({ className, align = "end", sideOffset = 8, ...props
       <DM.Content
         align={align}
         sideOffset={sideOffset}
+        // Never past the screen's edges: a long menu (the account menu on a phone) stays inside the screen and
+        // scrolls within itself. The available height is what's left between the button and the screen's edge.
+        collisionPadding={12}
         className={cn(
-          "z-[75] min-w-48 bg-surface overflow-hidden rounded-2xl border border-border/70 p-1.5 shadow-float",
+          "z-[75] min-w-48 bg-surface rounded-2xl border border-border/70 p-1.5 shadow-float",
+          "max-h-[min(var(--radix-dropdown-menu-content-available-height),calc(100dvh-24px))] overflow-y-auto overscroll-contain",
           "origin-[var(--radix-dropdown-menu-content-transform-origin)] [animation:menu-in_0.18s_cubic-bezier(0.16,1,0.3,1)]",
           className,
         )}
