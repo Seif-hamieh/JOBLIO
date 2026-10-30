@@ -100,6 +100,11 @@ export default async function JobsPage({ searchParams }: PageProps<"/jobs">) {
 
           <Pagination page={params.page} pageCount={results.pageCount} href={(page) => `/jobs${toQueryString(params, { page })}`} />
 
+          {/* Crawl path to the city landing pages (/jobs/in). */}
+          <Link href="/jobs/in" className="block text-center text-sm font-medium text-brand-soft-fg hover:underline">
+            {t("jobs.browseByCity")}
+          </Link>
+
           <div className="grid gap-3 pt-4 sm:grid-cols-2">
             <Link href="/jobs/featured" className="surface surface-hover flex items-center gap-3 p-4">
               <span className="grid size-10 place-items-center rounded-xl border border-border bg-surface-2 text-ember-fg">

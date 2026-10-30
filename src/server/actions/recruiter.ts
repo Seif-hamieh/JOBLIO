@@ -6,6 +6,7 @@ import { db } from "@/server/db";
 import { fail, parse, withRecruiter, type ActionState } from "@/server/action";
 import { LIMITS } from "@/server/rate-limit";
 import { refreshSitemap } from "@/server/sitemap";
+import { notifyGoogleAboutJob } from "@/server/google-indexing";
 import { getApplicationDetail, type ApplicationDetail } from "@/server/services/recruiter";
 import { getManagedApplication, markViewed, transitionApplication } from "@/server/services/applications";
 import { jobSchema, type JobInput } from "@/lib/validation/job";
@@ -23,6 +24,7 @@ export async function createJobAction(input: JobInput): Promise<ActionState<{ id
     const job = await createJobForCompany({ userId: viewer.id, companyId: viewer.company.id }, parsed.data);
     revalidatePath("/recruiter");
     refreshSitemap();
+    notifyGoogleAboutJob(job.id);
     return { ok: true, message: parsed.data.publish ? "@msg.jobPublished" : "@msg.draftSaved", data: { id: job.id } };
   });
 }

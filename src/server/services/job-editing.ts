@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/server/db";
 import { ActionError } from "@/server/action";
 import { refreshSitemap } from "@/server/sitemap";
+import { notifyGoogleAboutJob } from "@/server/google-indexing";
 import { jobData, notifyFollowersOfNewJob, type ParsedJob } from "@/server/services/job-posting";
 import { startOfTodayUtc } from "@/lib/validation/job";
 
@@ -21,6 +22,7 @@ function refresh(jobId: string) {
   revalidatePath("/recruiter");
   revalidatePath(`/jobs/${jobId}`);
   refreshSitemap();
+  notifyGoogleAboutJob(jobId);
 }
 
 /** Saves the whole job form (skills and languages are replaced). Publishing a draft tells the company's followers. */

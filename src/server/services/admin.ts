@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/server/db";
 import { ActionError } from "@/server/action";
 import { refreshSitemap } from "@/server/sitemap";
+import { notifyGoogleAboutJob } from "@/server/google-indexing";
 import { deleteStored } from "@/server/storage";
 import { k } from "@/i18n/message";
 
@@ -25,6 +26,7 @@ export async function publishJobAsAdmin(jobId: string) {
   if (job.status !== "DRAFT") throw new ActionError(k("admin.msg.jobNotDraft"));
   await db.job.update({ where: { id: jobId }, data: { status: "OPEN", publishedAt: job.publishedAt ?? new Date() } });
   refreshSitemap();
+  notifyGoogleAboutJob(jobId);
   revalidatePath("/admin/jobs");
   revalidatePath("/jobs");
   return k("admin.msg.jobPublished");
@@ -39,7 +41,10 @@ export async function resolveJobReportsAsAdmin(jobId: string, alsoCloseJob: bool
     ...(alsoCloseJob ? [db.job.updateMany({ where: { id: jobId, status: "OPEN" }, data: { status: "CLOSED" } })] : []),
     db.jobReport.updateMany({ where: { jobId, status: "OPEN" }, data: { status: "RESOLVED", resolvedAt: new Date() } }),
   ]);
-  if (alsoCloseJob) refreshSitemap();
+  if (alsoCloseJob) {
+    refreshSitemap();
+    notifyGoogleAboutJob(jobId);
+  }
   revalidatePath("/admin/reports");
   revalidatePath("/admin/jobs");
   return k(alsoCloseJob ? "admin.msg.reportJobClosed" : "admin.msg.reportsDismissed");

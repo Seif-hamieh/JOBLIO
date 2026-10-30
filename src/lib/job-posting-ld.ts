@@ -18,6 +18,13 @@ type JobForLd = {
   salaryMax: number | null;
   salaryCurrency: string;
   salaryPeriod: "HOUR" | "MONTH" | "YEAR";
+  minYearsExperience?: number;
+  educationLevel?: string;
+  benefits?: string[];
+  industry?: { name: string } | null;
+  skills?: { skill: { name: string } }[];
+  /** Imported listings are applied to on their own site; JOBLIO's own jobs on the job page. */
+  externalUrl?: string | null;
   company: { name: string; slug: string; logoUrl: string | null; website: string | null; city: string | null; countryCode: string | null };
 };
 
@@ -27,6 +34,16 @@ const EMPLOYMENT: Record<JobForLd["employmentType"], string> = {
   CONTRACT: "CONTRACTOR",
   FREELANCE: "CONTRACTOR",
   INTERNSHIP: "INTERN",
+};
+
+// schema.org's EducationalOccupationalCredential categories for our education levels (NONE: no requirement).
+const CREDENTIAL: Record<string, string> = {
+  HIGH_SCHOOL: "high school",
+  VOCATIONAL: "professional certificate",
+  ASSOCIATE: "associate degree",
+  BACHELOR: "bachelor degree",
+  MASTER: "postgraduate degree",
+  DOCTORATE: "postgraduate degree",
 };
 
 const DAY_MS = 86_400_000;
@@ -79,6 +96,19 @@ export function jobPostingJsonLd(job: JobForLd, siteUrl: string) {
     validThrough: validThrough.toISOString(),
     employmentType: EMPLOYMENT[job.employmentType],
     url: `${siteUrl}/jobs/${job.id}`,
+    // Applying happens on JOBLIO itself, on this page.
+    directApply: !job.externalUrl,
+    ...(job.industry && { industry: job.industry.name }),
+    ...(job.skills?.length && { skills: job.skills.map((s) => s.skill.name).join(", ") }),
+    ...(job.requirements.length && { qualifications: job.requirements.join("; ") }),
+    ...(job.responsibilities.length && { responsibilities: job.responsibilities.join("; ") }),
+    ...(job.benefits?.length && { jobBenefits: job.benefits.join("; ") }),
+    ...(job.minYearsExperience
+      ? { experienceRequirements: { "@type": "OccupationalExperienceRequirements", monthsOfExperience: job.minYearsExperience * 12 } }
+      : {}),
+    ...(job.educationLevel && CREDENTIAL[job.educationLevel]
+      ? { educationRequirements: { "@type": "EducationalOccupationalCredential", credentialCategory: CREDENTIAL[job.educationLevel] } }
+      : {}),
     hiringOrganization: {
       "@type": "Organization",
       name: job.company.name,

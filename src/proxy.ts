@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { landingExists } from "@/server/services/job-landing";
 import { getSessionCookie } from "better-auth/cookies";
 import { buildCsp } from "@/lib/csp";
 import { db } from "@/server/db";
@@ -30,7 +31,9 @@ const PROTECTED = [
 // before the page can call notFound(). For full page loads of public detail pages,
 // check existence first so a missing job / company / profile answers 404.
 const DETAIL = /^\/(jobs|companies|in)\/([^/]+)$/;
-const NOT_A_JOB = new Set(["featured", "saved", "for-you"]);
+const NOT_A_JOB = new Set(["featured", "saved", "for-you", "in"]);
+// City (and city + field) landing pages, which exist only while they have open jobs (see services/job-landing).
+const LANDING = /^\/jobs\/in\/([^/]+)(?:\/([^/]+))?$/;
 
 // A single segment that isn't one of the site's own top-level pages is a member's portfolio
 // (/{username}). Next renders a missing one as an empty shell plus a client-drawn 404, so on
@@ -103,6 +106,12 @@ export async function proxy(request: NextRequest) {
       gone.searchParams.set("kind", detail[1] === "companies" ? "company" : "job");
       return NextResponse.rewrite(gone, { status: 410 });
     }
+  }
+
+  const landing = pathname.match(LANDING);
+  if (landing && request.method === "GET" && !request.headers.get("rsc")) {
+    const ok = await landingExists(decodeURIComponent(landing[1]!), landing[2] && decodeURIComponent(landing[2])).catch(() => true);
+    if (!ok) return NextResponse.rewrite(new URL("/_missing/not-found", request.url), { status: 404 });
   }
 
   // Only document loads (not RSC, not images/files such as /apple-icon.png).

@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { jobSchema } from "@/lib/validation/job";
 import { LIMITS, rateLimit } from "@/server/rate-limit";
 import { refreshSitemap } from "@/server/sitemap";
+import { notifyGoogleAboutJob } from "@/server/google-indexing";
 import { recruiterDashboard } from "@/server/services/recruiter";
 import { createJobForCompany } from "@/server/services/job-posting";
 import { getMobileRecruiter, mobileError } from "@/server/mobile/auth";
@@ -71,5 +72,6 @@ export async function POST(req: Request) {
   const job = await createJobForCompany({ userId: r.userId, companyId: r.companyId }, parsed.data);
   revalidatePath("/recruiter");
   refreshSitemap();
+  notifyGoogleAboutJob(job.id);
   return NextResponse.json({ job: { id: job.id, status: job.status } }, { status: 201, headers: { "Cache-Control": "no-store" } });
 }
