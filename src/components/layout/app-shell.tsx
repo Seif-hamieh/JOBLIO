@@ -61,7 +61,7 @@ const noopSubscribe = () => () => {};
 type NavItem = { href: string; label: TKey; icon: typeof Home; badge?: keyof Counts; match?: string[] };
 
 const NAV: NavItem[] = [
-  { href: "/home", label: "nav.home", icon: Home, match: ["/home", "/feed"] },
+  { href: "/feed", label: "nav.home", icon: Home, match: ["/feed"] },
   { href: "/jobs", label: "nav.jobs", icon: Briefcase, match: ["/jobs", "/applications", "/interviews"] },
   { href: "/network", label: "nav.network", icon: Users, badge: "pendingConnections", match: ["/network", "/companies", "/professionals"] },
   { href: "/messages", label: "nav.messages", icon: MessageSquare, badge: "messages" },
@@ -114,6 +114,9 @@ function UserMenu({ viewer }: { viewer: ShellViewer }) {
           </div>
         </Link>
         <MenuSeparator />
+        <MenuItem icon={<LayoutDashboard />} onSelect={() => router.push("/home")}>
+          {t("nav.myDashboard")}
+        </MenuItem>
         <MenuItem icon={<User />} onSelect={() => router.push(`/in/${viewer.username}`)}>
           {t("nav.myProfile")}
         </MenuItem>

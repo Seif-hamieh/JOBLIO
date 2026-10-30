@@ -14,7 +14,7 @@ export default async function OnboardingPage({ searchParams }: PageProps<"/onboa
   const viewer = await getViewer();
   // Better Auth sends failed email verifications back here with ?error=…
   if (!viewer) redirect(error ? "/verify-email?error=1" : "/login?next=/onboarding");
-  if (viewer.onboardedAt) redirect("/home");
+  if (viewer.onboardedAt) redirect("/feed");
   const industries = await listIndustries();
 
   return (

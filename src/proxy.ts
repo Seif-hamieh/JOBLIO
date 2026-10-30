@@ -93,7 +93,7 @@ export async function proxy(request: NextRequest) {
   const hasSession = !!getSessionCookie(request);
 
   if (pathname === "/" && hasSession) {
-    return NextResponse.redirect(new URL("/home", request.url));
+    return NextResponse.redirect(new URL("/feed", request.url));
   }
 
   const post = pathname.match(POST);

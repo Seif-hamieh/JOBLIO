@@ -103,6 +103,7 @@ export const en = {
     searchPlaceholder: "Search people, companies and jobs",
     menu: "Menu",
     accountMenu: "Account menu",
+    myDashboard: "My dashboard",
     myProfile: "My profile",
     viewProfile: "View your profile",
     achievements: "Achievements",

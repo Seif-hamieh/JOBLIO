@@ -105,6 +105,7 @@ export const ar: Dictionary = {
     searchPlaceholder: "ابحث عن أشخاص أو شركات أو وظائف",
     menu: "القائمة",
     accountMenu: "قائمة الحساب",
+    myDashboard: "لوحتي",
     myProfile: "ملفي الشخصي",
     viewProfile: "عرض ملفك الشخصي",
     achievements: "الإنجازات",

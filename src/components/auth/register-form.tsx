@@ -117,7 +117,7 @@ export function RegisterForm({ initialIntent, providers, devMailbox = false }: {
           <p className="mt-2 text-fg-muted">{t("auth.freeForever")}</p>
 
           <div className="mt-8">
-            <SocialButtons providers={providers} callbackURL="/home" onBeforeRedirect={rememberIntent} />
+            <SocialButtons providers={providers} callbackURL="/feed" onBeforeRedirect={rememberIntent} />
             <Divider label={t("auth.orEmail")} className="my-6" />
           </div>
 

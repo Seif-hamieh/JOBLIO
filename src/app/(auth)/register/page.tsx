@@ -9,7 +9,7 @@ import { USER_INTENTS, type UserIntent } from "@/lib/constants";
 export const generateMetadata = pageTitle("auth.createAccount");
 
 export default async function RegisterPage({ searchParams }: PageProps<"/register">) {
-  if (await getViewer()) redirect("/home");
+  if (await getViewer()) redirect("/feed");
   const { intent } = await searchParams;
   const initial = typeof intent === "string" && USER_INTENTS.includes(intent as UserIntent) ? (intent as UserIntent) : null;
   return <RegisterForm initialIntent={initial} providers={enabledSocialProviders} devMailbox={devMailboxEnabled()} />;

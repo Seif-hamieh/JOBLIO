@@ -96,7 +96,7 @@ export function OnboardingWizard({
       } catch {}
       setStep("done");
       setTimeout(() => {
-        router.replace(intent === "RECRUITER" ? "/recruiter" : "/home");
+        router.replace(intent === "RECRUITER" ? "/recruiter" : "/feed");
         router.refresh();
       }, 1600);
     });
