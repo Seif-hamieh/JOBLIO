@@ -84,6 +84,12 @@ export async function proxy(request: NextRequest) {
   }
   // AI-training and SEO scrapers: turned away before any page renders (they cost CPU and bring no visitors).
   if (isBlockedBot(request.headers.get("user-agent"))) return new NextResponse("Forbidden", { status: 403 });
+  // Google's crawlers and testing tools: one log line per page they ask for (path and the address Cloudflare saw),
+  // so a fetch that fails for Google can be matched to what the server received.
+  const ua = request.headers.get("user-agent") ?? "";
+  if (/Googlebot|Google-InspectionTool|Google-Site-Verification|GoogleOther/i.test(ua)) {
+    console.log(`[google] ${request.method} ${pathname} ip=${request.headers.get("cf-connecting-ip") ?? "-"} ua="${ua.slice(0, 120)}"`);
+  }
   const hasSession = !!getSessionCookie(request);
 
   if (pathname === "/" && hasSession) {
