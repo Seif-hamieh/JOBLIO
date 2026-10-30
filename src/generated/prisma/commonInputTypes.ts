@@ -810,6 +810,23 @@ export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
   _max?: Prisma.NestedJsonFilter<$PrismaModel>
 }
 
+export type EnumScreeningQuestionTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.ScreeningQuestionType | Prisma.EnumScreeningQuestionTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.ScreeningQuestionType[] | Prisma.ListEnumScreeningQuestionTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ScreeningQuestionType[] | Prisma.ListEnumScreeningQuestionTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumScreeningQuestionTypeFilter<$PrismaModel> | $Enums.ScreeningQuestionType
+}
+
+export type EnumScreeningQuestionTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ScreeningQuestionType | Prisma.EnumScreeningQuestionTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.ScreeningQuestionType[] | Prisma.ListEnumScreeningQuestionTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ScreeningQuestionType[] | Prisma.ListEnumScreeningQuestionTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumScreeningQuestionTypeWithAggregatesFilter<$PrismaModel> | $Enums.ScreeningQuestionType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumScreeningQuestionTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumScreeningQuestionTypeFilter<$PrismaModel>
+}
+
 export type EnumApplicationStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.ApplicationStatus | Prisma.EnumApplicationStatusFieldRefInput<$PrismaModel>
   in?: $Enums.ApplicationStatus[] | Prisma.ListEnumApplicationStatusFieldRefInput<$PrismaModel>
@@ -1857,6 +1874,23 @@ export type NestedJsonFilterBase<$PrismaModel = never> = {
   gt?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel>
   gte?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel>
   not?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel> | Prisma.JsonNullValueFilter
+}
+
+export type NestedEnumScreeningQuestionTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.ScreeningQuestionType | Prisma.EnumScreeningQuestionTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.ScreeningQuestionType[] | Prisma.ListEnumScreeningQuestionTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ScreeningQuestionType[] | Prisma.ListEnumScreeningQuestionTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumScreeningQuestionTypeFilter<$PrismaModel> | $Enums.ScreeningQuestionType
+}
+
+export type NestedEnumScreeningQuestionTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ScreeningQuestionType | Prisma.EnumScreeningQuestionTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.ScreeningQuestionType[] | Prisma.ListEnumScreeningQuestionTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ScreeningQuestionType[] | Prisma.ListEnumScreeningQuestionTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumScreeningQuestionTypeWithAggregatesFilter<$PrismaModel> | $Enums.ScreeningQuestionType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumScreeningQuestionTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumScreeningQuestionTypeFilter<$PrismaModel>
 }
 
 export type NestedEnumApplicationStatusFilter<$PrismaModel = never> = {

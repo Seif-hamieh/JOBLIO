@@ -212,6 +212,8 @@ export const jobDetailSelect = {
   responsibilities: true,
   requirements: true,
   benefits: true,
+  // Asked to everyone who applies (website and app apply forms).
+  screeningQuestions: { orderBy: { position: "asc" }, select: { id: true, questionText: true, type: true, options: true, isRequired: true } },
   salaryPeriod: true,
   closesAt: true,
   createdAt: true,

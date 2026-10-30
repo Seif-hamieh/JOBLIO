@@ -1715,6 +1715,10 @@ export const en = {
     paymentBody: "{amount} · Invoice {invoice}",
   },
   msg: {
+    screeningRequired: "Answer every required question before applying.",
+    screeningInvalid: "One of the answers isn’t one of the choices. Check your answers.",
+    screeningNumber: "Enter a number for that question.",
+    screeningTooLong: "Keep each answer under 1,000 characters.",
     planUnavailable: "This plan isn’t available right now. Please choose another.",
     featureNotAllowed: "Only the person who posted this job or a company admin can feature it.",
     alreadyFeatured: "This job is already featured.",
@@ -1883,6 +1887,10 @@ export const en = {
     accountDeleted: "Your account has been deleted."
   },
   v: {
+    questionText: "Write the question (at least 3 characters).",
+    questionOptions: "Give at least 2 choices.",
+    questionsMax: "At most 5 questions.",
+    phone: "Enter a valid phone number, e.g. +961 70 123 456.",
     closesPast: "Choose today or a later date.",
     url: "Enter a full URL starting with https://",
     country: "Choose a country",

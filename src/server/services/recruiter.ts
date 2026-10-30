@@ -208,6 +208,7 @@ export async function getApplicationDetail(applicationId: string, companyId: str
       matchScore: true,
       matchSnapshot: true,
       coverLetter: true,
+      screeningAnswers: true,
       resumeUrl: true,
       rating: true,
       createdAt: true,
@@ -219,6 +220,8 @@ export async function getApplicationDetail(applicationId: string, companyId: str
           image: true,
           username: true,
           email: false,
+          // Given to the companies the member applies to (this is one of their applications).
+          phoneNumber: true,
           profile: {
             select: {
               headline: true,

@@ -215,6 +215,11 @@ export type SavedJob = Prisma.SavedJobModel
  */
 export type SavedSearch = Prisma.SavedSearchModel
 /**
+ * Model ScreeningQuestion
+ * 
+ */
+export type ScreeningQuestion = Prisma.ScreeningQuestionModel
+/**
  * Model Application
  * 
  */

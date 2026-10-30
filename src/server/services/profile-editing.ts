@@ -24,8 +24,8 @@ export async function afterProfileChange(owner: ProfileOwner) {
 // ── Basics & photos ──────────────────────────────────────────────────────
 
 export async function saveBasics(owner: ProfileOwner, data: z.output<typeof basicsSchema>) {
-  const { name, ...rest } = data;
-  await db.$transaction([db.user.update({ where: { id: owner.id }, data: { name } }), db.profile.update({ where: { id: owner.profileId }, data: rest })]);
+  const { name, phoneNumber, ...rest } = data;
+  await db.$transaction([db.user.update({ where: { id: owner.id }, data: { name, ...(phoneNumber !== undefined && { phoneNumber }) } }), db.profile.update({ where: { id: owner.profileId }, data: rest })]);
   await afterProfileChange(owner);
 }
 

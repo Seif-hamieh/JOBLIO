@@ -53,7 +53,9 @@ export async function applyAction(_prev: ActionState<{ score: number }>, form: F
     }
     let match: Awaited<ReturnType<typeof applyToJob>>["match"];
     try {
-      ({ match } = await applyToJob(viewer.id, parsed.data.jobId, { coverLetter: parsed.data.coverLetter, resumeUrl }));
+      // Screening answers arrive as fields named "answer.<question id>".
+      const screeningAnswers = Object.fromEntries([...form.entries()].filter(([k, v]) => k.startsWith("answer.") && typeof v === "string").map(([k, v]) => [k.slice(7), v]));
+      ({ match } = await applyToJob(viewer.id, parsed.data.jobId, { coverLetter: parsed.data.coverLetter, resumeUrl, screeningAnswers }));
     } catch (e) {
       await deleteStored([resumeUrl]);
       throw e;

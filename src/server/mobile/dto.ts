@@ -52,6 +52,8 @@ export function toJobDetail(
     responsibilities: j.responsibilities,
     requirements: j.requirements,
     benefits: j.benefits,
+    // Answered in the apply screen (send them as answers: { [id]: value }).
+    screeningQuestions: j.screeningQuestions,
     minYearsExperience: j.minYearsExperience,
     educationLevel: j.educationLevel,
     languages: j.languages.map((l) => ({ code: l.languageCode, minProficiency: l.minProficiency })),

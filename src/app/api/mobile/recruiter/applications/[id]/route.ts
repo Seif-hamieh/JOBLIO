@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import type { ScreeningAnswer } from "@/lib/screening";
 import type { MatchResult } from "@/lib/matching/engine";
 import { LIMITS, rateLimit } from "@/server/rate-limit";
 import { getApplicationDetail } from "@/server/services/recruiter";
@@ -42,9 +43,12 @@ export async function GET(req: Request, { params }: RouteContext<"/api/mobile/re
         job: a.job,
         match: { score: a.matchScore, matchedSkills: match?.matchedSkills ?? [], missingSkills: match?.missingSkills ?? [] },
         coverLetter: a.coverLetter,
+        // [{ questionId, question, type, answer }]: the job's screening questions as they were asked.
+        screeningAnswers: (a.screeningAnswers as ScreeningAnswer[] | null) ?? [],
         hasResume: !!a.resumeUrl,
         candidate: {
           name: a.applicant.name,
+          phoneNumber: a.applicant.phoneNumber,
           username: a.applicant.username,
           image: a.applicant.image,
           headline: p?.headline ?? null,

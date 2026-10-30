@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { phoneSchema } from "@/lib/screening";
 import {
   AVAILABILITIES,
   COMPANY_SIZES,
@@ -102,6 +103,8 @@ export const basicsSchema = z.object({
   city: optionalText(60),
   countryCode: country,
   website: optionalUrl,
+  // Left out: unchanged (older app versions don't send it). Shown only to companies the member applies to.
+  phoneNumber: phoneSchema,
 });
 
 export const experienceSchema = z

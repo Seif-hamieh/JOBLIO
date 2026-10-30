@@ -408,6 +408,16 @@ export const PromotionKind = {
 export type PromotionKind = (typeof PromotionKind)[keyof typeof PromotionKind]
 
 
+export const ScreeningQuestionType = {
+  TEXT: 'TEXT',
+  YES_NO: 'YES_NO',
+  NUMBER: 'NUMBER',
+  MULTIPLE_CHOICE: 'MULTIPLE_CHOICE'
+} as const
+
+export type ScreeningQuestionType = (typeof ScreeningQuestionType)[keyof typeof ScreeningQuestionType]
+
+
 export const ArticleStatus = {
   DRAFT: 'DRAFT',
   PUBLISHED: 'PUBLISHED'

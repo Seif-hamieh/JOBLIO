@@ -7,6 +7,8 @@ import { notify } from "@/server/services/notifications";
 import { checkAchievements } from "@/server/services/achievements";
 import { candidateMatchSelect, jobMatchSelect, toCandidateFacts, toJobFacts } from "@/server/services/matching";
 import { computeMatch } from "@/lib/matching/engine";
+import { checkScreeningAnswers } from "@/lib/screening";
+import { Prisma } from "@/generated/prisma/client";
 import { STATUS_FOR_STAGE, type ApplicationStatus, type PipelineStage } from "@/lib/constants";
 export { STATUS_FOR_STAGE };
 
@@ -28,12 +30,23 @@ function dayStart(d = new Date()) {
   return x;
 }
 
-export async function applyToJob(userId: string, jobId: string, input: { coverLetter: string | null; resumeUrl: string | null }) {
+/**
+ * Sends an application. `screeningAnswers` are keyed by question id; they are checked against the job's screening
+ * questions (required ones must be answered) and stored with a copy of each question's wording.
+ */
+export async function applyToJob(
+  userId: string,
+  jobId: string,
+  input: { coverLetter: string | null; resumeUrl: string | null; screeningAnswers?: Record<string, unknown> | null },
+) {
   if (!jobId || jobId === "undefined") throw new ActionError("@msg.jobClosed");
   const [job, profile, existing] = await Promise.all([
     db.job.findUnique({
       where: { id: jobId },
-      select: { ...jobMatchSelect, id: true, title: true, status: true, postedById: true, publishedAt: true, closesAt: true, externalUrl: true, company: { select: { id: true, name: true, members: { select: { userId: true } } } } },
+      select: { ...jobMatchSelect, id: true, title: true, status: true, postedById: true, publishedAt: true, closesAt: true, externalUrl: true,
+        company: { select: { id: true, name: true, members: { select: { userId: true } } } },
+        screeningQuestions: { orderBy: { position: "asc" }, select: { id: true, questionText: true, type: true, options: true, isRequired: true } },
+      },
     }),
     db.profile.findUnique({ where: { userId }, select: candidateMatchSelect }),
     db.application.findUnique({ where: { jobId_applicantId: { jobId, applicantId: userId } }, select: { id: true, status: true } }),
@@ -48,6 +61,9 @@ export async function applyToJob(userId: string, jobId: string, input: { coverLe
     throw new ActionError("@msg.invalidCv");
   }
 
+  const screening = checkScreeningAnswers(job.screeningQuestions, input.screeningAnswers);
+  if (!screening.ok) throw new ActionError(screening.error);
+
   // Snapshot the score recruiters will see (their perspective includes availability).
   const match = computeMatch(toCandidateFacts(profile), toJobFacts(job), "recruiter");
 
@@ -57,6 +73,7 @@ export async function applyToJob(userId: string, jobId: string, input: { coverLe
       stage: "APPLIED" as const,
       stagePosition: Date.now(),
       coverLetter: input.coverLetter,
+      screeningAnswers: screening.answers.length ? screening.answers : Prisma.DbNull,
       resumeUrl: input.resumeUrl,
       matchScore: match.score,
       matchSnapshot: JSON.parse(JSON.stringify(match)),

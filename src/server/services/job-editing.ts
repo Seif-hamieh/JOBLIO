@@ -25,15 +25,16 @@ function refresh(jobId: string) {
   notifyGoogleAboutJob(jobId);
 }
 
-/** Saves the whole job form (skills and languages are replaced). Publishing a draft tells the company's followers. */
+/** Saves the whole job form (skills, languages and, when sent, screening questions are replaced). Publishing a draft tells the company's followers. */
 export async function updateJobForCompany(actor: Actor, jobId: string, data: ParsedJob) {
   const existing = await ownJob(actor, jobId);
-  const { rest, skills, languages } = jobData(data);
+  const { rest, skills, languages, questions } = jobData(data);
   const validSkills = new Set((await db.skill.findMany({ where: { id: { in: skills.map((s) => s.skillId) } }, select: { id: true } })).map((s) => s.id));
   const publishNow = data.publish && existing.status === "DRAFT";
   await db.$transaction([
     db.jobSkill.deleteMany({ where: { jobId: existing.id } }),
     db.jobLanguage.deleteMany({ where: { jobId: existing.id } }),
+    ...(questions ? [db.screeningQuestion.deleteMany({ where: { jobId: existing.id } })] : []),
     db.job.update({
       where: { id: existing.id },
       data: {
@@ -41,6 +42,7 @@ export async function updateJobForCompany(actor: Actor, jobId: string, data: Par
         ...(publishNow && { status: "OPEN", publishedAt: existing.publishedAt ?? new Date() }),
         skills: { create: skills.filter((s, i, a) => validSkills.has(s.skillId) && a.findIndex((x) => x.skillId === s.skillId) === i) },
         languages: { create: languages.filter((l, i, a) => a.findIndex((x) => x.languageCode === l.languageCode) === i) },
+        ...(questions?.length && { screeningQuestions: { create: questions } }),
       },
     }),
   ]);

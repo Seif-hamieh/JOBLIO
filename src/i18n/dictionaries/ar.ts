@@ -1717,6 +1717,10 @@ export const ar: Dictionary = {
     paymentBody: "{amount} · الفاتورة {invoice}",
   },
   msg: {
+    screeningRequired: "أجب عن كل الأسئلة المطلوبة قبل التقديم.",
+    screeningInvalid: "إحدى الإجابات ليست من الخيارات المتاحة. راجع إجاباتك.",
+    screeningNumber: "أدخل رقمًا لهذا السؤال.",
+    screeningTooLong: "اجعل كل إجابة أقل من 1000 حرف.",
     planUnavailable: "هذه الخطة غير متاحة حاليًا. يُرجى اختيار خطة أخرى.",
     featureNotAllowed: "يمكن تمييز هذه الوظيفة فقط لمن نشرها أو لمسؤول في الشركة.",
     alreadyFeatured: "هذه الوظيفة مميّزة بالفعل.",
@@ -1885,6 +1889,10 @@ export const ar: Dictionary = {
     accountDeleted: "تم حذف حسابك.",
   },
   v: {
+    questionText: "اكتب السؤال (3 أحرف على الأقل).",
+    questionOptions: "أضف خيارين على الأقل.",
+    questionsMax: "5 أسئلة كحد أقصى.",
+    phone: "أدخل رقم هاتف صحيحًا، مثل ‎+961 70 123 456.",
     closesPast: "اختر تاريخ اليوم أو تاريخًا لاحقًا.",
     url: "أدخل رابطًا كاملًا يبدأ بـ https://",
     country: "اختر دولة",

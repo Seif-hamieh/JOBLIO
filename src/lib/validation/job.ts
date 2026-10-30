@@ -8,6 +8,7 @@ import {
   SKILL_LEVELS,
   WORK_MODES,
 } from "@/lib/constants";
+import { screeningQuestionsSchema } from "@/lib/screening";
 
 const lines = (max: number) =>
   z
@@ -67,6 +68,8 @@ export const jobSchema = z
       .min(1, "@v.skills")
       .max(20),
     languages: z.array(z.object({ languageCode: z.string().regex(/^[a-z]{2,3}$/), minProficiency: z.enum(LANGUAGE_PROFICIENCIES) })).max(6),
+    // Left out: the job keeps the questions it has (older app versions don't send them). [] removes them all.
+    screeningQuestions: screeningQuestionsSchema.optional(),
     publish: z.boolean().default(true),
   })
   .refine((v) => v.salaryMin == null || v.salaryMax == null || v.salaryMax >= v.salaryMin, { message: "@v.salaryRange", path: ["salaryMax"] })

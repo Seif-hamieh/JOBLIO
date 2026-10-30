@@ -436,6 +436,7 @@ export const ModelName = {
   PushDevice: 'PushDevice',
   SavedJob: 'SavedJob',
   SavedSearch: 'SavedSearch',
+  ScreeningQuestion: 'ScreeningQuestion',
   Application: 'Application',
   ApplicationEvent: 'ApplicationEvent',
   RecruiterNote: 'RecruiterNote',
@@ -471,7 +472,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification" | "rateLimit" | "userSettings" | "block" | "profile" | "skill" | "userSkill" | "endorsement" | "experience" | "education" | "project" | "certificate" | "userLanguage" | "portfolioItem" | "socialLink" | "profileView" | "userAchievement" | "industry" | "company" | "companyMember" | "companyFollower" | "companyMedia" | "job" | "jobSkill" | "jobLanguage" | "jobPromotion" | "jobDailyStat" | "jobView" | "jobReport" | "postReport" | "story" | "storyView" | "postDraft" | "pushDevice" | "savedJob" | "savedSearch" | "application" | "applicationEvent" | "recruiterNote" | "interview" | "savedCandidate" | "connection" | "follow" | "post" | "postLike" | "comment" | "conversation" | "conversationParticipant" | "message" | "notification" | "subscription" | "payment" | "profileBoost" | "webhookEvent" | "article" | "resumeData"
+    modelProps: "user" | "session" | "account" | "verification" | "rateLimit" | "userSettings" | "block" | "profile" | "skill" | "userSkill" | "endorsement" | "experience" | "education" | "project" | "certificate" | "userLanguage" | "portfolioItem" | "socialLink" | "profileView" | "userAchievement" | "industry" | "company" | "companyMember" | "companyFollower" | "companyMedia" | "job" | "jobSkill" | "jobLanguage" | "jobPromotion" | "jobDailyStat" | "jobView" | "jobReport" | "postReport" | "story" | "storyView" | "postDraft" | "pushDevice" | "savedJob" | "savedSearch" | "screeningQuestion" | "application" | "applicationEvent" | "recruiterNote" | "interview" | "savedCandidate" | "connection" | "follow" | "post" | "postLike" | "comment" | "conversation" | "conversationParticipant" | "message" | "notification" | "subscription" | "payment" | "profileBoost" | "webhookEvent" | "article" | "resumeData"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3361,6 +3362,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ScreeningQuestion: {
+      payload: Prisma.$ScreeningQuestionPayload<ExtArgs>
+      fields: Prisma.ScreeningQuestionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ScreeningQuestionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScreeningQuestionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ScreeningQuestionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScreeningQuestionPayload>
+        }
+        findFirst: {
+          args: Prisma.ScreeningQuestionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScreeningQuestionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ScreeningQuestionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScreeningQuestionPayload>
+        }
+        findMany: {
+          args: Prisma.ScreeningQuestionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScreeningQuestionPayload>[]
+        }
+        create: {
+          args: Prisma.ScreeningQuestionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScreeningQuestionPayload>
+        }
+        createMany: {
+          args: Prisma.ScreeningQuestionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ScreeningQuestionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScreeningQuestionPayload>[]
+        }
+        delete: {
+          args: Prisma.ScreeningQuestionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScreeningQuestionPayload>
+        }
+        update: {
+          args: Prisma.ScreeningQuestionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScreeningQuestionPayload>
+        }
+        deleteMany: {
+          args: Prisma.ScreeningQuestionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ScreeningQuestionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ScreeningQuestionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScreeningQuestionPayload>[]
+        }
+        upsert: {
+          args: Prisma.ScreeningQuestionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScreeningQuestionPayload>
+        }
+        aggregate: {
+          args: Prisma.ScreeningQuestionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateScreeningQuestion>
+        }
+        groupBy: {
+          args: Prisma.ScreeningQuestionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ScreeningQuestionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ScreeningQuestionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ScreeningQuestionCountAggregateOutputType> | number
+        }
+      }
+    }
     Application: {
       payload: Prisma.$ApplicationPayload<ExtArgs>
       fields: Prisma.ApplicationFieldRefs
@@ -4886,6 +4961,7 @@ export const UserScalarFieldEnum = {
   email: 'email',
   emailVerified: 'emailVerified',
   image: 'image',
+  phoneNumber: 'phoneNumber',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   username: 'username',
@@ -5468,6 +5544,20 @@ export const SavedSearchScalarFieldEnum = {
 export type SavedSearchScalarFieldEnum = (typeof SavedSearchScalarFieldEnum)[keyof typeof SavedSearchScalarFieldEnum]
 
 
+export const ScreeningQuestionScalarFieldEnum = {
+  id: 'id',
+  jobId: 'jobId',
+  position: 'position',
+  questionText: 'questionText',
+  type: 'type',
+  options: 'options',
+  isRequired: 'isRequired',
+  createdAt: 'createdAt'
+} as const
+
+export type ScreeningQuestionScalarFieldEnum = (typeof ScreeningQuestionScalarFieldEnum)[keyof typeof ScreeningQuestionScalarFieldEnum]
+
+
 export const ApplicationScalarFieldEnum = {
   id: 'id',
   jobId: 'jobId',
@@ -5479,6 +5569,7 @@ export const ApplicationScalarFieldEnum = {
   resumeUrl: 'resumeUrl',
   matchScore: 'matchScore',
   matchSnapshot: 'matchSnapshot',
+  screeningAnswers: 'screeningAnswers',
   rating: 'rating',
   viewedAt: 'viewedAt',
   priorityAt: 'priorityAt',
@@ -6292,6 +6383,20 @@ export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
 
 
 /**
+ * Reference to a field of type 'ScreeningQuestionType'
+ */
+export type EnumScreeningQuestionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ScreeningQuestionType'>
+    
+
+
+/**
+ * Reference to a field of type 'ScreeningQuestionType[]'
+ */
+export type ListEnumScreeningQuestionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ScreeningQuestionType[]'>
+    
+
+
+/**
  * Reference to a field of type 'ApplicationStatus'
  */
 export type EnumApplicationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApplicationStatus'>
@@ -6648,6 +6753,7 @@ export type GlobalOmitConfig = {
   pushDevice?: Prisma.PushDeviceOmit
   savedJob?: Prisma.SavedJobOmit
   savedSearch?: Prisma.SavedSearchOmit
+  screeningQuestion?: Prisma.ScreeningQuestionOmit
   application?: Prisma.ApplicationOmit
   applicationEvent?: Prisma.ApplicationEventOmit
   recruiterNote?: Prisma.RecruiterNoteOmit

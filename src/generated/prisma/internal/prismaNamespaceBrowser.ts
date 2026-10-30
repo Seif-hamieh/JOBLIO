@@ -90,6 +90,7 @@ export const ModelName = {
   PushDevice: 'PushDevice',
   SavedJob: 'SavedJob',
   SavedSearch: 'SavedSearch',
+  ScreeningQuestion: 'ScreeningQuestion',
   Application: 'Application',
   ApplicationEvent: 'ApplicationEvent',
   RecruiterNote: 'RecruiterNote',
@@ -134,6 +135,7 @@ export const UserScalarFieldEnum = {
   email: 'email',
   emailVerified: 'emailVerified',
   image: 'image',
+  phoneNumber: 'phoneNumber',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   username: 'username',
@@ -716,6 +718,20 @@ export const SavedSearchScalarFieldEnum = {
 export type SavedSearchScalarFieldEnum = (typeof SavedSearchScalarFieldEnum)[keyof typeof SavedSearchScalarFieldEnum]
 
 
+export const ScreeningQuestionScalarFieldEnum = {
+  id: 'id',
+  jobId: 'jobId',
+  position: 'position',
+  questionText: 'questionText',
+  type: 'type',
+  options: 'options',
+  isRequired: 'isRequired',
+  createdAt: 'createdAt'
+} as const
+
+export type ScreeningQuestionScalarFieldEnum = (typeof ScreeningQuestionScalarFieldEnum)[keyof typeof ScreeningQuestionScalarFieldEnum]
+
+
 export const ApplicationScalarFieldEnum = {
   id: 'id',
   jobId: 'jobId',
@@ -727,6 +743,7 @@ export const ApplicationScalarFieldEnum = {
   resumeUrl: 'resumeUrl',
   matchScore: 'matchScore',
   matchSnapshot: 'matchSnapshot',
+  screeningAnswers: 'screeningAnswers',
   rating: 'rating',
   viewedAt: 'viewedAt',
   priorityAt: 'priorityAt',

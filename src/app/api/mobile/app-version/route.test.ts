@@ -1,4 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+
+vi.mock("server-only", () => ({}));
 import { GET } from "./route";
 
 afterEach(() => vi.unstubAllEnvs());

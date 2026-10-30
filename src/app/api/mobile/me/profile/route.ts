@@ -11,8 +11,12 @@ import { basicsSchema } from "@/lib/validation/profile";
 export const dynamic = "force-dynamic";
 
 async function myProfile(userId: string) {
-  const user = await db.user.findUnique({ where: { id: userId }, select: fullProfileSelect });
-  return user && { ...toProfile(user), allAchievements: allAchievements(user.achievements) };
+  const [user, own] = await Promise.all([
+    db.user.findUnique({ where: { id: userId }, select: fullProfileSelect }),
+    // Private: only in your own profile (and with your applications), never in the public one.
+    db.user.findUnique({ where: { id: userId }, select: { phoneNumber: true } }),
+  ]);
+  return user && { ...toProfile(user), phoneNumber: own?.phoneNumber ?? null, allAchievements: allAchievements(user.achievements) };
 }
 
 // GET /api/mobile/me/profile  →  { profile }
@@ -25,7 +29,7 @@ export async function GET(req: Request) {
   return NextResponse.json({ profile: await myProfile(r.owner.id) }, { headers: { "Cache-Control": "private, no-store" } });
 }
 
-// PATCH /api/mobile/me/profile  { name, headline, about, pronouns, city, countryCode, website }  →  { profile }
+// PATCH /api/mobile/me/profile  { name, headline, about, pronouns, city, countryCode, website, phoneNumber? }  →  { profile }
 // The website's "Edit intro" form: same fields, same limits.
 export async function PATCH(req: Request) {
   const r = await getMobileOwner(req);

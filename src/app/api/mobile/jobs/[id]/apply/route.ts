@@ -13,9 +13,11 @@ const body = z.object({
   coverLetter: z.string().trim().max(4000).optional().nullable(),
   // Attach the CV saved on the member's profile (a private copy, like the website does).
   useSavedResume: z.boolean().optional().default(true),
+  // Answers to the job's screening questions, by question id: "YES"/"NO", a number, one of the options, or text.
+  answers: z.record(z.string().max(40), z.union([z.string().max(1000), z.number(), z.null()])).optional(),
 });
 
-// POST /api/mobile/jobs/:id/apply  { coverLetter?, useSavedResume? }  →  201 { applied: true, score, resumeAttached }
+// POST /api/mobile/jobs/:id/apply  { coverLetter?, useSavedResume?, answers? }  →  201 { applied: true, score, resumeAttached }
 // The same application flow as the website (applyToJob): open jobs only, not your own company's, once per job,
 // imported jobs are applied to on their original site. Errors come back with the website's wording.
 export async function POST(req: Request, { params }: RouteContext<"/api/mobile/jobs/[id]/apply">) {
@@ -35,7 +37,7 @@ export async function POST(req: Request, { params }: RouteContext<"/api/mobile/j
     if (saved) resumeUrl = await copyStored(saved);
   }
   try {
-    const { match } = await applyToJob(userId, jobId, { coverLetter: parsed.data.coverLetter || null, resumeUrl });
+    const { match } = await applyToJob(userId, jobId, { coverLetter: parsed.data.coverLetter || null, resumeUrl, screeningAnswers: parsed.data.answers });
     revalidatePath(`/jobs/${jobId}`);
     revalidatePath("/applications");
     return NextResponse.json({ applied: true, score: match.score, resumeAttached: !!resumeUrl }, { status: 201, headers: { "Cache-Control": "no-store" } });

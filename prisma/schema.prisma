@@ -328,6 +328,8 @@ model User {
   email         String   @unique
   emailVerified Boolean  @default(false)
   image         String?
+  // Shown only to the companies the member applies to (with each application), never on the public profile.
+  phoneNumber   String?  @db.VarChar(32)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -885,16 +887,17 @@ model Job {
   postedBy           User            @relation("JobPoster", fields: [postedById], references: [id])
   industry           Industry?       @relation(fields: [industryId], references: [id], onDelete: SetNull)
 
-  skills       JobSkill[]
-  languages    JobLanguage[]
-  applications Application[]
-  savedBy      SavedJob[]
-  promotions   JobPromotion[]
-  dailyStats   JobDailyStat[]
-  views        JobView[]
-  reports      JobReport[]
-  posts        Post[]
-  sharedIn     Message[]      @relation("MessageSharedJob")
+  skills             JobSkill[]
+  languages          JobLanguage[]
+  applications       Application[]
+  savedBy            SavedJob[]
+  promotions         JobPromotion[]
+  dailyStats         JobDailyStat[]
+  views              JobView[]
+  reports            JobReport[]
+  posts              Post[]
+  sharedIn           Message[]           @relation("MessageSharedJob")
+  screeningQuestions ScreeningQuestion[]
 
   // One row per imported listing: the import skips anything already stored.
   @@unique([externalSource, externalId])
@@ -1122,24 +1125,51 @@ model SavedSearch {
 // Hiring
 // ─────────────────────────────────────────────────────────────────────────────
 
+enum ScreeningQuestionType {
+  TEXT
+  YES_NO
+  NUMBER
+  MULTIPLE_CHOICE
+}
+
+// A question the company asks everyone who applies to a job (at most 5 per job, in order). MULTIPLE_CHOICE lists its
+// choices in options. Editing a job replaces its questions; answers already given keep their own copy of the wording.
+model ScreeningQuestion {
+  id           String                @id @default(cuid())
+  jobId        String
+  position     Int                   @default(0)
+  questionText String                @db.VarChar(300)
+  type         ScreeningQuestionType
+  options      String[]
+  isRequired   Boolean               @default(true)
+  createdAt    DateTime              @default(now())
+  job          Job                   @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@index([jobId, position])
+  @@map("screening_questions")
+}
+
 model Application {
-  id            String            @id @default(cuid())
-  jobId         String
-  applicantId   String
-  status        ApplicationStatus @default(APPLIED)
-  stage         PipelineStage     @default(APPLIED)
-  stagePosition Float             @default(0)
-  coverLetter   String?
-  resumeUrl     String?
-  matchScore    Int               @default(0)
-  matchSnapshot Json?
-  rating        Int?
-  viewedAt      DateTime?
-  priorityAt    DateTime?
-  createdAt     DateTime          @default(now())
-  updatedAt     DateTime          @updatedAt
-  job           Job               @relation(fields: [jobId], references: [id], onDelete: Cascade)
-  applicant     User              @relation(fields: [applicantId], references: [id], onDelete: Cascade)
+  id               String            @id @default(cuid())
+  jobId            String
+  applicantId      String
+  status           ApplicationStatus @default(APPLIED)
+  stage            PipelineStage     @default(APPLIED)
+  stagePosition    Float             @default(0)
+  coverLetter      String?
+  resumeUrl        String?
+  matchScore       Int               @default(0)
+  matchSnapshot    Json?
+  // The applicant's answers to the job's screening questions, with each question's wording as it was when they
+  // applied: [{ questionId, question, type, answer }] (see src/lib/screening.ts).
+  screeningAnswers Json?
+  rating           Int?
+  viewedAt         DateTime?
+  priorityAt       DateTime?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  job              Job               @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  applicant        User              @relation(fields: [applicantId], references: [id], onDelete: Cascade)
 
   events     ApplicationEvent[]
   interviews Interview[]

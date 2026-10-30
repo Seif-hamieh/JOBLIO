@@ -83,6 +83,7 @@ export type ApplicationCountAggregateOutputType = {
   resumeUrl: number
   matchScore: number
   matchSnapshot: number
+  screeningAnswers: number
   rating: number
   viewedAt: number
   priorityAt: number
@@ -149,6 +150,7 @@ export type ApplicationCountAggregateInputType = {
   resumeUrl?: true
   matchScore?: true
   matchSnapshot?: true
+  screeningAnswers?: true
   rating?: true
   viewedAt?: true
   priorityAt?: true
@@ -254,6 +256,7 @@ export type ApplicationGroupByOutputType = {
   resumeUrl: string | null
   matchScore: number
   matchSnapshot: runtime.JsonValue | null
+  screeningAnswers: runtime.JsonValue | null
   rating: number | null
   viewedAt: Date | null
   priorityAt: Date | null
@@ -295,6 +298,7 @@ export type ApplicationWhereInput = {
   resumeUrl?: Prisma.StringNullableFilter<"Application"> | string | null
   matchScore?: Prisma.IntFilter<"Application"> | number
   matchSnapshot?: Prisma.JsonNullableFilter<"Application">
+  screeningAnswers?: Prisma.JsonNullableFilter<"Application">
   rating?: Prisma.IntNullableFilter<"Application"> | number | null
   viewedAt?: Prisma.DateTimeNullableFilter<"Application"> | Date | string | null
   priorityAt?: Prisma.DateTimeNullableFilter<"Application"> | Date | string | null
@@ -318,6 +322,7 @@ export type ApplicationOrderByWithRelationInput = {
   resumeUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   matchScore?: Prisma.SortOrder
   matchSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
+  screeningAnswers?: Prisma.SortOrderInput | Prisma.SortOrder
   rating?: Prisma.SortOrderInput | Prisma.SortOrder
   viewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   priorityAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -345,6 +350,7 @@ export type ApplicationWhereUniqueInput = Prisma.AtLeast<{
   resumeUrl?: Prisma.StringNullableFilter<"Application"> | string | null
   matchScore?: Prisma.IntFilter<"Application"> | number
   matchSnapshot?: Prisma.JsonNullableFilter<"Application">
+  screeningAnswers?: Prisma.JsonNullableFilter<"Application">
   rating?: Prisma.IntNullableFilter<"Application"> | number | null
   viewedAt?: Prisma.DateTimeNullableFilter<"Application"> | Date | string | null
   priorityAt?: Prisma.DateTimeNullableFilter<"Application"> | Date | string | null
@@ -368,6 +374,7 @@ export type ApplicationOrderByWithAggregationInput = {
   resumeUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   matchScore?: Prisma.SortOrder
   matchSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
+  screeningAnswers?: Prisma.SortOrderInput | Prisma.SortOrder
   rating?: Prisma.SortOrderInput | Prisma.SortOrder
   viewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   priorityAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -394,6 +401,7 @@ export type ApplicationScalarWhereWithAggregatesInput = {
   resumeUrl?: Prisma.StringNullableWithAggregatesFilter<"Application"> | string | null
   matchScore?: Prisma.IntWithAggregatesFilter<"Application"> | number
   matchSnapshot?: Prisma.JsonNullableWithAggregatesFilter<"Application">
+  screeningAnswers?: Prisma.JsonNullableWithAggregatesFilter<"Application">
   rating?: Prisma.IntNullableWithAggregatesFilter<"Application"> | number | null
   viewedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Application"> | Date | string | null
   priorityAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Application"> | Date | string | null
@@ -410,6 +418,7 @@ export type ApplicationCreateInput = {
   resumeUrl?: string | null
   matchScore?: number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: number | null
   viewedAt?: Date | string | null
   priorityAt?: Date | string | null
@@ -433,6 +442,7 @@ export type ApplicationUncheckedCreateInput = {
   resumeUrl?: string | null
   matchScore?: number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: number | null
   viewedAt?: Date | string | null
   priorityAt?: Date | string | null
@@ -452,6 +462,7 @@ export type ApplicationUpdateInput = {
   resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   matchScore?: Prisma.IntFieldUpdateOperationsInput | number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   viewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priorityAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -475,6 +486,7 @@ export type ApplicationUncheckedUpdateInput = {
   resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   matchScore?: Prisma.IntFieldUpdateOperationsInput | number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   viewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priorityAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -496,6 +508,7 @@ export type ApplicationCreateManyInput = {
   resumeUrl?: string | null
   matchScore?: number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: number | null
   viewedAt?: Date | string | null
   priorityAt?: Date | string | null
@@ -512,6 +525,7 @@ export type ApplicationUpdateManyMutationInput = {
   resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   matchScore?: Prisma.IntFieldUpdateOperationsInput | number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   viewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priorityAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -530,6 +544,7 @@ export type ApplicationUncheckedUpdateManyInput = {
   resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   matchScore?: Prisma.IntFieldUpdateOperationsInput | number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   viewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priorityAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -563,6 +578,7 @@ export type ApplicationCountOrderByAggregateInput = {
   resumeUrl?: Prisma.SortOrder
   matchScore?: Prisma.SortOrder
   matchSnapshot?: Prisma.SortOrder
+  screeningAnswers?: Prisma.SortOrder
   rating?: Prisma.SortOrder
   viewedAt?: Prisma.SortOrder
   priorityAt?: Prisma.SortOrder
@@ -764,6 +780,7 @@ export type ApplicationCreateWithoutApplicantInput = {
   resumeUrl?: string | null
   matchScore?: number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: number | null
   viewedAt?: Date | string | null
   priorityAt?: Date | string | null
@@ -785,6 +802,7 @@ export type ApplicationUncheckedCreateWithoutApplicantInput = {
   resumeUrl?: string | null
   matchScore?: number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: number | null
   viewedAt?: Date | string | null
   priorityAt?: Date | string | null
@@ -835,6 +853,7 @@ export type ApplicationScalarWhereInput = {
   resumeUrl?: Prisma.StringNullableFilter<"Application"> | string | null
   matchScore?: Prisma.IntFilter<"Application"> | number
   matchSnapshot?: Prisma.JsonNullableFilter<"Application">
+  screeningAnswers?: Prisma.JsonNullableFilter<"Application">
   rating?: Prisma.IntNullableFilter<"Application"> | number | null
   viewedAt?: Prisma.DateTimeNullableFilter<"Application"> | Date | string | null
   priorityAt?: Prisma.DateTimeNullableFilter<"Application"> | Date | string | null
@@ -851,6 +870,7 @@ export type ApplicationCreateWithoutJobInput = {
   resumeUrl?: string | null
   matchScore?: number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: number | null
   viewedAt?: Date | string | null
   priorityAt?: Date | string | null
@@ -872,6 +892,7 @@ export type ApplicationUncheckedCreateWithoutJobInput = {
   resumeUrl?: string | null
   matchScore?: number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: number | null
   viewedAt?: Date | string | null
   priorityAt?: Date | string | null
@@ -917,6 +938,7 @@ export type ApplicationCreateWithoutEventsInput = {
   resumeUrl?: string | null
   matchScore?: number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: number | null
   viewedAt?: Date | string | null
   priorityAt?: Date | string | null
@@ -939,6 +961,7 @@ export type ApplicationUncheckedCreateWithoutEventsInput = {
   resumeUrl?: string | null
   matchScore?: number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: number | null
   viewedAt?: Date | string | null
   priorityAt?: Date | string | null
@@ -973,6 +996,7 @@ export type ApplicationUpdateWithoutEventsInput = {
   resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   matchScore?: Prisma.IntFieldUpdateOperationsInput | number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   viewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priorityAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -995,6 +1019,7 @@ export type ApplicationUncheckedUpdateWithoutEventsInput = {
   resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   matchScore?: Prisma.IntFieldUpdateOperationsInput | number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   viewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priorityAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1013,6 +1038,7 @@ export type ApplicationCreateWithoutNotesInput = {
   resumeUrl?: string | null
   matchScore?: number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: number | null
   viewedAt?: Date | string | null
   priorityAt?: Date | string | null
@@ -1035,6 +1061,7 @@ export type ApplicationUncheckedCreateWithoutNotesInput = {
   resumeUrl?: string | null
   matchScore?: number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: number | null
   viewedAt?: Date | string | null
   priorityAt?: Date | string | null
@@ -1069,6 +1096,7 @@ export type ApplicationUpdateWithoutNotesInput = {
   resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   matchScore?: Prisma.IntFieldUpdateOperationsInput | number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   viewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priorityAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1091,6 +1119,7 @@ export type ApplicationUncheckedUpdateWithoutNotesInput = {
   resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   matchScore?: Prisma.IntFieldUpdateOperationsInput | number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   viewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priorityAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1109,6 +1138,7 @@ export type ApplicationCreateWithoutInterviewsInput = {
   resumeUrl?: string | null
   matchScore?: number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: number | null
   viewedAt?: Date | string | null
   priorityAt?: Date | string | null
@@ -1131,6 +1161,7 @@ export type ApplicationUncheckedCreateWithoutInterviewsInput = {
   resumeUrl?: string | null
   matchScore?: number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: number | null
   viewedAt?: Date | string | null
   priorityAt?: Date | string | null
@@ -1165,6 +1196,7 @@ export type ApplicationUpdateWithoutInterviewsInput = {
   resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   matchScore?: Prisma.IntFieldUpdateOperationsInput | number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   viewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priorityAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1187,6 +1219,7 @@ export type ApplicationUncheckedUpdateWithoutInterviewsInput = {
   resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   matchScore?: Prisma.IntFieldUpdateOperationsInput | number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   viewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priorityAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1206,6 +1239,7 @@ export type ApplicationCreateManyApplicantInput = {
   resumeUrl?: string | null
   matchScore?: number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: number | null
   viewedAt?: Date | string | null
   priorityAt?: Date | string | null
@@ -1222,6 +1256,7 @@ export type ApplicationUpdateWithoutApplicantInput = {
   resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   matchScore?: Prisma.IntFieldUpdateOperationsInput | number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   viewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priorityAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1243,6 +1278,7 @@ export type ApplicationUncheckedUpdateWithoutApplicantInput = {
   resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   matchScore?: Prisma.IntFieldUpdateOperationsInput | number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   viewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priorityAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1263,6 +1299,7 @@ export type ApplicationUncheckedUpdateManyWithoutApplicantInput = {
   resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   matchScore?: Prisma.IntFieldUpdateOperationsInput | number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   viewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priorityAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1280,6 +1317,7 @@ export type ApplicationCreateManyJobInput = {
   resumeUrl?: string | null
   matchScore?: number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: number | null
   viewedAt?: Date | string | null
   priorityAt?: Date | string | null
@@ -1296,6 +1334,7 @@ export type ApplicationUpdateWithoutJobInput = {
   resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   matchScore?: Prisma.IntFieldUpdateOperationsInput | number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   viewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priorityAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1317,6 +1356,7 @@ export type ApplicationUncheckedUpdateWithoutJobInput = {
   resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   matchScore?: Prisma.IntFieldUpdateOperationsInput | number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   viewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priorityAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1337,6 +1377,7 @@ export type ApplicationUncheckedUpdateManyWithoutJobInput = {
   resumeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   matchScore?: Prisma.IntFieldUpdateOperationsInput | number
   matchSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  screeningAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   viewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priorityAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1404,6 +1445,7 @@ export type ApplicationSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   resumeUrl?: boolean
   matchScore?: boolean
   matchSnapshot?: boolean
+  screeningAnswers?: boolean
   rating?: boolean
   viewedAt?: boolean
   priorityAt?: boolean
@@ -1428,6 +1470,7 @@ export type ApplicationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   resumeUrl?: boolean
   matchScore?: boolean
   matchSnapshot?: boolean
+  screeningAnswers?: boolean
   rating?: boolean
   viewedAt?: boolean
   priorityAt?: boolean
@@ -1448,6 +1491,7 @@ export type ApplicationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   resumeUrl?: boolean
   matchScore?: boolean
   matchSnapshot?: boolean
+  screeningAnswers?: boolean
   rating?: boolean
   viewedAt?: boolean
   priorityAt?: boolean
@@ -1468,6 +1512,7 @@ export type ApplicationSelectScalar = {
   resumeUrl?: boolean
   matchScore?: boolean
   matchSnapshot?: boolean
+  screeningAnswers?: boolean
   rating?: boolean
   viewedAt?: boolean
   priorityAt?: boolean
@@ -1475,7 +1520,7 @@ export type ApplicationSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ApplicationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "jobId" | "applicantId" | "status" | "stage" | "stagePosition" | "coverLetter" | "resumeUrl" | "matchScore" | "matchSnapshot" | "rating" | "viewedAt" | "priorityAt" | "createdAt" | "updatedAt", ExtArgs["result"]["application"]>
+export type ApplicationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "jobId" | "applicantId" | "status" | "stage" | "stagePosition" | "coverLetter" | "resumeUrl" | "matchScore" | "matchSnapshot" | "screeningAnswers" | "rating" | "viewedAt" | "priorityAt" | "createdAt" | "updatedAt", ExtArgs["result"]["application"]>
 export type ApplicationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   job?: boolean | Prisma.JobDefaultArgs<ExtArgs>
   applicant?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1513,6 +1558,7 @@ export type $ApplicationPayload<ExtArgs extends runtime.Types.Extensions.Interna
     resumeUrl: string | null
     matchScore: number
     matchSnapshot: runtime.JsonValue | null
+    screeningAnswers: runtime.JsonValue | null
     rating: number | null
     viewedAt: Date | null
     priorityAt: Date | null
@@ -1956,6 +2002,7 @@ export interface ApplicationFieldRefs {
   readonly resumeUrl: Prisma.FieldRef<"Application", 'String'>
   readonly matchScore: Prisma.FieldRef<"Application", 'Int'>
   readonly matchSnapshot: Prisma.FieldRef<"Application", 'Json'>
+  readonly screeningAnswers: Prisma.FieldRef<"Application", 'Json'>
   readonly rating: Prisma.FieldRef<"Application", 'Int'>
   readonly viewedAt: Prisma.FieldRef<"Application", 'DateTime'>
   readonly priorityAt: Prisma.FieldRef<"Application", 'DateTime'>
