@@ -192,116 +192,139 @@ export const STATIC_PAGES: Record<StaticPageId, Record<Locale, StaticPage>> = {
   privacy: {
     en: {
       title: "Privacy Policy",
-      updated: UPDATED_EN,
-      intro: "This policy explains what personal data JOBLIO collects, why, where it is stored, and the choices you have.",
+      updated: "Last updated: 30 October 2026",
+      intro: "This policy explains what personal data JOBLIO collects (on the website and in the GetJoblio app), why, where it is stored, how long we keep it, and the choices you have.",
       sections: [
         {
           heading: "What we collect",
           body: [
-            "Account details: your name, email address and password (stored only as a secure hash). If you sign in with Google, we receive your name, email and profile photo from Google.",
-            "Profile and activity: what you add to your profile (experience, skills, CV, photos and more), your applications, posts, messages, connections, follows and saved items.",
-            "Technical data: the session cookie that keeps you signed in, your language and theme choices, and basic logs needed to run and secure the service.",
+            "Account details: your name, email address and password (stored only as a secure hash, never in plain text). If you sign in with Google, we receive your name, email and profile photo from Google.",
+            "Profile and activity: what you add to your profile (experience, skills, CV, photos and more), your applications, posts, articles, stories, messages, connections, follows and saved items.",
+            "Photos, videos and files you share: profile and cover photos, photos and videos in posts and stories, CVs, and the images, voice messages and documents you send in chat. Videos are compressed on your phone or checked in your browser before upload (up to 20 MB), and we make a still frame of each video to show before it plays.",
+            "Microphone, camera and location — only when you use them. Microphone: only while you record a voice message in chat; the recording is sent only to that conversation. Camera: only when you choose to take a photo in the app (for example, to send in chat). Location: only when you tap “Share location” in a chat; your position at that moment is sent to that conversation only. We never track your location in the background. Your phone or browser asks your permission first, and you can withdraw it at any time in its settings.",
+            "Technical data: the session cookie (website) or sign-in token (app) that keeps you signed in, your language and theme choices, the push-notification token of your phone (if you allow notifications), your IP address, and basic logs needed to run and secure the service (for example, to limit abuse).",
           ],
         },
         {
           heading: "How we use it",
           body: [
-            "To run JOBLIO: show your profile, calculate rule-based matches, deliver messages and notifications, process payments, prevent abuse and keep the service secure. We do not sell your personal data and we do not use it to train AI models.",
+            "To run JOBLIO: show your profile and content, calculate rule-based job matches, deliver messages and notifications, process payments, prevent abuse and keep the service secure. We do not sell your personal data, we do not show third-party advertising, and we do not use your data to train AI models.",
           ],
         },
         {
           heading: "Who can see your information",
           body: [
-            "You control your profile's visibility (everyone, members only or your connections), whether recruiters can find you in search, and who can message you, in Settings → Privacy. Your saved CV is private: only you and recruiters allowed by those settings, or companies you applied to, can open it.",
+            "You control your profile's visibility (everyone, members only or your connections), whether recruiters can find you in search, and who can message you, in Settings → Privacy. Your saved CV is private: only you, recruiters allowed by those settings, or companies you applied to can open it.",
+            "Chat messages and their attachments (images, voice messages, files, locations) can only be opened by the people in that conversation.",
+            "Posts are shown to everyone or to your connections only, as you choose. Photos and videos in posts and stories are served from links that are hard to guess but not password-protected: anyone you share a link with could open it.",
+            "Stories are shown to your connections and the people who follow you, for 24 hours, and you see how many people viewed them. After 24 hours a story and its photo or video are deleted from our server automatically (each night). You can also delete a story yourself at any time.",
           ],
         },
         {
-          heading: "Where your data is stored",
+          heading: "Where your data is stored and who helps us",
           body: [
-            "JOBLIO uses trusted providers to run the service: Vercel (hosting), Neon (database, in the EU), Supabase (file storage), our payment provider (payments), Google (optional sign-in) and an email provider for account emails. They process data only to provide their service to us.",
+            "Our own server: JOBLIO runs on a server we operate ourselves, in Lebanon. The database and all uploaded files are stored there.",
+            "Cloudflare: all traffic to the website and the app passes through Cloudflare, which protects the service against attacks and delivers files faster. Cloudflare sees technical data such as your IP address, and caches public files (for example, the app download).",
+            "Backups (Google Drive): a copy of the database is made every day. It is kept on our server for 7 days and in our private Google Drive for 30 days, so we can restore the service after a fault.",
+            "Other providers, who process data only to provide their service to us: Paddle (payments and invoices; we never see your card details), Google (optional sign-in, and sending account emails), Expo and Google Firebase (delivering push notifications to the app), and OpenStreetMap (the map images shown with a shared location in chat, which your device loads directly).",
           ],
         },
         {
           heading: "Cookies",
           body: [
-            "We use only cookies needed for the site to work: your sign-in session, your language and your theme. We do not use advertising or cross-site tracking cookies.",
+            "We use only cookies needed for the website to work: your sign-in session, your language and your theme. We do not use advertising or cross-site tracking cookies.",
           ],
         },
         {
           heading: "Your choices and rights",
           body: [
-            "You can view and edit your data at any time from your profile and settings, and delete your account from Settings — which removes your profile and personal content. Depending on where you live, you may have further rights, such as access, correction, portability or objection; contact us to use them.",
+            "You can view and edit your data at any time from your profile and settings. You can delete your account from Settings on the website or Settings → Account in the app: this deletes your profile and personal content (posts, stories, messages, applications) and every file you uploaded from our server. Depending on where you live, you may have further rights, such as access, correction, portability or objection; email us at support@getjoblio.app to use them.",
           ],
         },
         {
           heading: "Retention and security",
           body: [
-            "We keep your data while your account is active and delete it when you delete your account, except where we must keep records (for example, payment invoices) by law. Data is encrypted in transit, passwords are hashed and access is limited to what each feature needs.",
+            "We keep your data while your account is active and delete it when you delete your account. Stories are deleted after 24 hours, and files uploaded but never shared within a day or two. After an account is deleted, its data can remain in the database backups for up to 30 days, until those backups are replaced. We keep records the law requires us to keep (for example, payment invoices).",
+            "Data is encrypted in transit (HTTPS), passwords are hashed, private files are only served to people with access, and access is limited to what each feature needs.",
           ],
         },
         {
           heading: "Changes",
           body: ["If we change this policy in a meaningful way, we will update the date above and let members know."],
         },
+        {
+          heading: "Contact",
+          body: ["Questions about your privacy: support@getjoblio.app"],
+        },
       ],
     },
     ar: {
       title: "سياسة الخصوصية",
-      updated: UPDATED_AR,
-      intro: "توضّح هذه السياسة البيانات الشخصية التي يجمعها JOBLIO، ولماذا، وأين تُخزَّن، والخيارات المتاحة لك.",
+      updated: "آخر تحديث: 30 أكتوبر 2026",
+      intro: "توضّح هذه السياسة البيانات الشخصية التي يجمعها JOBLIO (على الموقع وفي تطبيق GetJoblio)، ولماذا، وأين تُخزَّن، وكم نحتفظ بها، والخيارات المتاحة لك.",
       sections: [
         {
           heading: "ما الذي نجمعه",
           body: [
-            "بيانات الحساب: اسمك وبريدك الإلكتروني وكلمة المرور (تُخزَّن فقط بصيغة مشفّرة آمنة). وإذا سجّلت الدخول عبر Google فإننا نتلقى اسمك وبريدك وصورة ملفك من Google.",
-            "الملف الشخصي والنشاط: ما تضيفه إلى ملفك (الخبرات والمهارات والسيرة الذاتية والصور وغيرها)، وطلباتك، ومنشوراتك، ورسائلك، واتصالاتك، ومتابعاتك، والعناصر المحفوظة.",
-            "البيانات التقنية: ملف تعريف الجلسة الذي يبقيك مسجّل الدخول، واختياراتك للغة والمظهر، وسجلات أساسية لازمة لتشغيل الخدمة وتأمينها.",
+            "بيانات الحساب: اسمك وبريدك الإلكتروني وكلمة المرور (تُخزَّن فقط بصيغة مشفّرة آمنة، ولا تُحفظ كنص عادي أبدًا). وإذا سجّلت الدخول عبر Google فإننا نتلقى اسمك وبريدك وصورة ملفك من Google.",
+            "الملف الشخصي والنشاط: ما تضيفه إلى ملفك (الخبرات والمهارات والسيرة الذاتية والصور وغيرها)، وطلباتك، ومنشوراتك، ومقالاتك، وقصصك، ورسائلك، واتصالاتك، ومتابعاتك، والعناصر المحفوظة.",
+            "الصور والفيديوهات والملفات التي تشاركها: صورة الملف والغلاف، والصور والفيديوهات في المنشورات والقصص، والسير الذاتية، والصور والرسائل الصوتية والمستندات التي ترسلها في المحادثات. يُضغط الفيديو على هاتفك أو يُفحص في متصفحك قبل رفعه (حتى 20 ميغابايت)، ونصنع منه صورة مصغّرة تظهر قبل تشغيله.",
+            "الميكروفون والكاميرا والموقع — فقط عندما تستخدمها. الميكروفون: فقط أثناء تسجيلك رسالة صوتية في المحادثة، وتُرسَل التسجيلة إلى تلك المحادثة فقط. الكاميرا: فقط عندما تختار التقاط صورة في التطبيق (مثلًا لإرسالها في محادثة). الموقع: فقط عندما تضغط \"مشاركة الموقع\" في محادثة، فيُرسَل موقعك في تلك اللحظة إلى تلك المحادثة فقط. لا نتتبّع موقعك في الخلفية أبدًا. يطلب هاتفك أو متصفحك إذنك أولًا، ويمكنك سحب الإذن في أي وقت من إعداداته.",
+            "البيانات التقنية: ملف تعريف الجلسة (على الموقع) أو رمز الدخول (في التطبيق) الذي يبقيك مسجّل الدخول، واختياراتك للغة والمظهر، ورمز الإشعارات الخاص بهاتفك (إن سمحت بالإشعارات)، وعنوان IP الخاص بك، وسجلات أساسية لازمة لتشغيل الخدمة وحمايتها (مثل الحدّ من إساءة الاستخدام).",
           ],
         },
         {
           heading: "كيف نستخدمها",
           body: [
-            "لتشغيل JOBLIO: عرض ملفك، وحساب المطابقة القائمة على القواعد، وإيصال الرسائل والإشعارات، ومعالجة المدفوعات، ومنع إساءة الاستخدام، وحماية الخدمة. لا نبيع بياناتك الشخصية، ولا نستخدمها لتدريب نماذج ذكاء اصطناعي.",
+            "لتشغيل JOBLIO: عرض ملفك ومحتواك، وحساب مطابقة الوظائف القائمة على القواعد، وإيصال الرسائل والإشعارات، ومعالجة المدفوعات، ومنع إساءة الاستخدام والحفاظ على أمان الخدمة. لا نبيع بياناتك الشخصية، ولا نعرض إعلانات لجهات أخرى، ولا نستخدم بياناتك لتدريب نماذج الذكاء الاصطناعي.",
           ],
         },
         {
           heading: "من يمكنه رؤية معلوماتك",
           body: [
-            "تتحكم في ظهور ملفك (للجميع، أو للأعضاء فقط، أو لاتصالاتك)، وفي إمكانية عثور مسؤولي التوظيف عليك في البحث، وفيمن يمكنه مراسلتك، من الإعدادات ← الخصوصية. سيرتك الذاتية المحفوظة خاصة: لا يفتحها إلا أنت، ومسؤولو التوظيف الذين تسمح لهم إعداداتك، أو الشركات التي تقدّمت إليها.",
+            "تتحكم في ظهور ملفك (للجميع، أو للأعضاء فقط، أو لاتصالاتك)، وفي إمكانية عثور مسؤولي التوظيف عليك في البحث، وفيمن يمكنه مراسلتك، من الإعدادات ← الخصوصية. سيرتك الذاتية المحفوظة خاصة: لا يفتحها إلا أنت، أو مسؤولو التوظيف المسموح لهم بحسب تلك الإعدادات، أو الشركات التي تقدّمت إليها.",
+            "لا يفتح رسائل المحادثة ومرفقاتها (الصور والرسائل الصوتية والملفات والمواقع) إلا المشاركون في تلك المحادثة.",
+            "تظهر المنشورات للجميع أو لاتصالاتك فقط، بحسب اختيارك. تُعرض صور وفيديوهات المنشورات والقصص من روابط يصعب تخمينها لكنها غير محمية بكلمة مرور، فأي شخص تشارك معه رابطًا يمكنه فتحه.",
+            "القصص تظهر لاتصالاتك ولمن يتابعونك لمدة 24 ساعة، وترى عدد من شاهدها. بعد 24 ساعة تُحذف القصة وصورتها أو الفيديو من خادمنا تلقائيًا (كل ليلة)، ويمكنك أيضًا حذف قصتك بنفسك في أي وقت.",
           ],
         },
         {
-          heading: "أين تُخزَّن بياناتك",
+          heading: "أين تُخزَّن بياناتك ومن يساعدنا",
           body: [
-            "يستعين JOBLIO بمزوّدين موثوقين لتشغيل الخدمة: Vercel (الاستضافة)، وNeon (قاعدة البيانات داخل الاتحاد الأوروبي)، وSupabase (تخزين الملفات)، ومزوّد الدفع (المدفوعات)، وGoogle (تسجيل دخول اختياري)، ومزوّد بريد لرسائل الحساب. ويعالج هؤلاء البيانات فقط لتقديم خدماتهم لنا.",
+            "خادمنا الخاص: يعمل JOBLIO على خادم نديره بأنفسنا في لبنان. تُخزَّن هناك قاعدة البيانات وكل الملفات المرفوعة.",
+            "Cloudflare: تمرّ كل حركة الموقع والتطبيق عبر Cloudflare، الذي يحمي الخدمة من الهجمات ويوصل الملفات أسرع. يرى Cloudflare بيانات تقنية مثل عنوان IP، ويحتفظ بنسخ مؤقتة من الملفات العامة (مثل ملف تحميل التطبيق).",
+            "النسخ الاحتياطية (Google Drive): تُؤخذ نسخة من قاعدة البيانات كل يوم، وتُحفظ على خادمنا 7 أيام، وفي حسابنا الخاص على Google Drive لمدة 30 يومًا، حتى نستطيع إعادة الخدمة بعد أي عطل.",
+            "مزوّدون آخرون يعالجون البيانات فقط لتقديم خدمتهم لنا: Paddle (المدفوعات والفواتير، ولا نرى بيانات بطاقتك أبدًا)، وGoogle (تسجيل الدخول الاختياري، وإرسال رسائل الحساب بالبريد)، وExpo وGoogle Firebase (إيصال الإشعارات إلى التطبيق)، وOpenStreetMap (صور الخريطة التي تظهر مع الموقع المُشارَك في المحادثة، ويحمّلها جهازك مباشرة).",
           ],
         },
         {
           heading: "ملفات تعريف الارتباط",
-          body: [
-            "نستخدم فقط ملفات تعريف الارتباط اللازمة لعمل الموقع: جلسة تسجيل الدخول، واللغة، والمظهر. لا نستخدم ملفات إعلانية أو للتتبع عبر المواقع.",
-          ],
+          body: ["نستخدم فقط ملفات تعريف الارتباط اللازمة لعمل الموقع: جلسة تسجيل الدخول، واللغة، والمظهر. لا نستخدم ملفات إعلانية أو ملفات تتبّع عبر المواقع."],
         },
         {
           heading: "خياراتك وحقوقك",
           body: [
-            "يمكنك الاطلاع على بياناتك وتعديلها في أي وقت من ملفك وإعداداتك، وحذف حسابك من الإعدادات، وهو ما يزيل ملفك ومحتواك الشخصي. وبحسب مكان إقامتك قد تكون لك حقوق إضافية مثل الوصول والتصحيح والنقل والاعتراض؛ تواصل معنا لممارستها.",
+            "يمكنك الاطلاع على بياناتك وتعديلها في أي وقت من ملفك وإعداداتك. ويمكنك حذف حسابك من الإعدادات على الموقع، أو من الإعدادات ← الحساب في التطبيق: يحذف ذلك ملفك ومحتواك الشخصي (المنشورات والقصص والرسائل والطلبات) وكل ملف رفعته من خادمنا. وبحسب مكان إقامتك، قد تكون لك حقوق إضافية مثل الاطلاع والتصحيح ونقل البيانات والاعتراض؛ راسلنا على support@getjoblio.app لاستخدامها.",
           ],
         },
         {
           heading: "الاحتفاظ والأمان",
           body: [
-            "نحتفظ ببياناتك ما دام حسابك نشطًا، ونحذفها عند حذف حسابك، إلا ما يلزمنا القانون بالاحتفاظ به (مثل فواتير الدفع). البيانات مشفّرة أثناء النقل، وكلمات المرور مشفّرة، والوصول مقصور على ما تحتاجه كل ميزة.",
+            "نحتفظ ببياناتك ما دام حسابك نشطًا، ونحذفها عند حذف حسابك. تُحذف القصص بعد 24 ساعة، والملفات التي رُفعت ولم تُشارَك خلال يوم أو يومين. بعد حذف الحساب قد تبقى بياناته في النسخ الاحتياطية لقاعدة البيانات حتى 30 يومًا، إلى أن تُستبدل تلك النسخ. ونحتفظ بما يلزمنا القانون بالاحتفاظ به (مثل فواتير الدفع).",
+            "تُشفَّر البيانات أثناء النقل (HTTPS)، وتُخزَّن كلمات المرور مشفّرة، ولا تُعرض الملفات الخاصة إلا لمن يحق له الوصول، ويقتصر الوصول على ما تحتاجه كل ميزة.",
           ],
         },
         {
           heading: "التغييرات",
           body: ["إذا غيّرنا هذه السياسة تغييرًا جوهريًا فسنحدّث التاريخ أعلاه ونُعلم الأعضاء."],
         },
+        {
+          heading: "التواصل",
+          body: ["لأي سؤال عن خصوصيتك: support@getjoblio.app"],
+        },
       ],
     },
   },
-
   refunds: {
     en: {
       title: "Refund Policy",
