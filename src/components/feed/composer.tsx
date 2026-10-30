@@ -1,11 +1,11 @@
 "use client";
 
 import { useI18n } from "@/i18n/client";
-import { useActionState, useEffect, useMemo, useRef, useState } from "react";
+import { startTransition, useActionState, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, m } from "motion/react";
-import { Award, Briefcase, FileText, FolderGit2, Globe2, ImagePlus, Newspaper, PenLine, Users, X } from "lucide-react";
+import { Award, Briefcase, Clapperboard, FileText, FolderGit2, Globe2, ImagePlus, Newspaper, PenLine, Users, X } from "lucide-react";
 import { createPostAction, saveDraftAction } from "@/server/actions/feed";
 import { Avatar, CompanyLogo } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,8 @@ import { Dialog } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
 import { acceptFor, checkUpload } from "@/lib/upload-check";
+import { inspectVideo, uploadVideo, VIDEO_ACCEPT, type PickedVideo } from "@/lib/video-upload";
+import { resolveMessage } from "@/i18n/message";
 import type { ActionState } from "@/server/action";
 
 type Option = { id: string; title: string };
@@ -63,6 +65,50 @@ export function Composer({
   const [files, setFiles] = useState<File[]>([]);
   // The draft's images still attached (the server keeps only these, and deletes the rest).
   const [kept, setKept] = useState<string[]>(draft?.mediaUrls ?? []);
+  // One video instead of photos (up to 3 min, 20 MB): sent to /api/v1/media-upload first, then posted by its url.
+  const [video, setVideo] = useState<PickedVideo | null>(null);
+  const [uploadPct, setUploadPct] = useState<number | null>(null);
+  const videoRef = useRef<HTMLInputElement>(null);
+  const pickVideo = async (input: HTMLInputElement) => {
+    const file = input.files?.[0];
+    input.value = "";
+    if (!file) return;
+    try {
+      const picked = await inspectVideo(file, "post");
+      setVideo((old) => {
+        if (old) URL.revokeObjectURL(old.url);
+        return picked;
+      });
+    } catch (e) {
+      toast.error(resolveMessage(t, e instanceof Error ? e.message : "@feed.videoUnreadable"));
+    }
+  };
+  const removeVideo = () =>
+    setVideo((old) => {
+      if (old) URL.revokeObjectURL(old.url);
+      return null;
+    });
+  /** With a video, the post waits for it to upload, then goes out with its url instead of the photos. */
+  const submitVideo = async (e: React.FormEvent<HTMLFormElement>) => {
+    if (!video) return;
+    e.preventDefault();
+    if (uploadPct !== null) return;
+    const form = new FormData(e.currentTarget);
+    form.delete("media");
+    form.delete("keepMedia");
+    form.delete("draftId");
+    setUploadPct(0);
+    try {
+      const urls = await uploadVideo(video, setUploadPct);
+      form.set("videoUrl", urls.videoUrl);
+      if (urls.thumbnailUrl) form.set("thumbnailUrl", urls.thumbnailUrl);
+      startTransition(() => action(form));
+    } catch (err) {
+      toast.error(resolveMessage(t, err instanceof Error ? err.message : "@feed.videoNotSent"));
+    } finally {
+      setUploadPct(null);
+    }
+  };
   const [state, action, pending] = useActionState<ActionState, FormData>(
     (prev, form) => createPostAction(prev, form).catch(() => ({ ok: false as const, error: t("msg.uploadFailed") })),
     null,
@@ -90,6 +136,7 @@ export function Composer({
       setFiles([]);
       setType("UPDATE");
       setKept([]);
+      removeVideo();
       if (draft) router.push("/feed");
     } else if (state && !state.ok) toast.error(state.error);
   }, [state, t, draft, router]);
@@ -136,7 +183,7 @@ export function Composer({
       )}
 
       <Dialog open={open} onOpenChange={setOpen} title={draft ? t("feed.editingDraft") : t("feed.createPost")} size="lg">
-        <form ref={formRef} action={action} className="space-y-4">
+        <form ref={formRef} action={action} onSubmit={submitVideo} className="space-y-4">
           {draft && <input type="hidden" name="draftId" value={draft.id} />}
           {kept.map((u) => (
             <input key={u} type="hidden" name="keepMedia" value={u} />
@@ -256,6 +303,24 @@ export function Composer({
             </div>
           )}
 
+          {video && (
+            <div className="relative overflow-hidden rounded-xl bg-black">
+              <video src={video.url} controls playsInline className="max-h-96 w-full" />
+              <button type="button" onClick={removeVideo} disabled={uploadPct !== null} className="absolute end-2 top-2 rounded-full bg-black/60 p-1.5 text-white" aria-label={t("common.remove")}>
+                <X className="size-3.5" />
+              </button>
+              {uploadPct !== null && (
+                <div className="absolute inset-x-0 bottom-0 bg-black/60 px-3 py-2 text-xs font-medium text-white">
+                  {t("feed.uploadingVideo", { pct: uploadPct })}
+                  <div className="mt-1 h-1 overflow-hidden rounded-full bg-white/25">
+                    <div className="h-full bg-white transition-[width]" style={{ width: `${uploadPct}%` }} />
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          <input ref={videoRef} type="file" accept={VIDEO_ACCEPT} className="sr-only" onChange={(e) => void pickVideo(e.target)} />
           <input
             ref={fileRef}
             type="file"
@@ -269,8 +334,11 @@ export function Composer({
 
           <div className="flex items-center justify-between border-t border-border pt-3">
             <div className="flex items-center gap-1">
-              <button type="button" onClick={() => fileRef.current?.click()} className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm text-fg-muted hover:bg-surface-2 hover:text-fg" disabled={kept.length + files.length >= 4}>
+              <button type="button" onClick={() => fileRef.current?.click()} className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm text-fg-muted hover:bg-surface-2 hover:text-fg" disabled={kept.length + files.length >= 4 || !!video}>
                 <ImagePlus className="size-4" /> {t("feed.photo")}
+              </button>
+              <button type="button" onClick={() => videoRef.current?.click()} className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm text-fg-muted hover:bg-surface-2 hover:text-fg disabled:opacity-50" disabled={kept.length + files.length > 0 || uploadPct !== null}>
+                <Clapperboard className="size-4" /> {t("feed.video")}
               </button>
               <Link href="/feed/drafts" className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm text-fg-muted hover:bg-surface-2 hover:text-fg">
                 <FileText className="size-4" /> <span className="hidden sm:inline">{t("feed.drafts")}</span>
@@ -278,10 +346,10 @@ export function Composer({
             </div>
             <div className="flex items-center gap-3">
               <span className={cn("text-xs tabular-nums", content.length > 2800 ? "text-danger-fg" : "text-fg-subtle")}>{content.length}/3000</span>
-              <Button type="submit" variant="outline" formAction={saveAction} formNoValidate loading={saving} disabled={pending} pill>
+              <Button type="submit" variant="outline" formAction={saveAction} formNoValidate loading={saving} disabled={pending || !!video} pill>
                 {t("feed.saveDraft")}
               </Button>
-              <Button type="submit" loading={pending} disabled={!content.trim() || saving} pill>
+              <Button type="submit" loading={pending || uploadPct !== null} disabled={!content.trim() || saving} pill>
                 {t("feed.post")}
               </Button>
             </div>

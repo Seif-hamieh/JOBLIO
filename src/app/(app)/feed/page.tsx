@@ -3,6 +3,8 @@ import Link from "next/link";
 import { Hash, TrendingUp } from "lucide-react";
 import { requireViewer } from "@/server/session";
 import { getFeed } from "@/server/services/feed";
+import { listStories } from "@/server/services/stories";
+import { StoriesRow } from "@/components/stories/stories";
 import { composerData } from "@/server/services/composer";
 import { publicCompanyWhere } from "@/server/services/companies";
 import { suggestions, relationStates } from "@/server/services/network";
@@ -21,7 +23,7 @@ export default async function FeedPage({ searchParams }: PageProps<"/feed">) {
   // "My network" (default): you, your connections and who you follow. "Everyone" adds recent public posts.
   const everyone = (await searchParams).scope === "all";
   const [viewer, { t }] = await Promise.all([requireViewer(), getI18n()]);
-  const [feed, composer, people, companies] = await Promise.all([
+  const [feed, composer, people, companies, stories] = await Promise.all([
     getFeed(viewer.id, { networkOnly: !everyone }),
     composerData(viewer),
     suggestions(viewer.id, 4),
@@ -31,6 +33,7 @@ export default async function FeedPage({ searchParams }: PageProps<"/feed">) {
       take: 4,
       select: { id: true, slug: true, name: true, logoUrl: true, brandColor: true, tagline: true },
     }),
+    listStories(viewer.id),
   ]);
   const relations = await relationStates(viewer.id, people.map((p) => p.user.id));
 
@@ -42,6 +45,7 @@ export default async function FeedPage({ searchParams }: PageProps<"/feed">) {
         </div>
       </aside>
       <section className="min-w-0 space-y-4">
+        <StoriesRow groups={stories} viewer={{ name: viewer.name, image: viewer.image }} />
         <Composer viewer={{ name: viewer.name, image: viewer.image }} {...composer} />
         <NavTabs
           layoutId="feed-scope"

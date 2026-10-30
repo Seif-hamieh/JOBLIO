@@ -398,3 +398,18 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Stories: each bar fills over the story's own time (set inline); paused with animation-play-state. */
+@keyframes story-progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+.story-progress {
+  animation-name: story-progress;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}

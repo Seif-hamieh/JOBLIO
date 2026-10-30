@@ -232,7 +232,18 @@ export function PostCard({ post, viewer }: { post: FeedPost; viewer: { id: strin
 
       {post.content && <RichText text={post.content} className="px-5 pt-3" />}
 
-      {post.mediaUrls.length > 0 && (
+      {/* A video streams in pieces only once played (preload none); its still frame shows until then. */}
+      {post.mediaType === "VIDEO" && post.mediaUrls[0] ? (
+        <video
+          src={post.mediaUrls[0]}
+          poster={post.thumbnailUrl ?? undefined}
+          controls
+          playsInline
+          preload="none"
+          aria-label={t("feed.playVideo")}
+          className="mt-3 max-h-[640px] w-full bg-black"
+        />
+      ) : post.mediaUrls.length > 0 && (
         <div className={cn("mt-3 grid gap-0.5", post.mediaUrls.length > 1 && "grid-cols-2")}>
           {post.mediaUrls.map((url, i) => (
             // eslint-disable-next-line @next/next/no-img-element
