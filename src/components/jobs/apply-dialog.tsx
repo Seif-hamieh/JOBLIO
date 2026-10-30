@@ -16,12 +16,16 @@ import { cn } from "@/lib/utils";
 import { toast } from "@/components/ui/toast";
 import { acceptFor, checkUpload } from "@/lib/upload-check";
 import type { ActionState } from "@/server/action";
+import { ScreeningFields } from "@/components/jobs/screening-fields";
+import { checkScreeningAnswers, type ScreeningQuestion } from "@/lib/screening";
+import { resolveMessage } from "@/i18n/message";
 
 export function ApplyButton({
   job,
   applicant,
   savedResume,
   matchScore,
+  questions = [],
   signedIn,
   applied,
   className,
@@ -32,6 +36,8 @@ export function ApplyButton({
   /** The CV saved on the applicant's profile, offered by default. */
   savedResume?: { name: string } | null;
   matchScore: number | null;
+  /** The job's screening questions, answered in the form. */
+  questions?: ScreeningQuestion[];
   signedIn: boolean;
   applied: boolean;
   className?: string;
@@ -59,6 +65,20 @@ export function ApplyButton({
   };
   const [file, setFile] = useState<File | null>(null);
   const [useSaved, setUseSaved] = useState(true);
+  // The screening question the last check stopped at (highlighted in the form).
+  const [invalid, setInvalid] = useState<string | null>(null);
+  /** Checks the screening answers here first, so a missing one is pointed out without sending anything. */
+  const checkAnswers = (e: React.FormEvent<HTMLFormElement>) => {
+    if (!questions.length) return;
+    const form = new FormData(e.currentTarget);
+    const given = Object.fromEntries(questions.map((q) => [q.id, form.get(`answer.${q.id}`)]));
+    const res = checkScreeningAnswers(questions, given);
+    if (res.ok) return setInvalid(null);
+    e.preventDefault();
+    setInvalid(res.questionId);
+    toast.error(resolveMessage(t, res.error));
+    document.getElementById(`sq-${res.questionId}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
 
   useEffect(() => {
     if (state?.ok) {
@@ -115,7 +135,7 @@ export function ApplyButton({
               <p className="mt-1 text-sm text-fg-muted">{t("jobs.notifyReview", { company: job.companyName })}</p>
             </m.div>
           ) : (
-            <m.form key="form" action={action} className="space-y-5">
+            <m.form key="form" action={action} onSubmit={checkAnswers} noValidate className="space-y-5">
               <input type="hidden" name="jobId" value={job.id} />
               {applicant && (
                 <div className="flex items-center gap-3 rounded-2xl border border-border bg-surface-2/60 p-3.5">
@@ -127,6 +147,7 @@ export function ApplyButton({
                   {matchScore != null && <MatchRing score={matchScore} size={44} stroke={4} />}
                 </div>
               )}
+              <ScreeningFields questions={questions} invalid={invalid} />
               <div>
                 <label htmlFor="coverLetter" className="text-[13px] font-medium">
                   {t("jobs.note")} <span className="font-normal text-fg-subtle">({t("common.optional")})</span>

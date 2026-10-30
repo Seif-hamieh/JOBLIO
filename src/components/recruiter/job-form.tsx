@@ -12,6 +12,7 @@ import { CompanyLogo } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { SkillSearch } from "@/components/skills/skill-search";
 import { LevelPicker } from "@/components/skills/level-picker";
+import { ScreeningEditor } from "@/components/recruiter/screening-editor";
 import { createJobAction, updateJobAction } from "@/server/actions/recruiter";
 import {
   EDUCATION_LEVELS,
@@ -111,6 +112,7 @@ export function JobForm({
         industryId: v.industryId || null,
         countryCode: v.countryCode || null,
         skills: v.skills.map(({ skillId, required, minLevel }) => ({ skillId, required, minLevel })),
+        screeningQuestions: v.screeningQuestions.map(({ questionText, type, options, isRequired }) => ({ questionText, type, options, isRequired })),
         publish,
       };
       const res = jobId ? await updateJobAction(jobId, payload) : await createJobAction(payload);
@@ -338,6 +340,14 @@ export function JobForm({
               {(p) => <Input {...p} type="date" min={todayLocal()} value={v.closesAt} onChange={(e) => set("closesAt", e.target.value)} />}
             </Field>
           </div>
+        </Card>
+
+        <Card className="space-y-4 p-6">
+          <div>
+            <h2 className="font-display text-lg font-semibold">{t("screening.title")}</h2>
+            <p className="mt-1 text-sm text-fg-muted">{t("screening.intro")}</p>
+          </div>
+          <ScreeningEditor value={v.screeningQuestions} onChange={(x) => set("screeningQuestions", x)} error={Object.entries(errors).filter(([k]) => k.startsWith("screeningQuestions")).flatMap(([, e]) => e ?? [])} />
         </Card>
       </div>
 

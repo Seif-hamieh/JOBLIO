@@ -112,6 +112,7 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
     applicant: viewer ? { name: viewer.name, image: viewer.image, headline: viewer.headline } : null,
     savedResume: resume?.resumeUrl ? { name: resume.resumeName ?? "CV" } : null,
     matchScore: match?.score ?? null,
+    questions: job.screeningQuestions,
     signedIn: !!viewer,
     applied,
   };

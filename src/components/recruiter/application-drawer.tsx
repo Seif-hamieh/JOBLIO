@@ -1,5 +1,7 @@
 "use client";
 
+import { ScreeningAnswers } from "@/components/jobs/screening-fields";
+import type { ScreeningAnswer } from "@/lib/screening";
 import Link from "next/link";
 import { useEffect, useState, useTransition } from "react";
 import { Dialog as D } from "radix-ui";
@@ -252,6 +254,30 @@ export function ApplicationDrawer({ applicationId, onClose, onChanged }: { appli
                         ))}
                       {tab === "application" && (
                         <div className="space-y-5">
+                          {detail.applicant.phoneNumber && (
+                            <div>
+                              <div className="mb-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-fg-subtle">{t("screening.phone")}</div>
+                              <div className="flex flex-wrap items-center gap-2">
+                                <a href={`tel:${detail.applicant.phoneNumber.replace(/[^+0-9]/g, "")}`} dir="ltr" className="font-medium text-brand-soft-fg hover:underline">
+                                  {detail.applicant.phoneNumber}
+                                </a>
+                                <a
+                                  href={`https://wa.me/${detail.applicant.phoneNumber.replace(/[^0-9]/g, "")}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="rounded-full border border-border px-2.5 py-0.5 text-xs text-fg-muted hover:border-brand/40"
+                                >
+                                  WhatsApp
+                                </a>
+                              </div>
+                            </div>
+                          )}
+                          {Array.isArray(detail.screeningAnswers) && detail.screeningAnswers.length > 0 && (
+                            <div>
+                              <div className="mb-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-fg-subtle">{t("screening.answers")}</div>
+                              <ScreeningAnswers answers={detail.screeningAnswers as unknown as ScreeningAnswer[]} />
+                            </div>
+                          )}
                           <div>
                             <div className="mb-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-fg-subtle">{t("recruiter.noteFromCandidate")}</div>
                             <p className="whitespace-pre-line text-sm text-fg-muted">{detail.coverLetter || t("recruiter.noNote")}</p>

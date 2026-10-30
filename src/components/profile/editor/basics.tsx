@@ -22,6 +22,7 @@ export type BasicsValue = {
   city: string;
   countryCode: string;
   website: string;
+  phoneNumber: string;
 };
 
 function useSave() {
@@ -169,6 +170,9 @@ export function BasicsForm({ initial, image, cover }: { initial: BasicsValue; im
       </div>
       <Field label={t("profileEdit.website")} optional error={errors.website}>
         {(p) => <Input {...p} type="url" value={v.website} onChange={set("website")} placeholder="https://" />}
+      </Field>
+      <Field label={t("screening.phone")} optional hint={t("screening.phoneHint")} error={errors.phoneNumber}>
+        {(p) => <Input {...p} type="tel" dir="ltr" autoComplete="tel" value={v.phoneNumber} onChange={set("phoneNumber")} maxLength={32} placeholder="+961 70 123 456" />}
       </Field>
       <div className="flex justify-end">
         <Button loading={pending} onClick={() => run(() => updateBasicsAction({ ...v, countryCode: v.countryCode || null }))}>

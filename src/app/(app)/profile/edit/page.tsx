@@ -28,6 +28,8 @@ function Section({ id, title, description, children }: { id: string; title: stri
 
 export default async function EditProfilePage() {
   const [viewer, { t }] = await Promise.all([requireViewer(), getI18n()]);
+  // Private: only for this form and the companies the member applies to.
+  const phoneNumber = (await db.user.findUnique({ where: { id: viewer.id }, select: { phoneNumber: true } }))?.phoneNumber ?? "";
   const [p, industries] = await Promise.all([
     db.profile.findUniqueOrThrow({
       where: { id: viewer.profileId },
@@ -82,6 +84,7 @@ export default async function EditProfilePage() {
               city: p.city ?? "",
               countryCode: p.countryCode ?? "",
               website: p.website ?? "",
+              phoneNumber,
             }}
           />
         </Section>

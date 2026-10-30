@@ -1,3 +1,4 @@
+import type { ScreeningType } from "@/lib/screening";
 import type { EducationLevel, EmploymentType, ExperienceLevel, LanguageProficiency, SalaryPeriod, SkillLevel, WorkMode } from "@/lib/constants";
 
 // Shared by the job form (client) and the new/edit job pages (server). It must
@@ -26,7 +27,11 @@ export type JobFormValue = {
   closesAt: string;
   skills: { skillId: string; name: string; required: boolean; minLevel: SkillLevel }[];
   languages: { languageCode: string; minProficiency: LanguageProficiency }[];
+  screeningQuestions: ScreeningDraft[];
 };
+
+/** A screening question being edited (`key` only tells the rows apart while editing). */
+export type ScreeningDraft = { key: string; questionText: string; type: ScreeningType; options: string[]; isRequired: boolean };
 
 export const EMPTY_JOB: JobFormValue = {
   title: "",
@@ -50,4 +55,5 @@ export const EMPTY_JOB: JobFormValue = {
   closesAt: "",
   skills: [],
   languages: [],
+  screeningQuestions: [],
 };

@@ -14,7 +14,7 @@ export default async function EditJobPage({ params }: PageProps<"/recruiter/jobs
   const [job, industries, company] = await Promise.all([
     db.job.findFirst({
       where: { id, companyId: viewer.company.id },
-      include: { skills: { include: { skill: { select: { name: true } } } }, languages: true },
+      include: { skills: { include: { skill: { select: { name: true } } } }, languages: true, screeningQuestions: { orderBy: { position: "asc" } } },
     }),
     listIndustries(),
     db.company.findUniqueOrThrow({ where: { id: viewer.company.id }, select: { name: true, logoUrl: true } }),
@@ -50,6 +50,7 @@ export default async function EditJobPage({ params }: PageProps<"/recruiter/jobs
           closesAt: job.closesAt ? job.closesAt.toISOString().slice(0, 10) : "",
           skills: job.skills.map((s) => ({ skillId: s.skillId, name: s.skill.name, required: s.required, minLevel: s.minLevel })),
           languages: job.languages.map((l) => ({ languageCode: l.languageCode, minProficiency: l.minProficiency })),
+          screeningQuestions: job.screeningQuestions.map((q) => ({ key: q.id, questionText: q.questionText, type: q.type, options: q.options, isRequired: q.isRequired })),
         }}
       />
     </div>
