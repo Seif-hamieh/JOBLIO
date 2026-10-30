@@ -1290,6 +1290,8 @@ model Post {
   type         PostType       @default(UPDATE)
   content      String
   mediaUrls    String[]
+  /// Lowercase, without "#" (src/lib/hashtags.ts).
+  hashtags     String[]       @default([])
   // VIDEO: mediaUrls holds the one video and thumbnailUrl its still frame. IMAGE: images only, no thumbnail.
   mediaType    PostMediaType  @default(IMAGE)
   thumbnailUrl String?
@@ -1315,6 +1317,7 @@ model Post {
   @@index([authorId, createdAt(sort: Desc)])
   @@index([companyId, createdAt(sort: Desc)])
   @@index([createdAt(sort: Desc)])
+  @@index([hashtags], type: Gin)
   @@map("posts")
 }
 

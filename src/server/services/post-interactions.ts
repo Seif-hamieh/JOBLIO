@@ -1,5 +1,6 @@
 import "server-only";
 import { db } from "@/server/db";
+import { extractHashtags } from "@/lib/hashtags";
 import { notify } from "@/server/services/notifications";
 import { isBlockedEitherWay, isConnected } from "@/server/services/profile";
 import { k } from "@/i18n/message";
@@ -71,7 +72,7 @@ export async function repostPost(viewer: { id: string; name: string }, postId: s
   const original = seen?.sharedPostId ? await canSeePost(viewer.id, seen.sharedPostId) : seen;
   if (!original) return null;
   const [repost] = await db.$transaction([
-    db.post.create({ data: { authorId: viewer.id, content: content.trim().slice(0, 3000), sharedPostId: original.id, visibility: "PUBLIC" }, select: { id: true } }),
+    db.post.create({ data: { authorId: viewer.id, content: content.trim().slice(0, 3000), hashtags: extractHashtags(content.trim().slice(0, 3000)), sharedPostId: original.id, visibility: "PUBLIC" }, select: { id: true } }),
     db.post.update({ where: { id: original.id }, data: { shareCount: { increment: 1 } } }),
   ]);
   if (original.authorId !== viewer.id) {

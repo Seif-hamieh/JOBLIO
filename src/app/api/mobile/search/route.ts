@@ -7,7 +7,7 @@ import { toCompanyCard, toJobCard } from "@/server/mobile/dto";
 
 export const dynamic = "force-dynamic";
 
-// GET /api/mobile/search?q=  →  { q, people, companies, jobs, jobTotal }
+// GET /api/mobile/search?q=  →  { q, people, companies, jobs, jobTotal, posts }
 // The website's search everything: people (the profiles you're allowed to see), companies and jobs in one go —
 // 10 people, 8 companies and 8 jobs at most; "see all jobs" continues in the Jobs search.
 export async function GET(req: Request) {
@@ -16,7 +16,7 @@ export async function GET(req: Request) {
   const viewerId = session.user.id;
   if (!rateLimit(`${LIMITS.search.key}:${viewerId}`, LIMITS.search.max, LIMITS.search.windowMs).ok) return mobileError(429, "RATE_LIMITED", "Too many searches. Try again in a minute.");
   const q = new URL(req.url).searchParams.get("q") ?? "";
-  const r = await globalSearch(q, viewerId, { people: 10, companies: 8, jobs: 8 });
+  const r = await globalSearch(q, viewerId, { people: 10, companies: 8, jobs: 8, posts: 10 });
   const follows = r.companies.length
     ? await db.companyFollower.findMany({ where: { userId: viewerId, companyId: { in: r.companies.map((c) => c.id) } }, select: { companyId: true } })
     : [];
@@ -38,6 +38,8 @@ export async function GET(req: Request) {
       companies: r.companies.map((c) => toCompanyCard(c, followed.has(c.id), now)),
       jobs: r.jobs.map((j) => toJobCard(j, now)),
       jobTotal: r.jobTotal,
+      // Matching posts ("#dubai" or a word); older apps ignore them.
+      posts: r.posts.map((p) => ({ ...p, createdAt: p.createdAt.toISOString() })),
     },
     { headers: { "Cache-Control": "private, no-store" } },
   );

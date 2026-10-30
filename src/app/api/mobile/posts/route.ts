@@ -2,6 +2,7 @@ import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/server/db";
+import { extractHashtags } from "@/lib/hashtags";
 import { LIMITS, rateLimit } from "@/server/rate-limit";
 import { getPost } from "@/server/services/feed";
 import { videoMedia } from "@/server/services/video-media";
@@ -54,7 +55,7 @@ export async function POST(req: Request) {
   let postId: string;
   try {
     ({ id: postId } = await db.post.create({
-      data: { authorId: userId, content: parsed.data.content, type: "UPDATE", visibility: parsed.data.visibility, mediaUrls, ...(video && { mediaType: "VIDEO", thumbnailUrl: video.thumbnailUrl }) },
+      data: { authorId: userId, content: parsed.data.content, hashtags: extractHashtags(parsed.data.content), type: "UPDATE", visibility: parsed.data.visibility, mediaUrls, ...(video && { mediaType: "VIDEO", thumbnailUrl: video.thumbnailUrl }) },
       select: { id: true },
     }));
   } catch (e) {

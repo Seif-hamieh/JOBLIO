@@ -1,6 +1,7 @@
 import "server-only";
 import { z } from "zod";
 import { db } from "@/server/db";
+import { extractHashtags } from "@/lib/hashtags";
 import { deleteStored } from "@/server/storage";
 
 // Writing a post: the fields, the checks on what's attached, and creating it. Shared by the website's composer,
@@ -66,6 +67,7 @@ export async function createPost(author: Author, d: PostFields, mediaUrls: strin
       authorId: author.id,
       companyId: d.asCompany === "1" ? author.company!.id : null,
       content: d.content,
+      hashtags: extractHashtags(d.content),
       type: d.jobId ? "JOB" : d.projectId ? "PROJECT" : d.type === "JOB" ? "UPDATE" : d.type,
       visibility: d.visibility,
       jobId: d.jobId,
