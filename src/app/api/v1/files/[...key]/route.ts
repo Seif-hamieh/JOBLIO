@@ -72,7 +72,8 @@ export async function GET(req: Request, ctx: RouteContext<"/api/v1/files/[...key
   // Streamed from disk, never loaded whole (chat files can be 100 MB). Video and audio players ask for byte ranges
   // ("bytes=start-end", "bytes=start-" or the last N bytes, "bytes=-N") to start playing and to seek.
   const asked = req.headers.get("range")?.match(/^bytes=(\d*)-(\d*)$/);
-  const range = asked && (asked[1] || asked[2]) ? asked : null;
+  // A range that ends before it starts is invalid: ignored, and the whole file sent (as the HTTP spec says).
+  const range = asked && (asked[1] || asked[2]) && !(asked[1] && asked[2] && Number(asked[2]) < Number(asked[1])) ? asked : null;
   let file = await openStored(key, range?.[1] ? { start: Number(range[1]), end: range[2] ? Number(range[2]) : undefined } : undefined);
   if (!file) return new NextResponse("Not found", { status: 404 });
   if (range && !range[1]) {
