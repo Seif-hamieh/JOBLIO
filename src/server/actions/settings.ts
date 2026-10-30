@@ -1,5 +1,6 @@
 "use server";
 
+import { deleteAccount } from "@/server/services/account-deletion";
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
@@ -63,31 +64,12 @@ export async function revokeOtherSessionsAction(): Promise<ActionState> {
 }
 
 /**
- * Permanently deletes the account. Jobs and interviews a recruiter created
- * belong to their company, so they are handed to another company admin
- * first; a sole owner must hand over (or delete) the workspace themselves.
+ * Permanently deletes the account and its files (see deleteAccount).
  */
 export async function deleteAccountAction(confirm: string): Promise<ActionState> {
   return withViewer({ limit: LIMITS.sensitive }, async (viewer) => {
     if (confirm !== "DELETE") return fail("@v.invalid", { confirm: ["@v.invalid"] });
-    const [jobs, interviews] = await Promise.all([
-      db.job.count({ where: { postedById: viewer.id } }),
-      db.interview.count({ where: { scheduledById: viewer.id } }),
-    ]);
-    if (jobs || interviews) {
-      const heir = viewer.company
-        ? await db.companyMember.findFirst({
-            where: { companyId: viewer.company.id, userId: { not: viewer.id }, role: { in: ["OWNER", "ADMIN"] } },
-            select: { userId: true },
-          })
-        : null;
-      if (!heir) return fail("@msg.deleteBlocked");
-      await db.$transaction([
-        db.job.updateMany({ where: { postedById: viewer.id }, data: { postedById: heir.userId } }),
-        db.interview.updateMany({ where: { scheduledById: viewer.id }, data: { scheduledById: heir.userId } }),
-      ]);
-    }
-    await db.user.delete({ where: { id: viewer.id } });
+    if ((await deleteAccount(viewer.id, viewer.company?.id ?? null)) === "blocked") return fail("@msg.deleteBlocked");
     return { ok: true, message: "@msg.accountDeleted" };
   });
 }

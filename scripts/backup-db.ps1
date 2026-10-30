@@ -5,7 +5,8 @@
 #
 # Off-site copy: every backup the Google Drive folder does not have yet is copied there (so days missed while
 # G: was not connected are caught up on the next run), and Drive copies older than $DriveKeepDays are removed.
-# The uploaded files in ./storage are mirrored to <DriveDir>\storage as well.
+# The uploaded files in ./storage are NOT copied to Drive by default (videos would fill its 15 GB): pass
+# -MirrorStorage to copy them to <DriveDir>\storage too. They get their own local backup once the 2 TB drive is in.
 # If Google Drive is not available the local backup still counts as a success; the log says WARN.
 #
 # Restore a backup (into an empty database):
@@ -14,7 +15,8 @@ param(
   [string]$BackupDir = 'C:\Server\backups',
   [int]$KeepDays = 7,
   [string]$DriveDir = 'G:\My Drive\JoblioBackups',
-  [int]$DriveKeepDays = 30
+  [int]$DriveKeepDays = 30,
+  [switch]$MirrorStorage
 )
 
 $root = Split-Path -Parent $PSScriptRoot
@@ -75,7 +77,7 @@ try {
 # Uploaded files (profile pictures, CVs, attachments) in ./storage, mirrored to Google Drive\storage.
 # New and changed files are copied; files deleted on the site are kept on Drive (so a mistake can be undone).
 # /FFT allows Google Drive's coarser timestamps, so unchanged files are not copied again.
-try {
+if ($MirrorStorage) { try {
   $storage = Join-Path $root 'storage'
   if (-not (Test-Path $storage)) { throw 'the storage folder does not exist yet' }
   if (-not (Test-Path (Split-Path -Qualifier $DriveDir))) { throw "$(Split-Path -Qualifier $DriveDir) is not connected" }
@@ -85,6 +87,6 @@ try {
   Write-Log "OK  Google Drive storage: $($files[1]) copied of $($files[0]) files"
 } catch {
   Write-Log "WARN  Google Drive storage copy skipped: $($_.Exception.Message)"
-}
+} }
 # The local backup succeeded; don't let robocopy's "files were copied" code (1) look like a failure.
 exit 0

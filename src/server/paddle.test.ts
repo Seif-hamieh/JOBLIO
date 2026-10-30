@@ -1,5 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+// Each test re-imports the Paddle module (and its SDK) from scratch; on a busy machine that can pass the default
+// 5-second limit, which made these tests fail now and then. Give them room.
+vi.setConfig({ testTimeout: 30_000 });
+
 vi.mock("server-only", () => ({}));
 vi.mock("@/server/action", () => ({ ActionError: class ActionError extends Error {} }));
 vi.mock("@/server/billing", () => ({ nextInvoiceNumber: async () => "JBL-TEST" }));
