@@ -29,7 +29,7 @@ const dynamicEntries = unstable_cache(
     const now = new Date();
     // Only jobs people can still apply to: open, published, not past their closing date.
     const openJob = { status: "OPEN" as const, publishedAt: { not: null }, OR: [{ closesAt: null }, { closesAt: { gte: now } }] };
-    const [jobs, companies, people] = await Promise.all([
+    const [jobs, companies, people, posts] = await Promise.all([
       db.job.findMany({ where: openJob, select: { id: true, updatedAt: true }, orderBy: { publishedAt: "desc" }, take: 5000 }),
       // Companies with at least one open job — empty test or abandoned workspaces stay out.
       db.company.findMany({ where: { jobs: { some: openJob } }, select: { slug: true, updatedAt: true }, orderBy: { followerCount: "desc" }, take: 5000 }),
@@ -40,10 +40,12 @@ const dynamicEntries = unstable_cache(
         orderBy: { updatedAt: "desc" },
         take: 10000,
       }),
+      // Public feed posts by members in good standing, newest first.
+      db.post.findMany({ where: { visibility: "PUBLIC", author: { bannedAt: null } }, select: { id: true, updatedAt: true }, orderBy: { createdAt: "desc" }, take: 10000 }),
     ]);
-    return { jobs, companies, people };
+    return { jobs, companies, people, posts };
   },
-  ["sitemap:v2"],
+  ["sitemap:v3"],
   { revalidate: 3600, tags: [SITEMAP_TAG] },
 );
 
@@ -52,7 +54,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const pages: MetadataRoute.Sitemap = STATIC.map((s) => ({ url: `${APP_URL}${s.path === "/" ? "" : s.path}`, lastModified: now, changeFrequency: s.changeFrequency, priority: s.priority }));
   // A sitemap must never fail: without the database, list the static pages only.
   try {
-    const [{ jobs, companies, people }, cities] = await Promise.all([dynamicEntries(), landingPages()]);
+    const [{ jobs, companies, people, posts }, cities] = await Promise.all([dynamicEntries(), landingPages()]);
     const city = (slug: string) => `${APP_URL}/jobs/in/${encodeURIComponent(slug)}`;
     return [
       ...pages,
@@ -63,6 +65,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       ]),
       ...jobs.map((j) => ({ url: `${APP_URL}/jobs/${j.id}`, lastModified: j.updatedAt, changeFrequency: "weekly" as const, priority: 0.7 })),
       ...companies.map((c) => ({ url: `${APP_URL}/companies/${c.slug}`, lastModified: c.updatedAt, changeFrequency: "weekly" as const, priority: 0.6 })),
+      ...posts.map((p) => ({ url: `${APP_URL}/feed/${p.id}`, lastModified: p.updatedAt, changeFrequency: "monthly" as const, priority: 0.5 })),
       ...people.map((u) => ({ url: `${APP_URL}/in/${u.username}`, lastModified: u.updatedAt, changeFrequency: "monthly" as const, priority: 0.4 })),
     ];
   } catch (e) {

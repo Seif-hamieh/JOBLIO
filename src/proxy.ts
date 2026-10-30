@@ -34,6 +34,8 @@ const DETAIL = /^\/(jobs|companies|in)\/([^/]+)$/;
 const NOT_A_JOB = new Set(["featured", "saved", "for-you", "in"]);
 // City (and city + field) landing pages, which exist only while they have open jobs (see services/job-landing).
 const LANDING = /^\/jobs\/in\/([^/]+)(?:\/([^/]+))?$/;
+// One feed post (not /feed/new or /feed/drafts): public posts are open to signed-out visitors and search engines.
+const POST = /^\/feed\/(?!new$|drafts$)([^/]+)$/;
 
 // A single segment that isn't one of the site's own top-level pages is a member's portfolio
 // (/{username}). Next renders a missing one as an empty shell plus a client-drawn 404, so on
@@ -88,7 +90,18 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/home", request.url));
   }
 
-  if (!hasSession && PROTECTED.some((p) => pathname === p || pathname.startsWith(`${p}/`))) {
+  const post = pathname.match(POST);
+  if (post && !hasSession) {
+    // Signed out: only public posts by members in good standing; anything else is a plain 404 (never a sign-in page,
+    // which would tell that a private post exists).
+    if (request.method === "GET" && !request.headers.get("rsc")) {
+      const id = decodeURIComponent(post[1]!);
+      const open = await db.post
+        .findFirst({ where: { id, visibility: "PUBLIC", author: { bannedAt: null } }, select: { id: true } })
+        .then(Boolean, () => true); // never block a page on a DB hiccup
+      if (!open) return NextResponse.rewrite(new URL("/_missing/not-found", request.url), { status: 404 });
+    }
+  } else if (!hasSession && PROTECTED.some((p) => pathname === p || pathname.startsWith(`${p}/`))) {
     const url = new URL("/login", request.url);
     url.searchParams.set("next", pathname + search);
     return NextResponse.redirect(url);

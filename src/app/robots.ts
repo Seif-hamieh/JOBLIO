@@ -12,7 +12,10 @@ export default function robots(): MetadataRoute.Robots {
         disallow: [
           "/api/",
           "/home",
-          "/feed",
+          // The feed itself ("$": that URL only); single public posts (/feed/<id>) stay crawlable.
+          "/feed$",
+          "/feed/new",
+          "/feed/drafts",
           "/network",
           "/messages",
           "/notifications",
