@@ -17,6 +17,7 @@ const STATIC: { path: string; priority: number; changeFrequency: MetadataRoute.S
   { path: "/companies", priority: 0.8, changeFrequency: "daily" },
   { path: "/professionals/featured", priority: 0.6, changeFrequency: "daily" },
   { path: "/premium", priority: 0.6, changeFrequency: "monthly" },
+  { path: "/app", priority: 0.7, changeFrequency: "weekly" },
   { path: "/about", priority: 0.5, changeFrequency: "monthly" },
   { path: "/contact", priority: 0.4, changeFrequency: "yearly" },
   { path: "/terms", priority: 0.3, changeFrequency: "yearly" },

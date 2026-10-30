@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useSyncExternalStore } from "react";
+import { usePathname } from "next/navigation";
 import { Download, X } from "lucide-react";
 import { useI18n } from "@/i18n/client";
 
@@ -44,10 +45,12 @@ export function MobileAppBanner() {
   const { t } = useI18n();
   const eligible = useSyncExternalStore(noSubscribe, () => isAndroid() && !wasDismissed(), () => false);
   const [closed, setClosed] = useState(false);
+  // The download page has its own, bigger button.
+  const onDownloadPage = usePathname() === "/app";
   // Pages for signed-in members have a bottom navigation bar on phones: sit on top of it.
   const navHeight = useSyncExternalStore(subscribeNav, navHeightNow, () => 0);
 
-  if (!eligible || closed) return null;
+  if (!eligible || closed || onDownloadPage) return null;
 
   function close() {
     setClosed(true);
