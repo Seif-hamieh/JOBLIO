@@ -40,6 +40,8 @@ export async function GET(req: Request, { params }: RouteContext<"/api/mobile/re
       applicationCount: true,
       skills: { select: { required: true, minLevel: true, skill: { select: { id: true, name: true } } } },
       languages: { select: { languageCode: true, minProficiency: true } },
+      // Sent back unchanged on save (or edited): leaving them out of the save keeps them.
+      screeningQuestions: { orderBy: { position: "asc" }, select: { questionText: true, type: true, options: true, isRequired: true } },
     },
   });
   if (!job) return mobileError(404, "NOT_FOUND", "This job doesn't exist.");
