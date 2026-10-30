@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { ArrowRight, Briefcase, Building2, MapPin, Search, SearchX, Users } from "lucide-react";
+import { ArrowRight, Briefcase, Building2, Hash, Heart, MapPin, MessageCircle, Repeat2, Search, SearchX, Users } from "lucide-react";
 import { getI18n } from "@/i18n/server";
 import { getViewer } from "@/server/session";
 import { globalSearch } from "@/server/services/search";
 import { JobCard } from "@/components/jobs/job-card";
+import { RichText } from "@/components/feed/rich-text";
 import { Avatar, CompanyLogo } from "@/components/ui/avatar";
 import { OpenToWorkBadge } from "@/components/ui/badge";
 import { Card, EmptyState } from "@/components/ui/misc";
@@ -30,13 +31,52 @@ function Section({ icon: Icon, title, count, children, more }: { icon: typeof Us
   );
 }
 
-/** One search for people, companies and jobs (the header search box lands here). */
+/** One search for people, companies, jobs and posts (the header search box and the #tags in posts land here). */
 export default async function SearchPage({ searchParams }: PageProps<"/search">) {
   const raw = (await searchParams).q;
   const query = String(Array.isArray(raw) ? raw[0] : (raw ?? ""));
   const [viewer, { t, f }] = await Promise.all([getViewer(), getI18n()]);
-  const { q, people, companies, jobs, jobTotal } = await globalSearch(query, viewer?.id ?? null);
-  const nothing = q && !people.length && !companies.length && !jobs.length;
+  const { q, people, companies, jobs, jobTotal, posts } = await globalSearch(query, viewer?.id ?? null);
+  const nothing = q && !people.length && !companies.length && !jobs.length && !posts.length;
+  // "#dubai": the posts come first, since that's what a hashtag is for.
+  const tagFirst = q.startsWith("#");
+  const postSection = posts.length > 0 && (
+    <Section icon={Hash} title={t("search.posts")} count={posts.length}>
+      <div className="space-y-3">
+        {posts.map((p) => (
+          <Card key={p.id} className="p-4">
+            <div className="flex items-center gap-3">
+              <Avatar name={p.company?.name ?? p.author.name} src={p.company?.logoUrl ?? p.author.image} size="md" />
+              <div className="min-w-0 flex-1">
+                <Link href={p.company ? `/companies/${p.company.slug}` : `/in/${p.author.username}`} className="block truncate font-semibold hover:underline">
+                  {p.company?.name ?? p.author.name}
+                </Link>
+                <div className="truncate text-xs text-fg-subtle" suppressHydrationWarning>
+                  {!p.company && p.author.profile?.headline ? `${p.author.profile.headline} · ` : ""}
+                  {f.shortTimeAgo(p.createdAt)}
+                </div>
+              </div>
+            </div>
+            <RichText text={p.content} clamp={280} className="mt-3" />
+            <div className="mt-3 flex items-center gap-4 text-sm text-fg-muted">
+              <span className="inline-flex items-center gap-1" aria-label={t("search.likes", { n: p.likeCount })}>
+                <Heart className="size-4" /> {p.likeCount}
+              </span>
+              <span className="inline-flex items-center gap-1" aria-label={t("search.comments", { n: p.commentCount })}>
+                <MessageCircle className="size-4" /> {p.commentCount}
+              </span>
+              <span className="inline-flex items-center gap-1" aria-label={t("search.reposts", { n: p.shareCount })}>
+                <Repeat2 className="size-4" /> {p.shareCount}
+              </span>
+              <Link href={`/feed/${p.id}`} className="ms-auto font-medium text-brand-soft-fg hover:underline">
+                {t("search.viewPost")}
+              </Link>
+            </div>
+          </Card>
+        ))}
+      </div>
+    </Section>
+  );
 
   return (
     <div className="mx-auto max-w-4xl space-y-8">
@@ -62,6 +102,8 @@ export default async function SearchPage({ searchParams }: PageProps<"/search">)
 
       {!q && <EmptyState icon={<Search />} title={t("search.startTitle")} description={t("search.startBody")} />}
       {nothing && <EmptyState icon={<SearchX />} title={t("search.noResults", { q })} description={t("search.noResultsBody")} />}
+
+      {tagFirst && postSection}
 
       {people.length > 0 && (
         <Section icon={Users} title={t("search.people")} count={people.length}>
@@ -136,6 +178,8 @@ export default async function SearchPage({ searchParams }: PageProps<"/search">)
           </div>
         </Section>
       )}
+
+      {!tagFirst && postSection}
     </div>
   );
 }

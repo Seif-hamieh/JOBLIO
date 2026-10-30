@@ -12,19 +12,21 @@ const USERNAME_RE = /^[a-z0-9][a-z0-9._-]{1,38}$/i;
 
 const linkClass = "font-medium text-brand-soft-fg hover:underline";
 
-/** #tags open the unified search; @username opens that member's profile. */
+/** #tags open the search for that tag (posts tagged with it, and the rest); @username opens that member's profile. */
 function withTags(text: string, keyPrefix: string): ReactNode[] {
   const out: ReactNode[] = [];
   let last = 0;
   for (const m of text.matchAll(TAG_RE)) {
-    const [, lead, token] = m as unknown as [string, string, string];
+    const [, lead, found] = m as unknown as [string, string, string];
     const start = m.index! + lead.length;
+    // A hashtag is letters, digits and _ only, as it's saved (src/lib/hashtags.ts): "#full-stack" links "#full".
+    const token = found[0] === "#" ? found.match(/^#[\p{L}\p{N}_]+/u)![0] : found;
     const word = token.slice(1);
     const isMention = token[0] === "@";
     if (isMention && !USERNAME_RE.test(word)) continue;
     out.push(text.slice(last, start));
     out.push(
-      <Link key={`${keyPrefix}-${start}`} href={isMention ? `/in/${word}` : `/search?q=${encodeURIComponent(word)}`} className={linkClass} dir="auto">
+      <Link key={`${keyPrefix}-${start}`} href={isMention ? `/in/${word}` : `/search?q=${encodeURIComponent(`#${word}`)}`} className={linkClass} dir="auto">
         {token}
       </Link>,
     );
