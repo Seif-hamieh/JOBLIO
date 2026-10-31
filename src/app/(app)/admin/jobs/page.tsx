@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input, Select } from "@/components/ui/field";
 import { Card, EmptyState, Pagination } from "@/components/ui/misc";
 import { JobActions } from "@/components/admin/job-actions";
+import { PromotionSwitch } from "@/components/admin/promotion-switch";
 import { SOURCE_NAMES } from "@/server/job-import/normalize";
 
 const PAGE_SIZE = 50;
@@ -113,10 +114,16 @@ export default async function AdminJobsPage({ searchParams }: { searchParams: Pr
                         <Badge tone={STATUS_TONE[j.status]} size="xs">{t(`enums.jobStatus.${j.status}`)}</Badge>
                       </td>
                       <td className={td}>
-                        {featured ? <Star className="size-4 fill-current text-ember-fg" aria-label={t("admin.jobTable.featured")} /> : <span className="text-fg-subtle">—</span>}
+                        <span className="flex items-center gap-1.5">
+                          <PromotionSwitch jobId={j.id} kind="FEATURED" active={featured} canTurnOn={j.status === "OPEN"} />
+                          {featured && <Star className="size-4 fill-current text-ember-fg" aria-label={t("admin.jobTable.featured")} />}
+                        </span>
                       </td>
                       <td className={td}>
-                        {urgent ? <Zap className="size-4 fill-current text-danger-fg" aria-label={t("admin.jobTable.urgent")} /> : <span className="text-fg-subtle">—</span>}
+                        <span className="flex items-center gap-1.5">
+                          <PromotionSwitch jobId={j.id} kind="URGENT" active={urgent} canTurnOn={j.status === "OPEN"} />
+                          {urgent && <Zap className="size-4 fill-current text-danger-fg" aria-label={t("admin.jobTable.urgent")} />}
+                        </span>
                       </td>
                       <td className={`${td} whitespace-nowrap text-fg-muted`}>{f.date(j.createdAt, { day: "numeric", month: "short", year: "numeric" })}</td>
                       <td className={td}>

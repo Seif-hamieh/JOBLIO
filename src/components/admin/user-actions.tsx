@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { Ban, ShieldCheck, ShieldOff, Undo2 } from "lucide-react";
+import { Ban, Crown, ShieldCheck, ShieldOff, Undo2 } from "lucide-react";
+import { PremiumDialog } from "@/components/admin/premium-dialog";
 import { Button, buttonClasses } from "@/components/ui/button";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { Dialog } from "@/components/ui/dialog";
@@ -17,7 +18,7 @@ type User = { id: string; name: string; username: string | null; isAdmin: boolea
 export function UserActions({ user, isSelf }: { user: User; isSelf: boolean }) {
   const { t } = useI18n();
   const router = useRouter();
-  const [open, setOpen] = useState<"role" | "ban" | "unban" | null>(null);
+  const [open, setOpen] = useState<"role" | "ban" | "unban" | "premium" | null>(null);
   const [reason, setReason] = useState("");
   const [pending, start] = useTransition();
   const next = user.isAdmin ? "USER" : "ADMIN";
@@ -40,6 +41,11 @@ export function UserActions({ user, isSelf }: { user: User; isSelf: boolean }) {
           {t("admin.view")}
         </Link>
       )}
+      {!user.banned && (
+        <Button variant="outline" size="xs" onClick={() => setOpen("premium")}>
+          <Crown /> {t("admin.premium.manage")}
+        </Button>
+      )}
       {!isSelf && !user.banned && (
         <Button variant={user.isAdmin ? "ghost" : "outline"} size="xs" className={user.isAdmin ? "text-danger-fg" : undefined} onClick={() => setOpen("role")}>
           {user.isAdmin ? <ShieldOff /> : <ShieldCheck />}
@@ -57,6 +63,7 @@ export function UserActions({ user, isSelf }: { user: User; isSelf: boolean }) {
             <Ban /> {t("admin.userTable.ban")}
           </Button>
         ))}
+      <PremiumDialog user={user} open={open === "premium"} onOpenChange={(o) => setOpen(o ? "premium" : null)} />
       <ConfirmDialog
         open={open === "role"}
         onOpenChange={(o) => setOpen(o ? "role" : null)}
