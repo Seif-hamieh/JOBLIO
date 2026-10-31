@@ -19,6 +19,17 @@ import {
   setUserRoleAsAdmin,
   unbanUserAsAdmin,
 } from "@/server/services/admin";
+import {
+  getPremiumStatus,
+  grantPremiumAsAdmin,
+  JOB_PROMOTIONS,
+  MAX_GRANT_CREDITS,
+  MAX_GRANT_DAYS,
+  revokePremiumAsAdmin,
+  setJobPromotionAsAdmin,
+  USER_FEATURES,
+  type PremiumStatus,
+} from "@/server/services/admin-premium";
 
 // Admin-only mutations. Each one re-checks the role from the database (getViewer) —
 // hiding buttons in the UI is not a security boundary. The rules live in services/admin (shared with the app).
@@ -106,4 +117,31 @@ export async function setUserBanned(userId: string, banned: boolean, reason?: st
 /** Settles every open report on a post: deletes the post, or just dismisses the reports. */
 export async function resolvePostReports(postId: string, deletePost: boolean) {
   return asAdmin(async () => ({ ok: true, message: await resolvePostReportsAsAdmin(Id.parse(postId), z.boolean().parse(deletePost)) }));
+}
+
+/** A member's premium, for the Manage premium dialog. */
+export async function loadPremiumStatus(userId: string) {
+  return asAdmin<PremiumStatus>(async () => ({ ok: true, data: await getPremiumStatus(Id.parse(userId)) }));
+}
+
+/** Gives a feature without payment: days for plans and Profile Boost, credits for Priority Application. */
+export async function grantPremium(userId: string, feature: string, amount: number) {
+  return asAdmin(async (admin) => {
+    const f = z.enum(USER_FEATURES).parse(feature);
+    const n = z.number().int().min(1).max(f === "PRIORITY_APPLICATION" ? MAX_GRANT_CREDITS : MAX_GRANT_DAYS).parse(amount);
+    return { ok: true, message: await grantPremiumAsAdmin(admin.id, Id.parse(userId), f, n) };
+  });
+}
+
+/** Ends a feature an admin gave (the member is back on Free for it). */
+export async function revokePremium(userId: string, feature: string) {
+  return asAdmin(async () => ({ ok: true, message: await revokePremiumAsAdmin(Id.parse(userId), z.enum(USER_FEATURES).parse(feature)) }));
+}
+
+/** Featured / Urgent / Sponsored on for `days`, or off with 0. */
+export async function setJobPromotion(jobId: string, kind: string, days: number) {
+  return asAdmin(async (admin) => ({
+    ok: true,
+    message: await setJobPromotionAsAdmin(admin.id, Id.parse(jobId), z.enum(JOB_PROMOTIONS).parse(kind), z.number().int().min(0).max(MAX_GRANT_DAYS).parse(days)),
+  }));
 }

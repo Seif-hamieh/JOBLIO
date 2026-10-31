@@ -944,6 +944,8 @@ model JobPromotion {
   startsAt  DateTime
   endsAt    DateTime
   paymentId String?       @unique
+  /// The admin who turned it on without a payment; null when it was bought.
+  grantedById String?
   createdAt DateTime      @default(now())
   job       Job           @relation(fields: [jobId], references: [id], onDelete: Cascade)
   payment   Payment?      @relation(fields: [paymentId], references: [id], onDelete: SetNull)
@@ -1441,6 +1443,8 @@ model Subscription {
   paddleSubscriptionId String?            @unique @map("stripeSubscriptionId")
   currentPeriodEnd     DateTime
   cancelAtPeriodEnd    Boolean            @default(false)
+  /// The admin who gave it without a payment (Admin → Users → Manage premium); null when it was bought.
+  grantedById          String?
   createdAt            DateTime           @default(now())
   updatedAt            DateTime           @updatedAt
   user                 User               @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -1488,6 +1492,8 @@ model ProfileBoost {
   startsAt  DateTime
   endsAt    DateTime
   paymentId String?     @unique
+  /// The admin who gave it without a payment; null when it was bought.
+  grantedById String?
   createdAt DateTime    @default(now())
   user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   payment   Payment?    @relation(fields: [paymentId], references: [id], onDelete: SetNull)
