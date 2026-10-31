@@ -2069,6 +2069,19 @@ export const en = {
     phone: "Phone number",
     phoneHint: "Only shared with the companies you apply to — never shown on your profile.",
   },
+  premiumBadge: {
+    label: "Premium member",
+  },
+  myPremium: {
+    title: "My premium features",
+    sub: "What you have now, and until when.",
+    until: "Until {date}",
+    renews: "Renews {date}",
+    gift: "Gift from Joblio",
+    credits: "{n} application left|{n} applications left",
+    none: "You’re on the free plan.",
+    see: "See premium",
+  },
   appPage: {
     metaTitle: "Download the JOBLIO app for Android",
     metaDescription: "Get the free JOBLIO Android app: jobs, messages, stories and notifications. Direct download, updates itself.",

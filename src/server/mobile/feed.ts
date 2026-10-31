@@ -22,7 +22,8 @@ export function toPost(p: FeedPost, viewerId: string) {
     shareCount: p.shareCount,
     liked: p.liked,
     mine: p.authorId === viewerId,
-    author: { id: p.author.id, name: p.author.name, image: p.author.image, username: p.author.username, headline: p.author.profile?.headline ?? null },
+    // premium: show the 👑 next to the name (missing from older servers).
+    author: { id: p.author.id, name: p.author.name, image: p.author.image, username: p.author.username, headline: p.author.profile?.headline ?? null, premium: !!p.authorPremium },
     // Posted on behalf of a company page.
     company: p.company ? { name: p.company.name, slug: p.company.slug, logoUrl: p.company.logoUrl, brandColor: p.company.brandColor } : null,
     job: p.job ? { id: p.job.id, title: p.job.title, workMode: p.job.workMode, city: p.job.city, open: p.job.status === "OPEN", company: p.job.company.name } : null,

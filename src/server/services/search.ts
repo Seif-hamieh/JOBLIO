@@ -5,6 +5,7 @@ import { companyCardSelect, publicCompanyWhere } from "@/server/services/compani
 import { connectionIds } from "@/server/services/network";
 import { parseJobSearch } from "@/lib/validation/search";
 import { hashtagQuery } from "@/lib/hashtags";
+import { premiumUserIds } from "@/server/services/premium";
 
 /** What a post in the results shows: author, text, picture or video still, counts. */
 const searchPostSelect = {
@@ -31,7 +32,7 @@ export type SearchPost = Prisma.PostGetPayload<{ select: typeof searchPostSelect
  */
 export async function globalSearch(query: string, viewerId: string | null, limits = { people: 8, companies: 6, jobs: 6, posts: 6 }) {
   const raw = query.trim().slice(0, 100);
-  if (!raw) return { q: raw, people: [], companies: [], jobs: [], jobTotal: 0, posts: [] as SearchPost[] };
+  if (!raw) return { q: raw, people: [], companies: [], jobs: [], jobTotal: 0, posts: [] as (SearchPost & { authorPremium: boolean })[] };
   const tag = hashtagQuery(raw);
   // "#dubai" searches people, companies and jobs for "dubai".
   const q = raw.replace(/^#+/, "").trim() || raw;
@@ -97,5 +98,13 @@ export async function globalSearch(query: string, viewerId: string | null, limit
       : Promise.resolve([] as SearchPost[]),
   ]);
 
-  return { q: raw, people, companies, jobs: [...jobs.sponsored, ...jobs.jobs].slice(0, limits.jobs), jobTotal: jobs.total, posts };
+  const premium = await premiumUserIds([...people.map((p) => p.id), ...posts.map((p) => p.author.id)]);
+  return {
+    q: raw,
+    people: people.map((p) => ({ ...p, premium: premium.has(p.id) })),
+    companies,
+    jobs: [...jobs.sponsored, ...jobs.jobs].slice(0, limits.jobs),
+    jobTotal: jobs.total,
+    posts: posts.map((p) => ({ ...p, authorPremium: !p.company && premium.has(p.author.id) })),
+  };
 }

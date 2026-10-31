@@ -5,6 +5,7 @@ import { getViewer } from "@/server/session";
 import { globalSearch } from "@/server/services/search";
 import { JobCard } from "@/components/jobs/job-card";
 import { RichText } from "@/components/feed/rich-text";
+import { PremiumCrown } from "@/components/ui/premium-crown";
 import { Avatar, CompanyLogo } from "@/components/ui/avatar";
 import { OpenToWorkBadge } from "@/components/ui/badge";
 import { Card, EmptyState } from "@/components/ui/misc";
@@ -48,9 +49,10 @@ export default async function SearchPage({ searchParams }: PageProps<"/search">)
             <div className="flex items-center gap-3">
               <Avatar name={p.company?.name ?? p.author.name} src={p.company?.logoUrl ?? p.author.image} size="md" />
               <div className="min-w-0 flex-1">
-                <Link href={p.company ? `/companies/${p.company.slug}` : `/in/${p.author.username}`} className="block truncate font-semibold hover:underline">
+                <Link href={p.company ? `/companies/${p.company.slug}` : `/in/${p.author.username}`} className="truncate font-semibold hover:underline">
                   {p.company?.name ?? p.author.name}
                 </Link>
+                {p.authorPremium && <PremiumCrown className="ms-1 text-sm" />}
                 <div className="truncate text-xs text-fg-subtle" suppressHydrationWarning>
                   {!p.company && p.author.profile?.headline ? `${p.author.profile.headline} · ` : ""}
                   {f.shortTimeAgo(p.createdAt)}
@@ -114,6 +116,7 @@ export default async function SearchPage({ searchParams }: PageProps<"/search">)
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="truncate font-semibold">{p.name}</span>
+                    {p.premium && <PremiumCrown className="text-sm" />}
                     {p.profile?.openToWork && <OpenToWorkBadge />}
                   </div>
                   {p.profile?.headline && (

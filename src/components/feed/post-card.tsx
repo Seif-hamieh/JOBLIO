@@ -16,6 +16,7 @@ import { toast } from "@/components/ui/toast";
 import { copyText } from "@/lib/share";
 import { ReportPostDialog } from "@/components/feed/report-post-dialog";
 import { RichText } from "@/components/feed/rich-text";
+import { PremiumCrown } from "@/components/ui/premium-crown";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/i18n/client";
 
@@ -188,6 +189,7 @@ export function PostCard({ post, viewer }: { post: FeedPost; viewer: { id: strin
             <Link href={asCompany ? `/companies/${asCompany.slug}` : `/in/${post.author.username}`} className="font-semibold hover:underline">
               {asCompany ? asCompany.name : post.author.name}
             </Link>
+            {!asCompany && post.authorPremium && <PremiumCrown className="text-sm" />}
             {badge && (
               <Badge tone={badge.tone} size="xs">
                 <badge.icon /> {t(badge.label)}

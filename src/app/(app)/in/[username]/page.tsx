@@ -43,6 +43,8 @@ import { Badge, OpenToWorkBadge } from "@/components/ui/badge";
 import { Card, CardHeader } from "@/components/ui/misc";
 import { Reveal } from "@/components/ui/motion";
 import { RichText } from "@/components/feed/rich-text";
+import { PremiumCrown } from "@/components/ui/premium-crown";
+import { isPremiumUser } from "@/server/services/premium";
 import { ArticleCard } from "@/components/articles/article-card";
 import { listArticles } from "@/server/services/articles";
 import type { AchievementCode } from "@/lib/achievements";
@@ -96,6 +98,7 @@ export default async function ProfilePage({ params }: PageProps<"/in/[username]"
   const user = result.user;
   const p = user.profile!;
   const self = viewer?.id === user.id;
+  const premium = await isPremiumUser(user.id);
   await recordProfileView(user.id, viewer ? { id: viewer.id, name: viewer.name, company: viewer.company } : null);
 
   const [relations, following, connectionCount, endorsed, canMessage, recruiterJobs] = await Promise.all([
@@ -177,6 +180,7 @@ export default async function ProfilePage({ params }: PageProps<"/in/[username]"
             <div className="mt-4">
               <div className="flex flex-wrap items-center gap-2">
                 <h1 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">{user.name}</h1>
+                {premium && <PremiumCrown className="text-2xl" />}
                 {verified && <BadgeCheck className="size-6 text-brand" aria-label={t("common.verified")} />}
                 {p.pronouns && <span className="text-sm text-fg-subtle">({p.pronouns})</span>}
               </div>

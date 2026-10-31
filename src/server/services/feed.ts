@@ -1,6 +1,7 @@
 import "server-only";
 import { db, type Prisma } from "@/server/db";
 import { connectionIds } from "@/server/services/network";
+import { isPremiumUser, premiumUserIds } from "@/server/services/premium";
 
 const postInclude = {
   author: { select: { id: true, name: true, image: true, username: true, profile: { select: { headline: true } } } },
@@ -32,7 +33,8 @@ const postInclude = {
   },
 } satisfies Prisma.PostInclude;
 
-export type FeedPost = Prisma.PostGetPayload<{ include: typeof postInclude }> & { liked: boolean };
+/** authorPremium: the author shows the 👑 (posts as a company page don't). */
+export type FeedPost = Prisma.PostGetPayload<{ include: typeof postInclude }> & { liked: boolean; authorPremium?: boolean };
 
 export const FEED_PAGE = 10;
 
@@ -75,10 +77,12 @@ export async function getFeed(viewerId: string, opts: { cursor?: string; authorI
   });
   const hasMore = posts.length > FEED_PAGE;
   const page = posts.slice(0, FEED_PAGE);
-  const liked = new Set(
-    (await db.postLike.findMany({ where: { userId: viewerId, postId: { in: page.map((p) => p.id) } }, select: { postId: true } })).map((l) => l.postId),
-  );
-  return { posts: page.map((p) => ({ ...p, liked: liked.has(p.id) })) as FeedPost[], nextCursor: hasMore ? page[page.length - 1]!.id : null };
+  const [likes, premium] = await Promise.all([
+    db.postLike.findMany({ where: { userId: viewerId, postId: { in: page.map((p) => p.id) } }, select: { postId: true } }),
+    premiumUserIds(page.map((p) => p.authorId)),
+  ]);
+  const liked = new Set(likes.map((l) => l.postId));
+  return { posts: page.map((p) => ({ ...p, liked: liked.has(p.id), authorPremium: premium.has(p.authorId) })) as FeedPost[], nextCursor: hasMore ? page[page.length - 1]!.id : null };
 }
 
 /** A single post for a viewer who has already passed the visibility checks. */
@@ -87,7 +91,7 @@ export async function getPost(viewerId: string, postId: string): Promise<FeedPos
     db.post.findUnique({ where: { id: postId }, include: postInclude }),
     db.postLike.findUnique({ where: { postId_userId: { postId, userId: viewerId } } }),
   ]);
-  return post ? { ...post, liked: !!like } : null;
+  return post ? { ...post, liked: !!like, authorPremium: await isPremiumUser(post.authorId) } : null;
 }
 
 export async function getComments(postId: string) {

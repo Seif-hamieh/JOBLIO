@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/server/db";
+import { isPremiumUser } from "@/server/services/premium";
 import { LIMITS, rateLimit } from "@/server/rate-limit";
 import { getFeed } from "@/server/services/feed";
 import { relationStates } from "@/server/services/network";
@@ -29,18 +30,21 @@ export async function GET(req: Request, { params }: RouteContext<"/api/mobile/me
   const user = page.user;
   const self = user.id === viewerId;
   const membership = self ? null : await db.companyMember.findFirst({ where: { userId: viewerId }, orderBy: { createdAt: "asc" }, select: { company: { select: { id: true, name: true } } } });
-  const [relations, canMessage, connections, feed] = await Promise.all([
+  const [relations, canMessage, connections, feed, premium] = await Promise.all([
     relationStates(viewerId, [user.id]),
     self ? false : canMessageUser({ id: viewerId, isRecruiter: !!membership }, user.id),
     user.profile!.showConnections || self ? db.connection.count({ where: { status: "ACCEPTED", OR: [{ requesterId: user.id }, { addresseeId: user.id }] } }) : null,
     getFeed(viewerId, { authorId: user.id }),
     self ? null : recordProfileView(user.id, { id: viewerId, name: session.user.name, company: membership?.company ?? null }),
+    isPremiumUser(user.id),
   ]);
   const relation = relations.get(user.id) ?? { state: "none" };
   return NextResponse.json(
     {
       status: "ok",
       profile: toProfile(user),
+      // Show the 👑 next to their name.
+      premium,
       relation: { state: relation.state, connectionId: relation.connectionId ?? null },
       canMessage,
       connections,

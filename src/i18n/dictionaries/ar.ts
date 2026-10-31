@@ -2069,6 +2069,19 @@ export const ar: Dictionary = {
     phone: "رقم الهاتف",
     phoneHint: "يُرسَل فقط للشركات التي تتقدّم إليها — ولا يظهر في ملفك أبدًا.",
   },
+  premiumBadge: {
+    label: "عضو مميّز",
+  },
+  myPremium: {
+    title: "مميزاتي",
+    sub: "ما لديك الآن، وحتى متى.",
+    until: "حتى {date}",
+    renews: "يتجدّد في {date}",
+    gift: "هدية من Joblio",
+    credits: "الطلبات المتبقية: {n}",
+    none: "أنت على الخطة المجانية.",
+    see: "اطّلع على المميزات",
+  },
   appPage: {
     metaTitle: "حمّل تطبيق JOBLIO لأندرويد",
     metaDescription: "حمّل تطبيق JOBLIO المجاني لأندرويد: وظائف ورسائل وقصص وإشعارات. تحميل مباشر، ويحدّث نفسه تلقائيًا.",

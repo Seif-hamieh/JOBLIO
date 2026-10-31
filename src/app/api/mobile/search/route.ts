@@ -34,6 +34,7 @@ export async function GET(req: Request) {
         city: p.profile?.city ?? null,
         countryCode: p.profile?.countryCode ?? null,
         openToWork: p.profile?.openToWork ?? false,
+        premium: p.premium,
       })),
       companies: r.companies.map((c) => toCompanyCard(c, followed.has(c.id), now)),
       jobs: r.jobs.map((j) => toJobCard(j, now)),
